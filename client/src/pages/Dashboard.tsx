@@ -10,15 +10,15 @@ import { RosaryIcon } from "@/components/RosaryIcon";
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
 const quickLinks = [
-  { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/sanctificare-rosary.webp", overlay: "oklch(0.22 0.08 260 / 0.60)" },
-  { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.28 0.08 145 / 0.60)" },
-  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.32 0.11 240 / 0.60)" },
-  { href: "/quando-deus-fala", label: "Quando Deus Fala", desc: "Escuta e discernimento", image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.38 0.12 255 / 0.58)" },
-  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/via-sacra/estacao-02.webp", overlay: "oklch(0.36 0.15 20 / 0.60)" },
-  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.50 0.10 85 / 0.56)" },
-  { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/via-sacra/estacao-02.webp", overlay: "oklch(0.34 0.10 300 / 0.58)" },
-  { href: "/biblia", label: "Bíblia Sagrada", desc: "Percorra as Escrituras", image: "/assets/via-sacra/estacao-01.webp", overlay: "oklch(0.26 0.08 230 / 0.62)" },
-  { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.30 0.10 190 / 0.60)" },
+  { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.png", overlay: "oklch(0.22 0.08 260 / 0.60)" },
+  { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.png", overlay: "oklch(0.28 0.08 145 / 0.60)" },
+  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/dashboard/lectio.png", overlay: "oklch(0.32 0.11 240 / 0.60)" },
+  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.png", overlay: "oklch(0.36 0.15 20 / 0.60)" },
+  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.png", overlay: "oklch(0.50 0.10 85 / 0.56)" },
+  { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.png", overlay: "oklch(0.34 0.10 300 / 0.58)" },
+  { href: "/biblia", label: "Bíblia Sagrada", desc: "Percorra as Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.26 0.08 230 / 0.62)" },
+  { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.png", overlay: "oklch(0.40 0.12 15 / 0.60)" },
+  { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.png", overlay: "oklch(0.30 0.10 190 / 0.60)" },
 ];
 
 function getDayOfWeek() {

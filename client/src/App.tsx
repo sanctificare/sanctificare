@@ -13,7 +13,6 @@ import Prayers from "./pages/Prayers";
 import RosaryGuided from "./pages/RosaryGuided";
 import Liturgy from "./pages/Liturgy";
 import LectioDivina from "./pages/LectioDivina";
-import QuandoDeusFala from "./pages/QuandoDeusFala";
 import ViaSacra from "./pages/ViaSacra";
 import VelaVirtual from "./pages/VelaVirtual";
 import MusicaSacra from "./pages/MusicaSacra";
@@ -22,6 +21,10 @@ import Intentions from "./pages/Intentions";
 import Profile from "./pages/Profile";
 import Premium from "./pages/Premium";
 import TemplateSettings from "./pages/TemplateSettings";
+import VideosBiblicos from "./pages/VideosBiblicos";
+import PrayerDetail from "./pages/PrayerDetail";
+import ResetPassword from "./pages/ResetPassword";
+
 
 function Router() {
   // Carregar e aplicar tema do usuário
@@ -36,7 +39,6 @@ function Router() {
       <Route path="/rosario" component={RosaryGuided} />
       <Route path="/liturgia" component={Liturgy} />
       <Route path="/lectio" component={LectioDivina} />
-      <Route path="/quando-deus-fala" component={QuandoDeusFala} />
       <Route path="/via-sacra" component={ViaSacra} />
       <Route path="/vela-virtual" component={VelaVirtual} />
       <Route path="/musica-sacra" component={MusicaSacra} />
@@ -45,6 +47,9 @@ function Router() {
       <Route path="/perfil" component={Profile} />
       <Route path="/premium" component={Premium} />
       <Route path="/temas" component={TemplateSettings} />
+      <Route path="/videos" component={VideosBiblicos} />
+      <Route path="/oracao/:id" component={PrayerDetail} />
+      <Route path="/redefinir-senha" component={ResetPassword} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

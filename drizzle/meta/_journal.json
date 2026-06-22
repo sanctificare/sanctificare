@@ -36,6 +36,13 @@
       "when": 1781879635968,
       "tag": "0004_glorious_warbound",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1782161707484,
+      "tag": "0005_dazzling_rage",
+      "breakpoints": true
     }
   ]
 }

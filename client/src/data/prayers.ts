@@ -12,6 +12,7 @@ export interface Prayer {
   duration: string;
   category: PrayerCategory;
   content: string;
+  audioUrl?: string;
 }
 
 export const PRAYERS: Prayer[] = [
@@ -23,6 +24,7 @@ export const PRAYERS: Prayer[] = [
     icon: "🙏",
     duration: "1 min",
     category: "basic",
+    audioUrl: "/audio/rosary/Pai-Nosso.mp3",
     content: `Pai nosso que estais nos céus,
 santificado seja o vosso nome,
 venha a nós o vosso reino,
@@ -44,6 +46,7 @@ Amém.`,
     icon: "🌹",
     duration: "1 min",
     category: "basic",
+    audioUrl: "/audio/rosary/ave-maria1.mp3",
     content: `Ave Maria, cheia de graça,
 o Senhor é convosco,
 bendita sois vós entre as mulheres,
@@ -62,6 +65,7 @@ Amém.`,
     icon: "✨",
     duration: "1 min",
     category: "basic",
+    audioUrl: "/audio/rosary/gloria.mp3",
     content: `Glória ao Pai, ao Filho e ao Espírito Santo,
 como era no princípio, agora e sempre,
 pelos séculos dos séculos. Amém.`,
@@ -103,6 +107,7 @@ na vida eterna. Amém.`,
     icon: "👑",
     duration: "2 min",
     category: "basic",
+    audioUrl: "/audio/rosary/salve%20rainha.mp3",
     content: `Salve Rainha, Mãe de misericórdia,
 vida, doçura e esperança nossa, salve!
 A vós bradamos, os degredados filhos de Eva.
@@ -159,6 +164,7 @@ Pelo mesmo Cristo, nosso Senhor. Amém.`,
     icon: "🕊️",
     duration: "1 min",
     category: "basic",
+    audioUrl: "/audio/rosary/jaculatoria.mp3",
     content: `Ó meu Jesus, perdoai-nos, livrai-nos do fogo do inferno; levai as almas todas para o Céu e socorrei principalmente as que mais precisarem. Amém.`,
   },
   {

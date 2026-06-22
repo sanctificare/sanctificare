@@ -6,6 +6,8 @@ import { z } from "zod/v4";
 import { TRPCError } from "@trpc/server";
 import { sdk } from "./_core/sdk";
 import { hashPassword, comparePassword } from "./_core/authUtils";
+import { sendPasswordResetEmail } from "./_core/email";
+import { nanoid } from "nanoid";
 import {
   insertPrayerLog,
   getPrayerLogsByUser,
@@ -13,6 +15,11 @@ import {
   createIntention,
   getPrayedIntentionsByUser,
   recordIntentionPrayer,
+  addIntentionMessage,
+  getIntentionMessages,
+  markGraceObtained,
+  deleteIntention,
+  updateIntention,
   getActiveSubscription,
   createSubscription,
   cancelSubscription,
@@ -24,9 +31,9 @@ import {
   listRecentLectioJournalEntries,
   getUserByEmail,
   createUser,
-  insertVirtualCandle,
-  getActiveVirtualCandles,
-  recordCandlePrayer,
+  createPasswordResetToken,
+  validatePasswordResetToken,
+  consumePasswordResetToken,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 
@@ -121,6 +128,70 @@ export const appRouter = router({
       }
       return { success: true } as const;
     }),
+
+    /**
+     * Solicita recuperação de senha: gera token seguro e envia e-mail.
+     * Sempre retorna sucesso para não vazar informações de cadastro.
+     */
+    forgotPassword: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const user = await getUserByEmail(input.email);
+
+        if (user && user.id) {
+          try {
+            const token = nanoid(48);
+            await createPasswordResetToken(user.id, token);
+
+            const appUrl = process.env.APP_URL ?? "http://localhost:5173";
+            const resetLink = `${appUrl}/redefinir-senha?token=${token}`;
+
+            await sendPasswordResetEmail(
+              user.email ?? input.email,
+              user.name ?? "Fiel",
+              resetLink
+            );
+          } catch (err) {
+            // Loga o erro mas não expõe ao cliente
+            console.error("[ForgotPassword] Error:", err);
+          }
+        }
+
+        // Sempre retorna sucesso (evita enumeração de e-mails)
+        return { success: true };
+      }),
+
+    /**
+     * Verifica se o token de reset é válido (para a página de reset).
+     */
+    validateResetToken: publicProcedure
+      .input(z.object({ token: z.string().min(1) }))
+      .query(async ({ input }) => {
+        const userId = await validatePasswordResetToken(input.token);
+        return { valid: userId !== null };
+      }),
+
+    /**
+     * Redefine a senha usando um token válido.
+     */
+    resetPassword: publicProcedure
+      .input(z.object({
+        token: z.string().min(1),
+        password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+      }))
+      .mutation(async ({ input }) => {
+        const newHash = hashPassword(input.password);
+        const ok = await consumePasswordResetToken(input.token, newHash);
+
+        if (!ok) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Link inválido ou expirado. Solicite um novo link de recuperação.",
+          });
+        }
+
+        return { success: true };
+      }),
   }),
 
   prayers: router({
@@ -160,13 +231,16 @@ export const appRouter = router({
       .input(z.object({
         title: z.string().min(5).max(200),
         description: z.string().min(10),
+        category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
+        isAnonymous: z.boolean().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         await createIntention(
           ctx.user.id,
           ctx.user.name || "Fiel Anônimo",
           input.title,
-          input.description
+          input.description,
+          { category: input.category, isAnonymous: input.isAnonymous }
         );
         return { success: true };
       }),
@@ -182,6 +256,59 @@ export const appRouter = router({
       .query(async ({ ctx }) => {
         const rows = await getPrayedIntentionsByUser(ctx.user.id);
         return rows.map(r => r.intentionId);
+      }),
+
+    addMessage: protectedProcedure
+      .input(z.object({
+        intentionId: z.number(),
+        message: z.string().min(3).max(300),
+        isAnonymous: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await addIntentionMessage(
+          input.intentionId,
+          ctx.user.id,
+          ctx.user.name || "Fiel Anônimo",
+          input.message,
+          input.isAnonymous ?? false
+        );
+        return { success: true };
+      }),
+
+    listMessages: publicProcedure
+      .input(z.object({ intentionId: z.number() }))
+      .query(async ({ input }) => {
+        return getIntentionMessages(input.intentionId);
+      }),
+
+    markGrace: protectedProcedure
+      .input(z.object({ intentionId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await markGraceObtained(input.intentionId, ctx.user.id);
+        return { success: true };
+      }),
+
+    delete: protectedProcedure
+      .input(z.object({ intentionId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await deleteIntention(input.intentionId, ctx.user.id);
+        return { success: true };
+      }),
+
+    update: protectedProcedure
+      .input(z.object({
+        intentionId: z.number(),
+        description: z.string().min(10),
+        category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
+        isAnonymous: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await updateIntention(input.intentionId, ctx.user.id, {
+          description: input.description,
+          category: input.category,
+          isAnonymous: input.isAnonymous,
+        });
+        return { success: true };
       }),
   }),
 
@@ -265,40 +392,6 @@ export const appRouter = router({
       .input(z.object({ limit: z.number().min(1).max(20).optional() }).optional())
       .query(async ({ ctx, input }) => {
         return listRecentLectioJournalEntries(ctx.user.id, input?.limit ?? 8);
-      }),
-  }),
-
-  candles: router({
-    light: protectedProcedure
-      .input(z.object({
-        intention: z.string().min(5).max(400),
-        type: z.enum(["intencao", "defuntos", "agradecimento", "adoracao"]),
-        isAnonymous: z.boolean(),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        const now = new Date();
-        const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 horas
-        await insertVirtualCandle({
-          userId: ctx.user.id,
-          authorName: input.isAnonymous ? "Fiel Anônimo" : (ctx.user.name || "Fiel"),
-          intention: input.intention,
-          type: input.type,
-          isAnonymous: input.isAnonymous,
-          litAt: now,
-          expiresAt,
-        });
-        return { success: true };
-      }),
-
-    listActive: publicProcedure.query(async () => {
-      return getActiveVirtualCandles();
-    }),
-
-    pray: protectedProcedure
-      .input(z.object({ candleId: z.number() }))
-      .mutation(async ({ ctx, input }) => {
-        const result = await recordCandlePrayer(input.candleId, ctx.user.id);
-        return { success: !result.alreadyPrayed, alreadyPrayed: result.alreadyPrayed };
       }),
   }),
 });

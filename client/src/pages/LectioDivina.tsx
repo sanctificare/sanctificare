@@ -10,7 +10,16 @@ import {
   PlayCircle,
   BookOpen,
   RotateCcw,
+  History,
 } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   LECTIO_PASSAGES,
   getDailyLectio,
@@ -44,8 +53,83 @@ export default function LectioDivina() {
   const { isAuthenticated, loading } = useAuth();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
+  // Date formatted in America/Sao_Paulo timezone
+  // Date parts formatted in America/Sao_Paulo timezone
+  const dateParts = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Sao_Paulo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const parts = formatter.formatToParts(new Date());
+    const year = Number(parts.find((p) => p.type === "year")?.value || new Date().getFullYear());
+    const month = Number(parts.find((p) => p.type === "month")?.value || (new Date().getMonth() + 1));
+    const day = Number(parts.find((p) => p.type === "day")?.value || new Date().getDate());
+    
+    const yStr = String(year);
+    const mStr = String(month).padStart(2, "0");
+    const dStr = String(day).padStart(2, "0");
+    
+    return {
+      year,
+      month,
+      day,
+      isoDate: `${yStr}-${mStr}-${dStr}`,
+    };
+  }, []);
+
+  const todaySaoPaulo = dateParts.isoDate;
+  const [selectedDate, setSelectedDate] = useState<string>(todaySaoPaulo);
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isDailyAudioAvailable, setIsDailyAudioAvailable] = useState<boolean>(true);
+  const [isAudioChecking, setIsAudioChecking] = useState<boolean>(false);
+
+  // Generate the last 10 days for history list
+  const historyDays = useMemo(() => {
+    const { year, month, day } = dateParts;
+    const list = [];
+    for (let i = 0; i < 10; i++) {
+      const d = new Date(Date.UTC(year, month - 1, day - i));
+      const yStr = d.getUTCFullYear();
+      const mStr = String(d.getUTCMonth() + 1).padStart(2, '0');
+      const dStr = String(d.getUTCDate()).padStart(2, '0');
+      const isoDate = `${yStr}-${mStr}-${dStr}`;
+
+      let label = "";
+      if (i === 0) {
+        label = "Hoje";
+      } else if (i === 1) {
+        label = "Ontem";
+      } else {
+        const weekday = new Intl.DateTimeFormat("pt-BR", { weekday: "long", timeZone: "UTC" }).format(d);
+        const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+        const monthName = new Intl.DateTimeFormat("pt-BR", { month: "long", timeZone: "UTC" }).format(d);
+        label = `${capitalizedWeekday}, ${d.getUTCDate()} de ${monthName}`;
+      }
+
+      list.push({
+        date: isoDate,
+        dayNum: d.getUTCDate(),
+        label,
+      });
+    }
+    return list;
+  }, [dateParts]);
+
   const daily = useMemo(() => getDailyLectio(), []);
   const [selectedId, setSelectedId] = useState<string>(daily.id);
+
+  const formattedSelectedDate = useMemo(() => {
+    if (!selectedDate) return "";
+    const [year, month, day] = selectedDate.split("-").map(Number);
+    if (isNaN(year) || isNaN(month) || isNaN(day)) return "";
+    const d = new Date(Date.UTC(year, month - 1, day));
+    const weekday = new Intl.DateTimeFormat("pt-BR", { weekday: "long", timeZone: "UTC" }).format(d);
+    const capitalizedWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+    const monthName = new Intl.DateTimeFormat("pt-BR", { month: "long", timeZone: "UTC" }).format(d);
+    return `${capitalizedWeekday}, ${d.getUTCDate()} de ${monthName}`;
+  }, [selectedDate]);
 
   // Guided Mode Audio Player states
   const [currentAudioTrack, setCurrentAudioTrack] = useState<number>(0);
@@ -86,7 +170,7 @@ export default function LectioDivina() {
   }, [bgVolume]);
 
 
-  const { data: liturgyToday } = trpc.liturgy.getByDate.useQuery({ date: undefined });
+  const { data: liturgyToday, isLoading: isLiturgyLoading } = trpc.liturgy.getByDate.useQuery({ date: selectedDate });
 
   const dailyGospelPassage = useMemo<LectioPassage | null>(() => {
     if (!liturgyToday?.gospel?.texto || !liturgyToday?.gospel?.referencia) {
@@ -140,20 +224,10 @@ export default function LectioDivina() {
     }
   }, [dailyGospelPassage, showGuidedAudio]);
 
-  // Date formatted in America/Sao_Paulo timezone
-  const todaySaoPaulo = useMemo(() => {
-    return new Intl.DateTimeFormat("en-CA", {
-      timeZone: "America/Sao_Paulo",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(new Date());
-  }, []);
-
   // Guided tracks generation
   const guidedTracks = useMemo(() => {
-    return getGuidedLectioAudioTracks(passage.id, todaySaoPaulo);
-  }, [passage.id, todaySaoPaulo]);
+    return getGuidedLectioAudioTracks(passage.id, selectedDate);
+  }, [passage.id, selectedDate]);
 
   const readingTrack = useMemo(() => {
     return guidedTracks.find(
@@ -166,6 +240,49 @@ export default function LectioDivina() {
       (t) => t.id === "leitura-evangelho-meditacao" || t.id === "leitura-passagem"
     );
   }, [guidedTracks]);
+
+  // Check if daily gospel audio is available on R2 using native audio element to bypass CORS
+  useEffect(() => {
+    if (!dailyGospelPassage) {
+      setIsDailyAudioAvailable(true);
+      setIsAudioChecking(false);
+      return;
+    }
+
+    const track = guidedTracks.find((t) => t.id === "leitura-evangelho-meditacao");
+    if (!track) {
+      setIsDailyAudioAvailable(true);
+      setIsAudioChecking(false);
+      return;
+    }
+
+    setIsAudioChecking(true);
+    const testAudio = new Audio(track.audioUrl);
+    
+    const handleAudioError = () => {
+      setIsDailyAudioAvailable(false);
+      setIsAudioChecking(false);
+    };
+
+    const handleAudioSuccess = () => {
+      setIsDailyAudioAvailable(true);
+      setIsAudioChecking(false);
+    };
+
+    testAudio.addEventListener("error", handleAudioError);
+    testAudio.addEventListener("canplay", handleAudioSuccess);
+    testAudio.addEventListener("loadedmetadata", handleAudioSuccess);
+
+    testAudio.load();
+
+    return () => {
+      testAudio.removeEventListener("error", handleAudioError);
+      testAudio.removeEventListener("canplay", handleAudioSuccess);
+      testAudio.removeEventListener("loadedmetadata", handleAudioSuccess);
+      testAudio.pause();
+      testAudio.src = "";
+    };
+  }, [dailyGospelPassage, guidedTracks]);
 
   const handleComplete = async () => {
     if (!isAuthenticated) return;
@@ -219,6 +336,11 @@ export default function LectioDivina() {
   };
 
   const handleGuidedTrackError = () => {
+    const currentTrack = guidedTracks[currentAudioTrack];
+    if (currentTrack && currentTrack.id === "leitura-evangelho-meditacao") {
+      setIsDailyAudioAvailable(false);
+    }
+
     if (autoGuidedActive) {
       if (currentAudioTrack < guidedTracks.length - 1) {
         setCurrentAudioTrack((prev) => prev + 1);
@@ -301,7 +423,8 @@ mas livrai-nos do Mal. Amém!`,
     }
 
     if (track.id === "leitura-evangelho-meditacao" && passage.id === "daily-gospel") {
-      const isJune20 = todaySaoPaulo.endsWith("-06-20");
+      const isJune20 = selectedDate.endsWith("-06-20");
+      const isJune19 = selectedDate.endsWith("-06-19");
       if (isJune20) {
         return {
           supportTitle: "Leitura do Evangelho",
@@ -334,11 +457,11 @@ mas livrai-nos do Mal. Amém!`,
 [02:31.6 - 02:34.6] Palavra da Salvação`,
         };
       }
-
-      return {
-        supportTitle: "Leitura do Evangelho",
-        supportDescription: passage.reference,
-        supportText: `[00:00.0 - 00:04.9] Proclamação do Evangelho de Jesus Cristo segundo Mateus.
+      if (isJune19) {
+        return {
+          supportTitle: "Leitura do Evangelho",
+          supportDescription: passage.reference,
+          supportText: `[00:00.0 - 00:04.9] Proclamação do Evangelho de Jesus Cristo segundo Mateus.
 [00:04.9 - 00:12.3] Parem de acumular para vocês tesouro na terra, onde a traça e a ferrugem consomem,
 [00:12.3 - 00:16.4] e onde ladrões arrombam e furtam.
 [00:16.4 - 00:21.3] Em vez disso, acumulem para vocês tesouros no céu,
@@ -350,6 +473,12 @@ mas livrai-nos do Mal. Amém!`,
 [00:45.3 - 00:51.3] Mas se o seu olho for invejoso, todo o seu corpo será escuro.
 [00:51.3 - 00:58.5] Se a luz que há em você na realidade é escuridão, como é grande essa escuridão?
 [00:58.5 - 01:00.5] Palavra da Salvação`,
+        };
+      }
+      return {
+        supportTitle: "Leitura do Evangelho",
+        supportDescription: passage.reference,
+        supportText: `${passage.reference}\n\n${passage.text}`,
       };
     }
 
@@ -499,6 +628,87 @@ mas livrai-nos do Mal. Amém!`,
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/10" />
+
+                {/* Histórico/Drawer Trigger */}
+                <Sheet open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+                  <SheetTrigger asChild>
+                    <button
+                      type="button"
+                      id="btn-open-lectio-history"
+                      aria-label="Abrir histórico de leituras"
+                      className="absolute top-3 right-3 bg-black/65 hover:bg-black/85 backdrop-blur-md text-white p-2.5 rounded-full transition-all border border-white/15 shadow-lg cursor-pointer z-10 hover:scale-105"
+                    >
+                      <History size={16} />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent className="bg-[#0f1717] border-l border-white/10 text-white w-full sm:max-w-md p-6 overflow-y-auto">
+                    <SheetHeader className="mb-6">
+                      <SheetTitle className="text-white text-xl font-bold flex items-center gap-2">
+                        <History size={20} className="text-[oklch(0.75_0.12_75)]" />
+                        Histórico da Lectio
+                      </SheetTitle>
+                      <SheetDescription className="text-white/60 text-xs">
+                        Selecione o dia anterior que você deseja rezar e ouvir novamente.
+                      </SheetDescription>
+                    </SheetHeader>
+
+                    <div className="space-y-3">
+                      {historyDays.map((item) => {
+                        const isSelected = selectedDate === item.date;
+                        return (
+                          <button
+                            key={item.date}
+                            type="button"
+                            id={`btn-select-history-${item.date}`}
+                            onClick={() => {
+                              setSelectedDate(item.date);
+                              setCompleted(false);
+                              setIsHistoryOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between p-3.5 rounded-2xl border transition-all text-left cursor-pointer ${
+                              isSelected
+                                ? "bg-[oklch(0.75_0.12_75)]/15 border-[oklch(0.75_0.12_75)]/45 text-[oklch(0.75_0.12_75)]"
+                                : "bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10 text-white/80"
+                            }`}
+                          >
+                            <div className="flex flex-col">
+                              <span className="text-sm font-bold">{item.label}</span>
+                              <span className="text-[10px] text-white/40 mt-0.5">
+                                {item.date.split("-").reverse().join("/")}
+                              </span>
+                            </div>
+                            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/60">
+                              {isSelected ? "Selecionado" : "Rezar"}
+                            </span>
+                          </button>
+                        );
+                      })}
+
+                      {/* Custom Date Picker within history drawer */}
+                      <div className="pt-4 border-t border-white/10">
+                        <label className="text-xs font-bold text-white/50 mb-2 block">
+                          Ou selecione uma data personalizada:
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="date"
+                            id="input-custom-lectio-date"
+                            max={todaySaoPaulo}
+                            value={selectedDate}
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                setSelectedDate(e.target.value);
+                                setCompleted(false);
+                                setIsHistoryOpen(false);
+                              }
+                            }}
+                            className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 rounded-2xl text-sm focus:outline-none focus:border-[oklch(0.75_0.12_75)]/50 cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </SheetContent>
+                </Sheet>
               </div>
 
               {completed && (
@@ -508,8 +718,19 @@ mas livrai-nos do Mal. Amém!`,
                 </div>
               )}
 
+              {(!dailyGospelPassage || !isDailyAudioAvailable) && !isLiturgyLoading && (
+                <div className="mb-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 text-left text-xs text-amber-200/90 leading-relaxed flex gap-2.5 animate-fade-in" id="liturgy-unavailable-banner">
+                  <div className="w-4 h-4 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold flex-shrink-0 mt-0.5">ℹ️</div>
+                  <div>
+                    {!dailyGospelPassage 
+                      ? "A liturgia da data selecionada não está disponível no sistema. Selecionamos a meditação recomendada abaixo para o seu momento de oração."
+                      : "O áudio do Evangelho para a data selecionada não está disponível no sistema. Por favor, escolha outro dia no histórico."}
+                  </div>
+                </div>
+              )}
+
               <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.75_0.12_75)] mb-2">
-                Sessão Guiada por Áudio
+                {formattedSelectedDate}
               </p>
               <h2 className="font-display text-2xl font-bold text-white mb-2">
                 {passage.title}
@@ -529,6 +750,7 @@ mas livrai-nos do Mal. Amém!`,
                 <div className="grid grid-cols-2 gap-2 bg-white/5 p-1 rounded-xl border border-white/5">
                   <button
                     type="button"
+                    id="btn-bg-music-none"
                     onClick={() => setBgMusic("none")}
                     className={`py-2 text-xs font-medium rounded-lg transition-all cursor-pointer ${
                       bgMusic === "none"
@@ -540,6 +762,7 @@ mas livrai-nos do Mal. Amém!`,
                   </button>
                   <button
                     type="button"
+                    id="btn-bg-music-instrumental"
                     onClick={() => setBgMusic("instrumental")}
                     className={`py-2 text-xs font-medium rounded-lg transition-all cursor-pointer ${
                       bgMusic === "instrumental"
@@ -554,10 +777,30 @@ mas livrai-nos do Mal. Amém!`,
 
               <Button
                 onClick={handleStartGuidedSession}
-                className="w-full h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold rounded-2xl shadow-lg"
+                disabled={isLiturgyLoading || isAudioChecking || !isDailyAudioAvailable}
+                id="btn-start-guided-lectio"
+                className="w-full h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <PlayCircle size={18} className="mr-2" />
-                Iniciar Meditação Guiada
+                {isLiturgyLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    Carregando liturgia...
+                  </span>
+                ) : isAudioChecking ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    Verificando áudio...
+                  </span>
+                ) : !isDailyAudioAvailable ? (
+                  <span className="flex items-center justify-center gap-2">
+                    Áudio Indisponível
+                  </span>
+                ) : (
+                  <>
+                    <PlayCircle size={18} className="mr-2" />
+                    Iniciar Meditação Guiada
+                  </>
+                )}
               </Button>
 
             </div>
@@ -673,6 +916,7 @@ mas livrai-nos do Mal. Amém!`,
                 {readingTrackIndex !== -1 && currentAudioTrack > readingTrackIndex && (
                   <Button
                     variant="outline"
+                    id="btn-replay-lectio-reading"
                     onClick={() => setReplayingReading((prev) => !prev)}
                     className="w-full border-white/20 hover:bg-white/10 text-white font-medium rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer h-10 mb-1"
                   >
@@ -683,6 +927,7 @@ mas livrai-nos do Mal. Amém!`,
 
                 <Button
                   variant="ghost"
+                  id="btn-stop-guided-lectio"
                   onClick={handleStopGuidedSession}
                   className="text-xs text-white/40 hover:text-white"
                 >

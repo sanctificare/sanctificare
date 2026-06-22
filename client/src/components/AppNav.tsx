@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music } from "lucide-react";
+import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -21,11 +21,11 @@ const navLinks = [
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
   { href: "/lectio", label: "Lectio Divina", icon: ScrollText },
-  { href: "/quando-deus-fala", label: "Quando Deus Fala", icon: Radio },
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
   { href: "/vela-virtual", label: "Vela Virtual", icon: Flame },
   { href: "/musica-sacra", label: "Música Sacra", icon: Music },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
+  { href: "/videos", label: "Vídeos", icon: Film },
   { href: "/intencoes", label: "Intenções", icon: Users },
 ];
 

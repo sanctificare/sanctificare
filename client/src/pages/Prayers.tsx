@@ -6,10 +6,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
-import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Cross } from "lucide-react";
+import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Cross, Volume2 } from "lucide-react";
 import { Link } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { toast } from "sonner";
+import AudioPlayer from "@/components/AudioPlayer";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
@@ -287,10 +288,18 @@ export default function Prayers() {
                         <span className={`rounded-full px-2 py-1 text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
                           {theme.badgeLabel}
                         </span>
-                        <span className="rounded-full bg-black/10 px-2 py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)]">
-                          <Clock size={11} />
-                          <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
-                        </span>
+                        <div className="flex gap-1 flex-wrap justify-end">
+                          {prayer.audioUrl && (
+                            <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
+                              <Volume2 size={10} />
+                              <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
+                            </span>
+                          )}
+                          <span className="rounded-full bg-black/10 px-2 py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)]">
+                            <Clock size={11} />
+                            <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -344,10 +353,18 @@ export default function Prayers() {
                     <span className={`rounded-full px-2 py-1 text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
                       {theme.badgeLabel}
                     </span>
-                    <span className="rounded-full bg-[oklch(0.82_0.10_80/0.88)] text-[oklch(0.17_0.02_260)] px-2 py-1 flex items-center gap-1">
-                      <Crown size={11} />
-                      <span className="text-[10px] font-semibold tracking-[0.03em]">Premium</span>
-                    </span>
+                    <div className="flex gap-1 flex-wrap justify-end">
+                      {prayer.audioUrl && (
+                        <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
+                          <Volume2 size={10} />
+                          <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
+                        </span>
+                      )}
+                      <span className="rounded-full bg-[oklch(0.82_0.10_80/0.88)] text-[oklch(0.17_0.02_260)] px-2 py-1 flex items-center gap-1">
+                        <Crown size={11} />
+                        <span className="text-[10px] font-semibold tracking-[0.03em]">Premium</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="relative z-10">
@@ -385,7 +402,7 @@ export default function Prayers() {
 
       {/* Modal de Oração */}
       <Dialog open={!!selectedPrayer} onOpenChange={() => setSelectedPrayer(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto" aria-describedby={undefined}>
           {selectedPrayer && (
             <>
               <DialogHeader>
@@ -400,9 +417,22 @@ export default function Prayers() {
                 <div className="divider-gold" />
               </DialogHeader>
 
-              <div className="prose-prayer whitespace-pre-line py-4">
-                {selectedPrayer.content}
-              </div>
+              {selectedPrayer.audioUrl ? (
+                <div className="py-2">
+                  <AudioPlayer
+                    audioUrl={selectedPrayer.audioUrl}
+                    title={selectedPrayer.name}
+                    description={selectedPrayer.description}
+                    supportTitle="Texto da Oração"
+                    supportDescription="Acompanhe a leitura"
+                    supportText={selectedPrayer.content}
+                  />
+                </div>
+              ) : (
+                <div className="prose-prayer whitespace-pre-line py-4">
+                  {selectedPrayer.content}
+                </div>
+              )}
 
               <div className="flex gap-3 pt-4 border-t">
                 <Button

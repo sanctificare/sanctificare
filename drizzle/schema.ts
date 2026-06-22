@@ -9,12 +9,14 @@ import {
   uniqueIndex,
   varchar,
   boolean,
+  index,
 } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["user", "admin"]);
 export const templatePreferenceEnum = pgEnum("templatePreference", ["classico", "moderno", "tradicional", "minimalista"]);
 export const planEnum = pgEnum("plan", ["monthly", "annual"]);
 export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "cancelled", "expired"]);
+export const intentionCategoryEnum = pgEnum("intention_category", ["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -67,8 +69,12 @@ export const prayerIntentions = pgTable("prayer_intentions", {
   authorName: varchar("authorName", { length: 128 }).notNull(),
   title: varchar("title", { length: 200 }).notNull(),
   description: text("description").notNull(),
+  category: intentionCategoryEnum("category"),
+  isAnonymous: boolean("isAnonymous").default(false).notNull(),
   prayerCount: integer("prayerCount").default(0).notNull(),
   isActive: boolean("isActive").default(true).notNull(),
+  graceObtained: boolean("graceObtained").default(false).notNull(),
+  expiresAt: timestamp("expiresAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
@@ -86,6 +92,20 @@ export const intentionPrayers = pgTable("intention_prayers", {
 
 export type IntentionPrayer = typeof intentionPrayers.$inferSelect;
 export type InsertIntentionPrayer = typeof intentionPrayers.$inferInsert;
+
+// Mensagens de encorajamento em intenções de oração
+export const intentionMessages = pgTable("intention_messages", {
+  id: serial("id").primaryKey(),
+  intentionId: integer("intentionId").notNull(),
+  userId: integer("userId").notNull(),
+  authorName: varchar("authorName", { length: 128 }).notNull(),
+  isAnonymous: boolean("isAnonymous").default(false).notNull(),
+  message: varchar("message", { length: 300 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type IntentionMessage = typeof intentionMessages.$inferSelect;
+export type InsertIntentionMessage = typeof intentionMessages.$inferInsert;
 
 // Liturgia diária (leituras do dia), alimentada por cron a partir de API externa
 export interface LiturgyReading {
@@ -179,3 +199,22 @@ export const candlePrayers = pgTable("candle_prayers", {
 export type CandlePrayer = typeof candlePrayers.$inferSelect;
 export type InsertCandlePrayer = typeof candlePrayers.$inferInsert;
 
+// Tokens de redefinição de senha (válidos por 1 hora)
+export const passwordResetTokens = pgTable(
+  "password_reset_tokens",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    token: varchar("token", { length: 128 }).notNull().unique(),
+    expiresAt: timestamp("expiresAt").notNull(),
+    usedAt: timestamp("usedAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    tokenIdx: index("prt_token_idx").on(table.token),
+    userIdx: index("prt_user_idx").on(table.userId),
+  })
+);
+
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;

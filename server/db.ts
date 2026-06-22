@@ -1,4 +1,4 @@
-import { eq, desc, and, sql, gt } from "drizzle-orm";
+import { eq, desc, and, or, sql, gt, isNull } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -8,6 +8,7 @@ import {
   prayerLogs,
   prayerIntentions,
   intentionPrayers,
+  intentionMessages,
   subscriptions,
   dailyLiturgy,
   InsertDailyLiturgy,
@@ -15,6 +16,7 @@ import {
   virtualCandles,
   candlePrayers,
   InsertVirtualCandle,
+  passwordResetTokens,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -146,18 +148,47 @@ export async function getPrayerLogsByUser(userId: number, limit = 50) {
 export async function getActiveIntentions(limit = 50) {
   const db = await getDb();
   if (!db) return [];
+  const now = new Date();
   return db
     .select()
     .from(prayerIntentions)
-    .where(eq(prayerIntentions.isActive, true))
+    .where(
+      and(
+        eq(prayerIntentions.isActive, true),
+        // Intenções sem expiresAt (legado) ou com expiresAt no futuro
+        or(
+          isNull(prayerIntentions.expiresAt),
+          gt(prayerIntentions.expiresAt, now)
+        )
+      )
+    )
     .orderBy(desc(prayerIntentions.createdAt))
     .limit(limit);
 }
 
-export async function createIntention(userId: number, authorName: string, title: string, description: string) {
+export async function createIntention(
+  userId: number,
+  authorName: string,
+  title: string,
+  description: string,
+  options?: {
+    category?: "cura" | "familia" | "conversao" | "trabalho" | "defuntos" | "paz" | null;
+    isAnonymous?: boolean;
+  }
+) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  await db.insert(prayerIntentions).values({ userId, authorName, title, description });
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 9); // Novena de 9 dias
+  await db.insert(prayerIntentions).values({
+    userId,
+    authorName,
+    title,
+    description,
+    category: options?.category ?? null,
+    isAnonymous: options?.isAnonymous ?? false,
+    expiresAt,
+  });
 }
 
 export async function getPrayedIntentionsByUser(userId: number) {
@@ -184,6 +215,95 @@ export async function recordIntentionPrayer(intentionId: number, userId: number)
     .set({ prayerCount: sql`${prayerIntentions.prayerCount} + 1` })
     .where(eq(prayerIntentions.id, intentionId));
   return { alreadyPrayed: false };
+}
+
+export async function deleteIntention(intentionId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const intention = await db
+    .select({ id: prayerIntentions.id, userId: prayerIntentions.userId })
+    .from(prayerIntentions)
+    .where(eq(prayerIntentions.id, intentionId))
+    .limit(1);
+  if (!intention.length || intention[0].userId !== userId) {
+    throw new Error("Não autorizado");
+  }
+  await db.delete(prayerIntentions).where(eq(prayerIntentions.id, intentionId));
+}
+
+export async function updateIntention(
+  intentionId: number,
+  userId: number,
+  fields: {
+    description: string;
+    category?: "cura" | "familia" | "conversao" | "trabalho" | "defuntos" | "paz" | null;
+    isAnonymous?: boolean;
+  }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const intention = await db
+    .select({ id: prayerIntentions.id, userId: prayerIntentions.userId })
+    .from(prayerIntentions)
+    .where(eq(prayerIntentions.id, intentionId))
+    .limit(1);
+  if (!intention.length || intention[0].userId !== userId) {
+    throw new Error("Não autorizado");
+  }
+  const autoTitle = fields.description.length > 80
+    ? fields.description.slice(0, 77).trimEnd() + "..."
+    : fields.description;
+  await db
+    .update(prayerIntentions)
+    .set({
+      title: autoTitle,
+      description: fields.description,
+      category: fields.category ?? null,
+      isAnonymous: fields.isAnonymous ?? false,
+      updatedAt: new Date(),
+    })
+    .where(eq(prayerIntentions.id, intentionId));
+}
+
+export async function addIntentionMessage(
+  intentionId: number,
+  userId: number,
+  authorName: string,
+  message: string,
+  isAnonymous = false
+) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  await db.insert(intentionMessages).values({ intentionId, userId, authorName, message, isAnonymous });
+}
+
+export async function getIntentionMessages(intentionId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(intentionMessages)
+    .where(eq(intentionMessages.intentionId, intentionId))
+    .orderBy(desc(intentionMessages.createdAt))
+    .limit(20);
+}
+
+export async function markGraceObtained(intentionId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  // Verifica se a intenção pertence ao usuário
+  const intention = await db
+    .select({ id: prayerIntentions.id, userId: prayerIntentions.userId })
+    .from(prayerIntentions)
+    .where(eq(prayerIntentions.id, intentionId))
+    .limit(1);
+  if (!intention.length || intention[0].userId !== userId) {
+    throw new Error("Não autorizado");
+  }
+  await db
+    .update(prayerIntentions)
+    .set({ graceObtained: true })
+    .where(eq(prayerIntentions.id, intentionId));
 }
 
 // ─── Subscriptions ────────────────────────────────────────────────────────────
@@ -415,3 +535,84 @@ export async function recordCandlePrayer(candleId: number, userId: number) {
   return { alreadyPrayed: false };
 }
 
+// ─── Password Reset Tokens ────────────────────────────────────────────────────
+
+/**
+ * Cria um token de redefinição de senha (TTL: 1 hora).
+ * Invalida tokens anteriores do mesmo usuário antes de inserir.
+ */
+export async function createPasswordResetToken(
+  userId: number,
+  token: string
+): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // +1 hora
+
+  // Invalida tokens anteriores não utilizados do mesmo usuário
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(
+      and(
+        eq(passwordResetTokens.userId, userId),
+        isNull(passwordResetTokens.usedAt)
+      )
+    );
+
+  await db.insert(passwordResetTokens).values({ userId, token, expiresAt });
+}
+
+/**
+ * Valida um token e retorna o userId associado.
+ * Retorna null se o token não existir, já foi usado ou expirou.
+ */
+export async function validatePasswordResetToken(
+  token: string
+): Promise<number | null> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const rows = await db
+    .select()
+    .from(passwordResetTokens)
+    .where(
+      and(
+        eq(passwordResetTokens.token, token),
+        isNull(passwordResetTokens.usedAt),
+        gt(passwordResetTokens.expiresAt, new Date())
+      )
+    )
+    .limit(1);
+
+  return rows[0]?.userId ?? null;
+}
+
+/**
+ * Marca o token como utilizado e atualiza o hash da senha do usuário.
+ */
+export async function consumePasswordResetToken(
+  token: string,
+  newPasswordHash: string
+): Promise<boolean> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const userId = await validatePasswordResetToken(token);
+  if (!userId) return false;
+
+  // Marca o token como usado
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(eq(passwordResetTokens.token, token));
+
+  // Atualiza a senha
+  await db
+    .update(users)
+    .set({ passwordHash: newPasswordHash, updatedAt: new Date() })
+    .where(eq(users.id, userId));
+
+  return true;
+}

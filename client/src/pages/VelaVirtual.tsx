@@ -97,44 +97,12 @@ const RECOLLECTION_PHRASES = [
 
 export default function VelaVirtual() {
   const { isAuthenticated, loading } = useAuth();
-  const utils = trpc.useUtils();
-  const [activeTab, setActiveTab] = useState<"personal" | "community">("personal");
-  const [showLightForm, setShowLightForm] = useState(false);
   const [newIntention, setNewIntention] = useState("");
-  const [isAnonymous, setIsAnonymous] = useState(false);
   const [candleType, setCandleType] = useState<"intencao" | "defuntos" | "agradecimento" | "adoracao">("intencao");
   
   // Controle da vela local/sessão atual
   const [isCandleLit, setIsCandleLit] = useState(false);
   const [privateCandleIntention, setPrivateCandleIntention] = useState("");
-
-  const activeCandlesQuery = trpc.candles.listActive.useQuery(undefined, {
-    enabled: isAuthenticated && activeTab === "community",
-  });
-
-  const lightCandleMutation = trpc.candles.light.useMutation({
-    onSuccess: () => {
-      utils.candles.listActive.invalidate();
-      toast.success("Sua vela foi acesa na Capela Comunitária!");
-    },
-    onError: () => {
-      toast.error("Erro ao acender a vela.");
-    },
-  });
-
-  const prayCandleMutation = trpc.candles.pray.useMutation({
-    onSuccess: (res) => {
-      utils.candles.listActive.invalidate();
-      if (res.alreadyPrayed) {
-        toast.info("Você já está rezando por esta vela.");
-      } else {
-        toast.success("Você se uniu em oração a esta intenção!");
-      }
-    },
-    onError: () => {
-      toast.error("Erro ao registrar oração.");
-    },
-  });
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -310,37 +278,8 @@ export default function VelaVirtual() {
                 Uma chama acesa, silêncio interior e um espaço de recolhimento para permanecer diante de Deus.
               </p>
             </div>
-
-            <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 shrink-0">
-              <button
-                type="button"
-                onClick={() => setActiveTab("personal")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === "personal"
-                    ? "bg-[oklch(0.82_0.10_80)] text-[oklch(0.15_0.02_260)] shadow font-semibold"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <Flame size={14} />
-                Rezar em Silêncio
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("community")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === "community"
-                    ? "bg-[oklch(0.82_0.10_80)] text-[oklch(0.15_0.02_260)] shadow font-semibold"
-                    : "text-white/60 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <Users size={14} />
-                Capela Comunitária
-              </button>
-            </div>
           </div>
         )}
-
-        {activeTab === "personal" ? (
           <div
             className={`grid gap-6 items-stretch transition-all duration-500 ${
               cleanMode ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
@@ -504,52 +443,14 @@ export default function VelaVirtual() {
                           </select>
                         </div>
 
-                        <div className="py-2 space-y-2">
-                          <label className="flex items-center gap-2 cursor-pointer text-xs text-white/80">
-                            <input
-                              type="checkbox"
-                              checked={showLightForm} // Usando showLightForm temporariamente como checkbox de Pública
-                              onChange={(e) => setShowLightForm(e.target.checked)}
-                              className="rounded border-white/20 bg-black/20 text-[oklch(0.82_0.10_80)] focus:ring-0"
-                            />
-                            Acender também na Capela Comunitária (Pública)
-                          </label>
-
-                          {showLightForm && (
-                            <label className="flex items-center gap-2 cursor-pointer text-xs text-white/60 pl-6 animate-fade-in">
-                              <input
-                                type="checkbox"
-                                checked={isAnonymous}
-                                onChange={(e) => setIsAnonymous(e.target.checked)}
-                                className="rounded border-white/20 bg-black/20 text-[oklch(0.82_0.10_80)] focus:ring-0"
-                              />
-                              Manter anônimo na capela
-                            </label>
-                          )}
-                        </div>
                       </div>
 
                       <Button
                         type="button"
                         onClick={async () => {
-                          if (newIntention.trim().length < 5) {
-                            toast.error("Por favor, descreva sua intenção com pelo menos 5 caracteres.");
-                            return;
-                          }
+                          const trimmedIntention = newIntention.trim();
 
-                          if (showLightForm) {
-                            try {
-                              await lightCandleMutation.mutateAsync({
-                                intention: newIntention,
-                                type: candleType,
-                                isAnonymous,
-                              });
-                            } catch {
-                              return; // Toast de erro já está na mutation
-                            }
-                          }
-
-                          setPrivateCandleIntention(newIntention);
+                          setPrivateCandleIntention(trimmedIntention);
                           setIsCandleLit(true);
                           setNewIntention("");
                           
@@ -557,11 +458,10 @@ export default function VelaVirtual() {
                           await startPrayerSpace();
                           setCleanMode(true);
                         }}
-                        disabled={lightCandleMutation.isPending}
                         className="w-full bg-[oklch(0.82_0.10_80)] hover:bg-[oklch(0.77_0.10_80)] text-[oklch(0.15_0.02_260)] font-semibold"
                       >
                         <Flame size={16} className="mr-2" />
-                        {lightCandleMutation.isPending ? "Acendendo..." : "Acender Vela e Rezar"}
+                        Acender Vela e Rezar
                       </Button>
                     </CardContent>
                   </Card>
@@ -591,9 +491,11 @@ export default function VelaVirtual() {
                         </Button>
                       </div>
 
-                      <blockquote className="font-serif italic text-sm text-white/70 p-3 bg-black/20 rounded-xl border border-white/5">
-                        "{privateCandleIntention}"
-                      </blockquote>
+                      {privateCandleIntention.trim() && (
+                        <blockquote className="font-serif italic text-sm text-white/70 p-3 bg-black/20 rounded-xl border border-white/5">
+                          "{privateCandleIntention}"
+                        </blockquote>
+                      )}
 
                       <div className="divider-gold opacity-30 my-2" />
 
@@ -749,93 +651,7 @@ export default function VelaVirtual() {
               </div>
             )}
           </div>
-        ) : (
-          // ABA DA CAPELA COMUNITÁRIA
-          <div className="space-y-6 animate-fade-in">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 relative overflow-hidden backdrop-blur-md">
-              <div className="absolute inset-0 bg-pattern-cross opacity-10" />
-              <div className="relative">
-                <h2 className="font-display text-xl font-bold flex items-center gap-2 mb-2">
-                  <Users className="text-[oklch(0.82_0.10_80)]" />
-                  Comunhão na Oração
-                </h2>
-                <p className="text-sm font-serif text-white/70 max-w-2xl leading-relaxed">
-                  Aqui se encontram as chamas de fé acesas por irmãos de toda a comunidade. 
-                  Una-se a eles em oração clicando em <strong>🙏 Rezando</strong> para apoiá-los na intercessão de suas necessidades.
-                </p>
-              </div>
-            </div>
-
-            {activeCandlesQuery.isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-44 rounded-2xl bg-white/5 animate-pulse border border-white/5" />
-                ))}
-              </div>
-            ) : activeCandlesQuery.data && activeCandlesQuery.data.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {activeCandlesQuery.data.map((candle) => {
-                  const hoursLeft = Math.max(0, Math.round((new Date(candle.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60)));
-                  
-                  return (
-                    <div
-                      key={candle.id}
-                      className="relative p-5 border border-white/10 bg-[oklch(0.13_0.03_260)] rounded-2xl flex flex-col justify-between gap-4 overflow-hidden shadow-lg hover:border-white/20 transition-all duration-300 group"
-                    >
-                      <div className="absolute -right-6 -top-6 w-24 h-24 bg-[oklch(0.82_0.10_80/0.04)] rounded-full blur-2xl group-hover:bg-[oklch(0.82_0.10_80/0.07)] transition-all duration-500" />
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-[11px] text-white/50">
-                          <span className="font-semibold uppercase tracking-wider">{candle.authorName}</span>
-                          <span className="flex items-center gap-1">
-                            <Clock size={11} />
-                            {hoursLeft > 0 ? `${hoursLeft}h restantes` : "Últimos minutos"}
-                          </span>
-                        </div>
-                        
-                        <blockquote className="font-serif italic text-sm text-white/95 leading-relaxed bg-black/15 p-3 rounded-xl border border-white/5">
-                          "{candle.intention}"
-                        </blockquote>
-                      </div>
-
-                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
-                        <span className="text-[10px] font-semibold text-[oklch(0.82_0.10_80)] bg-[oklch(0.82_0.10_80/0.1)] px-2 py-0.5 rounded-full uppercase tracking-wider">
-                          {candle.type === "defuntos" ? "🕯️ Pelos Defuntos" :
-                           candle.type === "adoracao" ? "✨ Adoração" :
-                           candle.type === "agradecimento" ? "🙌 Ação de Graças" : "🙏 Intenção"}
-                        </span>
-                        
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          disabled={prayCandleMutation.isPending}
-                          onClick={() => prayCandleMutation.mutate({ candleId: candle.id })}
-                          className="border-white/10 bg-white/5 hover:bg-white/10 hover:border-[oklch(0.82_0.10_80)] text-xs h-8 gap-1.5 px-3 rounded-xl transition-all"
-                        >
-                          <span>🙏</span>
-                          <span className="font-semibold text-white/90">
-                            {candle.prayerCount} {candle.prayerCount === 1 ? "Orante" : "Orantes"}
-                          </span>
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <Card className="border border-white/10 bg-white/5 py-12 text-center">
-                <CardContent className="space-y-3">
-                  <Flame size={32} className="text-white/30 mx-auto animate-pulse" />
-                  <h3 className="font-display font-semibold text-white">Nenhuma vela acesa no momento</h3>
-                  <p className="text-xs text-white/60 max-w-sm mx-auto">
-                    Seja o primeiro a acender uma vela pública e pedir orações à comunidade! Vá na aba <strong>Rezar em Silêncio</strong> para acender.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        )}
-      </main>
+        </main>
 
       <audio ref={audioRef} loop onError={handleAudioError} />
       {audioFailed && (
