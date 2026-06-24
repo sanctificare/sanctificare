@@ -108,5 +108,5 @@
     "vite": "^7.1.7",
     "vitest": "^2.1.4"
   },
-  "packageManager": "pnpm@10.4.1"
+  "packageManager": "pnpm@11.9.0+sha512.vWgtXQP+Ul73yf1ngMaITR51asTJyf4AxTh4KCQxDc+Q493E9Tg18G3669UIXkGFXgvLs7YN4qxburieUDbwOw=="
 }
