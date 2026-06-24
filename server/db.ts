@@ -103,16 +103,125 @@ export async function getUserByOpenId(openId: string) {
     return undefined;
   }
 
-  const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  try {
+    const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    // Backward-compatible fallback for environments where optional auth columns
+    // were not migrated yet (prevents hard 500 during auth context build).
+    const isMissingColumnError =
+      error instanceof Error && /column .* does not exist/i.test(error.message);
 
-  return result.length > 0 ? result[0] : undefined;
+    if (!isMissingColumnError) {
+      throw error;
+    }
+
+    console.warn("[Database] users schema drift detected in getUserByOpenId:", error);
+
+    const result = await db
+      .select({
+        id: users.id,
+        openId: users.openId,
+        name: users.name,
+        email: users.email,
+        loginMethod: users.loginMethod,
+        role: users.role,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        lastSignedIn: users.lastSignedIn,
+      })
+      .from(users)
+      .where(eq(users.openId, openId))
+      .limit(1);
+
+    if (result.length === 0) return undefined;
+
+    return {
+      ...result[0],
+      templatePreference: "classico" as const,
+      passwordHash: null,
+    };
+  }
 }
 
 export async function getUserByEmail(email: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
-  return result.length > 0 ? result[0] : undefined;
+
+  try {
+    const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    const isMissingColumnError =
+      error instanceof Error && /column .* does not exist/i.test(error.message);
+
+    if (!isMissingColumnError) {
+      throw error;
+    }
+
+    console.warn("[Database] users schema drift detected in getUserByEmail:", error);
+
+    // Retry without templatePreference to keep credential login working while
+    // production migrations are being aligned.
+    try {
+      const result = await db
+        .select({
+          id: users.id,
+          openId: users.openId,
+          name: users.name,
+          email: users.email,
+          loginMethod: users.loginMethod,
+          role: users.role,
+          passwordHash: users.passwordHash,
+          createdAt: users.createdAt,
+          updatedAt: users.updatedAt,
+          lastSignedIn: users.lastSignedIn,
+        })
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
+      if (result.length === 0) return undefined;
+
+      return {
+        ...result[0],
+        templatePreference: "classico" as const,
+      };
+    } catch (fallbackError) {
+      const missingPasswordHash =
+        fallbackError instanceof Error && /column .*passwordHash.* does not exist/i.test(fallbackError.message);
+
+      if (!missingPasswordHash) {
+        throw fallbackError;
+      }
+
+      console.warn("[Database] users.passwordHash missing in getUserByEmail:", fallbackError);
+
+      const result = await db
+        .select({
+          id: users.id,
+          openId: users.openId,
+          name: users.name,
+          email: users.email,
+          loginMethod: users.loginMethod,
+          role: users.role,
+          createdAt: users.createdAt,
+          updatedAt: users.updatedAt,
+          lastSignedIn: users.lastSignedIn,
+        })
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
+      if (result.length === 0) return undefined;
+
+      return {
+        ...result[0],
+        templatePreference: "classico" as const,
+        passwordHash: null,
+      };
+    }
+  }
 }
 
 export async function createUser(user: InsertUser) {
