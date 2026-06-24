@@ -7,6 +7,8 @@ if (isCompiled) {
   process.env.DEV_AUTH_BYPASS = "0";
 }
 
+import path from "path";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
@@ -28,7 +30,7 @@ import {
 } from "./security";
 import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
-import { upsertDailyLiturgy } from "../db";
+import { upsertDailyLiturgy, getDb } from "../db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "../liturgia";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -126,6 +128,23 @@ async function fetchLiturgiaHandler(req: express.Request, res: express.Response)
 async function startServer() {
   if (process.env.NODE_ENV !== "development" && process.env.DEV_AUTH_BYPASS === "1") {
     throw new Error("DEV_AUTH_BYPASS must never be enabled outside development");
+  }
+
+  // Run programmatic database migrations if in production
+  if (process.env.NODE_ENV === "production") {
+    try {
+      const db = await getDb();
+      if (db) {
+        const migrationsFolder = path.resolve(import.meta.dirname, "../drizzle");
+        console.log("[Database] Running programmatic migrations from:", migrationsFolder);
+        await migrate(db, { migrationsFolder });
+        console.log("[Database] Programmatic migrations completed successfully.");
+      } else {
+        console.warn("[Database] DATABASE_URL not configured. Skipping startup migrations.");
+      }
+    } catch (error) {
+      console.warn("[Database] Programmatic migration warning/error at startup:", error);
+    }
   }
 
   const app = express();
