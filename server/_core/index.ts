@@ -18,6 +18,7 @@ import { COOKIE_NAME } from "../../shared/const";
 import { getCsrfCookieOptions } from "./cookies";
 import { ENV } from "./env";
 import { registerOAuthRoutes } from "./oauth";
+import { authRouter } from "./authRoutes";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -231,6 +232,7 @@ async function startServer() {
   });
   registerStorageProxy(app);
   registerOAuthRoutes(app);
+  app.use("/api/auth", authRouter);
   // tRPC API
   app.use(
     "/api/trpc",

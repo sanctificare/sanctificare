@@ -1,26 +1,46 @@
 import { getLoginUrl } from "@/const";
-import { trpc } from "@/lib/trpc";
-import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
   redirectPath?: string;
 };
 
+async function fetchMe() {
+  const res = await fetch("/api/auth/me");
+  if (!res.ok) {
+    throw new Error("Failed to fetch user");
+  }
+  return res.json();
+}
+
+async function performLogout() {
+  const res = await fetch("/api/auth/logout", { method: "POST" });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Failed to logout");
+  }
+  return res.json();
+}
+
 export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath = getLoginUrl() } =
     options ?? {};
-  const utils = trpc.useUtils();
 
-  const meQuery = trpc.auth.me.useQuery(undefined, {
+  const queryClient = useQueryClient();
+
+  const meQuery = useQuery({
+    queryKey: ["auth", "me"],
+    queryFn: fetchMe,
     retry: false,
     refetchOnWindowFocus: false,
   });
 
-  const logoutMutation = trpc.auth.logout.useMutation({
+  const logoutMutation = useMutation({
+    mutationFn: performLogout,
     onSuccess: () => {
-      utils.auth.me.setData(undefined, null);
+      queryClient.setQueryData(["auth", "me"], null);
     },
   });
 
@@ -28,21 +48,15 @@ export function useAuth(options?: UseAuthOptions) {
     try {
       await logoutMutation.mutateAsync();
     } catch (error: unknown) {
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === "UNAUTHORIZED"
-      ) {
-        return;
-      }
-      throw error;
+      // Ignore unauthorized on logout
     } finally {
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
+      queryClient.setQueryData(["auth", "me"], null);
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       if (typeof window !== "undefined") {
         window.location.href = "/";
       }
     }
-  }, [logoutMutation, utils]);
+  }, [logoutMutation, queryClient]);
 
   const state = useMemo(() => {
     return {
@@ -76,7 +90,7 @@ export function useAuth(options?: UseAuthOptions) {
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
 
-    window.location.href = redirectPath
+    window.location.href = redirectPath;
   }, [
     redirectOnUnauthenticated,
     redirectPath,

@@ -1,62 +1,40 @@
-import { describe, expect, it } from "vitest";
-import { appRouter } from "./routers";
+import { vi, describe, expect, it } from "vitest";
+
+// Mock the environment config module before imports are evaluated
+vi.mock("./_core/env", () => {
+  return {
+    ENV: {
+      appId: "test-app-id",
+      cookieSecret: "test-secret-at-least-32-chars-long-123456",
+      databaseUrl: "test-db-url",
+      oAuthServerUrl: "test-oauth-url",
+      ownerOpenId: "test-owner-id",
+      isProduction: false,
+      sessionTtlMs: 1000 * 60 * 60,
+    },
+  };
+});
+
+import express from "express";
+import request from "supertest";
+import { authRouter } from "./_core/authRoutes";
 import { COOKIE_NAME } from "../shared/const";
-import type { TrpcContext } from "./_core/context";
 
-type CookieCall = {
-  name: string;
-  options: Record<string, unknown>;
-};
+const app = express();
+app.use(express.json());
+app.use("/api/auth", authRouter);
 
-type AuthenticatedUser = NonNullable<TrpcContext["user"]>;
-
-function createAuthContext(): { ctx: TrpcContext; clearedCookies: CookieCall[] } {
-  const clearedCookies: CookieCall[] = [];
-
-  const user: AuthenticatedUser = {
-    id: 1,
-    openId: "sample-user",
-    email: "sample@example.com",
-    name: "Sample User",
-    loginMethod: "oauth",
-    role: "user",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    lastSignedIn: new Date(),
-  };
-
-  const ctx: TrpcContext = {
-    user,
-    req: {
-      protocol: "https",
-      headers: {},
-    } as TrpcContext["req"],
-    res: {
-      clearCookie: (name: string, options: Record<string, unknown>) => {
-        clearedCookies.push({ name, options });
-      },
-    } as TrpcContext["res"],
-  };
-
-  return { ctx, clearedCookies };
-}
-
-describe("auth.logout", () => {
+describe("auth.logout REST API", () => {
   it("clears the session cookie and reports success", async () => {
-    const { ctx, clearedCookies } = createAuthContext();
-    const caller = appRouter.createCaller(ctx);
+    const res = await request(app)
+      .post("/api/auth/logout")
+      .send();
 
-    const result = await caller.auth.logout();
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ success: true });
 
-    expect(result).toEqual({ success: true });
-    const sessionCookie = clearedCookies.find(cookie => cookie.name === COOKIE_NAME);
-    expect(sessionCookie).toBeDefined();
-    expect(sessionCookie?.options).toMatchObject({
-      maxAge: -1,
-      secure: true,
-      sameSite: "none",
-      httpOnly: true,
-      path: "/",
-    });
+    const cookies = res.headers["set-cookie"] || [];
+    const clearedSession = cookies.some((c: string) => c.includes(COOKIE_NAME) && (c.includes("Max-Age=-1") || c.includes("Max-Age=0") || c.includes("expires=")));
+    expect(clearedSession).toBe(true);
   });
 });

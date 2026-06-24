@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { trpc } from "@/lib/trpc";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -13,10 +13,49 @@ import { getApiBaseUrl, sanitizeAppPath } from "@/const";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
+async function performLogin(input: any) {
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Erro ao realizar login.");
+  }
+  return res.json();
+}
+
+async function performRegister(input: any) {
+  const res = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Erro ao realizar cadastro.");
+  }
+  return res.json();
+}
+
+async function performForgotPassword(input: any) {
+  const res = await fetch("/api/auth/forgot-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Erro ao enviar solicitação.");
+  }
+  return res.json();
+}
+
 export default function Login() {
   const { isAuthenticated, loading } = useAuth();
   const [_, setLocation] = useLocation();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
   const getPostAuthPath = () => {
     const params = new URLSearchParams(window.location.search);
@@ -38,33 +77,36 @@ export default function Login() {
   // Forgot password email
   const [forgotEmail, setForgotEmail] = useState("");
 
-  const forgotMutation = trpc.auth.forgotPassword.useMutation({
+  const forgotMutation = useMutation({
+    mutationFn: performForgotPassword,
     onSuccess: () => setView("forgot-sent"),
-    onError: (err) => toast.error(err.message || "Erro ao enviar. Tente novamente."),
+    onError: (err: any) => toast.error(err.message || "Erro ao enviar. Tente novamente."),
   });
 
   // Validation / Error states
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
 
   // Mutations
-  const loginMutation = trpc.auth.login.useMutation({
+  const loginMutation = useMutation({
+    mutationFn: performLogin,
     onSuccess: async () => {
       toast.success("Bem-vindo ao Sanctificare!");
-      await utils.auth.me.invalidate();
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());
     },
-    onError: (err) => {
+    onError: (err: any) => {
       toast.error(err.message || "Erro ao realizar login. Verifique suas credenciais.");
     },
   });
 
-  const registerMutation = trpc.auth.register.useMutation({
+  const registerMutation = useMutation({
+    mutationFn: performRegister,
     onSuccess: async () => {
       toast.success("Conta criada com sucesso! Bem-vindo.");
-      await utils.auth.me.invalidate();
+      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());
     },
-    onError: (err) => {
+    onError: (err: any) => {
       toast.error(err.message || "Erro ao realizar cadastro.");
     },
   });

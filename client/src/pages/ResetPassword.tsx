@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,28 @@ import { Button } from "@/components/ui/button";
 import { Lock, Eye, EyeOff, ChevronLeft, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
+
+async function fetchValidateToken({ queryKey }: any) {
+  const [_, token] = queryKey;
+  const res = await fetch(`/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`);
+  if (!res.ok) {
+    throw new Error("Failed to validate token");
+  }
+  return res.json();
+}
+
+async function performResetPassword(input: any) {
+  const res = await fetch("/api/auth/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "Erro ao redefinir senha.");
+  }
+  return res.json();
+}
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();
@@ -24,17 +46,20 @@ export default function ResetPassword() {
   const [errors, setErrors] = useState<{ password?: string; confirm?: string }>({});
 
   // Valida o token ao montar a página
-  const tokenQuery = trpc.auth.validateResetToken.useQuery(
-    { token },
-    { enabled: !!token, retry: false }
-  );
+  const tokenQuery = useQuery({
+    queryKey: ["auth", "validateToken", token],
+    queryFn: fetchValidateToken,
+    enabled: !!token,
+    retry: false,
+  });
 
-  const resetMutation = trpc.auth.resetPassword.useMutation({
+  const resetMutation = useMutation({
+    mutationFn: performResetPassword,
     onSuccess: () => {
       toast.success("Senha redefinida com sucesso! Faça login com sua nova senha.");
       setTimeout(() => setLocation("/login"), 2000);
     },
-    onError: (err) => {
+    onError: (err: any) => {
       toast.error(err.message || "Erro ao redefinir a senha. Tente novamente.");
     },
   });

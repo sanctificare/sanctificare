@@ -35,35 +35,7 @@ function createPublicContext(): TrpcContext {
   };
 }
 
-describe("auth.me", () => {
-  it("retorna null para usuário não autenticado", async () => {
-    const ctx = createPublicContext();
-    const caller = appRouter.createCaller(ctx);
-    const result = await caller.auth.me();
-    expect(result).toBeNull();
-  });
 
-  it("retorna dados do usuário autenticado", async () => {
-    const ctx = createAuthContext(1, "João da Silva");
-    const caller = appRouter.createCaller(ctx);
-    const result = await caller.auth.me();
-    expect(result).not.toBeNull();
-    expect(result?.name).toBe("João da Silva");
-    expect(result?.id).toBe(1);
-  });
-});
-
-describe("auth.logout", () => {
-  it("limpa o cookie de sessão e retorna sucesso", async () => {
-    const clearedCookies: string[] = [];
-    const ctx = createAuthContext();
-    ctx.res.clearCookie = (name: string) => { clearedCookies.push(name); };
-    const caller = appRouter.createCaller(ctx);
-    const result = await caller.auth.logout();
-    expect(result.success).toBe(true);
-    expect(clearedCookies).toContain(COOKIE_NAME);
-  });
-});
 
 describe("prayers.logPrayer", () => {
   it("rejeita usuário não autenticado", async () => {

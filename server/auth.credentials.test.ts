@@ -10,6 +10,7 @@ vi.mock("./_core/env", () => {
       oAuthServerUrl: "test-oauth-url",
       ownerOpenId: "test-owner-id",
       isProduction: false,
+      sessionTtlMs: 1000 * 60 * 60,
     },
   };
 });
@@ -42,98 +43,64 @@ vi.mock("./db", async (importOriginal) => {
   };
 });
 
-import { appRouter } from "./routers";
-import type { TrpcContext } from "./_core/context";
+import express from "express";
+import request from "supertest";
+import { authRouter } from "./_core/authRoutes";
 import { COOKIE_NAME } from "../shared/const";
 
-type CookieCall = {
-  name: string;
-  value: string;
-  options: Record<string, unknown>;
-};
+const app = express();
+app.use(express.json());
+app.use("/api/auth", authRouter);
 
-function createTestContext(): { ctx: TrpcContext; setCookies: CookieCall[] } {
-  const setCookies: CookieCall[] = [];
-
-  const ctx: TrpcContext = {
-    user: null,
-    req: {
-      protocol: "https",
-      hostname: "localhost",
-      headers: {},
-    } as TrpcContext["req"],
-    res: {
-      cookie: (name: string, value: string, options: Record<string, unknown>) => {
-        setCookies.push({ name, value, options });
-      },
-      clearCookie: () => {},
-    } as unknown as TrpcContext["res"],
-  };
-
-  return { ctx, setCookies };
-}
-
-describe("auth.credentials", () => {
+describe("auth.credentials REST API", () => {
   const randomEmail = `test-${Math.floor(Math.random() * 1000000)}@example.com`;
   const password = "securepassword123";
   const name = "Fiel Teste Local";
 
   it("registers a new user successfully", async () => {
-    const { ctx, setCookies } = createTestContext();
-    const caller = appRouter.createCaller(ctx);
+    const res = await request(app)
+      .post("/api/auth/register")
+      .send({ name, email: randomEmail, password });
 
-    const result = await caller.auth.register({
-      name,
-      email: randomEmail,
-      password,
-    });
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.user.email).toBe(randomEmail);
+    expect(res.body.user.name).toBe(name);
 
-    expect(result.success).toBe(true);
-    expect(result.user.email).toBe(randomEmail);
-    expect(result.user.name).toBe(name);
-
-    const sessionCookie = setCookies.find(cookie => cookie.name === COOKIE_NAME);
-    expect(sessionCookie).toBeDefined();
-    expect(sessionCookie?.value).toBeDefined();
+    const cookies = res.headers["set-cookie"] || [];
+    const hasSession = cookies.some((c: string) => c.includes(COOKIE_NAME));
+    expect(hasSession).toBe(true);
   });
 
   it("fails to register with existing email", async () => {
-    const { ctx } = createTestContext();
-    const caller = appRouter.createCaller(ctx);
+    const res = await request(app)
+      .post("/api/auth/register")
+      .send({ name, email: randomEmail, password });
 
-    await expect(
-      caller.auth.register({
-        name,
-        email: randomEmail,
-        password,
-      })
-    ).rejects.toThrow(/já está cadastrado/);
+    expect(res.status).toBe(409);
+    expect(res.body.error).toContain("já está cadastrado");
   });
 
   it("logs in successfully with correct credentials", async () => {
-    const { ctx, setCookies } = createTestContext();
-    const caller = appRouter.createCaller(ctx);
+    const res = await request(app)
+      .post("/api/auth/login")
+      .send({ email: randomEmail, password });
 
-    const result = await caller.auth.login({
-      email: randomEmail,
-      password,
-    });
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.user.email).toBe(randomEmail);
 
-    expect(result.success).toBe(true);
-    expect(result.user.email).toBe(randomEmail);
-    const sessionCookie = setCookies.find(cookie => cookie.name === COOKIE_NAME);
-    expect(sessionCookie).toBeDefined();
+    const cookies = res.headers["set-cookie"] || [];
+    const hasSession = cookies.some((c: string) => c.includes(COOKIE_NAME));
+    expect(hasSession).toBe(true);
   });
 
   it("fails to log in with incorrect password", async () => {
-    const { ctx } = createTestContext();
-    const caller = appRouter.createCaller(ctx);
+    const res = await request(app)
+      .post("/api/auth/login")
+      .send({ email: randomEmail, password: "wrongpassword" });
 
-    await expect(
-      caller.auth.login({
-        email: randomEmail,
-        password: "wrongpassword",
-      })
-    ).rejects.toThrow(/incorretos/);
+    expect(res.status).toBe(401);
+    expect(res.body.error).toContain("incorretos");
   });
 });
