@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
+const TRUSTED_BUNNY_ORIGINS = new Set(["https://iframe.mediadelivery.net"]);
 
 function VerticalVideoSkeleton() {
   return (
@@ -456,6 +457,15 @@ export default function VideosBiblicos() {
     if (!selectedVideo || !BUNNY_LIBRARY_ID) return;
 
     const handleMessage = (event: MessageEvent) => {
+      if (!TRUSTED_BUNNY_ORIGINS.has(event.origin)) {
+        return;
+      }
+
+      const iframe = document.getElementById("bunny-stream-embed") as HTMLIFrameElement | null;
+      if (!iframe?.contentWindow || event.source !== iframe.contentWindow) {
+        return;
+      }
+
       let data;
       try {
         data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
@@ -463,14 +473,13 @@ export default function VideosBiblicos() {
         return;
       }
 
-      if (data && data.context === "player.js") {
+      if (data && typeof data === "object" && data.context === "player.js") {
         if (data.event === "ready") {
-          const iframe = document.getElementById("bunny-stream-embed") as HTMLIFrameElement | null;
           if (iframe && iframe.contentWindow) {
             // Subscribe to timeupdate event
             iframe.contentWindow.postMessage(
               JSON.stringify({ method: "addEventListener", value: "timeupdate", context: "player.js" }),
-              "*"
+              event.origin
             );
 
             // Restore progress if it exists
@@ -478,7 +487,7 @@ export default function VideosBiblicos() {
             if (saved && saved.currentTime > 0) {
               iframe.contentWindow.postMessage(
                 JSON.stringify({ method: "setCurrentTime", value: saved.currentTime, context: "player.js" }),
-                "*"
+                event.origin
               );
               toast.info("Retomando de onde você parou", {
                 description: `Retomado em ${Math.floor(saved.currentTime / 60)}m ${Math.floor(saved.currentTime % 60)}s`,

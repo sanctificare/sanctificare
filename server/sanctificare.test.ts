@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
+import { COOKIE_NAME } from "../shared/const";
 
 // Helper para criar contexto autenticado
 function createAuthContext(userId = 1, name = "Fiel Teste"): TrpcContext {
@@ -60,7 +61,7 @@ describe("auth.logout", () => {
     const caller = appRouter.createCaller(ctx);
     const result = await caller.auth.logout();
     expect(result.success).toBe(true);
-    expect(clearedCookies.length).toBe(1);
+    expect(clearedCookies).toContain(COOKIE_NAME);
   });
 });
 

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Cross, Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { getApiBaseUrl, sanitizeAppPath } from "@/const";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
@@ -16,6 +17,11 @@ export default function Login() {
   const { isAuthenticated, loading } = useAuth();
   const [_, setLocation] = useLocation();
   const utils = trpc.useUtils();
+
+  const getPostAuthPath = () => {
+    const params = new URLSearchParams(window.location.search);
+    return sanitizeAppPath(params.get("path"));
+  };
 
   // Tab state: "entrar" | "cadastrar"
   const [activeTab, setActiveTab] = useState<string>("entrar");
@@ -45,7 +51,7 @@ export default function Login() {
     onSuccess: async () => {
       toast.success("Bem-vindo ao Sanctificare!");
       await utils.auth.me.invalidate();
-      setLocation("/dashboard");
+      setLocation(getPostAuthPath());
     },
     onError: (err) => {
       toast.error(err.message || "Erro ao realizar login. Verifique suas credenciais.");
@@ -56,7 +62,7 @@ export default function Login() {
     onSuccess: async () => {
       toast.success("Conta criada com sucesso! Bem-vindo.");
       await utils.auth.me.invalidate();
-      setLocation("/dashboard");
+      setLocation(getPostAuthPath());
     },
     onError: (err) => {
       toast.error(err.message || "Erro ao realizar cadastro.");
@@ -66,7 +72,7 @@ export default function Login() {
   // Redirect if already authenticated
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      setLocation("/dashboard");
+      setLocation(getPostAuthPath());
     }
   }, [isAuthenticated, loading, setLocation]);
 
@@ -113,7 +119,8 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "/api/oauth/login";
+    const path = getPostAuthPath();
+    window.location.href = `${getApiBaseUrl()}/api/oauth/login?path=${encodeURIComponent(path)}`;
   };
 
   // Simula envio do e-mail de recuperação via endpoint real
@@ -205,7 +212,7 @@ export default function Login() {
                         placeholder="seu.email@exemplo.com"
                         value={forgotEmail}
                         onChange={(e) => setForgotEmail(e.target.value)}
-                        disabled={forgotLoading}
+                        disabled={forgotMutation.isPending}
                         className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
                       />
                     </div>

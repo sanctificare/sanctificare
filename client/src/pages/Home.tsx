@@ -2,7 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   Heart, BookOpen, Sun, Users, Crown, Star,
   ChevronRight, Cross, Sparkles, Shield,
@@ -307,9 +307,9 @@ export default function Home() {
               <a href="#planos" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
                 Planos
               </a>
-              <a href="/login?tab=entrar" className="text-sm font-semibold text-[oklch(0.80_0.02_260)] hover:text-white transition-colors mr-2">
+              <Link href="/login?tab=entrar" className="text-sm font-semibold text-[oklch(0.80_0.02_260)] hover:text-white transition-colors mr-2">
                 Entrar
-              </a>
+              </Link>
               <a href="/login?tab=cadastrar">
                 <Button
                   size="sm"
@@ -359,7 +359,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2 max-w-md">
-                <a href="/login?tab=cadastrar" className="w-full sm:w-auto">
+                <Link href="/login?tab=cadastrar" className="w-full sm:w-auto">
                   <Button
                     size="lg"
                     className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-base px-8 py-7 shadow-gold rounded-xl hover:scale-[1.03] transition-all"
@@ -367,7 +367,7 @@ export default function Home() {
                     Experimentar Sanctificare Grátis
                     <ChevronRight size={20} className="ml-2" />
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -551,12 +551,12 @@ export default function Home() {
               </div>
 
               <div className="w-full md:w-auto z-10">
-                <a href={selectedPath.url}>
+                <Link href={selectedPath.url}>
                   <Button className="w-full md:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold px-6 py-5 rounded-xl shadow-md transition-all hover:scale-[1.03]">
                     {selectedPath.ctaText}
                     <ArrowRight size={16} className="ml-2" />
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -628,14 +628,14 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12 reveal">
-            <a href={getLoginUrl()}>
+            <Link href={getLoginUrl()}>
               <Button
                 size="lg"
                 className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white hover:scale-[1.03] transition-all px-8 py-6 rounded-xl font-bold font-display tracking-wide"
               >
                 Começar Minha Devoção Agora
               </Button>
-            </a>
+            </Link>
           </div>
 
         </div>

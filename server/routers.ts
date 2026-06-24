@@ -1,5 +1,7 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
+import { getCsrfCookieOptions, getSessionCookieOptions } from "./_core/cookies";
+import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./_core/security";
+import { ENV } from "./_core/env";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod/v4";
@@ -37,6 +39,40 @@ import {
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 
+const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
+const registerRateMap = new Map<string, { count: number; resetAt: number }>();
+const loginRateMap = new Map<string, { count: number; resetAt: number }>();
+const forgotRateMap = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(ctx: { req: { ip?: string; socket?: { remoteAddress?: string | null } } }) {
+  return ctx.req.ip || ctx.req.socket?.remoteAddress || "unknown";
+}
+
+function checkRateLimit(
+  map: Map<string, { count: number; resetAt: number }>,
+  key: string,
+  maxAttempts: number,
+  windowMs: number
+) {
+  const now = Date.now();
+  const entry = map.get(key);
+
+  if (!entry || entry.resetAt <= now) {
+    map.set(key, { count: 1, resetAt: now + windowMs });
+    return;
+  }
+
+  entry.count += 1;
+  map.set(key, entry);
+
+  if (entry.count > maxAttempts) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "Muitas tentativas. Tente novamente em alguns minutos.",
+    });
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
 
@@ -50,6 +86,10 @@ export const appRouter = router({
         password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
       }))
       .mutation(async ({ ctx, input }) => {
+        const ip = getClientIp(ctx);
+        checkRateLimit(registerRateMap, `register:ip:${ip}`, 8, AUTH_RATE_WINDOW_MS);
+        checkRateLimit(registerRateMap, `register:email:${input.email.toLowerCase()}`, 5, AUTH_RATE_WINDOW_MS);
+
         const existingUser = await getUserByEmail(input.email);
         if (existingUser) {
           throw new TRPCError({
@@ -70,12 +110,17 @@ export const appRouter = router({
 
         const token = await sdk.createSessionToken(newUser.openId, { name: newUser.name || "" });
         const cookieOptions = getSessionCookieOptions(ctx.req);
+        const csrfCookieOptions = getCsrfCookieOptions(ctx.req);
 
-        if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
+        if (isDevAuthBypassEnabled(ctx.req)) {
           ctx.res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
         }
 
-        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
+        ctx.res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+          ...csrfCookieOptions,
+          maxAge: ENV.sessionTtlMs,
+        });
 
         return {
           success: true,
@@ -93,6 +138,10 @@ export const appRouter = router({
         password: z.string(),
       }))
       .mutation(async ({ ctx, input }) => {
+        const ip = getClientIp(ctx);
+        checkRateLimit(loginRateMap, `login:ip:${ip}`, 15, AUTH_RATE_WINDOW_MS);
+        checkRateLimit(loginRateMap, `login:email:${input.email.toLowerCase()}`, 10, AUTH_RATE_WINDOW_MS);
+
         const user = await getUserByEmail(input.email);
         if (!user || !user.passwordHash || !comparePassword(input.password, user.passwordHash)) {
           throw new TRPCError({
@@ -103,12 +152,17 @@ export const appRouter = router({
 
         const token = await sdk.createSessionToken(user.openId, { name: user.name || "" });
         const cookieOptions = getSessionCookieOptions(ctx.req);
+        const csrfCookieOptions = getCsrfCookieOptions(ctx.req);
 
-        if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
+        if (isDevAuthBypassEnabled(ctx.req)) {
           ctx.res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
         }
 
-        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        ctx.res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
+        ctx.res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+          ...csrfCookieOptions,
+          maxAge: ENV.sessionTtlMs,
+        });
 
         return {
           success: true,
@@ -120,10 +174,12 @@ export const appRouter = router({
         };
       }),
 
-    logout: publicProcedure.mutation(({ ctx }) => {
+    logout: protectedProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
+      const csrfCookieOptions = getCsrfCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
+      ctx.res.clearCookie(CSRF_COOKIE_NAME, { ...csrfCookieOptions, maxAge: -1 });
+      if (isDevAuthBypassEnabled(ctx.req)) {
         ctx.res.cookie("dev_logged_out", "1", { ...cookieOptions, maxAge: ONE_YEAR_MS });
       }
       return { success: true } as const;
@@ -135,7 +191,11 @@ export const appRouter = router({
      */
     forgotPassword: publicProcedure
       .input(z.object({ email: z.string().email() }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
+        const ip = getClientIp(ctx);
+        checkRateLimit(forgotRateMap, `forgot:ip:${ip}`, 8, AUTH_RATE_WINDOW_MS);
+        checkRateLimit(forgotRateMap, `forgot:email:${input.email.toLowerCase()}`, 5, AUTH_RATE_WINDOW_MS);
+
         const user = await getUserByEmail(input.email);
 
         if (user && user.id) {
@@ -230,7 +290,7 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         title: z.string().min(5).max(200),
-        description: z.string().min(10),
+        description: z.string().min(10).max(5000),
         category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
         isAnonymous: z.boolean().optional(),
       }))
@@ -298,7 +358,7 @@ export const appRouter = router({
     update: protectedProcedure
       .input(z.object({
         intentionId: z.number(),
-        description: z.string().min(10),
+        description: z.string().min(10).max(5000),
         category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
         isAnonymous: z.boolean().optional(),
       }))

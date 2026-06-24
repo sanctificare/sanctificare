@@ -1,8 +1,56 @@
-import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { COOKIE_NAME } from "@shared/const";
 import type { Express, Request, Response } from "express";
+import { parse as parseCookie } from "cookie";
 import * as db from "../db";
-import { getSessionCookieOptions } from "./cookies";
+import { getCsrfCookieOptions, getSessionCookieOptions } from "./cookies";
+import { ENV } from "./env";
+import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./security";
 import { sdk } from "./sdk";
+
+const OAUTH_STATE_COOKIE_NAME = "oauth_state_nonce";
+const OAUTH_STATE_TTL_MS = 1000 * 60 * 10;
+
+type OAuthStatePayload = {
+  redirectUri: string;
+  nonce: string;
+  appPath: string;
+};
+
+function sanitizeAppPath(value: string | undefined, fallback = "/dashboard") {
+  if (!value) return fallback;
+  if (!value.startsWith("/")) return fallback;
+  if (value.startsWith("//")) return fallback;
+  if (value.startsWith("/login") || value.startsWith("/redefinir-senha")) {
+    return fallback;
+  }
+  return value;
+}
+
+function encodeOAuthState(payload: OAuthStatePayload) {
+  return btoa(JSON.stringify(payload));
+}
+
+function decodeOAuthState(state: string): OAuthStatePayload | null {
+  try {
+    const decoded = atob(state);
+    const parsed = JSON.parse(decoded) as Partial<OAuthStatePayload>;
+    if (
+      parsed &&
+      typeof parsed.redirectUri === "string" &&
+      parsed.redirectUri.length > 0 &&
+      typeof parsed.nonce === "string" &&
+      parsed.nonce.length > 0
+    ) {
+      const appPath = sanitizeAppPath(
+        typeof parsed.appPath === "string" ? parsed.appPath : undefined
+      );
+      return { redirectUri: parsed.redirectUri, nonce: parsed.nonce, appPath };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 function getQueryParam(req: Request, key: string): string | undefined {
   const value = req.query[key];
@@ -12,14 +60,24 @@ function getQueryParam(req: Request, key: string): string | undefined {
 export function registerOAuthRoutes(app: Express) {
   app.get("/api/oauth/login", async (req: Request, res: Response) => {
     // Intercept in dev auth bypass mode to handle login simulation
-    if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
-      res.redirect(302, "/api/oauth/callback");
+    if (isDevAuthBypassEnabled(req)) {
+      const appPath = sanitizeAppPath(getQueryParam(req, "path"));
+      res.redirect(302, `/api/oauth/callback?path=${encodeURIComponent(appPath)}`);
       return;
     }
 
     try {
       const callbackUrl = `${req.protocol}://${req.get("host")}/api/oauth/callback`;
-      const state = btoa(callbackUrl);
+      const appPath = sanitizeAppPath(getQueryParam(req, "path"));
+      const nonce = generateCsrfToken();
+      const state = encodeOAuthState({ redirectUri: callbackUrl, nonce, appPath });
+      const cookieOptions = getSessionCookieOptions(req);
+
+      res.cookie(OAUTH_STATE_COOKIE_NAME, nonce, {
+        ...cookieOptions,
+        maxAge: OAUTH_STATE_TTL_MS,
+      });
+
       const redirectUrl = await sdk.getAuthorizeUrl(callbackUrl, state);
       res.redirect(302, redirectUrl);
     } catch (error) {
@@ -30,11 +88,17 @@ export function registerOAuthRoutes(app: Express) {
 
   app.get("/api/oauth/callback", async (req: Request, res: Response) => {
     // Intercept in dev auth bypass mode to handle login simulation
-    if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
+    if (isDevAuthBypassEnabled(req)) {
+      const appPath = sanitizeAppPath(getQueryParam(req, "path"));
       const cookieOptions = getSessionCookieOptions(req);
+      const csrfCookieOptions = getCsrfCookieOptions(req);
       res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
-      res.cookie(COOKIE_NAME, "dev-dummy-session-token", { ...cookieOptions, maxAge: ONE_YEAR_MS });
-      res.redirect(302, "/dashboard");
+      res.cookie(COOKIE_NAME, "dev-dummy-session-token", { ...cookieOptions, maxAge: ENV.sessionTtlMs });
+      res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+        ...csrfCookieOptions,
+        maxAge: ENV.sessionTtlMs,
+      });
+      res.redirect(302, appPath);
       return;
     }
 
@@ -47,6 +111,18 @@ export function registerOAuthRoutes(app: Express) {
     }
 
     try {
+      const decodedState = decodeOAuthState(state);
+      const cookies = req.headers.cookie ? parseCookie(req.headers.cookie) : {};
+      const expectedNonce = cookies[OAUTH_STATE_COOKIE_NAME];
+
+      const cookieOptions = getSessionCookieOptions(req);
+      res.clearCookie(OAUTH_STATE_COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+
+      if (!decodedState || !expectedNonce || decodedState.nonce !== expectedNonce) {
+        res.status(400).json({ error: "invalid oauth state" });
+        return;
+      }
+
       const tokenResponse = await sdk.exchangeCodeForToken(code, state);
       const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
 
@@ -65,13 +141,18 @@ export function registerOAuthRoutes(app: Express) {
 
       const sessionToken = await sdk.createSessionToken(userInfo.openId, {
         name: userInfo.name || "",
-        expiresInMs: ONE_YEAR_MS,
+        expiresInMs: ENV.sessionTtlMs,
       });
 
-      const cookieOptions = getSessionCookieOptions(req);
-      res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+      const authCookieOptions = getSessionCookieOptions(req);
+      const csrfCookieOptions = getCsrfCookieOptions(req);
+      res.cookie(COOKIE_NAME, sessionToken, { ...authCookieOptions, maxAge: ENV.sessionTtlMs });
+      res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+        ...csrfCookieOptions,
+        maxAge: ENV.sessionTtlMs,
+      });
 
-      res.redirect(302, "/");
+      res.redirect(302, decodedState.appPath);
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
       res.status(500).json({ error: "OAuth callback failed" });

@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film } from "lucide-react";
+import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -20,11 +20,12 @@ const navLinks = [
   { href: "/dashboard", label: "Início", icon: Home },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
+  { href: "/liturgia", label: "Liturgia", icon: Sun },
   { href: "/lectio", label: "Lectio Divina", icon: ScrollText },
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
   { href: "/vela-virtual", label: "Vela Virtual", icon: Flame },
   { href: "/musica-sacra", label: "Música Sacra", icon: Music },
-  { href: "/biblia", label: "Bíblia", icon: BookOpen },
+  { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
   { href: "/videos", label: "Vídeos", icon: Film },
   { href: "/intencoes", label: "Intenções", icon: Users },
 ];
@@ -131,14 +132,14 @@ export default function AppNav() {
                 </DropdownMenu>
               </>
             ) : (
-              <a href={getLoginUrl()}>
+              <Link href={getLoginUrl()}>
                 <Button
                   size="sm"
                   className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-sm"
                 >
                   Entrar
                 </Button>
-              </a>
+              </Link>
             )}
 
             {/* Mobile menu toggle */}

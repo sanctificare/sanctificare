@@ -1,4 +1,4 @@
-import { AXIOS_TIMEOUT_MS, COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { AXIOS_TIMEOUT_MS, COOKIE_NAME } from "@shared/const";
 import { ForbiddenError } from "@shared/_core/errors";
 import axios, { type AxiosInstance } from "axios";
 import { parse as parseCookieHeader } from "cookie";
@@ -42,8 +42,18 @@ class OAuthService {
   }
 
   private decodeState(state: string): string {
-    const redirectUri = atob(state);
-    return redirectUri;
+    const decoded = atob(state);
+
+    try {
+      const parsed = JSON.parse(decoded) as { redirectUri?: string };
+      if (parsed && typeof parsed.redirectUri === "string" && parsed.redirectUri.length > 0) {
+        return parsed.redirectUri;
+      }
+    } catch {
+      // Legacy state format fallback: raw base64 redirectUri.
+    }
+
+    return decoded;
   }
 
   async getTokenByCode(
@@ -186,7 +196,11 @@ class SDKServer {
     options: { expiresInMs?: number } = {}
   ): Promise<string> {
     const issuedAt = Date.now();
-    const expiresInMs = options.expiresInMs ?? ONE_YEAR_MS;
+    const expiresInMsCandidate = options.expiresInMs ?? ENV.sessionTtlMs;
+    const expiresInMs =
+      typeof expiresInMsCandidate === "number" && Number.isFinite(expiresInMsCandidate) && expiresInMsCandidate > 0
+        ? expiresInMsCandidate
+        : 1000 * 60 * 60 * 24 * 7;
     const expirationSeconds = Math.floor((issuedAt + expiresInMs) / 1000);
     const secretKey = this.getSessionSecret();
 

@@ -1,11 +1,16 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock } from "lucide-react";
+import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock, Flame, CheckCircle2, Circle, Calendar, BarChart2, Users, Check, Play, BookMarked } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
+import { NOVENAS } from "@/data/novenas";
+import { toast } from "sonner";
+import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
@@ -16,9 +21,10 @@ const quickLinks = [
   { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.png", overlay: "oklch(0.36 0.15 20 / 0.60)" },
   { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.png", overlay: "oklch(0.50 0.10 85 / 0.56)" },
   { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.png", overlay: "oklch(0.34 0.10 300 / 0.58)" },
-  { href: "/biblia", label: "Bíblia Sagrada", desc: "Percorra as Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.26 0.08 230 / 0.62)" },
+  { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.png", overlay: "oklch(0.28 0.08 260 / 0.60)" },
   { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.png", overlay: "oklch(0.40 0.12 15 / 0.60)" },
   { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.png", overlay: "oklch(0.30 0.10 190 / 0.60)" },
+  { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.png", overlay: "oklch(0.40 0.15 80 / 0.60)" },
 ];
 
 function getDayOfWeek() {
@@ -44,9 +50,261 @@ function getMystery() {
   return mysteries[day] || "Mistérios Gozosos";
 }
 
+const fallbackVerses = [
+  { text: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
+  { text: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmo 23:1" },
+  { text: "Guarda-me como a pupila dos olhos, esconde-me à sombra das tuas asas.", ref: "Salmo 17:8" },
+  { text: "O Senhor é minha luz e minha salvação, a quem temerei?", ref: "Salmo 27:1" },
+  { text: "Confia no Senhor de todo o teu coração e não te apoies no teu próprio entendimento.", ref: "Provérbios 3:5" },
+  { text: "Buscai primeiro o Reino de Deus e a sua justiça, e tudo o mais vos será acrescentado.", ref: "Mateus 6:33" },
+  { text: "Eu sou o caminho, a verdade e a vida; ninguém vem ao Pai senão por mim.", ref: "João 14:6" },
+  { text: "Acheguemo-nos, portanto, confiadamente, junto ao trono da graça, a fim de alcançarmos misericórdia e acharmos graça.", ref: "Hebreus 4:16" },
+  { text: "O amor é paciente, o amor é bondoso. Não inveja, não se vangloria, não se orgulha.", ref: "1 Coríntios 13:4" },
+  { text: "Não andeis ansiosos por coisa alguma; antes em tudo apresentai as vossas petições a Deus.", ref: "Filipenses 4:6" }
+];
+
+function getLiturgicalColorStyle(color?: string | null) {
+  const c = color?.toLowerCase() || "";
+  if (c.includes("verde")) {
+    return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+  }
+  if (c.includes("roxo") || c.includes("violeta")) {
+    return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+  }
+  if (c.includes("vermelho")) {
+    return "bg-rose-500/20 text-rose-300 border-rose-500/30";
+  }
+  if (c.includes("branco") || c.includes("dourado")) {
+    return "bg-amber-100/10 text-amber-200 border-amber-300/30";
+  }
+  if (c.includes("rosa")) {
+    return "bg-pink-500/20 text-pink-300 border-pink-500/30";
+  }
+  if (c.includes("preto")) {
+    return "bg-neutral-800/50 text-neutral-300 border-neutral-700/50";
+  }
+  return "bg-white/10 text-white/80 border-white/20";
+}
+
+function capitalize(str: string) {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function calculateStreak(logs: any[] | undefined) {
+  if (!logs || logs.length === 0) {
+    return { currentStreak: 0, prayedToday: false };
+  }
+
+  const formatDateStr = (dateInput: string | Date) => {
+    const d = new Date(dateInput);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const todayStr = formatDateStr(new Date());
+  
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = formatDateStr(yesterday);
+
+  const prayerDates = new Set<string>();
+  logs.forEach(log => {
+    if (log.completedAt) {
+      prayerDates.add(formatDateStr(log.completedAt));
+    }
+  });
+
+  const prayedToday = prayerDates.has(todayStr);
+  const prayedYesterday = prayerDates.has(yesterdayStr);
+
+  if (!prayedToday && !prayedYesterday) {
+    return { currentStreak: 0, prayedToday: false };
+  }
+
+  let streak = 0;
+  let checkDate = new Date();
+  
+  if (!prayedToday) {
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+
+  while (true) {
+    const dateStr = formatDateStr(checkDate);
+    if (prayerDates.has(dateStr)) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return { currentStreak: streak, prayedToday };
+}
+
+function getWeeklyChartData(logs: any[] | undefined) {
+  const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const data = [];
+  
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    
+    const dayName = daysOfWeek[d.getDay()];
+    const dateStr = d.toLocaleDateString("pt-BR", { day: "numeric", month: "numeric" });
+    
+    const count = logs?.filter(log => {
+      if (!log.completedAt) return false;
+      const logDate = new Date(log.completedAt);
+      return logDate.getDate() === d.getDate() &&
+             logDate.getMonth() === d.getMonth() &&
+             logDate.getFullYear() === d.getFullYear();
+    }).length || 0;
+    
+    data.push({
+      name: dayName,
+      date: dateStr,
+      quantidade: count,
+    });
+  }
+  
+  return data;
+}
+
 export default function Dashboard() {
   const { user, isAuthenticated, loading } = useAuth();
   const { data: logs } = trpc.prayers.getRecentLogs.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: allLogs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: liturgy } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
+
+  const utils = trpc.useUtils();
+  const { data: intentions } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: myPrayedIntentions } = trpc.intentions.myPrayed.useQuery(undefined, { enabled: isAuthenticated });
+
+  const prayMutation = trpc.intentions.pray.useMutation({
+    onSuccess: async (res) => {
+      if (res.alreadyPrayed) {
+        toast.info("Você já se uniu a esta intenção.");
+      } else {
+        toast.success("Oração registrada. Que Deus ouça as nossas preces.");
+      }
+      await utils.intentions.list.invalidate();
+      await utils.intentions.myPrayed.invalidate();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Erro ao registrar oração.");
+    }
+  });
+
+  const handlePrayForIntention = (intentionId: number) => {
+    prayMutation.mutate({ intentionId });
+  };
+
+  const [activeNovena, setActiveNovena] = useState<DashboardActiveNovena | null>(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      try {
+        const raw = localStorage.getItem(NOVENA_PROGRESS_STORAGE_KEY);
+        const progressMap = parseNovenaProgress(raw);
+        setActiveNovena(buildDashboardActiveNovena(progressMap, NOVENAS));
+      } catch (err) {
+        console.error("Erro ao ler progresso de novenas no dashboard:", err);
+        setActiveNovena(null);
+      }
+    }
+  }, [isAuthenticated]);
+
+  const logPrayerMutation = trpc.prayers.logPrayer.useMutation({
+    onSuccess: () => {
+      toast.success("Liturgia Diária registrada no seu histórico!");
+      utils.prayers.getRecentLogs.invalidate();
+      utils.prayers.getAllLogs.invalidate();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Erro ao registrar liturgia.");
+    }
+  });
+
+  const liturgiaLida = !!allLogs?.some(log => {
+    if (!log.completedAt) return false;
+    const logDate = new Date(log.completedAt);
+    const isToday = logDate.getDate() === new Date().getDate() &&
+                    logDate.getMonth() === new Date().getMonth() &&
+                    logDate.getFullYear() === new Date().getFullYear();
+    if (!isToday) return false;
+    return log.prayerType === "liturgia";
+  });
+
+  const handleToggleLiturgia = () => {
+    if (liturgiaLida) {
+      toast.info("Você já concluiu a Liturgia de hoje!");
+      return;
+    }
+    logPrayerMutation.mutate({
+      prayerType: "liturgia",
+      prayerName: "Liturgia Diária",
+    });
+  };
+
+  const streak = calculateStreak(allLogs);
+  const chartData = getWeeklyChartData(allLogs);
+
+  const prayedRosaryToday = !!allLogs?.some(log => {
+    if (!log.completedAt) return false;
+    const logDate = new Date(log.completedAt);
+    const isToday = logDate.getDate() === new Date().getDate() &&
+                    logDate.getMonth() === new Date().getMonth() &&
+                    logDate.getFullYear() === new Date().getFullYear();
+    if (!isToday) return false;
+    const name = log.prayerName?.toLowerCase() || "";
+    const type = log.prayerType?.toLowerCase() || "";
+    return name.includes("terço") || name.includes("rosário") || type.includes("rosario") || type.includes("terco");
+  });
+
+  const prayedLectioToday = !!allLogs?.some(log => {
+    if (!log.completedAt) return false;
+    const logDate = new Date(log.completedAt);
+    const isToday = logDate.getDate() === new Date().getDate() &&
+                    logDate.getMonth() === new Date().getMonth() &&
+                    logDate.getFullYear() === new Date().getFullYear();
+    if (!isToday) return false;
+    const name = log.prayerName?.toLowerCase() || "";
+    const type = log.prayerType?.toLowerCase() || "";
+    return name.includes("lectio") || type.includes("lectio");
+  });
+
+  const prayedNovenaToday = !!allLogs?.some(log => {
+    if (!log.completedAt) return false;
+    const logDate = new Date(log.completedAt);
+    const isToday = logDate.getDate() === new Date().getDate() &&
+                    logDate.getMonth() === new Date().getMonth() &&
+                    logDate.getFullYear() === new Date().getFullYear();
+    if (!isToday) return false;
+    return log.prayerType === "novena";
+  });
+
+  const activeNovenaTotalDays = activeNovena
+    ? Math.max(1, activeNovena.novena.days.length)
+    : 9;
+  const activeNovenaProgressPercent = activeNovena
+    ? Math.round((activeNovena.completedCount / activeNovenaTotalDays) * 100)
+    : 0;
+
+  // Determina o versículo dinâmico do dia baseado no Salmo Responsorial ou na lista de fallback
+  const dynamicVerse = (() => {
+    if (liturgy?.psalm?.refrao) {
+      const cleanRefrao = liturgy.psalm.refrao.replace(/^["'«“]|["'»”]$/g, "").trim();
+      return {
+        text: cleanRefrao,
+        ref: liturgy.psalm.referencia || "Salmo Responsorial"
+      };
+    }
+    const day = new Date().getDate();
+    return fallbackVerses[day % fallbackVerses.length];
+  })();
 
   if (loading) {
     return (
@@ -77,23 +335,44 @@ export default function Dashboard() {
   const firstName = user?.name?.split(" ")[0] || "Fiel";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden">
+      {/* Golden pattern background */}
+      <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
+      
       <AppNav />
 
-      <main className="container py-8">
+      <main className="container py-8 relative z-10">
         {/* Saudação */}
         <div className="mb-8 animate-fade-in">
-          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden">
+          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden shadow-lg">
             <div className="absolute inset-0 bg-pattern-cross opacity-20" />
             <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <p className="text-[oklch(0.70_0.03_260)] text-sm font-medium mb-1">{getDayOfWeek()}, {getFormattedDate()}</p>
-                <h1 className="font-display text-3xl font-bold text-white mb-2">
-                  Bem-vindo, {firstName}
-                </h1>
+                <div className="flex items-center gap-3 flex-wrap mb-2">
+                  <h1 className="font-display text-3xl font-bold text-white">
+                    Bem-vindo, {firstName}
+                  </h1>
+                  {streak.currentStreak > 0 && (
+                    <div className="bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-semibold animate-pulse">
+                      <Flame size={14} className={streak.prayedToday ? "text-amber-400 fill-amber-400" : "text-amber-200"} />
+                      <span>{streak.currentStreak} {streak.currentStreak === 1 ? "dia" : "dias"} de ofensiva</span>
+                    </div>
+                  )}
+                </div>
                 <p className="font-serif text-[oklch(0.80_0.02_260)] text-base">
                   Hoje a Igreja contempla os <span className="text-[oklch(0.82_0.10_80)] font-semibold">{getMystery()}</span>
                 </p>
+                {liturgy?.celebration && (
+                  <div className="mt-3 flex flex-wrap items-center gap-2 animate-fade-in">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getLiturgicalColorStyle(liturgy.color)}`}>
+                      {liturgy.color ? capitalize(liturgy.color) : "Tempo Litúrgico"}
+                    </span>
+                    <span className="text-[oklch(0.90_0.01_260)] text-sm font-medium">
+                      {liturgy.celebration}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="flex gap-3">
                 <Link href="/rosario">
@@ -142,6 +421,289 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Intenções da Comunidade + Novena Ativa */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-fade-in">
+          {/* Intenções da Comunidade */}
+          <div className="lg:col-span-2 prayer-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                  Intenções da Comunidade
+                </h3>
+              </div>
+              <div className="divider-gold mb-4" />
+              
+              <div className="space-y-3">
+                {intentions && intentions.length > 0 ? (
+                  intentions.slice(0, 3).map((intention) => {
+                    const alreadyPrayed = myPrayedIntentions?.includes(intention.id);
+                    return (
+                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 transition-all duration-300">
+                        <div className="flex-1 min-w-0 pr-4">
+                          <p className="text-sm font-semibold text-foreground truncate">{intention.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                            Por: {intention.isAnonymous ? "Anônimo" : intention.authorName} • {intention.prayerCount} {intention.prayerCount === 1 ? "oração" : "orações"}
+                          </p>
+                        </div>
+                        <Button 
+                          size="sm"
+                          variant={alreadyPrayed ? "outline" : "default"}
+                          disabled={prayMutation.isPending}
+                          onClick={() => handlePrayForIntention(intention.id)}
+                          className={alreadyPrayed 
+                            ? "border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 text-xs font-semibold px-3 h-8 flex items-center gap-1"
+                            : "bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 text-xs font-semibold px-3 h-8 flex items-center gap-1"
+                          }
+                        >
+                          {alreadyPrayed ? (
+                            <>
+                              <Check size={12} />
+                              <span>Rezado</span>
+                            </>
+                          ) : (
+                            <>
+                              <Heart size={12} className="fill-current" />
+                              <span>Rezar</span>
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção ativa no momento.</p>
+                )}
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-border/30 text-right">
+              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.22_0.07_260)] hover:underline flex items-center justify-end gap-1">
+                Ver todas as intenções <ChevronRight size={12} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Novena Ativa ou Recomendada */}
+          <div className="prayer-card p-6 flex flex-col justify-between">
+            {activeNovena ? (
+              <>
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                      Sua Novena Ativa
+                    </h3>
+                  </div>
+                  <div className="divider-gold mb-4" />
+                  
+                  <div className="mb-4">
+                    <h4 className="text-sm font-bold text-foreground mb-1">{activeNovena.novena.name}</h4>
+                    <p className="text-xs text-muted-foreground">Dia {activeNovena.completedCount} de {activeNovenaTotalDays} concluído</p>
+                  </div>
+
+                  <div className="w-full bg-black/5 rounded-full h-2 overflow-hidden mb-4">
+                    <div 
+                      className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
+                      style={{ width: `${activeNovenaProgressPercent}%` }}
+                    />
+                  </div>
+                </div>
+
+                <Link href={`/novenas/${activeNovena.novena.slug}`}>
+                  <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                    <Play size={12} className="fill-current" />
+                    Rezar o Dia {activeNovena.nextDay}
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                      Novenas
+                    </h3>
+                  </div>
+                  <div className="divider-gold mb-4" />
+                  
+                  <div className="mb-4">
+                    <h4 className="text-sm font-bold text-foreground mb-1">Novena de São José</h4>
+                    <p className="text-xs text-muted-foreground">Que tal iniciar uma caminhada de fé com o padroeiro da Igreja universal?</p>
+                  </div>
+                </div>
+
+                <Link href="/novenas/novena-de-sao-jose">
+                  <Button className="w-full bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                    Começar Novena
+                    <ChevronRight size={14} />
+                  </Button>
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Progresso e Engajamento Espiritual */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Gráfico de Frequência */}
+          <div className="lg:col-span-2 prayer-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <BarChart2 size={16} className="text-[oklch(0.65_0.14_70)]" />
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                  Frequência de Orações Semanais
+                </h3>
+              </div>
+              <div className="divider-gold mb-4" />
+              <div className="h-[180px] w-full mt-2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                    <XAxis dataKey="name" stroke="oklch(0.22 0.07 260 / 0.6)" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis stroke="oklch(0.22 0.07 260 / 0.6)" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: "oklch(0.22 0.07 260)", border: "1px solid oklch(0.75 0.12 75 / 0.3)", borderRadius: "8px" }}
+                      labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
+                      itemStyle={{ color: "oklch(0.82 0.10 80)" }}
+                    />
+                    <Bar dataKey="quantidade" fill="oklch(0.75 0.12 75)" radius={[4, 4, 0, 0]}>
+                      {chartData.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={entry.quantidade > 0 ? "oklch(0.75 0.12 75)" : "oklch(0.75 0.12 75 / 0.3)"} 
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Checklist de Metas Diárias */}
+          <div className="prayer-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar size={16} className="text-[oklch(0.65_0.14_70)]" />
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                  Metas Diárias
+                </h3>
+              </div>
+              <div className="divider-gold mb-4" />
+              
+              <div className="space-y-4">
+                {/* Meta 1: Liturgia */}
+                <div 
+                  onClick={handleToggleLiturgia}
+                  className="flex items-center justify-between p-3 rounded-lg border border-border/40 hover:bg-white/40 cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    {liturgiaLida ? (
+                      <CheckCircle2 className="text-emerald-600 fill-emerald-500/10" size={20} />
+                    ) : (
+                      <Circle className="text-muted-foreground" size={20} />
+                    )}
+                    <div>
+                      <p className={`text-sm font-medium ${liturgiaLida ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                        Leitura da Liturgia
+                      </p>
+                      <p className="text-xs text-muted-foreground">Leia as leituras do dia</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Meta 2: Terço */}
+                <Link href="/rosario">
+                  <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 hover:bg-white/40 cursor-pointer transition-colors">
+                    <div className="flex items-center gap-3">
+                      {prayedRosaryToday ? (
+                        <CheckCircle2 className="text-emerald-600 fill-emerald-500/10" size={20} />
+                      ) : (
+                        <Circle className="text-muted-foreground" size={20} />
+                      )}
+                      <div>
+                        <p className={`text-sm font-medium ${prayedRosaryToday ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                          Santo Terço
+                        </p>
+                        <p className="text-xs text-muted-foreground">Reze o Rosário hoje</p>
+                      </div>
+                    </div>
+                    {!prayedRosaryToday && <ChevronRight size={14} className="text-muted-foreground" />}
+                  </div>
+                </Link>
+
+                {/* Meta 3: Lectio Divina */}
+                <Link href="/lectio">
+                  <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 hover:bg-white/40 cursor-pointer transition-colors">
+                    <div className="flex items-center gap-3">
+                      {prayedLectioToday ? (
+                        <CheckCircle2 className="text-emerald-600 fill-emerald-500/10" size={20} />
+                      ) : (
+                        <Circle className="text-muted-foreground" size={20} />
+                      )}
+                      <div>
+                        <p className={`text-sm font-medium ${prayedLectioToday ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                          Lectio Divina
+                        </p>
+                        <p className="text-xs text-muted-foreground">Escreva no seu diário espiritual</p>
+                      </div>
+                    </div>
+                    {!prayedLectioToday && <ChevronRight size={14} className="text-muted-foreground" />}
+                  </div>
+                </Link>
+
+                {/* Meta 4: Novena Diária (Dinâmico) */}
+                {activeNovena && (
+                  <Link href={`/novenas/${activeNovena.novena.slug}`}>
+                    <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 hover:bg-white/40 cursor-pointer transition-colors">
+                      <div className="flex items-center gap-3">
+                        {prayedNovenaToday ? (
+                          <CheckCircle2 className="text-emerald-600 fill-emerald-500/10" size={20} />
+                        ) : (
+                          <Circle className="text-muted-foreground" size={20} />
+                        )}
+                        <div>
+                          <p className={`text-sm font-medium ${prayedNovenaToday ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                            Novena Diária
+                          </p>
+                          <p className="text-xs text-muted-foreground">Reze o Dia {activeNovena.nextDay} da novena</p>
+                        </div>
+                      </div>
+                      {!prayedNovenaToday && <ChevronRight size={14} className="text-muted-foreground" />}
+                    </div>
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* Progresso Total */}
+            {(() => {
+              const totalItems = activeNovena ? 4 : 3;
+              const completedCount = 
+                (liturgiaLida ? 1 : 0) + 
+                (prayedRosaryToday ? 1 : 0) + 
+                (prayedLectioToday ? 1 : 0) + 
+                (activeNovena && prayedNovenaToday ? 1 : 0);
+              const progressPercent = Math.round((completedCount / totalItems) * 100);
+
+              return (
+                <div className="mt-4 pt-3 border-t border-border/30">
+                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                    <span>Progresso espiritual hoje</span>
+                    <span>{progressPercent}%</span>
+                  </div>
+                  <div className="w-full bg-black/5 rounded-full h-1.5 overflow-hidden">
+                    <div 
+                      className="bg-emerald-600 h-1.5 rounded-full transition-all duration-500" 
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+
         {/* Versículo do Dia + Histórico */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Versículo */}
@@ -154,9 +716,9 @@ export default function Dashboard() {
             </div>
             <div className="divider-gold mb-4" />
             <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] leading-relaxed mb-3">
-              "Tudo posso naquele que me fortalece."
+              "{dynamicVerse.text}"
             </blockquote>
-            <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)]">Filipenses 4:13</p>
+            <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)]">{dynamicVerse.ref}</p>
             <div className="mt-6">
               <Link href="/liturgia">
                 <Button variant="outline" size="sm" className="text-[oklch(0.22_0.07_260)] border-[oklch(0.22_0.07_260/0.3)]">

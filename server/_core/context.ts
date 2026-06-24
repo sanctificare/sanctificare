@@ -2,6 +2,7 @@ import type { CreateExpressContextOptions } from "@trpc/server/adapters/express"
 import type { User } from "../../drizzle/schema";
 import { sdk } from "./sdk";
 import { parse as parseCookie } from "cookie";
+import { isDevAuthBypassEnabled } from "./security";
 
 export type TrpcContext = {
   req: CreateExpressContextOptions["req"];
@@ -41,7 +42,7 @@ export async function createContext(
   const cookies = opts.req.headers.cookie ? parseCookie(opts.req.headers.cookie) : {};
   const isDevLoggedOut = cookies["dev_logged_out"] === "1";
 
-  if (!user && !isDevLoggedOut && process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS === "1") {
+  if (!user && !isDevLoggedOut && isDevAuthBypassEnabled(opts.req)) {
     user = DEV_BYPASS_USER;
   }
 

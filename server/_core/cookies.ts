@@ -34,3 +34,13 @@ export function getSessionCookieOptions(
     secure: isLocal ? false : isSecureRequest(req),
   };
 }
+
+export function getCsrfCookieOptions(
+  req: Request
+): Pick<CookieOptions, "domain" | "httpOnly" | "path" | "sameSite" | "secure"> {
+  const sessionOptions = getSessionCookieOptions(req);
+  return {
+    ...sessionOptions,
+    httpOnly: false,
+  };
+}

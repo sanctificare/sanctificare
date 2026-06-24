@@ -80,7 +80,17 @@ export default function LectioDivina() {
   }, []);
 
   const todaySaoPaulo = dateParts.isoDate;
-  const [selectedDate, setSelectedDate] = useState<string>(todaySaoPaulo);
+  
+  const initialDate = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    const dateParam = params.get("date");
+    if (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+      return dateParam;
+    }
+    return todaySaoPaulo;
+  }, [todaySaoPaulo]);
+
+  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isDailyAudioAvailable, setIsDailyAudioAvailable] = useState<boolean>(true);
   const [isAudioChecking, setIsAudioChecking] = useState<boolean>(false);

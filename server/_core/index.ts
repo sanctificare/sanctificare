@@ -3,10 +3,21 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { parse as parseCookie } from "cookie";
+import { COOKIE_NAME } from "../../shared/const";
+import { getCsrfCookieOptions } from "./cookies";
+import { ENV } from "./env";
 import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
+import {
+  CSRF_COOKIE_NAME,
+  CSRF_HEADER_NAME,
+  generateCsrfToken,
+  getAllowedOrigins,
+  isTrustedUnsafeRequestSource,
+} from "./security";
 import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
 import { upsertDailyLiturgy } from "../db";
@@ -20,6 +31,19 @@ function isPortAvailable(port: number): Promise<boolean> {
     });
     server.on("error", () => resolve(false));
   });
+}
+
+function isSecureRequest(req: express.Request) {
+  if (req.protocol === "https") return true;
+
+  const forwardedProto = req.headers["x-forwarded-proto"];
+  if (!forwardedProto) return false;
+
+  const protoList = Array.isArray(forwardedProto)
+    ? forwardedProto
+    : forwardedProto.split(",");
+
+  return protoList.some(proto => proto.trim().toLowerCase() === "https");
 }
 
 async function assertPortAvailable(port: number): Promise<void> {
@@ -75,21 +99,109 @@ async function fetchLiturgiaHandler(req: express.Request, res: express.Response)
     return res.json({ ok: true, results });
   } catch (error) {
     const err = error as Error;
-    return res.status(500).json({
+    const payload: Record<string, unknown> = {
       error: err.message,
-      stack: err.stack,
       context: { url: req.originalUrl },
       timestamp: new Date().toISOString(),
+    };
+
+    if (process.env.NODE_ENV === "development") {
+      payload.stack = err.stack;
+    }
+
+    return res.status(500).json({
+      ...payload,
     });
   }
 }
 
 async function startServer() {
+  if (process.env.NODE_ENV !== "development" && process.env.DEV_AUTH_BYPASS === "1") {
+    throw new Error("DEV_AUTH_BYPASS must never be enabled outside development");
+  }
+
   const app = express();
   const server = createServer(app);
+  const allowedOrigins = getAllowedOrigins();
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+  app.use((req, res, next) => {
+    const host = req.get("host");
+    const requestOrigin = host
+      ? `${isSecureRequest(req) ? "https" : "http"}://${host}`
+      : null;
+
+    const cookies = req.headers.cookie ? parseCookie(req.headers.cookie) : {};
+    const hasSessionCookie = Boolean(cookies[COOKIE_NAME]);
+    const csrfCookieToken = cookies[CSRF_COOKIE_NAME];
+
+    if (hasSessionCookie && !csrfCookieToken) {
+      res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+        ...getCsrfCookieOptions(req),
+        maxAge: ENV.sessionTtlMs,
+      });
+    }
+
+    const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
+    const isCsrfExemptPath = req.path === "/api/scheduled/fetchLiturgia";
+
+    if (!isUnsafeMethod || !hasSessionCookie || isCsrfExemptPath) {
+      return next();
+    }
+
+    if (!isTrustedUnsafeRequestSource(req, allowedOrigins, requestOrigin)) {
+      return res.status(403).json({ error: "Request source not trusted" });
+    }
+
+    if (!csrfCookieToken) {
+      return res.status(403).json({ error: "CSRF cookie missing" });
+    }
+
+    const csrfHeaderToken = req.header(CSRF_HEADER_NAME);
+    if (!csrfHeaderToken || csrfHeaderToken !== csrfCookieToken) {
+      return res.status(403).json({ error: "CSRF validation failed" });
+    }
+
+    return next();
+  });
+
+  // Custom CORS middleware to handle local Capacitor and dev origins
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    const host = req.get("host");
+    const requestOrigin = host
+      ? `${isSecureRequest(req) ? "https" : "http"}://${host}`
+      : null;
+
+    const originAllowed =
+      !origin ||
+      allowedOrigins.has(origin) ||
+      (!!requestOrigin && origin === requestOrigin);
+
+    if (!originAllowed) {
+      return res.status(403).json({ error: "Origin not allowed" });
+    }
+
+    if (origin) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+    }
+
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie, X-CSRF-Token"
+    );
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
+
+    next();
+  });
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   // tRPC API

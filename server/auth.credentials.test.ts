@@ -92,9 +92,9 @@ describe("auth.credentials", () => {
     expect(result.user.email).toBe(randomEmail);
     expect(result.user.name).toBe(name);
 
-    expect(setCookies).toHaveLength(1);
-    expect(setCookies[0]?.name).toBe(COOKIE_NAME);
-    expect(setCookies[0]?.value).toBeDefined();
+    const sessionCookie = setCookies.find(cookie => cookie.name === COOKIE_NAME);
+    expect(sessionCookie).toBeDefined();
+    expect(sessionCookie?.value).toBeDefined();
   });
 
   it("fails to register with existing email", async () => {
@@ -121,8 +121,8 @@ describe("auth.credentials", () => {
 
     expect(result.success).toBe(true);
     expect(result.user.email).toBe(randomEmail);
-    expect(setCookies).toHaveLength(1);
-    expect(setCookies[0]?.name).toBe(COOKIE_NAME);
+    const sessionCookie = setCookies.find(cookie => cookie.name === COOKIE_NAME);
+    expect(sessionCookie).toBeDefined();
   });
 
   it("fails to log in with incorrect password", async () => {

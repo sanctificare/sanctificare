@@ -24,6 +24,8 @@ import TemplateSettings from "./pages/TemplateSettings";
 import VideosBiblicos from "./pages/VideosBiblicos";
 import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
+import Novenas from "./pages/Novenas";
+import NovenaDetails from "./pages/NovenaDetails";
 
 
 function Router() {
@@ -43,6 +45,8 @@ function Router() {
       <Route path="/vela-virtual" component={VelaVirtual} />
       <Route path="/musica-sacra" component={MusicaSacra} />
       <Route path="/biblia" component={Bible} />
+      <Route path="/novenas" component={Novenas} />
+      <Route path="/novenas/:slug" component={NovenaDetails} />
       <Route path="/intencoes" component={Intentions} />
       <Route path="/perfil" component={Profile} />
       <Route path="/premium" component={Premium} />
@@ -63,6 +67,79 @@ function App() {
     return () => {
       document.body.classList.remove("theme-contemplative-a");
     };
+  }, []);
+
+  useEffect(() => {
+    const handleDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented) return;
+      if (event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest("a[href]");
+      if (!(anchor instanceof HTMLAnchorElement)) return;
+      if (anchor.target && anchor.target !== "_self") return;
+      if (anchor.hasAttribute("download")) return;
+
+      const rawHref = anchor.getAttribute("href");
+      if (!rawHref || rawHref.startsWith("#")) return;
+
+      const destination = new URL(anchor.href, window.location.href);
+      if (destination.origin !== window.location.origin) return;
+
+      const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const next = `${destination.pathname}${destination.search}${destination.hash}`;
+      if (current === next) return;
+
+      event.preventDefault();
+      window.history.pushState({}, "", next);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    };
+
+    document.addEventListener("click", handleDocumentClick);
+    return () => document.removeEventListener("click", handleDocumentClick);
+  }, []);
+
+  // Checador de Lembretes Diários
+  useEffect(() => {
+    const checkReminders = () => {
+      try {
+        const enabled = localStorage.getItem("sanctificare.reminders.enabled") === "true";
+        if (!enabled) return;
+
+        if (!("Notification" in window) || Notification.permission !== "granted") {
+          return;
+        }
+
+        const reminderTime = localStorage.getItem("sanctificare.reminders.time") || "18:00";
+        const now = new Date();
+        const currentHours = String(now.getHours()).padStart(2, "0");
+        const currentMinutes = String(now.getMinutes()).padStart(2, "0");
+        const currentTimeStr = `${currentHours}:${currentMinutes}`;
+
+        if (currentTimeStr === reminderTime) {
+          const todayStr = now.toDateString();
+          const lastSent = localStorage.getItem("sanctificare.reminders.last_sent");
+          if (lastSent !== todayStr) {
+            localStorage.setItem("sanctificare.reminders.last_sent", todayStr);
+            new Notification("Sanctificare", {
+              body: "Está na hora de fazer sua oração diária e manter sua constância espiritual viva!",
+              icon: "/assets/sanctificare-logo.webp"
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Erro no checador de lembretes:", err);
+      }
+    };
+
+    // Executa uma vez imediatamente, depois a cada 30 segundos
+    checkReminders();
+    const interval = setInterval(checkReminders, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

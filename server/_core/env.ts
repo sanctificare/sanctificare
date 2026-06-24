@@ -1,3 +1,16 @@
+function parseSessionTtlMs(raw: string | undefined): number {
+  const fallback = 1000 * 60 * 60 * 24 * 7; // 7 days
+  if (!raw) return fallback;
+
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+
+  // Clamp to [15 minutes, 30 days]
+  const min = 1000 * 60 * 15;
+  const max = 1000 * 60 * 60 * 24 * 30;
+  return Math.max(min, Math.min(max, parsed));
+}
+
 export const ENV = {
   appId: process.env.VITE_APP_ID ?? "",
   cookieSecret: process.env.JWT_SECRET ?? "",
@@ -13,4 +26,5 @@ export const ENV = {
   r2SecretAccessKey: process.env.R2_SECRET_ACCESS_KEY ?? "",
   r2BucketName: process.env.R2_BUCKET_NAME ?? "musica-sacra",
   r2PublicUrl: process.env.R2_PUBLIC_URL ?? "",
+  sessionTtlMs: parseSessionTtlMs(process.env.SESSION_TTL_MS),
 };

@@ -1,8 +1,8 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_for_testing");
 
-const FROM = "Sanctificare <noreply@rezaroterco.com.br>";
+const FROM = "Sanctificare <noreply@sanctificare.app>";
 
 /**
  * Envia e-mail de recuperação de senha com o link de redefinição.
@@ -14,7 +14,19 @@ export async function sendPasswordResetEmail(
   resetLink: string
 ): Promise<void> {
   if (!process.env.RESEND_API_KEY) {
-    console.log(`\n[DEV] Password reset link for ${toEmail}:\n${resetLink}\n`);
+    let maskedLink = "[redacted]";
+    try {
+      const url = new URL(resetLink);
+      const token = url.searchParams.get("token");
+      if (token) {
+        url.searchParams.set("token", `${token.slice(0, 6)}...`);
+      }
+      maskedLink = url.toString();
+    } catch {
+      maskedLink = "[invalid-url]";
+    }
+
+    console.log(`\n[DEV] Password reset requested for ${toEmail}:\n${maskedLink}\n`);
     return;
   }
 

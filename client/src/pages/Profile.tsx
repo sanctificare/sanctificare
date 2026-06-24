@@ -1,11 +1,14 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { User, Heart, Crown, Calendar, Clock, ChevronRight } from "lucide-react";
+import { User, Heart, Crown, Calendar, Clock, ChevronRight, BookMarked, Bell } from "lucide-react";
 import { Link } from "wouter";
 import { getPrayerArt } from "@/lib/cardArt";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
 
@@ -27,6 +30,50 @@ export default function Profile() {
   const { user, isAuthenticated, loading } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: journalEntries } = trpc.lectioJournal.listRecent.useQuery({ limit: 10 }, { enabled: isAuthenticated });
+
+  const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
+    return localStorage.getItem("sanctificare.reminders.enabled") === "true";
+  });
+  const [reminderTime, setReminderTime] = useState<string>(() => {
+    return localStorage.getItem("sanctificare.reminders.time") || "18:00";
+  });
+
+  const handleToggleReminders = async () => {
+    if (!remindersEnabled) {
+      if (!("Notification" in window)) {
+        toast.error("Seu navegador não suporta notificações de área de trabalho.");
+        return;
+      }
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        localStorage.setItem("sanctificare.reminders.enabled", "true");
+        setRemindersEnabled(true);
+        toast.success("Lembretes diários ativados com sucesso!");
+        new Notification("Sanctificare", {
+          body: `Lembrete configurado para as ${reminderTime}! Que Deus abençoe sua jornada espiritual.`,
+          icon: LOGO_IMG
+        });
+      } else {
+        localStorage.setItem("sanctificare.reminders.enabled", "false");
+        setRemindersEnabled(false);
+        toast.warning("Permissão de notificação negada. Ative as notificações nas configurações do seu navegador.");
+      }
+    } else {
+      localStorage.setItem("sanctificare.reminders.enabled", "false");
+      setRemindersEnabled(false);
+      toast.info("Lembretes desativados.");
+    }
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newTime = e.target.value;
+    setReminderTime(newTime);
+    localStorage.setItem("sanctificare.reminders.time", newTime);
+    if (remindersEnabled) {
+      toast.success(`Horário do lembrete atualizado para as ${newTime}!`);
+    }
+  };
 
   if (loading) {
     return (
@@ -153,6 +200,57 @@ export default function Profile() {
             </div>
           )}
 
+          {/* Diário Espiritual (Versículos Salvos) */}
+          <div className="prayer-card p-5 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
+              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                Diário Espiritual & Versículos Salvos
+              </h2>
+            </div>
+            <div className="divider-gold mb-4" />
+
+            {journalEntries && journalEntries.length > 0 ? (
+              <div className="space-y-4 max-h-[350px] overflow-y-auto pr-1">
+                {journalEntries.map((entry) => {
+                  const displayDate = new Date(entry.journalDate + "T12:00:00").toLocaleDateString("pt-BR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  });
+                  
+                  return (
+                    <div key={entry.id} className="p-4 rounded-xl border border-border/40 bg-white/30 dark:bg-stone-900/10 space-y-2 last:mb-0">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span className="font-medium">{displayDate}</span>
+                        <span className="font-semibold text-[oklch(0.65_0.14_70)]">
+                          {entry.passageReference}
+                        </span>
+                      </div>
+                      {entry.anchoredPhrase && (
+                        <blockquote className="font-serif italic text-sm text-foreground/80 pl-3 border-l-2 border-[oklch(0.75_0.12_75)] py-0.5 leading-relaxed">
+                          "{entry.anchoredPhrase}"
+                        </blockquote>
+                      )}
+                      {entry.personalNote && (
+                        <p className="text-xs text-foreground/70 pt-1 leading-relaxed border-t border-border/20 mt-1">
+                          <strong>Meditação:</strong> {entry.personalNote}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <BookMarked size={28} className="text-muted-foreground mx-auto mb-2 opacity-35" />
+                <p className="text-sm text-muted-foreground">
+                  Nenhum versículo foi salvo no seu diário espiritual ainda.
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* Histórico completo */}
           <div className="prayer-card p-5">
             <div className="flex items-center gap-2 mb-4">
@@ -198,6 +296,55 @@ export default function Profile() {
                 </Link>
               </div>
             )}
+          </div>
+
+          {/* Lembretes Diários */}
+          <div className="mt-6 prayer-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Bell size={16} className="text-[oklch(0.65_0.14_70)]" />
+              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                Lembretes Diários
+              </h2>
+            </div>
+            <div className="divider-gold mb-4" />
+            
+            <div className="flex flex-col gap-4">
+              <p className="text-xs text-muted-foreground">
+                Ative notificações no seu navegador para receber um lembrete diário de oração no horário selecionado e manter sua ofensiva ativa.
+              </p>
+
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/20 dark:bg-stone-900/5">
+                <div className="flex flex-col pr-4">
+                  <span className="text-sm font-semibold text-foreground">Habilitar Lembretes</span>
+                  <span className="text-xs text-muted-foreground mt-0.5">Notificar-me no horário agendado</span>
+                </div>
+                <Switch 
+                  checked={remindersEnabled}
+                  onCheckedChange={handleToggleReminders}
+                />
+              </div>
+
+              {remindersEnabled && (
+                <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/20 dark:bg-stone-900/5 animate-fade-in">
+                  <div className="flex flex-col pr-4">
+                    <span className="text-sm font-semibold text-foreground">Horário do Lembrete</span>
+                    <span className="text-xs text-muted-foreground mt-0.5">Defina quando prefere rezar</span>
+                  </div>
+                  <select
+                    value={reminderTime}
+                    onChange={handleTimeChange}
+                    className="rounded-lg border border-border/60 bg-white dark:bg-background px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[oklch(0.75_0.12_75)] font-semibold shadow-sm cursor-pointer"
+                  >
+                    <option value="06:00">06:00 (Manhã)</option>
+                    <option value="08:00">08:00 (Início do dia)</option>
+                    <option value="12:00">12:00 (Angelus)</option>
+                    <option value="18:00">18:00 (Angelus da Tarde)</option>
+                    <option value="20:00">20:00 (Noite)</option>
+                    <option value="22:00">22:00 (Fim do dia)</option>
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Assinatura */}
