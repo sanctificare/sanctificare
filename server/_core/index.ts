@@ -136,7 +136,7 @@ async function startServer() {
     try {
       const db = await getDb();
       if (db) {
-        const migrationsFolder = path.resolve(import.meta.dirname, "../drizzle");
+        const migrationsFolder = path.resolve(import.meta.dirname, "drizzle");
         console.log("[Database] Running programmatic migrations from:", migrationsFolder);
         await migrate(db, { migrationsFolder });
         console.log("[Database] Programmatic migrations completed successfully.");

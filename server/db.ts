@@ -306,7 +306,10 @@ export async function getUserByOpenId(openId: string) {
     // Backward-compatible fallback for environments where optional auth columns
     // were not migrated yet (prevents hard 500 during auth context build).
     const isMissingColumnError =
-      error instanceof Error && /column .* does not exist/i.test(error.message);
+      error instanceof Error &&
+      (/column .* does not exist/i.test(error.message) ||
+       /type .* does not exist/i.test(error.message) ||
+       /operator does not exist/i.test(error.message));
 
     if (!isMissingColumnError) {
       throw error;
@@ -348,14 +351,18 @@ export async function getUserByEmail(email: string) {
     const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
     return result.length > 0 ? result[0] : undefined;
   } catch (error) {
-    const isMissingColumnError =
-      error instanceof Error && /column .* does not exist/i.test(error.message);
+    // Catch schema drift: missing columns OR missing enum types (e.g. templatePreference enum)
+    const isSchemaError =
+      error instanceof Error &&
+      (/column .* does not exist/i.test(error.message) ||
+       /type .* does not exist/i.test(error.message) ||
+       /operator does not exist/i.test(error.message));
 
-    if (!isMissingColumnError) {
+    if (!isSchemaError) {
       throw error;
     }
 
-    console.warn("[Database] users schema drift detected in getUserByEmail:", error);
+    console.warn("[Database] users schema drift detected in getUserByEmail:", error.message);
 
     // Retry without templatePreference to keep credential login working while
     // production migrations are being aligned.
@@ -421,6 +428,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function createUser(user: InsertUser) {
+
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   const result = await db.insert(users).values(user).returning();
