@@ -1,4 +1,12 @@
 import "dotenv/config";
+
+// Auto-detect production build and normalize environment variables to prevent local/dev overrides in production.
+const isCompiled = import.meta.url.includes("/dist/") || import.meta.url.endsWith("dist/index.js");
+if (isCompiled) {
+  process.env.NODE_ENV = "production";
+  process.env.DEV_AUTH_BYPASS = "0";
+}
+
 import express from "express";
 import { createServer } from "http";
 import net from "net";
