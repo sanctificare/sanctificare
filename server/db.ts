@@ -216,21 +216,79 @@ async function bootstrapDb(sql: any) {
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
-    try {
-      const client = postgres(process.env.DATABASE_URL);
-      _db = drizzle(client);
-      if (!_bootstrapPromise) {
-        _bootstrapPromise = bootstrapDb(client);
+  if (!_db) {
+    const dbUrl = process.env.DATABASE_URL;
+    const host = process.env.DB_HOST;
+    if (dbUrl || host) {
+      try {
+        let client;
+        if (dbUrl) {
+          try {
+            // Robust parsing of DATABASE_URL to avoid URL malformed errors
+            // or connection string parsing issues with special characters in password.
+            const parsed = new URL(dbUrl);
+            const username = decodeURIComponent(parsed.username);
+            let password = decodeURIComponent(parsed.password);
+            
+            // Handle double URL-encoding just in case
+            if (password.includes("%")) {
+              try {
+                password = decodeURIComponent(password);
+              } catch (_) {}
+            }
+            
+            const database = parsed.pathname.replace(/^\//, "") || "postgres";
+            const hostname = parsed.hostname;
+            const port = parsed.port ? parseInt(parsed.port) : 5432;
+            const ssl = parsed.searchParams.get("sslmode") === "disable" ? false : "require";
+
+            client = postgres({
+              host: hostname,
+              port,
+              database,
+              username,
+              password,
+              ssl,
+              max: 10,
+            });
+          } catch (urlErr) {
+            console.warn("[Database] Failed to parse DATABASE_URL as URL, falling back to raw string:", urlErr instanceof Error ? urlErr.message : String(urlErr));
+            client = postgres(dbUrl, { ssl: "require" });
+          }
+        } else {
+          // Use individual env vars
+          client = postgres({
+            host: process.env.DB_HOST,
+            port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 6543,
+            database: process.env.DB_NAME || "postgres",
+            username: process.env.DB_USER || "postgres",
+            password: process.env.DB_PASS,
+            ssl: process.env.DB_SSL === "false" ? false : "require",
+            max: 10,
+          });
+        }
+
+        _db = drizzle(client);
+        
+        if (!_bootstrapPromise) {
+          _bootstrapPromise = bootstrapDb(client);
+        }
+        
+        try {
+          await _bootstrapPromise;
+        } catch (bootstrapErr) {
+          _bootstrapPromise = null; // Clear so we can retry on next connection attempt
+          throw bootstrapErr;
+        }
+      } catch (error) {
+        console.warn("[Database] Failed to connect:", error);
+        _db = null;
       }
-      await _bootstrapPromise;
-    } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
-      _db = null;
     }
   }
   return _db;
 }
+
 
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
