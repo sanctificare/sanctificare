@@ -21,6 +21,198 @@ import {
 import { ENV } from './_core/env';
 
 let _db: PostgresJsDatabase | null = null;
+let _bootstrapPromise: Promise<void> | null = null;
+
+async function bootstrapDb(sql: any) {
+  try {
+    // 1. Create enum types safely
+    await sql`
+      DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'role') THEN
+          CREATE TYPE role AS ENUM ('user', 'admin');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'templatePreference') THEN
+          CREATE TYPE "templatePreference" AS ENUM ('classico', 'moderno', 'tradicional', 'minimalista');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'plan') THEN
+          CREATE TYPE plan AS ENUM ('monthly', 'annual');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscription_status') THEN
+          CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'expired');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'intention_category') THEN
+          CREATE TYPE intention_category AS ENUM ('cura', 'familia', 'conversao', 'trabalho', 'defuntos', 'paz');
+        END IF;
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'candle_type') THEN
+          CREATE TYPE candle_type AS ENUM ('intencao', 'defuntos', 'agradecimento', 'adoracao');
+        END IF;
+      END
+      $$;
+    `;
+
+    // 2. Create tables
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id serial PRIMARY KEY,
+        "openId" varchar(64) NOT NULL UNIQUE,
+        name text,
+        email varchar(320),
+        "loginMethod" varchar(64),
+        role role DEFAULT 'user' NOT NULL,
+        "templatePreference" "templatePreference" DEFAULT 'classico' NOT NULL,
+        "passwordHash" text,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL,
+        "lastSignedIn" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS subscriptions (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        plan plan NOT NULL,
+        status subscription_status DEFAULT 'active' NOT NULL,
+        "startedAt" timestamp DEFAULT now() NOT NULL,
+        "expiresAt" timestamp NOT NULL,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS prayer_logs (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        "prayerType" varchar(64) NOT NULL,
+        "prayerName" varchar(128) NOT NULL,
+        "completedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS prayer_intentions (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        "authorName" varchar(128) NOT NULL,
+        title varchar(200) NOT NULL,
+        description text NOT NULL,
+        category intention_category,
+        "isAnonymous" boolean DEFAULT false NOT NULL,
+        "prayerCount" integer DEFAULT 0 NOT NULL,
+        "isActive" boolean DEFAULT true NOT NULL,
+        "graceObtained" boolean DEFAULT false NOT NULL,
+        "expiresAt" timestamp,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS intention_prayers (
+        id serial PRIMARY KEY,
+        "intentionId" integer NOT NULL,
+        "userId" integer NOT NULL,
+        "prayedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS intention_messages (
+        id serial PRIMARY KEY,
+        "intentionId" integer NOT NULL,
+        "userId" integer NOT NULL,
+        "authorName" varchar(128) NOT NULL,
+        "isAnonymous" boolean DEFAULT false NOT NULL,
+        message varchar(300) NOT NULL,
+        "createdAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS daily_liturgy (
+        id serial PRIMARY KEY,
+        "liturgyDate" varchar(10) NOT NULL UNIQUE,
+        celebration text,
+        color varchar(32),
+        "firstReading" jsonb,
+        psalm jsonb,
+        "secondReading" jsonb,
+        gospel jsonb,
+        prayers jsonb,
+        antiphons jsonb,
+        source varchar(128) DEFAULT 'liturgia.up.railway.app' NOT NULL,
+        "fetchedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS lectio_journal (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        "journalDate" varchar(10) NOT NULL,
+        "passageId" varchar(80) NOT NULL,
+        "passageReference" varchar(120),
+        "anchoredPhrase" text,
+        "personalNote" text,
+        "currentStep" varchar(20),
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS lectio_journal_user_date_passage_uq 
+      ON lectio_journal ("userId", "journalDate", "passageId");
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS virtual_candles (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        "authorName" varchar(128) NOT NULL,
+        intention text NOT NULL,
+        type candle_type DEFAULT 'intencao' NOT NULL,
+        "isAnonymous" boolean DEFAULT false NOT NULL,
+        "prayerCount" integer DEFAULT 0 NOT NULL,
+        "litAt" timestamp DEFAULT now() NOT NULL,
+        "expiresAt" timestamp NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS candle_prayers (
+        id serial PRIMARY KEY,
+        "candleId" integer NOT NULL,
+        "userId" integer NOT NULL,
+        "prayedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        token varchar(128) NOT NULL UNIQUE,
+        "expiresAt" timestamp NOT NULL,
+        "usedAt" timestamp,
+        "createdAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS prt_token_idx ON password_reset_tokens (token);
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS prt_user_idx ON password_reset_tokens ("userId");
+    `;
+
+    console.log("[Database] Bootstrap completed: all tables and types verified.");
+  } catch (error) {
+    console.error("[Database] Bootstrap failed:", error);
+  }
+}
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
@@ -28,6 +220,10 @@ export async function getDb() {
     try {
       const client = postgres(process.env.DATABASE_URL);
       _db = drizzle(client);
+      if (!_bootstrapPromise) {
+        _bootstrapPromise = bootstrapDb(client);
+      }
+      await _bootstrapPromise;
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
