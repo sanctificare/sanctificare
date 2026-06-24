@@ -11,7 +11,14 @@ export function registerStorageProxy(app: Express) {
     }
 
     try {
-      const signedUrl = await storageGetSignedUrl(key);
+      let bucket = undefined;
+      let cleanKey = key;
+      if (key.startsWith("vela-virtual/")) {
+        bucket = "vela-virtual";
+        cleanKey = key.replace(/^vela-virtual\//, "");
+      }
+      
+      const signedUrl = await storageGetSignedUrl(cleanKey, bucket);
       res.set("Cache-Control", "public, max-age=86400"); // cache 24h
       res.redirect(307, signedUrl);
     } catch (err) {

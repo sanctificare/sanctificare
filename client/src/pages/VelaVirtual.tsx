@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 const LOGO_IMG = "/assets/sanctificare-logo.webp";
-const VIDEO_SRC = "/assets/vela-virtual/vela-loop.mp4";
+const VIDEO_SRC = "/r2-storage/vela-virtual/vela-loop.mp4";
 
 type AudioTrack = {
   id: string;
@@ -53,13 +53,13 @@ const AUDIO_TRACKS: AudioTrack[] = [
     id: "instrumental",
     label: "Instrumental leve",
     description: "Trilha suave para acompanhar a oração.",
-    src: "/assets/vela-virtual/musica-ambiente.mp3",
+    src: "/r2-storage/vela-virtual/musica-ambiente.mp3",
   },
   {
     id: "gregoriano",
     label: "Canto gregoriano",
     description: "Opcional: adicione o arquivo para habilitar.",
-    src: "/assets/vela-virtual/musica-gregoriano.mp3",
+    src: "/r2-storage/vela-virtual/musica-gregoriano.mp3",
   },
 ];
 

@@ -92,12 +92,12 @@ export async function storageGet(
 /**
  * Get a temporary signed URL for private file access (expires in 1 hour).
  */
-export async function storageGetSignedUrl(relKey: string): Promise<string> {
+export async function storageGetSignedUrl(relKey: string, bucket = ENV.r2BucketName): Promise<string> {
   const client = getR2Client();
   const key = normalizeKey(relKey);
 
   const command = new GetObjectCommand({
-    Bucket: ENV.r2BucketName,
+    Bucket: bucket,
     Key: key,
   });
 
