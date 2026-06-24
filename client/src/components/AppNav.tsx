@@ -11,24 +11,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2 } from "lucide-react";
+import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 
-const navLinks = [
+const mainLinks = [
   { href: "/dashboard", label: "Início", icon: Home },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
+  { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
+];
+
+const moreLinks = [
   { href: "/lectio", label: "Lectio Divina", icon: ScrollText },
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
   { href: "/vela-virtual", label: "Vela Virtual", icon: Flame },
   { href: "/musica-sacra", label: "Música Sacra", icon: Music },
-  { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
   { href: "/videos", label: "Vídeos", icon: Film },
   { href: "/intencoes", label: "Intenções", icon: Users },
 ];
+
+const allNavLinks = [...mainLinks, ...moreLinks];
 
 export default function AppNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,6 +43,8 @@ export default function AppNav() {
   const initials = user?.name
     ? user.name.split(" ").map((n: string) => n[0]).slice(0, 2).join("").toUpperCase()
     : "FC";
+
+  const isMoreLinkActive = moreLinks.some(link => location === link.href);
 
   return (
     <nav className="sticky top-0 z-50 bg-[oklch(0.22_0.07_260)] border-b border-[oklch(0.75_0.12_75/0.3)] shadow-lg">
@@ -59,8 +66,8 @@ export default function AppNav() {
 
           {/* Nav Desktop */}
           {isAuthenticated && (
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map(({ href, label, icon: Icon }) => (
+            <div className="hidden lg:flex items-center gap-1">
+              {mainLinks.map(({ href, label, icon: Icon }) => (
                 <Link key={href} href={href}>
                   <button
                     className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
@@ -74,6 +81,31 @@ export default function AppNav() {
                   </button>
                 </Link>
               ))}
+
+              {/* Mais Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 focus:outline-none ${
+                      isMoreLinkActive
+                        ? "bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)]"
+                        : "text-[oklch(0.80_0.03_260)] hover:text-[oklch(0.88_0.08_80)] hover:bg-[oklch(0.75_0.12_75/0.1)]"
+                    }`}
+                  >
+                    Mais <ChevronDown size={14} className="opacity-70" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48 bg-[oklch(0.22_0.07_260)] border border-[oklch(0.75_0.12_75/0.3)] shadow-xl text-white">
+                  {moreLinks.map(({ href, label, icon: Icon }) => (
+                    <DropdownMenuItem key={href} asChild className="focus:bg-[oklch(0.75_0.12_75/0.2)] focus:text-[oklch(0.88_0.08_80)]">
+                      <Link href={href} className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-[oklch(0.80_0.03_260)]">
+                        <Icon size={15} />
+                        {label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
 
@@ -84,7 +116,7 @@ export default function AppNav() {
                 <Link href="/premium">
                   <Button
                     size="sm"
-                    className="hidden md:flex items-center gap-2 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-xs tracking-wide"
+                    className="hidden lg:flex items-center gap-2 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-xs tracking-wide"
                   >
                     <Crown size={13} />
                     Premium
@@ -145,7 +177,7 @@ export default function AppNav() {
             {/* Mobile menu toggle */}
             {isAuthenticated && (
               <button
-                className="md:hidden text-[oklch(0.80_0.03_260)] hover:text-[oklch(0.88_0.08_80)] p-1"
+                className="lg:hidden text-[oklch(0.80_0.03_260)] hover:text-[oklch(0.88_0.08_80)] p-1"
                 onClick={() => setMobileOpen(!mobileOpen)}
               >
                 {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -156,8 +188,8 @@ export default function AppNav() {
 
         {/* Mobile menu */}
         {isAuthenticated && mobileOpen && (
-          <div className="md:hidden border-t border-[oklch(0.75_0.12_75/0.2)] py-3 animate-fade-in">
-            {navLinks.map(({ href, label, icon: Icon }) => (
+          <div className="lg:hidden border-t border-[oklch(0.75_0.12_75/0.2)] py-3 animate-fade-in">
+            {allNavLinks.map(({ href, label, icon: Icon }) => (
               <Link key={href} href={href}>
                 <button
                   className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors ${
