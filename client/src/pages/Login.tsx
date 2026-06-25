@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Cross, Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { getApiBaseUrl, sanitizeAppPath } from "@/const";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 async function performLogin(input: any) {
   const res = await fetch("/api/auth/login", {

@@ -19,7 +19,7 @@ export default function NovenaAudioDock({
   audioUrl,
   title,
   subtitle,
-  coverUrl = "/assets/sanctificare-logo.webp",
+  coverUrl = "/assets/sanctificare-logo-v2.webp",
 }: NovenaAudioDockProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);

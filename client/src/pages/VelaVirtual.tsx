@@ -25,7 +25,7 @@ import {
   Clock,
 } from "lucide-react";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const VIDEO_SRC = "/r2-storage/vela-virtual/vela-loop.mp4";
 
 type AudioTrack = {

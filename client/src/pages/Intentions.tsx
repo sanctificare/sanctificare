@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 const CATEGORIES = [
   { value: "cura",      label: "Cura e Saúde",        emoji: "🙏", color: "oklch(0.55 0.18 15)" },

@@ -7,7 +7,7 @@ import AppNav from "@/components/AppNav";
 import { BIBLE_BOOKS, FAMOUS_VERSES, BibleBook } from "@/data/bible";
 import { BookOpen, Search, ChevronLeft, ChevronRight, X } from "lucide-react";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 // Conteúdo de exemplo para alguns capítulos famosos
 const CHAPTER_CONTENT: Record<string, Record<number, string[]>> = {

@@ -12,7 +12,7 @@ import { NOVENAS } from "@/data/novenas";
 import { toast } from "sonner";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 const quickLinks = [
   { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.png", overlay: "oklch(0.22 0.08 260 / 0.60)" },

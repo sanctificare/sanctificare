@@ -19,7 +19,7 @@ import {
 import { toast } from "sonner";
 import { Link } from "wouter";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
 const INITIAL_MARY_IMG = "/audio/rosary/jesus-maria.webp";
 const AUTO_TEXT_STEP_DELAY_MS = 6000;

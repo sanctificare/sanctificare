@@ -10,7 +10,7 @@ import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
   rosario: "/assets/sanctificare-rosary.webp",

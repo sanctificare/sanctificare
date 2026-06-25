@@ -12,7 +12,7 @@ import { getLiturgyAudioByDate, type LiturgyDailyAudioTrack } from "@/data/litur
 import { getDailyContent } from "@/data/daily";
 
 
-const LOGO_IMG = "/assets/sanctificare-logo.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 export interface LiturgicalTheme {
   name: string;
