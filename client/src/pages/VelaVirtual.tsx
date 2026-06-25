@@ -359,24 +359,24 @@ export default function VelaVirtual() {
                       )}
                     </div>
 
-                    <div className="max-w-lg">
-                      {isCandleLit ? (
-                        <div className="space-y-3 animate-fade-in">
-                          <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold">Minha Intenção</span>
-                          <blockquote className="font-serif text-xl italic text-white/95 leading-relaxed bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl">
+                    {isCandleLit ? (
+                      <div className="max-w-lg ml-auto text-right">
+                        <div className="space-y-3 animate-fade-in inline-block text-left max-w-full">
+                          <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold block text-right">Minha Intenção</span>
+                          <blockquote className="font-serif text-xl italic text-white/95 leading-relaxed bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
                             "{privateCandleIntention}"
                           </blockquote>
-                          <p className="text-xs text-white/60 font-serif">Aquietai o coração e repousai nos braços do Senhor...</p>
+                          <p className="text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
                         </div>
-                      ) : (
-                        <>
-                          <h2 className="font-display text-3xl font-bold text-white mb-3">Acenda sua intenção interior</h2>
-                          <p className="font-serif text-white/80 leading-relaxed">
-                            Feche os olhos, respire com calma e ofereça ao Senhor a sua prece. Esta vela virtual foi pensada para favorecer o recolhimento, o silêncio e a oração perseverante.
-                          </p>
-                        </>
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="max-w-lg">
+                        <h2 className="font-display text-3xl font-bold text-white mb-3">Acenda sua intenção interior</h2>
+                        <p className="font-serif text-white/80 leading-relaxed">
+                          Feche os olhos, respire com calma e ofereça ao Senhor a sua prece. Esta vela virtual foi pensada para favorecer o recolhimento, o silêncio e a oração perseverante.
+                        </p>
+                      </div>
+                    )}
 
                     {cleanMode && showPhrase && (
                       <div className="rounded-xl border border-white/15 bg-black/45 p-4 max-w-2xl backdrop-blur-sm transition-all duration-500">
