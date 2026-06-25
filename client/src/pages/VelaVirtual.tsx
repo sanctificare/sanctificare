@@ -377,15 +377,17 @@ export default function VelaVirtual() {
                     </div>
 
                     {isCandleLit ? (
-                      <div className="max-w-lg ml-auto text-right">
-                        <div className="space-y-3 animate-fade-in inline-block text-left max-w-full">
-                          <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold block text-right">Minha Intenção</span>
-                          <blockquote className="font-serif text-xl italic text-white/95 leading-relaxed bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
-                            "{privateCandleIntention}"
-                          </blockquote>
-                          <p className="text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
+                      privateCandleIntention.trim() ? (
+                        <div className="max-w-lg ml-auto text-right">
+                          <div className="space-y-3 animate-fade-in inline-block text-left max-w-full">
+                            <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold block text-right">Minha Intenção</span>
+                            <blockquote className="font-serif text-xl italic text-white/95 leading-relaxed bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
+                              "{privateCandleIntention}"
+                            </blockquote>
+                            <p className="text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
+                          </div>
                         </div>
-                      </div>
+                      ) : null
                     ) : (
                       <div className="max-w-lg">
                         <h2 className="font-display text-3xl font-bold text-white mb-3">Acenda sua intenção interior</h2>
