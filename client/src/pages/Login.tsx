@@ -118,6 +118,20 @@ export default function Login() {
     }
   }, [isAuthenticated, loading, setLocation]);
 
+  // Show error toast if redirecting back from OAuth fail
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const errorParam = params.get("error");
+    if (errorParam) {
+      toast.error(errorParam);
+      // Clean up the URL by removing the error param
+      params.delete("error");
+      const newSearch = params.toString();
+      const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ""}`;
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, []);
+
   // Set active tab based on query params (e.g. ?tab=cadastrar)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

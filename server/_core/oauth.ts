@@ -67,6 +67,10 @@ export function registerOAuthRoutes(app: Express) {
     }
 
     try {
+      if (!ENV.oAuthServerUrl || !ENV.appId) {
+        throw new Error("OAuth server is not configured.");
+      }
+
       const callbackUrl = `${req.protocol}://${req.get("host")}/api/oauth/callback`;
       const appPath = sanitizeAppPath(getQueryParam(req, "path"));
       const nonce = generateCsrfToken();
@@ -80,9 +84,21 @@ export function registerOAuthRoutes(app: Express) {
 
       const redirectUrl = await sdk.getAuthorizeUrl(callbackUrl, state);
       res.redirect(302, redirectUrl);
-    } catch (error) {
+    } catch (error: any) {
       console.error("[OAuth] Login failed", error);
-      res.status(500).json({ error: "OAuth login initialization failed" });
+      const appPath = sanitizeAppPath(getQueryParam(req, "path"));
+      const isConfigError = error?.message === "OAuth server is not configured.";
+      const message = isConfigError
+        ? "O login com Google não está configurado neste servidor. Por favor, use login com e-mail e senha."
+        : "Não foi possível iniciar o login com o Google. Por favor, tente novamente mais tarde.";
+
+      const searchParams = new URLSearchParams();
+      searchParams.set("error", message);
+      if (appPath && appPath !== "/dashboard") {
+        searchParams.set("path", appPath);
+      }
+
+      res.redirect(302, `/login?${searchParams.toString()}`);
     }
   });
 

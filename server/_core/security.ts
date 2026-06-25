@@ -8,10 +8,28 @@ function normalizeHostname(value: string | undefined): string {
   return (value ?? "").trim().toLowerCase();
 }
 
+function isPrivateIP(ip: string): boolean {
+  // Check loopback (127.x.x.x)
+  if (/^127\./.test(ip)) return true;
+  // Check Class A private network (10.x.x.x)
+  if (/^10\./.test(ip)) return true;
+  // Check Class B private network (172.16.x.x - 172.31.x.x)
+  if (/^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(ip)) return true;
+  // Check Class C private network (192.168.x.x)
+  if (/^192\.168\./.test(ip)) return true;
+  // Check Link-local (169.254.x.x)
+  if (/^169\.254\./.test(ip)) return true;
+  // Check IPv6 loopback (::1) or Link-local (fe80::) or ULA (fc00:: / fd00::)
+  if (ip === "::1" || ip === "::ffff:127.0.0.1") return true;
+  if (/^fe80:/i.test(ip)) return true;
+  if (/^f[cd][0-9a-f]{2}:/i.test(ip)) return true;
+  return false;
+}
+
 export function isLocalRequest(req: Request): boolean {
   const hostHeader = req.headers.host?.split(":")[0];
   const hostname = normalizeHostname(req.hostname || hostHeader);
-  return LOCAL_HOSTS.has(hostname);
+  return LOCAL_HOSTS.has(hostname) || isPrivateIP(hostname);
 }
 
 export function isDevAuthBypassEnabled(req: Request): boolean {

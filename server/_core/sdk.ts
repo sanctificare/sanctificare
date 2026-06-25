@@ -33,15 +33,14 @@ const GET_USER_INFO_WITH_JWT_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserI
 
 class OAuthService {
   constructor(private client: ReturnType<typeof axios.create>) {
-    console.log("[OAuth] Initialized with baseURL:", ENV.oAuthServerUrl);
-    if (!ENV.oAuthServerUrl) {
-      console.error(
-        "[OAuth] ERROR: OAUTH_SERVER_URL is not configured! Set OAUTH_SERVER_URL environment variable."
-      );
+    if (ENV.oAuthServerUrl) {
+      console.log("[OAuth] Initialized in Replit Auth mode with baseURL:", ENV.oAuthServerUrl);
+    } else {
+      console.log("[OAuth] Initialized in standard Google OAuth mode.");
     }
   }
 
-  private decodeState(state: string): string {
+  public decodeState(state: string): string {
     const decoded = atob(state);
 
     try {
@@ -135,6 +134,25 @@ class SDKServer {
     code: string,
     state: string
   ): Promise<ExchangeTokenResponse> {
+    if (!ENV.oAuthServerUrl) {
+      const redirectUri = this.oauthService.decodeState(state);
+      const params = new URLSearchParams({
+        code,
+        client_id: ENV.appId,
+        client_secret: ENV.googleClientSecret,
+        redirect_uri: redirectUri,
+        grant_type: "authorization_code",
+      });
+      const { data } = await axios.post("https://oauth2.googleapis.com/token", params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+      return {
+        accessToken: data.access_token,
+      } as ExchangeTokenResponse;
+    }
+
     return this.oauthService.getTokenByCode(code, state);
   }
 
@@ -144,6 +162,21 @@ class SDKServer {
    * const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
    */
   async getUserInfo(accessToken: string): Promise<GetUserInfoResponse> {
+    if (!ENV.oAuthServerUrl) {
+      const { data } = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return {
+        openId: data.sub,
+        name: data.name || "",
+        email: data.email || null,
+        loginMethod: "google",
+        platform: "google",
+      } as GetUserInfoResponse;
+    }
+
     const data = await this.oauthService.getUserInfoByToken({
       accessToken,
     } as ExchangeTokenResponse);
@@ -248,6 +281,23 @@ class SDKServer {
   async getUserInfoWithJwt(
     jwtToken: string
   ): Promise<GetUserInfoWithJwtResponse> {
+    if (!ENV.oAuthServerUrl) {
+      const session = await this.verifySession(jwtToken);
+      if (!session) {
+        throw new Error("Invalid JWT token");
+      }
+      return {
+        openId: session.openId,
+        name: session.name,
+        email: session.openId.includes("@") ? session.openId : null,
+        loginMethod: "google",
+        platform: "google",
+        taskUid: session.openId.startsWith(CRON_OPEN_ID_PREFIX)
+          ? session.openId.replace(CRON_OPEN_ID_PREFIX, "")
+          : undefined,
+      } as any;
+    }
+
     const payload: GetUserInfoWithJwtRequest = {
       jwtToken,
       projectId: ENV.appId,
@@ -270,6 +320,19 @@ class SDKServer {
   }
 
   async getAuthorizeUrl(redirectUri: string, state: string): Promise<string> {
+    if (!ENV.oAuthServerUrl) {
+      const params = new URLSearchParams({
+        client_id: ENV.appId,
+        redirect_uri: redirectUri,
+        state,
+        response_type: "code",
+        scope: "openid email profile",
+        access_type: "offline",
+        prompt: "consent",
+      });
+      return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+    }
+
     const payload: AuthorizeRequest = {
       projectId: ENV.appId,
       redirectUri,

@@ -40,10 +40,13 @@ vi.mock("./_core/sdk", () => ({
 vi.mock("./_core/env", () => ({
   ENV: {
     sessionTtlMs: 1000 * 60 * 60,
+    oAuthServerUrl: "test-oauth-url",
+    appId: "test-app-id",
   },
 }));
 
 import { registerOAuthRoutes } from "./_core/oauth";
+import { ENV } from "./_core/env";
 
 let server: Server;
 let baseUrl = "";
@@ -205,6 +208,31 @@ describe("oauth return path", () => {
 
       expect(callbackRes.status).toBe(302);
       expect(callbackRes.headers.get("location")).toBe("/dashboard");
+    }
+  });
+
+  it("redireciona para /login com mensagem de erro quando OAuth não está configurado", async () => {
+    const originalUrl = ENV.oAuthServerUrl;
+    const originalAppId = ENV.appId;
+
+    // Temporarily deconfigure
+    (ENV as any).oAuthServerUrl = "";
+    (ENV as any).appId = "";
+
+    try {
+      const loginRes = await fetch(
+        `${baseUrl}/api/oauth/login?path=${encodeURIComponent("/dashboard")}`,
+        { redirect: "manual" }
+      );
+
+      expect(loginRes.status).toBe(302);
+      const redirectLocation = loginRes.headers.get("location");
+      expect(redirectLocation).toContain("/login?error=");
+      expect(decodeURIComponent(redirectLocation!.replace(/\+/g, " "))).toContain("O login com Google não está configurado");
+    } finally {
+      // Restore
+      (ENV as any).oAuthServerUrl = originalUrl;
+      (ENV as any).appId = originalAppId;
     }
   });
 });
