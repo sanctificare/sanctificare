@@ -7,9 +7,11 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  HeadObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { ENV } from "./_core/env";
+
 
 let _s3Client: S3Client | null = null;
 
@@ -103,6 +105,26 @@ export async function storageGetSignedUrl(relKey: string, bucket = ENV.r2BucketN
 
   return getSignedUrl(client, command, { expiresIn: 3600 });
 }
+
+/**
+ * Check if a file exists in the R2 bucket.
+ */
+export async function storageExists(relKey: string, bucket = ENV.r2BucketName): Promise<boolean> {
+  try {
+    const client = getR2Client();
+    const key = normalizeKey(relKey);
+    await client.send(
+      new HeadObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      })
+    );
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 
 /**
  * Delete a file from R2 storage.
