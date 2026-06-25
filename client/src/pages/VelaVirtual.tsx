@@ -289,7 +289,7 @@ export default function VelaVirtual() {
           >
             <Card className="overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30">
               <CardContent className="p-0">
-                <div className={`relative bg-black transition-all duration-700 overflow-hidden ${cleanMode ? "min-h-[92vh]" : "min-h-[540px]"}`}>
+                <div className={`relative bg-black transition-all duration-700 overflow-hidden ${cleanMode ? "min-h-[80vh] sm:min-h-[92vh]" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}>
                   {BUNNY_LIBRARY_ID ? (
                     isPlaying ? (
                       <iframe
@@ -331,42 +331,42 @@ export default function VelaVirtual() {
                   <div
                     className={`absolute inset-0 transition-all duration-700 ${selectedAmbience.overlayClass}`}
                   />
-                  <div className="absolute inset-0 flex flex-col justify-between p-6">
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)]">
+                  <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)] w-fit">
                         <Sparkles size={12} />
                         Oração silenciosa
                       </span>
                       {cleanMode ? (
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60"
+                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
                             onClick={() => {
                               if (isPlaying) pausePrayerSpace();
                               else startPrayerSpace();
                             }}
                           >
-                            {isPlaying ? <Pause size={14} className="mr-2" /> : <Play size={14} className="mr-2" />}
+                            {isPlaying ? <Pause size={14} className="mr-1.5 sm:mr-2" /> : <Play size={14} className="mr-1.5 sm:mr-2" />}
                             {isPlaying ? "Pausar" : "Iniciar"}
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60"
+                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
                             onClick={toggleMute}
                           >
-                            {isMuted ? <VolumeX size={14} className="mr-2" /> : <Volume2 size={14} className="mr-2" />}
-                            {isMuted ? "Som off" : "Som"}
+                            {isMuted ? <VolumeX size={14} className="mr-1.5 sm:mr-2" /> : <Volume2 size={14} className="mr-1.5 sm:mr-2" />}
+                            {isMuted ? "Mudo" : "Som"}
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60"
+                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
                             onClick={() => setCleanMode(false)}
                           >
-                            Sair do modo limpo
+                            Sair
                           </Button>
                         </div>
                       ) : (
@@ -379,19 +379,19 @@ export default function VelaVirtual() {
                     {isCandleLit ? (
                       privateCandleIntention.trim() ? (
                         <div className="max-w-lg ml-auto text-right">
-                          <div className="space-y-3 animate-fade-in inline-block text-left max-w-full">
+                          <div className="space-y-2 sm:space-y-3 animate-fade-in inline-block text-left max-w-full">
                             <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold block text-right">Minha Intenção</span>
-                            <blockquote className="font-serif text-xl italic text-white/95 leading-relaxed bg-black/30 p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
+                            <blockquote className="font-serif text-sm sm:text-lg lg:text-xl italic text-white/95 leading-relaxed bg-black/30 p-4 sm:p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
                               "{privateCandleIntention}"
                             </blockquote>
-                            <p className="text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
+                            <p className="text-[10px] sm:text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
                           </div>
                         </div>
                       ) : null
                     ) : (
                       <div className="max-w-lg">
-                        <h2 className="font-display text-3xl font-bold text-white mb-3">Acenda sua intenção interior</h2>
-                        <p className="font-serif text-white/80 leading-relaxed">
+                        <h2 className="font-display text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-3">Acenda sua intenção interior</h2>
+                        <p className="font-serif text-white/80 text-xs sm:text-sm leading-relaxed">
                           Feche os olhos, respire com calma e ofereça ao Senhor a sua prece. Esta vela virtual foi pensada para favorecer o recolhimento, o silêncio e a oração perseverante.
                         </p>
                       </div>
@@ -399,12 +399,12 @@ export default function VelaVirtual() {
 
                     {cleanMode && showPhrase && (
                       <div className="rounded-xl border border-white/15 bg-black/45 p-4 max-w-2xl backdrop-blur-sm transition-all duration-500">
-                        <p className="font-serif text-white/90 leading-relaxed">{currentPhrase}</p>
+                        <p className="font-serif text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed">{currentPhrase}</p>
                         <div className="mt-3 flex gap-2">
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-white/20 bg-transparent text-white hover:bg-white/10"
+                            className="border-white/20 bg-transparent text-white hover:bg-white/10 text-xs h-8"
                             onClick={nextPhrase}
                           >
                             Próxima frase
@@ -412,7 +412,7 @@ export default function VelaVirtual() {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="border-white/20 bg-transparent text-white hover:bg-white/10"
+                            className="border-white/20 bg-transparent text-white hover:bg-white/10 text-xs h-8"
                             onClick={() => setShowPhrase(false)}
                           >
                             Ocultar frase
