@@ -67,7 +67,9 @@ export function registerOAuthRoutes(app: Express) {
     }
 
     try {
-      if (!ENV.oAuthServerUrl || !ENV.appId) {
+      const hasReplitAuth = !!ENV.oAuthServerUrl && !!ENV.appId;
+      const hasGoogleAuth = !!ENV.appId && !!ENV.googleClientSecret;
+      if (!hasReplitAuth && !hasGoogleAuth) {
         throw new Error("OAuth server is not configured.");
       }
 
