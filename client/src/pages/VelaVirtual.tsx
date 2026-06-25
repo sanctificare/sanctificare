@@ -56,7 +56,7 @@ const AUDIO_TRACKS: AudioTrack[] = [
     id: "instrumental",
     label: "Instrumental leve",
     description: "Trilha suave para acompanhar a oração.",
-    src: "/r2-storage/vela-virtual/musica-ambiente.mp3",
+    src: "/assets/vela-virtual/musica-ambiente.mp3",
   },
   {
     id: "gregoriano",
