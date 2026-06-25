@@ -1,5 +1,7 @@
 import type { Express } from "express";
 import { storageGetSignedUrl } from "../storage";
+import path from "path";
+import fs from "fs";
 
 export function registerStorageProxy(app: Express) {
   // Proxy for R2 storage — serves files via signed URLs
@@ -22,7 +24,23 @@ export function registerStorageProxy(app: Express) {
       res.set("Cache-Control", "public, max-age=86400"); // cache 24h
       res.redirect(307, signedUrl);
     } catch (err) {
-      console.error("[StorageProxy] R2 signed URL failed:", err);
+      console.warn("[StorageProxy] R2 signed URL failed, falling back to local file:", err);
+      
+      try {
+        const publicDir = process.env.NODE_ENV === "development"
+          ? path.resolve(import.meta.dirname, "../..", "client", "public")
+          : path.resolve(import.meta.dirname, "public");
+
+        const localFile = path.join(publicDir, "assets", key);
+        if (fs.existsSync(localFile)) {
+          res.set("Cache-Control", "public, max-age=86400");
+          res.sendFile(localFile);
+          return;
+        }
+      } catch (localErr) {
+        console.error("[StorageProxy] Local fallback error:", localErr);
+      }
+
       res.status(502).send("Storage proxy error");
     }
   });
