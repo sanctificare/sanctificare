@@ -600,7 +600,7 @@ export default function Home() {
               {dailyRoutine.map((p) => (
                 <div
                   key={p.id}
-                  onClick={() => navigate("/oracao/" + p.id)}
+                  onClick={() => navigate(getLoginUrl(p.url))}
                   className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
                 >
                   <div className="flex items-center gap-4">
@@ -635,7 +635,7 @@ export default function Home() {
               {trendingPrayers.map((p) => (
                 <div
                   key={p.id}
-                  onClick={() => navigate("/oracao/" + p.id)}
+                  onClick={() => navigate(getLoginUrl(p.url))}
                   className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-3 flex-shrink-0 w-[240px] cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
                 >
                   <div className="w-full aspect-video rounded-lg overflow-hidden relative border border-neutral-800 mb-3">

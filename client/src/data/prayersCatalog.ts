@@ -9,6 +9,8 @@ export interface PrayerCatalogItem {
   detailsDesc: string;
   guides: string[];
   mediaOptions: string[];
+  /** Rota autenticada de destino (usada na LP para redirecionar via login) */
+  url: string;
 }
 
 export const dailyRoutine: PrayerCatalogItem[] = [
@@ -23,6 +25,7 @@ export const dailyRoutine: PrayerCatalogItem[] = [
     detailsDesc: "Hoje meditaremos nos mistérios da nossa redenção. Una-se a nós para rezar o Santo Rosário, meditando nos mistérios gozosos, dolorosos, gloriosos ou luminosos correspondentes ao dia de hoje.",
     guides: ["Jonathan Roumie", "Voz Masculina", "Voz Feminina", "Leitura Silenciosa"],
     mediaOptions: ["18 min - Áudio Completo", "12 min - Versão Curta", "Apenas Texto"],
+    url: "/rosario",
   },
   {
     id: "evangelho-dia",
@@ -35,6 +38,7 @@ export const dailyRoutine: PrayerCatalogItem[] = [
     detailsDesc: "Ouça o Evangelho do dia acompanhado de uma meditação baseada no método da Lectio Divina (Leitura, Meditação, Oração, Contemplação).",
     guides: ["Voz Masculina", "Voz Feminina", "Leitura Silenciosa"],
     mediaOptions: ["8 min - Áudio & Reflexão", "5 min - Apenas Leitura"],
+    url: "/liturgia",
   },
   {
     id: "homilia-diaria",
@@ -47,6 +51,7 @@ export const dailyRoutine: PrayerCatalogItem[] = [
     detailsDesc: "Uma reflexão teológica rápida e profunda sobre o Evangelho do dia para iluminar suas escolhas cotidianas à luz da doutrina católica.",
     guides: ["Voz Masculina", "Voz Feminina", "Leitura Silenciosa"],
     mediaOptions: ["4 min - Áudio completo", "Apenas texto transcrito"],
+    url: "/liturgia",
   },
   {
     id: "oferecimento-manha",
@@ -59,6 +64,7 @@ export const dailyRoutine: PrayerCatalogItem[] = [
     detailsDesc: "Entregue suas intenções, trabalhos, alegrias e sofrimentos deste dia ao Sagrado Coração de Jesus por meio do Imaculado Coração de Maria.",
     guides: ["Equipe Sanctificare", "Voz Masculina", "Voz Feminina"],
     mediaOptions: ["2 min - Áudio", "1 min - Apenas Texto"],
+    url: "/oracoes",
   }
 ];
 
@@ -73,6 +79,7 @@ export const trendingPrayers: PrayerCatalogItem[] = [
     detailsDesc: "Clame pelos sete dons do Espírito Santo nesta novena tradicional escrita por Santo Afonso de Ligório para preparar a alma para Pentecostes.",
     guides: ["Santo Afonso de Ligório", "Voz Masculina", "Voz Feminina"],
     mediaOptions: ["12 min - Áudio Diário", "Apenas Leituras"],
+    url: "/novenas",
   },
   {
     id: "via-sacra",
@@ -84,6 +91,7 @@ export const trendingPrayers: PrayerCatalogItem[] = [
     detailsDesc: "Acompanhe Nosso Senhor Jesus Cristo em Seu caminho de dor até o Calvário. Meditações profundas escritas por São Josemaria Escrivá para cada estação.",
     guides: ["São Josemaria Escrivá", "Voz Masculina", "Voz Feminina"],
     mediaOptions: ["25 min - Áudio Completo", "15 min - Versão Meditativa"],
+    url: "/via-sacra",
   },
   {
     id: "musica-sacra",
@@ -95,6 +103,7 @@ export const trendingPrayers: PrayerCatalogItem[] = [
     detailsDesc: "Acalme seu coração e encontre o recolhimento com uma seleção curada de cantos gregorianos e polifonia sacra tradicional da Igreja.",
     guides: ["Abadia de Solesmes", "Polifonia Clássica", "Sons Contemplativos"],
     mediaOptions: ["60 min - Álbum completo", "30 min - Seleção Curta"],
+    url: "/musica-sacra",
   },
   {
     id: "vela-virtual",
@@ -106,6 +115,7 @@ export const trendingPrayers: PrayerCatalogItem[] = [
     detailsDesc: "Acenda uma vela virtual em nosso altar de preces, registrando suas intenções de oração e unindo-se à intercessão de toda a comunidade católica.",
     guides: ["Equipe Sanctificare", "Silêncio contemplativo"],
     mediaOptions: ["1 min - Reflexão guiada", "Apenas visualização"],
+    url: "/vela-virtual",
   }
 ];
 
