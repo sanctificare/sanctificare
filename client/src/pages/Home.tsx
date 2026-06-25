@@ -124,7 +124,7 @@ const paths = [
     icon: Sparkles,
     desc: "A oração mariana mais tradicional e contemplativa. O Sanctificare oferece um guia interativo passo a passo com contador virtual de Ave-Marias.",
     ctaText: "Acessar Guia do Rosário",
-    url: "/login?tab=cadastrar&path=rosario",
+    url: "/login?tab=cadastrar&path=/rosario",
   },
   {
     id: "dormir",
@@ -132,7 +132,7 @@ const paths = [
     icon: Shield,
     desc: "Áudios devocionais com música sacra, Salmos e leituras bíblicas reconfortantes para acalmar a mente e ter um sono reparador com Deus.",
     ctaText: "Ouvir Orações de Sono",
-    url: "/login?tab=cadastrar&path=dormir",
+    url: "/login?tab=cadastrar&path=/musica-sacra",
   },
   {
     id: "liturgia",
@@ -140,7 +140,7 @@ const paths = [
     icon: Sun,
     desc: "Siga o calendário da Igreja Universal todos os dias: Leituras bíblicas, Salmo, Evangelho do dia e homilia comentada.",
     ctaText: "Ver Liturgia de Hoje",
-    url: "/login?tab=cadastrar&path=liturgia",
+    url: "/login?tab=cadastrar&path=/liturgia",
   },
   {
     id: "novenas",
@@ -148,7 +148,7 @@ const paths = [
     icon: Crown,
     desc: "Una-se à comunidade em novenas tradicionais (como Divino Espírito Santo, N. S. Aparecida) para obter as graças de Deus.",
     ctaText: "Escolher uma Novena",
-    url: "/login?tab=cadastrar&path=novena",
+    url: "/login?tab=cadastrar&path=/novenas",
   }
 ];
 
