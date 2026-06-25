@@ -267,7 +267,7 @@ export default function VelaVirtual() {
     >
       {!cleanMode && <AppNav />}
 
-      <main className={`container transition-all duration-500 ${cleanMode ? "py-4" : "py-8"}`}>
+      <main className={`transition-all duration-500 ${cleanMode ? "w-full max-w-none p-0" : "container py-8"}`}>
         {!cleanMode && (
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 animate-fade-in border-b border-white/10 pb-4">
             <div>
@@ -283,13 +283,13 @@ export default function VelaVirtual() {
           </div>
         )}
           <div
-            className={`grid gap-6 items-stretch transition-all duration-500 ${
-              cleanMode ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
+            className={`transition-all duration-500 ${
+              cleanMode ? "w-full" : "grid gap-6 items-stretch grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
             }`}
           >
-            <Card className="overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30">
+            <Card className={`transition-all duration-500 ${cleanMode ? "border-none rounded-none bg-black shadow-none w-full" : "overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30"}`}>
               <CardContent className="p-0">
-                <div className={`relative bg-black transition-all duration-700 overflow-hidden ${cleanMode ? "min-h-[80vh] sm:min-h-[92vh]" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}>
+                <div className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100dvh] sm:h-[92vh]" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}>
                   {BUNNY_LIBRARY_ID ? (
                     isPlaying ? (
                       <iframe
