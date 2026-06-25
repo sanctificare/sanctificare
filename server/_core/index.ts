@@ -174,7 +174,9 @@ async function startServer() {
     }
 
     const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
-    const isCsrfExemptPath = req.path === "/api/scheduled/fetchLiturgia";
+    const isCsrfExemptPath =
+      req.path === "/api/scheduled/fetchLiturgia" ||
+      req.path === "/api/auth/logout";
 
     if (!isUnsafeMethod || !hasSessionCookie || isCsrfExemptPath) {
       return next();

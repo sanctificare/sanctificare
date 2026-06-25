@@ -8,7 +8,7 @@ type UseAuthOptions = {
 };
 
 async function fetchMe() {
-  const res = await fetch("/api/auth/me");
+  const res = await fetch("/api/auth/me", { credentials: "same-origin" });
   if (!res.ok) {
     throw new Error("Failed to fetch user");
   }
@@ -16,7 +16,7 @@ async function fetchMe() {
 }
 
 async function performLogout() {
-  const res = await fetch("/api/auth/logout", { method: "POST" });
+  const res = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error || "Failed to logout");
