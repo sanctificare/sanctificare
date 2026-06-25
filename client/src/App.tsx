@@ -20,7 +20,6 @@ import Bible from "./pages/Bible";
 import Intentions from "./pages/Intentions";
 import Profile from "./pages/Profile";
 import Premium from "./pages/Premium";
-import TemplateSettings from "./pages/TemplateSettings";
 import VideosBiblicos from "./pages/VideosBiblicos";
 import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
@@ -50,7 +49,6 @@ function Router() {
       <Route path="/intencoes" component={Intentions} />
       <Route path="/perfil" component={Profile} />
       <Route path="/premium" component={Premium} />
-      <Route path="/temas" component={TemplateSettings} />
       <Route path="/videos" component={VideosBiblicos} />
       <Route path="/oracao/:id" component={PrayerDetail} />
       <Route path="/redefinir-senha" component={ResetPassword} />

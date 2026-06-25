@@ -148,11 +148,6 @@ export default function AppNav() {
                         <Crown size={14} className="mr-2 text-[oklch(0.70_0.12_75)]" /> Planos Premium
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/temas">
-                        <span className="mr-2">🎨</span> Personalizar Temas
-                      </Link>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"
