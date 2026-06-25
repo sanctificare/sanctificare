@@ -345,17 +345,24 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] rounded-full px-4 py-1.5 shadow-sm">
                 <Sparkles size={14} className="text-[oklch(0.82_0.10_80)] animate-pulse" />
                 <span className="text-[oklch(0.82_0.10_80)] text-xs font-display tracking-wider uppercase font-semibold">
-                  Sua caminhada diária de recolhimento e fé
+                  Seu Santuário de Recolhimento e Devoção
                 </span>
               </div>
 
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                Encontre a Paz <br className="hidden sm:inline" />
-                de Deus na <span className="text-[oklch(0.82_0.10_80)] drop-shadow-[0_2px_10px_oklch(0.75_0.12_75/0.3)]">Oração</span>
+                Eleve o seu Coração <br className="hidden sm:inline" />
+                ao Altíssimo na <span className="text-[oklch(0.82_0.10_80)] drop-shadow-[0_2px_10px_oklch(0.75_0.12_75/0.3)]">Oração</span>
               </h1>
 
-              <p className="font-serif text-lg sm:text-xl text-[oklch(0.85_0.02_260)] leading-relaxed max-w-xl">
-                O Sanctificare acompanha sua rotina de recolhimento de forma sóbria e reverente. Reze o Rosário interativo, acompanhe a Liturgia diária e crie constância espiritual.
+              <div className="border-l-2 border-[oklch(0.75_0.12_75)] pl-4 py-2 bg-[oklch(0.75_0.12_75/0.05)] rounded-r-xl max-w-xl">
+                <p className="font-serif italic text-base sm:text-lg text-[oklch(0.85_0.02_260)] leading-relaxed">
+                  "Sede santos, porque eu, o Senhor vosso Deus, sou santo."
+                </p>
+                <span className="text-xs font-sans font-bold tracking-wider text-[oklch(0.82_0.10_80)] block mt-1 uppercase">Lv 19, 2</span>
+              </div>
+
+              <p className="font-serif text-lg text-[oklch(0.85_0.02_260)] leading-relaxed max-w-xl">
+                O Sanctificare acompanha a sua busca diária pela santidade através de uma experiência sóbria, bela e reverente. Reze o Santo Rosário, medite com as leituras litúrgicas do dia e cultive uma intimidade sincera com Deus, livre de distrações e anúncios.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2 max-w-md">
@@ -364,7 +371,7 @@ export default function Home() {
                     size="lg"
                     className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-base px-8 py-7 shadow-gold rounded-xl hover:scale-[1.03] transition-all"
                   >
-                    Experimentar Sanctificare Grátis
+                    Iniciar Minha Caminhada Grátis
                     <ChevronRight size={20} className="ml-2" />
                   </Button>
                 </Link>
