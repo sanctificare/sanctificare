@@ -27,6 +27,9 @@ import {
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const VIDEO_SRC = "/r2-storage/vela-virtual/vela-loop.mp4";
+const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
+const BUNNY_VIDEO_ID = "8889173b-bfcb-49fe-b062-39c2d4075018";
+const BUNNY_THUMBNAIL = `https://vz-b07d3b4c-295.b-cdn.net/${BUNNY_VIDEO_ID}/thumbnail.jpg`;
 
 type AudioTrack = {
   id: string;
@@ -287,8 +290,23 @@ export default function VelaVirtual() {
           >
             <Card className="overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30">
               <CardContent className="p-0">
-                <div className={`relative bg-black transition-all duration-700 ${cleanMode ? "min-h-[92vh]" : "min-h-[540px]"}`}>
-                  {!videoFailed ? (
+                <div className={`relative bg-black transition-all duration-700 overflow-hidden ${cleanMode ? "min-h-[92vh]" : "min-h-[540px]"}`}>
+                  {BUNNY_LIBRARY_ID ? (
+                    isPlaying ? (
+                      <iframe
+                        src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${BUNNY_VIDEO_ID}?autoplay=true&loop=true&muted=true&controls=false&preload=true`}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full border-none pointer-events-none scale-105"
+                        allow="autoplay; encrypted-media"
+                      />
+                    ) : (
+                      <img
+                        src={BUNNY_THUMBNAIL}
+                        alt="Vela Virtual"
+                        className="absolute inset-0 w-full h-full object-cover opacity-80"
+                      />
+                    )
+                  ) : !videoFailed ? (
                     <video
                       ref={videoRef}
                       className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${isPlaying ? "opacity-100" : "opacity-90"}`}
