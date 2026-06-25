@@ -171,29 +171,28 @@ export default function VelaVirtual() {
   }, []);
 
   const startPrayerSpace = async () => {
+    setIsPlaying(true);
+
     const video = videoRef.current;
     const audio = audioRef.current;
-    const playRequests: Promise<unknown>[] = [];
 
     if (video) {
-      video.currentTime = 0;
-      playRequests.push(video.play());
+      try {
+        video.currentTime = 0;
+        await video.play();
+      } catch (videoErr) {
+        console.warn("[VelaVirtual] Video playback failed:", videoErr);
+      }
     }
 
     if (audio && selectedTrack?.src && !silentGuidedMode) {
-      audio.src = selectedTrack.src;
-      audio.currentTime = 0;
-      playRequests.push(audio.play());
-    }
-
-    try {
-      await Promise.all(playRequests);
-      setIsPlaying(true);
-    } catch {
-      setIsPlaying(false);
-      toast.error("Não foi possível iniciar o ambiente.", {
-        description: "Verifique se o navegador permite reproduzir vídeo e áudio automaticamente.",
-      });
+      try {
+        audio.src = selectedTrack.src;
+        audio.currentTime = 0;
+        await audio.play();
+      } catch (audioErr) {
+        console.warn("[VelaVirtual] Audio playback failed/blocked by browser:", audioErr);
+      }
     }
   };
 
