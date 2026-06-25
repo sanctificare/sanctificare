@@ -300,63 +300,6 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
         );
       })}
 
-      {liturgy.prayers && (
-        <div
-          className={`border rounded-xl overflow-hidden transition-all duration-300 mt-4 ${
-            isZenMode
-              ? `${theme.border} bg-white dark:bg-stone-900/40 shadow-sm`
-              : `border-border bg-white dark:bg-card hover:shadow-md ${theme.glow}`
-          }`}
-        >
-          <button
-            onClick={() => toggleSection("prayers")}
-            className="w-full px-5 py-4 flex items-center justify-between hover:bg-accent/40 transition-colors"
-          >
-            <span className={`font-semibold text-sm tracking-wide ${expandedSection === "prayers" ? theme.accentText : "text-foreground"}`}>
-              Orações do Dia
-            </span>
-            {expandedSection === "prayers" ? (
-              <ChevronUp className={`w-4 h-4 ${theme.primary}`} />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-muted-foreground" />
-            )}
-          </button>
-          {expandedSection === "prayers" && (
-            <div className={`px-5 py-4 border-t border-border transition-colors bg-white dark:bg-stone-950/20 space-y-4`}>
-              {liturgy.prayers.coleta && (
-                <div>
-                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">
-                    Coleta
-                  </p>
-                  <p className={`font-sans leading-relaxed ${fontSizeClasses[fontSize]} text-foreground/90`}>
-                    {liturgy.prayers.coleta}
-                  </p>
-                </div>
-              )}
-              {liturgy.prayers.oferendas && (
-                <div>
-                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">
-                    Sobre as Oferendas
-                  </p>
-                  <p className={`font-sans leading-relaxed ${fontSizeClasses[fontSize]} text-foreground/90`}>
-                    {liturgy.prayers.oferendas}
-                  </p>
-                </div>
-              )}
-              {liturgy.prayers.comunhao && (
-                <div>
-                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-1">
-                    Depois da Comunhão
-                  </p>
-                  <p className={`font-sans leading-relaxed ${fontSizeClasses[fontSize]} text-foreground/90`}>
-                    {liturgy.prayers.comunhao}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
