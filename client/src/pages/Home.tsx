@@ -563,6 +563,93 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Explore Nossas Orações (Estilo Hallow) */}
+      <section id="explorar-oracoes" className="py-24 bg-[oklch(0.12_0.03_260)] text-white relative overflow-hidden border-t border-[oklch(0.75_0.12_75/0.2)]">
+        <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-[oklch(0.75_0.12_75/0.05)] rounded-full blur-[100px] pointer-events-none" />
+        
+        <div className="container relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="divider-gold mb-6">
+              <span className="font-display text-xs tracking-widest text-[oklch(0.82_0.10_80)] uppercase font-bold px-4">
+                Biblioteca de Áudio
+              </span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
+              Explore Nossas Orações
+            </h2>
+            <p className="font-serif text-lg text-[oklch(0.80_0.02_260)]">
+              Ouça uma prévia de nossas orações guiadas, novenas e meditações. Clique para ouvir gratuitamente.
+            </p>
+          </div>
+
+          {/* Roteiro do Dia (Daily Routine) - Grid compacto */}
+          <div className="max-w-5xl mx-auto mb-16">
+            <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
+              <Sun size={18} />
+              Roteiro do Dia
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {dailyRoutine.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => navigate("/oracao/" + p.id)}
+                  className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 relative border border-neutral-800">
+                      <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Play size={18} className="text-white fill-white" />
+                      </div>
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-display text-sm sm:text-base font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors">{p.title}</h4>
+                      <p className="text-xs text-neutral-400 font-serif mt-0.5">{p.desc} • {p.speaker}</p>
+                      <span className="text-[10px] text-neutral-500 font-sans block mt-1">{p.duration}</span>
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.155)] text-[oklch(0.75_0.12_75)] flex items-center justify-center flex-shrink-0 group-hover:bg-[oklch(0.75_0.12_75)] group-hover:text-[oklch(0.15_0.02_260)] transition-all">
+                    ▶
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Em Destaque (Trending) - Carrossel Horizontal */}
+          <div className="max-w-5xl mx-auto">
+            <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
+              <Sparkles size={18} />
+              Orações em Destaque
+            </h3>
+            {/* Scrollable list */}
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-neutral-800 scrollbar-track-transparent">
+              {trendingPrayers.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => navigate("/oracao/" + p.id)}
+                  className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-3 flex-shrink-0 w-[240px] cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
+                >
+                  <div className="w-full aspect-video rounded-lg overflow-hidden relative border border-neutral-800 mb-3">
+                    <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Play size={20} className="text-white fill-white" />
+                    </div>
+                  </div>
+                  <div className="text-left space-y-1">
+                    <h4 className="font-display text-sm font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors truncate">{p.title}</h4>
+                    <p className="text-xs text-neutral-400 font-serif truncate">{p.desc}</p>
+                    <p className="text-[10px] text-neutral-500 font-sans truncate">{p.speaker}</p>
+                    <span className="text-[9px] bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.82_0.10_80)] font-sans px-2 py-0.5 rounded-full inline-block mt-1">{p.duration}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works (Como Funciona) */}
       <section id="como-funciona" className="py-24 bg-[oklch(0.98_0.005_85)] relative">
         <div className="container">
@@ -934,92 +1021,7 @@ export default function Home() {
 
 
 
-      {/* Explore Nossas Orações (Estilo Hallow) */}
-      <section id="explorar-oracoes" className="py-24 bg-[oklch(0.12_0.03_260)] text-white relative overflow-hidden border-t border-[oklch(0.75_0.12_75/0.2)]">
-        <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-[oklch(0.75_0.12_75/0.05)] rounded-full blur-[100px] pointer-events-none" />
-        
-        <div className="container relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="divider-gold mb-6">
-              <span className="font-display text-xs tracking-widest text-[oklch(0.82_0.10_80)] uppercase font-bold px-4">
-                Biblioteca de Áudio
-              </span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
-              Explore Nossas Orações
-            </h2>
-            <p className="font-serif text-lg text-[oklch(0.80_0.02_260)]">
-              Ouça uma prévia de nossas orações guiadas, novenas e meditações. Clique para ouvir gratuitamente.
-            </p>
-          </div>
 
-          {/* Roteiro do Dia (Daily Routine) - Grid compacto */}
-          <div className="max-w-5xl mx-auto mb-16">
-            <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
-              <Sun size={18} />
-              Roteiro do Dia
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {dailyRoutine.map((p) => (
-                <div
-                  key={p.id}
-                  onClick={() => navigate("/oracao/" + p.id)}
-                  className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 relative border border-neutral-800">
-                      <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play size={18} className="text-white fill-white" />
-                      </div>
-                    </div>
-                    <div className="text-left">
-                      <h4 className="font-display text-sm sm:text-base font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors">{p.title}</h4>
-                      <p className="text-xs text-neutral-400 font-serif mt-0.5">{p.desc} • {p.speaker}</p>
-                      <span className="text-[10px] text-neutral-500 font-sans block mt-1">{p.duration}</span>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.75_0.12_75)] flex items-center justify-center flex-shrink-0 group-hover:bg-[oklch(0.75_0.12_75)] group-hover:text-[oklch(0.15_0.02_260)] transition-all">
-                    ▶
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Em Destaque (Trending) - Carrossel Horizontal */}
-          <div className="max-w-5xl mx-auto">
-            <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
-              <Sparkles size={18} />
-              Orações em Destaque
-            </h3>
-            {/* Scrollable list */}
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-neutral-800 scrollbar-track-transparent">
-              {trendingPrayers.map((p) => (
-                <div
-                  key={p.id}
-                  onClick={() => navigate("/oracao/" + p.id)}
-                  className="bg-[oklch(0.22_0.07_260/0.4)] border border-[oklch(0.75_0.12_75/0.1)] rounded-xl p-3 flex-shrink-0 w-[240px] cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] hover:bg-[oklch(0.22_0.07_260/0.7)] transition-all duration-300 group"
-                >
-                  <div className="w-full aspect-video rounded-lg overflow-hidden relative border border-neutral-800 mb-3">
-                    <img src={p.cover} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Play size={20} className="text-white fill-white" />
-                    </div>
-                  </div>
-                  <div className="text-left space-y-1">
-                    <h4 className="font-display text-sm font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors truncate">{p.title}</h4>
-                    <p className="text-xs text-neutral-400 font-serif truncate">{p.desc}</p>
-                    <p className="text-[10px] text-neutral-500 font-sans truncate">{p.speaker}</p>
-                    <span className="text-[9px] bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.82_0.10_80)] font-sans px-2 py-0.5 rounded-full inline-block mt-1">{p.duration}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Planos Section */}
       <section id="planos" className="py-24 bg-white border-t border-[oklch(0.88_0.01_260)]">
