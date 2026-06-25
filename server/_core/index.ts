@@ -149,6 +149,7 @@ async function startServer() {
   }
 
   const app = express();
+  app.set("trust proxy", true);
   const server = createServer(app);
   const allowedOrigins = getAllowedOrigins();
 

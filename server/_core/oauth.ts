@@ -73,7 +73,9 @@ export function registerOAuthRoutes(app: Express) {
         throw new Error("OAuth server is not configured.");
       }
 
-      const callbackUrl = `${req.protocol}://${req.get("host")}/api/oauth/callback`;
+      const protoHeader = req.headers["x-forwarded-proto"];
+      const protocol = (Array.isArray(protoHeader) ? protoHeader[0] : protoHeader?.split(",")[0]?.trim()) || req.protocol;
+      const callbackUrl = `${protocol}://${req.get("host")}/api/oauth/callback`;
       const appPath = sanitizeAppPath(getQueryParam(req, "path"));
       const nonce = generateCsrfToken();
       const state = encodeOAuthState({ redirectUri: callbackUrl, nonce, appPath });
