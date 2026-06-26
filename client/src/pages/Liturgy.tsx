@@ -3,7 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
-import { Sun, Heart, Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Award } from "lucide-react";
+import { Sun, Heart, Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import LiturgyReadings from "@/components/LiturgyReadings";
@@ -113,10 +113,7 @@ export default function Liturgy() {
     { date: selectedDateIso }
   );
 
-  const { data: apiSanto, isLoading: isLoadingSanto } = trpc.liturgy.getSantoDoDia.useQuery(undefined, {
-    enabled: isTodaySelected,
-    staleTime: 60 * 60 * 1000,
-  });
+
 
   const [liturgyAudio, setLiturgyAudio] = useState<LiturgyDailyAudioTrack | null>(null);
   const [isZenMode, setIsZenMode] = useState(false);
@@ -323,45 +320,7 @@ export default function Liturgy() {
         {/* Content */}
         {liturgy && !isFetchingLiturgy && (
           <>
-            {/* Santo do Dia Card */}
-            {!isZenMode && dailyContent && (
-              <div className={`p-5 rounded-xl border ${theme.border} ${theme.bgLight} ${theme.glow} flex items-start gap-4 mb-6 transition-all duration-300 animate-fade-in`}>
-                <div className={`p-2.5 rounded-full ${theme.badge} flex-shrink-0`}>
-                  <Award className={`w-5 h-5 ${theme.primary}`} />
-                </div>
-                <div className="space-y-1 flex-1 min-w-0">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">Santo do Dia</span>
-                  
-                  {isTodaySelected && isLoadingSanto ? (
-                    <div className="space-y-2 py-1 animate-pulse">
-                      <div className="h-4 bg-muted rounded w-2/3" />
-                      <div className="space-y-1">
-                        <div className="h-3 bg-muted rounded w-full" />
-                        <div className="h-3 bg-muted rounded w-full" />
-                        <div className="h-3 bg-muted rounded w-5/6" />
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <h3 className="font-display font-bold text-base text-foreground leading-tight">
-                        {isTodaySelected && apiSanto ? apiSanto.name : dailyContent.saint.name}
-                      </h3>
-                      {!(isTodaySelected && apiSanto) && dailyContent.saint.title && (
-                        <p className="text-xs font-medium text-muted-foreground">{dailyContent.saint.title}</p>
-                      )}
-                      <p className="text-sm text-foreground/80 leading-relaxed pt-1.5">
-                        {isTodaySelected && apiSanto ? apiSanto.biography : dailyContent.saint.summary}
-                      </p>
-                      {isTodaySelected && apiSanto?.quote && (
-                        <p className="text-xs text-muted-foreground italic border-l-2 border-primary/30 pl-2.5 mt-2.5">
-                          {apiSanto.quote}
-                        </p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
+
 
             {liturgyAudio && (
               <AudioPlayer
