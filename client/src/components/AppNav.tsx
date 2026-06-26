@@ -11,13 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown } from "lucide-react";
+import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 
 const mainLinks = [
   { href: "/dashboard", label: "Início", icon: Home },
+  { href: "/perfil", label: "Plano Diário", icon: CheckCircle2 },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
