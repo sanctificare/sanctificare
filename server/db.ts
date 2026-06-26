@@ -1,4 +1,4 @@
-import { eq, desc, and, or, sql, gt, isNull } from "drizzle-orm";
+import { eq, desc, and, or, sql, gt, isNull, ne } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -696,7 +696,10 @@ export async function getActiveSubscription(userId: number) {
   const result = await db
     .select()
     .from(subscriptions)
-    .where(and(eq(subscriptions.userId, userId), eq(subscriptions.status, "active")))
+    .where(and(
+      eq(subscriptions.userId, userId),
+      or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"))
+    ))
     .orderBy(desc(subscriptions.expiresAt))
     .limit(1);
   const sub = result[0];
@@ -749,27 +752,27 @@ export async function createOrUpdateStripeSubscription(
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   const now = new Date();
-  
-  // Deactivate any existing active subscriptions first (except this one)
-  await db
-    .update(subscriptions)
-    .set({ status: "cancelled", updatedAt: now })
-    .where(and(
-      eq(subscriptions.userId, userId),
-      eq(subscriptions.status, "active"),
-      sql`id != id`
-    ));
-  
+
   const existing = await db
     .select()
     .from(subscriptions)
     .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId))
     .limit(1);
-    
+
+  const activeStatuses = or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"));
+  const deactivateWhere = existing[0]
+    ? and(eq(subscriptions.userId, userId), activeStatuses, ne(subscriptions.id, existing[0].id))
+    : and(eq(subscriptions.userId, userId), activeStatuses);
+
+  await db
+    .update(subscriptions)
+    .set({ status: "expired", updatedAt: now })
+    .where(deactivateWhere);
+
   if (existing.length > 0) {
     await db
       .update(subscriptions)
-      .set({ status, expiresAt, plan, updatedAt: now })
+      .set({ status, expiresAt, plan, stripeCustomerId, updatedAt: now })
       .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId));
   } else {
     await db.insert(subscriptions).values({

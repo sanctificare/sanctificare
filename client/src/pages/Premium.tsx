@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { Crown, Check, Star, Shield, Sparkles, X } from "lucide-react";
+import { Crown, Check, Shield, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getAudioCollectionArt, getLiturgySectionArt, getNovenaArt } from "@/lib/cardArt";
@@ -92,24 +92,70 @@ const premiumContent = [
 export default function Premium() {
   const { isAuthenticated, loading } = useAuth();
   const [confirmCancel, setConfirmCancel] = useState(false);
+  const [confirmUpgrade, setConfirmUpgrade] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<"monthly" | "annual" | null>(null);
+  const [checkoutPending, setCheckoutPending] = useState(false);
   const utils = trpc.useUtils();
 
-  const { data: subscription, isLoading: subLoading } = trpc.subscriptions.getActive.useQuery(
+  const { data: subscription, isLoading: subLoading, refetch: refetchSubscription } = trpc.subscriptions.getActive.useQuery(
     undefined, { enabled: isAuthenticated }
   );
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const checkoutSucceeded = params.get("success") === "true";
+    const checkoutCancelled = params.get("cancelled") === "true";
+
+    if (!checkoutSucceeded && !checkoutCancelled) return;
+
+    window.history.replaceState({}, "", window.location.pathname);
+
+    if (checkoutCancelled) {
+      toast.info("Checkout cancelado.", {
+        description: "Nenhuma cobrança foi concluída.",
+      });
+      return;
+    }
+
+    toast.success("Pagamento recebido pelo Stripe.", {
+      description: "Estamos confirmando sua assinatura. Isso pode levar alguns instantes.",
+    });
+    setCheckoutPending(true);
+
+    refetchSubscription();
+    const retryDelays = [1500, 3500, 6500, 10000];
+    const timeouts = retryDelays.map((delay) =>
+      window.setTimeout(() => {
+        refetchSubscription();
+      }, delay)
+    );
+
+    return () => {
+      timeouts.forEach((timeout) => window.clearTimeout(timeout));
+    };
+  }, [isAuthenticated, refetchSubscription]);
 
   const subscribeMutation = trpc.subscriptions.subscribe.useMutation({
     onSuccess: (res) => {
       if (res.url) {
         window.location.href = res.url;
       } else {
+        setSelectedPlan(null);
+        setConfirmUpgrade(false);
+        setCheckoutPending(false);
         utils.subscriptions.getActive.invalidate();
         toast.success("Assinatura ativada!", {
           description: "Seu acesso foi ampliado. Que Deus abençoe sua jornada de oração.",
         });
       }
     },
-    onError: () => toast.error("Não foi possível processar sua assinatura agora. Tente novamente."),
+    onError: (err) => {
+      setSelectedPlan(null);
+      setConfirmUpgrade(false);
+      toast.error(err.message || "Não foi possível processar sua assinatura agora. Tente novamente.");
+    },
   });
 
   const cancelMutation = trpc.subscriptions.cancel.useMutation({
@@ -137,6 +183,26 @@ export default function Premium() {
       setConfirmCancel(true);
     }
   };
+
+  const handleSubscribe = (plan: "monthly" | "annual") => {
+    setSelectedPlan(plan);
+    subscribeMutation.mutate({ plan });
+  };
+
+  useEffect(() => {
+    if (subscription) {
+      setCheckoutPending(false);
+    }
+  }, [subscription]);
+
+  const subscriptionExpiresAt = subscription
+    ? new Date(subscription.expiresAt).toLocaleDateString("pt-BR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+  const isCancellationScheduled = subscription?.status === "cancelled";
 
   if (loading || subLoading) {
     return (
@@ -177,6 +243,26 @@ export default function Premium() {
           </p>
         </div>
 
+        {checkoutPending && !subscription && (
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="rounded-2xl border border-[oklch(0.75_0.12_75/0.45)] bg-white p-5 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="mt-0.5 h-10 w-10 rounded-full bg-[oklch(0.75_0.12_75/0.16)] border border-[oklch(0.75_0.12_75/0.35)] flex items-center justify-center">
+                  <Sparkles size={18} className="text-[oklch(0.65_0.12_70)]" />
+                </div>
+                <div>
+                  <p className="font-display text-base font-bold text-[oklch(0.22_0.07_260)]">
+                    Confirmando sua assinatura
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    O pagamento foi recebido pelo Stripe. Estamos atualizando seu acesso premium automaticamente.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Assinatura ativa */}
         {subscription && (
           <div className="max-w-2xl mx-auto mb-8">
@@ -189,15 +275,18 @@ export default function Premium() {
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-display text-base font-bold text-white">
-                        Premium {subscription.plan === "annual" ? "Anual" : "Mensal"} Ativo
+                        Premium {subscription.plan === "annual" ? "Anual" : "Mensal"} {isCancellationScheduled ? "Cancelado" : "Ativo"}
                       </p>
-                      <span className="badge-premium">Ativo</span>
+                      <span className="badge-premium">{isCancellationScheduled ? "Acesso mantido" : "Ativo"}</span>
                     </div>
                     <p className="text-sm text-[oklch(0.75_0.03_260)]">
-                      Válido até {new Date(subscription.expiresAt).toLocaleDateString("pt-BR", {
-                        day: "numeric", month: "long", year: "numeric",
-                      })}
+                      {isCancellationScheduled ? "Acesso até " : "Válido até "}{subscriptionExpiresAt}
                     </p>
+                    {isCancellationScheduled && (
+                      <p className="text-xs text-[oklch(0.82_0.10_80)] mt-1">
+                        A renovação foi cancelada, mas seus conteúdos premium seguem liberados até essa data.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <Button
@@ -207,7 +296,7 @@ export default function Premium() {
                   onClick={handleCancelClick}
                   disabled={portalMutation.isPending}
                 >
-                  {portalMutation.isPending ? "Carregando..." : "Cancelar"}
+                  {portalMutation.isPending ? "Carregando..." : subscription.stripeSubscriptionId ? "Gerenciar assinatura" : "Cancelar"}
                 </Button>
               </div>
             </div>
@@ -302,10 +391,10 @@ export default function Premium() {
                         ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
                         : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
                     }`}
-                    onClick={() => subscribeMutation.mutate({ plan: plan.key })}
+                    onClick={() => handleSubscribe(plan.key)}
                     disabled={subscribeMutation.isPending}
                   >
-                    {subscribeMutation.isPending ? "Processando..." : `Assinar ${plan.name}`}
+                    {subscribeMutation.isPending && selectedPlan === plan.key ? "Processando..." : `Assinar ${plan.name}`}
                   </Button>
                 </div>
               ))}

@@ -26,6 +26,7 @@ import {
   getActiveSubscription,
   createSubscription,
   cancelSubscription,
+  createOrUpdateStripeSubscription,
   updateTemplatePreference,
   getTemplatePreference,
   getDailyLiturgy,
@@ -217,6 +218,41 @@ export const appRouter = router({
               code: "BAD_REQUEST",
               message: `ID de preço não configurado para o plano: ${input.plan}`,
             });
+          }
+
+          const activeSub = await getActiveSubscription(ctx.user.id);
+          if (activeSub?.stripeSubscriptionId) {
+            const stripeSubscription = await stripe.subscriptions.retrieve(activeSub.stripeSubscriptionId);
+            const item = stripeSubscription.items.data[0];
+
+            if (!item) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Assinatura do Stripe sem item de plano.",
+              });
+            }
+
+            const updated = await stripe.subscriptions.update(activeSub.stripeSubscriptionId, {
+              cancel_at_period_end: false,
+              items: [{ id: item.id, price: priceId }],
+              proration_behavior: "create_prorations",
+            });
+
+            const stripeCustomerId = typeof updated.customer === "string"
+              ? updated.customer
+              : updated.customer.id;
+            const expiresAt = new Date((updated as any).current_period_end * 1000);
+
+            await createOrUpdateStripeSubscription(
+              ctx.user.id,
+              stripeCustomerId,
+              updated.id,
+              input.plan,
+              "active",
+              expiresAt
+            );
+
+            return { success: true };
           }
 
           const session = await stripe.checkout.sessions.create({
