@@ -4,7 +4,7 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { Crown, Check, Shield, Sparkles, AlertCircle } from "lucide-react";
+import { Crown, Check, Shield, Sparkles, AlertCircle, Receipt, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getAudioCollectionArt, getLiturgySectionArt, getNovenaArt } from "@/lib/cardArt";
@@ -99,6 +99,10 @@ export default function Premium() {
 
   const { data: subscription, isLoading: subLoading, refetch: refetchSubscription } = trpc.subscriptions.getActive.useQuery(
     undefined, { enabled: isAuthenticated }
+  );
+
+  const { data: invoices } = trpc.subscriptions.getInvoices.useQuery(
+    undefined, { enabled: isAuthenticated && !!subscription?.stripeCustomerId }
   );
 
   useEffect(() => {
@@ -484,6 +488,75 @@ export default function Premium() {
                 <Crown size={14} className="mr-2" />
                 {subscribeMutation.isPending ? "Processando..." : "Migrar para Anual — R$ 149,00/ano"}
               </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Histórico de faturamento do Stripe */}
+        {isAuthenticated && invoices && invoices.length > 0 && (
+          <div className="max-w-2xl mx-auto mt-12 mb-6 animate-fade-in text-left">
+            <div className="flex items-center gap-2 mb-4">
+              <Receipt size={18} className="text-[oklch(0.65_0.12_70)]" />
+              <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)]">
+                Histórico de Faturamento
+              </h3>
+            </div>
+            
+            <div className="rounded-2xl border border-border bg-white shadow-sm overflow-hidden">
+              <div className="divide-y divide-border">
+                {invoices.map((invoice) => {
+                  const dateStr = new Date(invoice.created * 1000).toLocaleDateString("pt-BR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  });
+                  const formattedAmount = new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: invoice.currency.toUpperCase(),
+                  }).format(invoice.amountPaid / 100);
+
+                  return (
+                    <div key={invoice.id} className="p-4 flex items-center justify-between gap-4 hover:bg-slate-50 transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-slate-100 border border-slate-200 text-slate-500">
+                          <Receipt size={16} />
+                        </div>
+                        <div>
+                          <p className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)]">
+                            Fatura de {dateStr}
+                          </p>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-xs font-serif text-muted-foreground font-semibold">
+                              {formattedAmount}
+                            </span>
+                            <span className={`text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.25 rounded-md border ${
+                              invoice.status === "paid"
+                                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                : invoice.status === "open"
+                                  ? "bg-amber-50 border-amber-200 text-amber-700"
+                                  : "bg-slate-50 border-slate-200 text-slate-600"
+                            }`}>
+                              {invoice.status === "paid" ? "Pago" : invoice.status === "open" ? "Pendente" : invoice.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {invoice.hostedUrl && (
+                        <a
+                          href={invoice.hostedUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:text-[oklch(0.55_0.12_70)] hover:underline transition-all"
+                        >
+                          <span>Ver Recibo</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}

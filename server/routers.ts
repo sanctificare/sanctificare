@@ -317,6 +317,30 @@ export const appRouter = router({
 
         return { url: session.url };
       }),
+
+    getInvoices: protectedProcedure
+      .query(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (!activeSub || !activeSub.stripeCustomerId || !ENV.stripeSecretKey) {
+          return [];
+        }
+
+        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const invoices = await stripe.invoices.list({
+          customer: activeSub.stripeCustomerId,
+          limit: 10,
+        });
+
+        return invoices.data.map((inv) => ({
+          id: inv.id,
+          amountPaid: inv.amount_paid,
+          currency: inv.currency,
+          status: inv.status,
+          created: inv.created,
+          pdfUrl: inv.invoice_pdf,
+          hostedUrl: inv.hosted_invoice_url,
+        }));
+      }),
   }),
 
   templates: router({
