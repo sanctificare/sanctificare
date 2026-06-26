@@ -15,7 +15,7 @@ import {
 export const roleEnum = pgEnum("role", ["user", "admin"]);
 export const templatePreferenceEnum = pgEnum("templatePreference", ["classico", "moderno", "tradicional", "minimalista"]);
 export const planEnum = pgEnum("plan", ["monthly", "annual"]);
-export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "cancelled", "expired"]);
+export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "cancelled", "expired", "past_due"]);
 export const intentionCategoryEnum = pgEnum("intention_category", ["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]);
 
 export const users = pgTable("users", {
@@ -41,13 +41,15 @@ export const subscriptions = pgTable("subscriptions", {
   userId: integer("userId").notNull(),
   plan: planEnum("plan").notNull(),
   status: subscriptionStatusEnum("status").default("active").notNull(),
-  startedAt: timestamp("startedAt").defaultNow().notNull(),
-  expiresAt: timestamp("expiresAt").notNull(),
+  startedAt: timestamp("startedAt", { withTimezone: true }).defaultNow().notNull(),
+  expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
   stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
   stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-});
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  stripeSubscriptionIdIdx: uniqueIndex("subscriptions_stripe_sub_id_idx").on(table.stripeSubscriptionId),
+}));
 
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = typeof subscriptions.$inferInsert;

@@ -221,6 +221,13 @@ export const appRouter = router({
           }
 
           const activeSub = await getActiveSubscription(ctx.user.id);
+          if (activeSub?.stripeSubscriptionId && activeSub.plan === input.plan) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Você já possui uma assinatura ativa para este plano.",
+            });
+          }
+
           if (activeSub?.stripeSubscriptionId) {
             const stripeSubscription = await stripe.subscriptions.retrieve(activeSub.stripeSubscriptionId);
             const item = stripeSubscription.items.data[0];
@@ -268,12 +275,26 @@ export const appRouter = router({
         }
 
         // Fallback to mock
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (activeSub && activeSub.plan === input.plan) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Você já possui uma assinatura ativa para este plano.",
+          });
+        }
         await createSubscription(ctx.user.id, input.plan);
         return { success: true };
       }),
 
     cancel: protectedProcedure
       .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (activeSub?.stripeSubscriptionId) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Assinaturas do Stripe devem ser canceladas através do portal de faturamento.",
+          });
+        }
         await cancelSubscription(ctx.user.id);
         return { success: true };
       }),

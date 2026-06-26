@@ -39,7 +39,7 @@ async function bootstrapDb(sql: any) {
           CREATE TYPE plan AS ENUM ('monthly', 'annual');
         END IF;
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscription_status') THEN
-          CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'expired');
+          CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'expired', 'past_due');
         END IF;
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'intention_category') THEN
           CREATE TYPE intention_category AS ENUM ('cura', 'familia', 'conversao', 'trabalho', 'defuntos', 'paz');
@@ -49,6 +49,11 @@ async function bootstrapDb(sql: any) {
         END IF;
       END
       $$;
+    `;
+
+    // Ensure 'past_due' value is added if enum already existed
+    await sql`
+      ALTER TYPE subscription_status ADD VALUE IF NOT EXISTS 'past_due';
     `;
 
     // 2. Create tables
@@ -74,12 +79,12 @@ async function bootstrapDb(sql: any) {
         "userId" integer NOT NULL,
         plan plan NOT NULL,
         status subscription_status DEFAULT 'active' NOT NULL,
-        "startedAt" timestamp DEFAULT now() NOT NULL,
-        "expiresAt" timestamp NOT NULL,
+        "startedAt" timestamp with time zone DEFAULT now() NOT NULL,
+        "expiresAt" timestamp with time zone NOT NULL,
         "stripeCustomerId" varchar(255),
         "stripeSubscriptionId" varchar(255),
-        "createdAt" timestamp DEFAULT now() NOT NULL,
-        "updatedAt" timestamp DEFAULT now() NOT NULL
+        "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+        "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
       );
     `;
 
@@ -89,6 +94,21 @@ async function bootstrapDb(sql: any) {
     `;
     await sql`
       ALTER TABLE subscriptions ADD COLUMN IF NOT EXISTS "stripeSubscriptionId" varchar(255);
+    `;
+    await sql`
+      ALTER TABLE subscriptions ALTER COLUMN "startedAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE subscriptions ALTER COLUMN "expiresAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE subscriptions ALTER COLUMN "createdAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE subscriptions ALTER COLUMN "updatedAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS "subscriptions_stripe_sub_id_idx" ON subscriptions ("stripeSubscriptionId") WHERE "stripeSubscriptionId" IS NOT NULL;
     `;
 
     await sql`
@@ -698,7 +718,7 @@ export async function getActiveSubscription(userId: number) {
     .from(subscriptions)
     .where(and(
       eq(subscriptions.userId, userId),
-      or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"))
+      or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"), eq(subscriptions.status, "past_due"))
     ))
     .orderBy(desc(subscriptions.expiresAt))
     .limit(1);
@@ -746,8 +766,9 @@ export async function createOrUpdateStripeSubscription(
   stripeCustomerId: string,
   stripeSubscriptionId: string,
   plan: "monthly" | "annual",
-  status: "active" | "cancelled" | "expired",
-  expiresAt: Date
+  status: "active" | "cancelled" | "expired" | "past_due",
+  expiresAt: Date,
+  startedAt?: Date
 ) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
@@ -759,7 +780,11 @@ export async function createOrUpdateStripeSubscription(
     .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId))
     .limit(1);
 
-  const activeStatuses = or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"));
+  const activeStatuses = or(
+    eq(subscriptions.status, "active"),
+    eq(subscriptions.status, "cancelled"),
+    eq(subscriptions.status, "past_due")
+  );
   const deactivateWhere = existing[0]
     ? and(eq(subscriptions.userId, userId), activeStatuses, ne(subscriptions.id, existing[0].id))
     : and(eq(subscriptions.userId, userId), activeStatuses);
@@ -779,7 +804,7 @@ export async function createOrUpdateStripeSubscription(
       userId,
       plan,
       status,
-      startedAt: now,
+      startedAt: startedAt ?? now,
       expiresAt,
       stripeCustomerId,
       stripeSubscriptionId,

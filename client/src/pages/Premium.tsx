@@ -4,7 +4,7 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { Crown, Check, Shield, Sparkles } from "lucide-react";
+import { Crown, Check, Shield, Sparkles, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getAudioCollectionArt, getLiturgySectionArt, getNovenaArt } from "@/lib/cardArt";
@@ -265,39 +265,94 @@ export default function Premium() {
 
         {/* Assinatura ativa */}
         {subscription && (
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-6 border border-[oklch(0.75_0.12_75/0.3)]">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[oklch(0.75_0.12_75/0.2)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
-                    <Crown size={22} className="text-[oklch(0.82_0.10_80)]" />
+          <div className="max-w-2xl mx-auto mb-8 animate-fade-in">
+            {subscription.status === "past_due" && (
+              <div className="mb-4 p-4 rounded-2xl border border-[oklch(0.65_0.18_17/0.3)] bg-[oklch(0.98_0.01_17)] text-left shadow-sm flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-[oklch(0.65_0.18_17/0.1)] border border-[oklch(0.65_0.18_17/0.2)] text-[oklch(0.60_0.18_17)] flex-shrink-0">
+                  <AlertCircle size={20} />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-display text-sm font-bold text-[oklch(0.25_0.05_17)]">
+                    Ação necessária: Faturamento em atraso
+                  </h4>
+                  <p className="font-serif text-xs text-muted-foreground mt-0.5">
+                    O Stripe recusou a última tentativa de cobrança. Por favor, atualize seus dados de pagamento no portal para continuar com acesso total.
+                  </p>
+                </div>
+                {subscription.stripeSubscriptionId && (
+                  <Button
+                    size="sm"
+                    className="bg-[oklch(0.65_0.18_17)] hover:bg-[oklch(0.60_0.18_17)] text-white text-xs font-semibold px-4"
+                    onClick={() => portalMutation.mutate()}
+                    disabled={portalMutation.isPending}
+                  >
+                    {portalMutation.isPending ? "Carregando..." : "Regularizar Agora"}
+                  </Button>
+                )}
+              </div>
+            )}
+
+            <div className="relative overflow-hidden rounded-2xl p-6 border border-white/20 bg-gradient-to-br from-[oklch(0.20_0.06_260)] via-[oklch(0.25_0.07_255)] to-[oklch(0.32_0.09_250)] shadow-xl text-white">
+              {/* Decorative background glow orb */}
+              <div className="absolute -right-20 -top-20 w-48 h-48 rounded-full bg-[oklch(0.75_0.12_75/0.15)] blur-3xl pointer-events-none" />
+              
+              <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6 z-10">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-[oklch(0.75_0.12_75/0.18)] border border-[oklch(0.75_0.12_75/0.35)] flex items-center justify-center shadow-inner flex-shrink-0">
+                    <Crown size={26} className="text-[oklch(0.82_0.10_80)] filter drop-shadow-[0_2px_8px_rgba(251,191,36,0.3)] animate-pulse" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-display text-base font-bold text-white">
-                        Premium {subscription.plan === "annual" ? "Anual" : "Mensal"} {isCancellationScheduled ? "Cancelado" : "Ativo"}
+                  <div className="text-left">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <p className="font-display text-lg font-bold tracking-tight text-white">
+                        Sanctificare Premium {subscription.plan === "annual" ? "Anual" : "Mensal"}
                       </p>
-                      <span className="badge-premium">{isCancellationScheduled ? "Acesso mantido" : "Ativo"}</span>
+                      <span className="text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border border-[oklch(0.75_0.12_75/0.4)] bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.82_0.10_80)]">
+                        {subscription.stripeSubscriptionId ? "Faturamento Stripe" : "Acesso de Teste"}
+                      </span>
                     </div>
-                    <p className="text-sm text-[oklch(0.75_0.03_260)]">
-                      {isCancellationScheduled ? "Acesso até " : "Válido até "}{subscriptionExpiresAt}
-                    </p>
+
+                    <div className="flex items-center gap-2 text-xs text-[oklch(0.80_0.02_260)] font-serif">
+                      <span className={`w-2 h-2 rounded-full ${subscription.status === "past_due" ? "bg-[oklch(0.65_0.18_17)]" : "bg-emerald-400 animate-pulse"}`} />
+                      <span>
+                        {subscription.status === "past_due" 
+                          ? "Faturamento pendente" 
+                          : isCancellationScheduled 
+                            ? `Acesso mantido até ${subscriptionExpiresAt}` 
+                            : `Renovação automática em ${subscriptionExpiresAt}`}
+                      </span>
+                    </div>
+
                     {isCancellationScheduled && (
-                      <p className="text-xs text-[oklch(0.82_0.10_80)] mt-1">
-                        A renovação foi cancelada, mas seus conteúdos premium seguem liberados até essa data.
+                      <p className="text-xs text-[oklch(0.82_0.10_80)] mt-2 font-serif max-w-md">
+                        A renovação foi cancelada, mas seus recursos continuam disponíveis até o término da vigência.
                       </p>
                     )}
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.80_0.02_260)] hover:bg-[oklch(0.75_0.12_75/0.1)] bg-transparent text-xs"
-                  onClick={handleCancelClick}
-                  disabled={portalMutation.isPending}
-                >
-                  {portalMutation.isPending ? "Carregando..." : subscription.stripeSubscriptionId ? "Gerenciar assinatura" : "Cancelar"}
-                </Button>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {subscription.stripeSubscriptionId ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-white/20 text-white hover:bg-white/10 bg-transparent text-xs font-semibold px-4 py-2 h-9 rounded-xl transition-all"
+                      onClick={handleCancelClick}
+                      disabled={portalMutation.isPending}
+                    >
+                      {portalMutation.isPending ? "Carregando..." : "Gerenciar Assinatura"}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-white/20 text-white hover:bg-white/10 bg-transparent text-xs font-semibold px-4 py-2 h-9 rounded-xl transition-all"
+                      onClick={handleCancelClick}
+                      disabled={cancelMutation.isPending}
+                    >
+                      {cancelMutation.isPending ? "Cancelando..." : "Cancelar Plano"}
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

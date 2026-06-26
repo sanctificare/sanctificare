@@ -45,6 +45,7 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
         const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
         const plan = subscription.items.data[0].plan.id === ENV.stripePriceAnnual ? "annual" : "monthly";
         const expiresAt = new Date((subscription as any).current_period_end * 1000);
+        const startedAt = new Date((subscription as any).created * 1000);
 
         await createOrUpdateStripeSubscription(
           userId,
@@ -52,7 +53,8 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
           stripeSubscriptionId,
           plan,
           "active",
-          expiresAt
+          expiresAt,
+          startedAt
         );
         console.log(`[Stripe Webhook] Activated subscription ${stripeSubscriptionId} for user ${userId}`);
         break;
@@ -69,6 +71,7 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
         const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
         const plan = subscription.items.data[0].plan.id === ENV.stripePriceAnnual ? "annual" : "monthly";
         const expiresAt = new Date((subscription as any).current_period_end * 1000);
+        const startedAt = new Date((subscription as any).created * 1000);
 
         const dbSub = await getSubscriptionByStripeId(stripeSubscriptionId);
         if (dbSub) {
@@ -78,7 +81,8 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
             stripeSubscriptionId,
             plan,
             "active",
-            expiresAt
+            expiresAt,
+            startedAt
           );
           console.log(`[Stripe Webhook] Renewed subscription ${stripeSubscriptionId} for user ${dbSub.userId}`);
         } else {
@@ -98,8 +102,18 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
         const subscription = event.data.object as Stripe.Subscription;
         const stripeSubscriptionId = subscription.id;
         const expiresAt = new Date((subscription as any).current_period_end * 1000);
-        const status = subscription.status === "active" ? (subscription.cancel_at_period_end ? "cancelled" : "active") : "expired";
+        
+        let status: "active" | "cancelled" | "expired" | "past_due";
+        if (subscription.status === "active" || subscription.status === "trialing") {
+          status = subscription.cancel_at_period_end ? "cancelled" : "active";
+        } else if (subscription.status === "past_due") {
+          status = "past_due";
+        } else {
+          status = "expired";
+        }
+
         const plan = subscription.items.data[0].plan.id === ENV.stripePriceAnnual ? "annual" : "monthly";
+        const startedAt = new Date((subscription as any).created * 1000);
 
         const dbSub = await getSubscriptionByStripeId(stripeSubscriptionId);
         if (dbSub) {
@@ -109,7 +123,8 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
             stripeSubscriptionId,
             plan,
             status,
-            expiresAt
+            expiresAt,
+            startedAt
           );
           console.log(`[Stripe Webhook] Updated subscription ${stripeSubscriptionId} status to ${status}`);
         }
