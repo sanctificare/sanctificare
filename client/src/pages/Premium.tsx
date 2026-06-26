@@ -50,44 +50,6 @@ const plans = [
   },
 ];
 
-const premiumContent = [
-  {
-    title: "Rosário Guiado",
-    desc: "Todos os mistérios com meditações aprofundadas",
-    image: "/assets/sanctificare-rosary.webp",
-    overlay: "oklch(0.22 0.08 260 / 0.6)",
-  },
-  {
-    title: "Novenas Completas",
-    desc: "N. S. Aparecida, Divino Espírito Santo, São José e mais",
-    image: getNovenaArt("novena-divino-espirito-santo").image,
-    overlay: "oklch(0.35 0.1 215 / 0.58)",
-  },
-  {
-    title: "Meditações Guiadas",
-    desc: "Lectio Divina, Exame de Consciência, Adoração",
-    image: getAudioCollectionArt("meditacoes-contemplativas"),
-    overlay: "oklch(0.35 0.1 225 / 0.58)",
-  },
-  {
-    title: "Áudios de Orações",
-    desc: "Ouça orações narradas com música sacra de fundo",
-    image: getAudioCollectionArt("historias-da-biblia"),
-    overlay: "oklch(0.45 0.12 22 / 0.56)",
-  },
-  {
-    title: "Via Sacra Completa",
-    desc: "As 14 estações com textos e meditações",
-    image: "/assets/via-sacra/estacao-02.webp",
-    overlay: "oklch(0.3 0.09 260 / 0.62)",
-  },
-  {
-    title: "Bíblia Completa",
-    desc: "Acesso a todos os capítulos e versículos",
-    image: getLiturgySectionArt("first_reading"),
-    overlay: "oklch(0.34 0.08 210 / 0.6)",
-  },
-];
 
 export default function Premium() {
   const { isAuthenticated, loading } = useAuth();
@@ -297,34 +259,6 @@ export default function Premium() {
         {/* Aba de Planos & Conteúdos (ou visualização padrão se não houver assinatura) */}
         {(activeTab === "plans" || !subscription) && (
           <>
-            {/* Conteúdo premium */}
-            <div className="max-w-4xl mx-auto mb-10 animate-fade-in">
-              <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] text-center mb-6">
-                O que você recebe com o Premium
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {premiumContent.map((item) => (
-                  <div key={item.title} className="cover-card aspect-square">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="cover-card-image"
-                      loading="lazy"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: `linear-gradient(to top, oklch(0.10 0.03 260 / 0.84) 0%, ${item.overlay} 56%, oklch(0.10 0.02 260 / 0.08) 100%)`,
-                      }}
-                    />
-                    <div className="cover-card-content">
-                      <h3 className="cover-card-title">{item.title}</h3>
-                      <p className="cover-card-desc hidden md:block">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* Planos (somente para não-assinantes) */}
             {!subscription && (
