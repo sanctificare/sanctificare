@@ -4,7 +4,7 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { Crown, Check, Shield, Sparkles, AlertCircle, Receipt, ExternalLink, CreditCard, ShieldCheck } from "lucide-react";
+import { Crown, Check, Shield, Sparkles, AlertCircle, Receipt, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getAudioCollectionArt, getLiturgySectionArt, getNovenaArt } from "@/lib/cardArt";
@@ -180,30 +180,6 @@ export default function Premium() {
     }
   });
 
-  const cancelStripeMutation = trpc.subscriptions.cancelStripe.useMutation({
-    onSuccess: () => {
-      utils.subscriptions.getActive.invalidate();
-      toast.success("Renovação automática cancelada.", {
-        description: "Você continuará com acesso premium até o término do período vigente.",
-      });
-    },
-    onError: (err) => {
-      toast.error(err.message || "Não foi possível cancelar sua renovação agora.");
-    },
-  });
-
-  const reactivateStripeMutation = trpc.subscriptions.reactivateStripe.useMutation({
-    onSuccess: () => {
-      utils.subscriptions.getActive.invalidate();
-      toast.success("Renovação automática reativada!", {
-        description: "Seu plano premium continuará a ser renovado automaticamente.",
-      });
-    },
-    onError: (err) => {
-      toast.error(err.message || "Não foi possível reativar sua renovação agora.");
-    },
-  });
-
   const handleCancelClick = () => {
     if (subscription?.stripeSubscriptionId) {
       portalMutation.mutate();
@@ -324,7 +300,7 @@ export default function Premium() {
               {/* Decorative background glow orb */}
               <div className="absolute -right-20 -top-20 w-48 h-48 rounded-full bg-[oklch(0.75_0.12_75/0.15)] blur-3xl pointer-events-none" />
               
-              <div className="relative flex flex-col gap-6 z-10">
+              <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6 z-10">
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-[oklch(0.75_0.12_75/0.18)] border border-[oklch(0.75_0.12_75/0.35)] flex items-center justify-center shadow-inner flex-shrink-0">
                     <Crown size={26} className="text-[oklch(0.82_0.10_80)] filter drop-shadow-[0_2px_8px_rgba(251,191,36,0.3)] animate-pulse" />
@@ -352,94 +328,34 @@ export default function Premium() {
 
                     {isCancellationScheduled && (
                       <p className="text-xs text-[oklch(0.82_0.10_80)] mt-2 font-serif max-w-md">
-                        A renovação automática foi desativada, mas seu acesso premium segue liberado até o fim do período.
+                        A renovação foi cancelada, mas seus recursos continuam disponíveis até o término da vigência.
                       </p>
                     )}
                   </div>
                 </div>
 
-                {/* subscriber control dashboard */}
-                <div className="mt-2 border-t border-white/10 pt-4">
-                  <h4 className="font-display text-xs font-bold uppercase tracking-widest text-white/50 mb-3 text-left">
-                    Central de Gerenciamento do Assinante
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Meio de Pagamento */}
-                    <div className="p-4 rounded-xl border border-white/10 bg-white/5 flex flex-col justify-between text-left">
-                      <div>
-                        <div className="flex items-center gap-2 text-[oklch(0.82_0.10_80)] mb-1">
-                          <CreditCard size={15} />
-                          <p className="font-display text-xs font-bold uppercase tracking-wider">Forma de Pagamento</p>
-                        </div>
-                        <p className="text-[11px] text-[oklch(0.80_0.02_260)] font-serif leading-relaxed">
-                          Seus dados de faturamento são processados e criptografados em conformidade PCI pela Stripe.
-                        </p>
-                      </div>
-                      {subscription.stripeSubscriptionId ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mt-3 border-white/20 text-white hover:bg-white/10 bg-transparent text-xs font-semibold w-full h-8 rounded-lg"
-                          onClick={() => portalMutation.mutate()}
-                          disabled={portalMutation.isPending}
-                        >
-                          {portalMutation.isPending ? "Carregando..." : "Atualizar Cartão / Faturas"}
-                        </Button>
-                      ) : (
-                        <div className="mt-3 text-xs text-emerald-400 font-semibold font-serif">
-                          Acesso de Simulação Ativo
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Controle de Renovação */}
-                    <div className="p-4 rounded-xl border border-white/10 bg-white/5 flex flex-col justify-between text-left">
-                      <div>
-                        <div className="flex items-center gap-2 text-[oklch(0.82_0.10_80)] mb-1">
-                          <ShieldCheck size={15} />
-                          <p className="font-display text-xs font-bold uppercase tracking-wider">Renovação Automática</p>
-                        </div>
-                        <p className="text-[11px] text-[oklch(0.80_0.02_260)] font-serif leading-relaxed">
-                          {isCancellationScheduled
-                            ? "A renovação recorrente está desativada no momento."
-                            : "O plano será faturado de forma recorrente ao término da vigência."}
-                        </p>
-                      </div>
-
-                      {subscription.stripeSubscriptionId ? (
-                        isCancellationScheduled ? (
-                          <Button
-                            size="sm"
-                            className="mt-3 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] text-xs font-semibold w-full h-8 rounded-lg"
-                            onClick={() => reactivateStripeMutation.mutate()}
-                            disabled={reactivateStripeMutation.isPending}
-                          >
-                            {reactivateStripeMutation.isPending ? "Reativando..." : "Reativar Renovação"}
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="mt-3 border-red-500/30 text-red-400 hover:bg-red-500/10 bg-transparent text-xs font-semibold w-full h-8 rounded-lg"
-                            onClick={() => cancelStripeMutation.mutate()}
-                            disabled={cancelStripeMutation.isPending}
-                          >
-                            {cancelStripeMutation.isPending ? "Cancelando..." : "Cancelar Renovação"}
-                          </Button>
-                        )
-                      ) : (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mt-3 border-red-500/30 text-red-400 hover:bg-red-500/10 bg-transparent text-xs font-semibold w-full h-8 rounded-lg"
-                          onClick={() => setConfirmCancel(true)}
-                          disabled={cancelMutation.isPending}
-                        >
-                          {cancelMutation.isPending ? "Cancelando..." : "Desativar Acesso"}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {subscription.stripeSubscriptionId ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-white/20 text-white hover:bg-white/10 bg-transparent text-xs font-semibold px-4 py-2 h-9 rounded-xl transition-all"
+                      onClick={handleCancelClick}
+                      disabled={portalMutation.isPending}
+                    >
+                      {portalMutation.isPending ? "Carregando..." : "Gerenciar Assinatura"}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-white/20 text-white hover:bg-white/10 bg-transparent text-xs font-semibold px-4 py-2 h-9 rounded-xl transition-all"
+                      onClick={handleCancelClick}
+                      disabled={cancelMutation.isPending}
+                    >
+                      {cancelMutation.isPending ? "Cancelando..." : "Cancelar Plano"}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
