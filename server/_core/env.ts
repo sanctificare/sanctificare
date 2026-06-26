@@ -28,4 +28,10 @@ export const ENV = {
   r2BucketName: process.env.R2_BUCKET_NAME ?? "musica-sacra",
   r2PublicUrl: process.env.R2_PUBLIC_URL ?? "",
   sessionTtlMs: parseSessionTtlMs(process.env.SESSION_TTL_MS),
+  // Stripe
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
+  stripePriceMonthly: process.env.STRIPE_PRICE_MONTHLY ?? "",
+  stripePriceAnnual: process.env.STRIPE_PRICE_ANNUAL ?? "",
+  appUrl: process.env.APP_URL ?? "http://localhost:3000",
 };

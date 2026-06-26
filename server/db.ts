@@ -76,9 +76,19 @@ async function bootstrapDb(sql: any) {
         status subscription_status DEFAULT 'active' NOT NULL,
         "startedAt" timestamp DEFAULT now() NOT NULL,
         "expiresAt" timestamp NOT NULL,
+        "stripeCustomerId" varchar(255),
+        "stripeSubscriptionId" varchar(255),
         "createdAt" timestamp DEFAULT now() NOT NULL,
         "updatedAt" timestamp DEFAULT now() NOT NULL
       );
+    `;
+
+    // Alter table migrations to add Stripe columns if they don't exist
+    await sql`
+      ALTER TABLE subscriptions ADD COLUMN IF NOT EXISTS "stripeCustomerId" varchar(255);
+    `;
+    await sql`
+      ALTER TABLE subscriptions ADD COLUMN IF NOT EXISTS "stripeSubscriptionId" varchar(255);
     `;
 
     await sql`
@@ -715,6 +725,75 @@ export async function cancelSubscription(userId: number) {
     .update(subscriptions)
     .set({ status: "cancelled" })
     .where(and(eq(subscriptions.userId, userId), eq(subscriptions.status, "active")));
+}
+
+export async function getSubscriptionByStripeId(stripeSubscriptionId: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db
+    .select()
+    .from(subscriptions)
+    .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId))
+    .limit(1);
+  return result[0] || null;
+}
+
+export async function createOrUpdateStripeSubscription(
+  userId: number,
+  stripeCustomerId: string,
+  stripeSubscriptionId: string,
+  plan: "monthly" | "annual",
+  status: "active" | "cancelled" | "expired",
+  expiresAt: Date
+) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const now = new Date();
+  
+  // Deactivate any existing active subscriptions first (except this one)
+  await db
+    .update(subscriptions)
+    .set({ status: "cancelled", updatedAt: now })
+    .where(and(
+      eq(subscriptions.userId, userId),
+      eq(subscriptions.status, "active"),
+      sql`id != id`
+    ));
+  
+  const existing = await db
+    .select()
+    .from(subscriptions)
+    .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId))
+    .limit(1);
+    
+  if (existing.length > 0) {
+    await db
+      .update(subscriptions)
+      .set({ status, expiresAt, plan, updatedAt: now })
+      .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId));
+  } else {
+    await db.insert(subscriptions).values({
+      userId,
+      plan,
+      status,
+      startedAt: now,
+      expiresAt,
+      stripeCustomerId,
+      stripeSubscriptionId,
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
+}
+
+export async function cancelStripeSubscription(stripeSubscriptionId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const now = new Date();
+  await db
+    .update(subscriptions)
+    .set({ status: "expired", updatedAt: now })
+    .where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId));
 }
 
 // ─── Template Preferences ─────────────────────────────────────────────────────

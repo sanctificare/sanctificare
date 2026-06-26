@@ -99,11 +99,15 @@ export default function Premium() {
   );
 
   const subscribeMutation = trpc.subscriptions.subscribe.useMutation({
-    onSuccess: () => {
-      utils.subscriptions.getActive.invalidate();
-      toast.success("Assinatura ativada!", {
-        description: "Seu acesso foi ampliado. Que Deus abençoe sua jornada de oração.",
-      });
+    onSuccess: (res) => {
+      if (res.url) {
+        window.location.href = res.url;
+      } else {
+        utils.subscriptions.getActive.invalidate();
+        toast.success("Assinatura ativada!", {
+          description: "Seu acesso foi ampliado. Que Deus abençoe sua jornada de oração.",
+        });
+      }
     },
     onError: () => toast.error("Não foi possível processar sua assinatura agora. Tente novamente."),
   });
@@ -116,6 +120,23 @@ export default function Premium() {
     },
     onError: () => toast.error("Não foi possível cancelar sua assinatura agora."),
   });
+
+  const portalMutation = trpc.subscriptions.createPortalSession.useMutation({
+    onSuccess: (res) => {
+      window.location.href = res.url;
+    },
+    onError: (err) => {
+      toast.error(err.message || "Não foi possível abrir o portal do Stripe.");
+    }
+  });
+
+  const handleCancelClick = () => {
+    if (subscription?.stripeSubscriptionId) {
+      portalMutation.mutate();
+    } else {
+      setConfirmCancel(true);
+    }
+  };
 
   if (loading || subLoading) {
     return (
@@ -183,9 +204,10 @@ export default function Premium() {
                   variant="outline"
                   size="sm"
                   className="border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.80_0.02_260)] hover:bg-[oklch(0.75_0.12_75/0.1)] bg-transparent text-xs"
-                  onClick={() => setConfirmCancel(true)}
+                  onClick={handleCancelClick}
+                  disabled={portalMutation.isPending}
                 >
-                  Cancelar
+                  {portalMutation.isPending ? "Carregando..." : "Cancelar"}
                 </Button>
               </div>
             </div>

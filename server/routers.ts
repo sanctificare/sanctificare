@@ -3,6 +3,7 @@ import { getCsrfCookieOptions, getSessionCookieOptions } from "./_core/cookies";
 import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./_core/security";
 import { ENV } from "./_core/env";
 import { systemRouter } from "./_core/systemRouter";
+import Stripe from "stripe";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod/v4";
 import { TRPCError } from "@trpc/server";
@@ -208,6 +209,29 @@ export const appRouter = router({
     subscribe: protectedProcedure
       .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
       .mutation(async ({ ctx, input }) => {
+        if (ENV.stripeSecretKey) {
+          const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+          const priceId = input.plan === "annual" ? ENV.stripePriceAnnual : ENV.stripePriceMonthly;
+          if (!priceId) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: `ID de preço não configurado para o plano: ${input.plan}`,
+            });
+          }
+
+          const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: [{ price: priceId, quantity: 1 }],
+            mode: "subscription",
+            success_url: `${ENV.appUrl}/premium?success=true`,
+            cancel_url: `${ENV.appUrl}/premium?cancelled=true`,
+            metadata: { userId: String(ctx.user.id) },
+          });
+
+          return { success: true, url: session.url ?? undefined };
+        }
+
+        // Fallback to mock
         await createSubscription(ctx.user.id, input.plan);
         return { success: true };
       }),
@@ -216,6 +240,25 @@ export const appRouter = router({
       .mutation(async ({ ctx }) => {
         await cancelSubscription(ctx.user.id);
         return { success: true };
+      }),
+
+    createPortalSession: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (!activeSub || !activeSub.stripeCustomerId || !ENV.stripeSecretKey) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Nenhuma assinatura do Stripe ativa foi encontrada para este usuário.",
+          });
+        }
+
+        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const session = await stripe.billingPortal.sessions.create({
+          customer: activeSub.stripeCustomerId,
+          return_url: `${ENV.appUrl}/premium`,
+        });
+
+        return { url: session.url };
       }),
   }),
 
