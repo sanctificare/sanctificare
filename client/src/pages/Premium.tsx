@@ -199,7 +199,7 @@ export default function Premium() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {premiumContent.map((item) => (
-              <div key={item.title} className="cover-card">
+              <div key={item.title} className="cover-card aspect-square min-h-[8rem] md:min-h-[11rem]">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -214,7 +214,7 @@ export default function Premium() {
                 />
                 <div className="cover-card-content">
                   <h3 className="cover-card-title">{item.title}</h3>
-                  <p className="cover-card-desc">{item.desc}</p>
+                  <p className="cover-card-desc hidden md:block">{item.desc}</p>
                 </div>
               </div>
             ))}
