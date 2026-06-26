@@ -39,6 +39,7 @@ export default function AppNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location] = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const { data: dailyPlan } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
 
   const initials = user?.name
     ? user.name.split(" ").map((n: string) => n[0]).slice(0, 2).join("").toUpperCase()
@@ -122,6 +123,14 @@ export default function AppNav() {
                     Premium
                   </Button>
                 </Link>
+                {dailyPlan && (
+                  <Link href="/dashboard">
+                    <div className="flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.2)] transition-all duration-200 text-xs font-bold font-sans">
+                      <Flame size={14} fill="currentColor" className="animate-pulse" />
+                      <span>{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"}</span>
+                    </div>
+                  </Link>
+                )}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2 rounded-full focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.5)]">
@@ -184,6 +193,15 @@ export default function AppNav() {
         {/* Mobile menu */}
         {isAuthenticated && mobileOpen && (
           <div className="lg:hidden border-t border-[oklch(0.75_0.12_75/0.2)] py-3 animate-fade-in">
+            {dailyPlan && (
+              <div className="px-4 py-2.5 mb-2 bg-[oklch(0.75_0.12_75/0.1)] border-b border-[oklch(0.75_0.12_75/0.15)] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Flame className="text-[oklch(0.75_0.12_75)] animate-pulse" size={16} fill="currentColor" />
+                  <span className="text-xs font-semibold text-[oklch(0.75_0.12_75)]">Ofensiva diária</span>
+                </div>
+                <span className="text-xs font-bold text-white">{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"}</span>
+              </div>
+            )}
             {allNavLinks.map(({ href, label, icon: Icon }) => (
               <Link key={href} href={href}>
                 <button
