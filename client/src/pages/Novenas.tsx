@@ -43,7 +43,7 @@ export default function Novenas() {
 
     return (
       <Link key={novena.id} href={getNovenaPath(novena)}>
-        <button className="cover-card aspect-square min-h-[8rem] md:min-h-[11rem] group">
+        <button className="cover-card aspect-square group">
           <img
             src={art.image}
             alt={novena.name}

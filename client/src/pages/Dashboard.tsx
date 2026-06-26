@@ -398,7 +398,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {quickLinks.map(({ href, label, desc, image, overlay }) => (
               <Link key={href} href={href}>
-                <div className="cover-card aspect-square min-h-[8rem] md:min-h-[11rem] group cursor-pointer">
+                <div className="cover-card aspect-square group cursor-pointer">
                   <img
                     src={image}
                     alt={label}

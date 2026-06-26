@@ -199,7 +199,7 @@ export default function Premium() {
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {premiumContent.map((item) => (
-              <div key={item.title} className="cover-card aspect-square min-h-[8rem] md:min-h-[11rem]">
+              <div key={item.title} className="cover-card aspect-square">
                 <img
                   src={item.image}
                   alt={item.title}
