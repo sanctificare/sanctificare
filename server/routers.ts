@@ -38,6 +38,8 @@ import {
   consumePasswordResetToken,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
+import axios from "axios";
+import https from "https";
 
 const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
 const registerRateMap = new Map<string, { count: number; resetAt: number }>();
@@ -243,6 +245,61 @@ export const appRouter = router({
           return await fetchLiturgyForDate(date);
         } catch (error) {
           console.error("[Liturgy] Fallback fetch failed:", error);
+          return null;
+        }
+      }),
+
+    getSantoDoDia: publicProcedure
+      .query(async (): Promise<{ name: string; biography: string; quote: string | null } | null> => {
+        try {
+          const agent = new https.Agent({ rejectUnauthorized: false });
+          const response = await axios.get("https://api-liturgia-diaria.vercel.app/santo-do-dia", {
+            httpsAgent: agent,
+            timeout: 10000,
+          });
+
+          if (response.status !== 200 || !response.data?.today) {
+            return null;
+          }
+
+          const today = response.data.today;
+          const name = today.title || "";
+          const fullText = today.full_text || "";
+
+          // Limpa biografia (remove quebras de linha e seções finais)
+          let biography = fullText
+            .replace(/\r?\n/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+          const indexOutros = biography.indexOf("Outros santos");
+          if (indexOutros !== -1) {
+            biography = biography.substring(0, indexOutros).trim();
+          }
+          const indexFontes = biography.indexOf("Fontes:");
+          if (indexFontes !== -1) {
+            biography = biography.substring(0, indexFontes).trim();
+          }
+
+          // Extrai frase de destaque
+          let quote: string | null = null;
+          const quoteRegex = /[“"«]([^”"»]{20,300})[”"»]/g;
+          let match;
+          while ((match = quoteRegex.exec(fullText)) !== null) {
+            const found = match[0].trim();
+            if (found) {
+              quote = found;
+              break;
+            }
+          }
+
+          return {
+            name,
+            biography,
+            quote,
+          };
+        } catch (error) {
+          console.error("[Santo do Dia Fetch Error]", error);
           return null;
         }
       }),
