@@ -18,7 +18,7 @@ import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 
 const mainLinks = [
   { href: "/dashboard", label: "Início", icon: Home },
-  { href: "/perfil", label: "Plano Diário", icon: CheckCircle2 },
+  { href: "/plano-diario", label: "Plano Diário", icon: CheckCircle2 },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
@@ -125,7 +125,7 @@ export default function AppNav() {
                   </Button>
                 </Link>
                 {dailyPlan && (
-                  <Link href="/perfil">
+                  <Link href="/plano-diario">
                     <div className="flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.2)] transition-all duration-200 text-xs font-bold font-sans">
                       <Flame size={14} fill="currentColor" className="animate-pulse" />
                       <span>{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"}</span>

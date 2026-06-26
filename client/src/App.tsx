@@ -25,6 +25,7 @@ import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
 import Novenas from "./pages/Novenas";
 import NovenaDetails from "./pages/NovenaDetails";
+import DailyPlan from "./pages/DailyPlan";
 
 
 function Router() {
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/novenas/:slug" component={NovenaDetails} />
       <Route path="/intencoes" component={Intentions} />
       <Route path="/perfil" component={Profile} />
+      <Route path="/plano-diario" component={DailyPlan} />
       <Route path="/premium" component={Premium} />
       <Route path="/videos" component={VideosBiblicos} />
       <Route path="/oracao/:id" component={PrayerDetail} />
