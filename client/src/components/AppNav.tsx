@@ -124,7 +124,7 @@ export default function AppNav() {
                   </Button>
                 </Link>
                 {dailyPlan && (
-                  <Link href="/dashboard">
+                  <Link href="/perfil">
                     <div className="flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.2)] transition-all duration-200 text-xs font-bold font-sans">
                       <Flame size={14} fill="currentColor" className="animate-pulse" />
                       <span>{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"}</span>
