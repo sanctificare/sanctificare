@@ -341,6 +341,66 @@ export const appRouter = router({
           hostedUrl: inv.hosted_invoice_url,
         }));
       }),
+
+    cancelStripe: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (!activeSub || !activeSub.stripeSubscriptionId || !ENV.stripeSecretKey) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Assinatura ativa do Stripe não encontrada.",
+          });
+        }
+
+        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const updated = await stripe.subscriptions.update(activeSub.stripeSubscriptionId, {
+          cancel_at_period_end: true,
+        });
+
+        const status = "cancelled";
+        const expiresAt = new Date((updated as any).current_period_end * 1000);
+
+        await createOrUpdateStripeSubscription(
+          ctx.user.id,
+          activeSub.stripeCustomerId ?? "",
+          updated.id,
+          activeSub.plan,
+          status,
+          expiresAt
+        );
+
+        return { success: true };
+      }),
+
+    reactivateStripe: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (!activeSub || !activeSub.stripeSubscriptionId || !ENV.stripeSecretKey) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Assinatura ativa do Stripe não encontrada.",
+          });
+        }
+
+        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const updated = await stripe.subscriptions.update(activeSub.stripeSubscriptionId, {
+          cancel_at_period_end: false,
+        });
+
+        const status = "active";
+        const expiresAt = new Date((updated as any).current_period_end * 1000);
+
+        await createOrUpdateStripeSubscription(
+          ctx.user.id,
+          activeSub.stripeCustomerId ?? "",
+          updated.id,
+          activeSub.plan,
+          status,
+          expiresAt
+        );
+
+        return { success: true };
+      }),
   }),
 
   templates: router({
