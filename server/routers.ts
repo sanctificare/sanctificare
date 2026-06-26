@@ -36,6 +36,7 @@ import {
   createPasswordResetToken,
   validatePasswordResetToken,
   consumePasswordResetToken,
+  getDailyPlanStatus,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
@@ -339,6 +340,18 @@ export const appRouter = router({
       .input(z.object({ limit: z.number().min(1).max(20).optional() }).optional())
       .query(async ({ ctx, input }) => {
         return listRecentLectioJournalEntries(ctx.user.id, input?.limit ?? 8);
+      }),
+  }),
+
+  dailyPlan: router({
+    getStatus: protectedProcedure
+      .query(async ({ ctx }) => {
+        try {
+          return await getDailyPlanStatus(ctx.user.id);
+        } catch (error) {
+          console.error("[Daily Plan Error]", error);
+          throw error;
+        }
       }),
   }),
 });

@@ -178,6 +178,7 @@ export default function Dashboard() {
   const { data: logs } = trpc.prayers.getRecentLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: allLogs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: liturgy } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: dailyPlan } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
 
   const utils = trpc.useUtils();
   const { data: intentions } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
@@ -192,6 +193,7 @@ export default function Dashboard() {
       }
       await utils.intentions.list.invalidate();
       await utils.intentions.myPrayed.invalidate();
+      await utils.dailyPlan.getStatus.invalidate();
     },
     onError: (err) => {
       toast.error(err.message || "Erro ao registrar oração.");
@@ -222,6 +224,7 @@ export default function Dashboard() {
       toast.success("Liturgia Diária registrada no seu histórico!");
       utils.prayers.getRecentLogs.invalidate();
       utils.prayers.getAllLogs.invalidate();
+      utils.dailyPlan.getStatus.invalidate();
     },
     onError: (err) => {
       toast.error(err.message || "Erro ao registrar liturgia.");
@@ -391,6 +394,145 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
+        {/* Plano Diário de Santificação */}
+        {isAuthenticated && (
+          <div className="mb-8 prayer-card p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Flame className="text-[oklch(0.75_0.12_75)] animate-pulse" size={20} />
+                  <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">
+                    Plano Diário de Santificação
+                  </h2>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Santifique o seu dia completando as atividades propostas a partir dos recursos do aplicativo.
+                </p>
+              </div>
+
+              {dailyPlan && dailyPlan.streak > 0 && (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.75_0.12_75)] font-bold text-sm w-fit self-start sm:self-auto">
+                  <Flame size={16} fill="currentColor" />
+                  <span>{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"} de Ofensiva</span>
+                </div>
+              )}
+            </div>
+
+            {/* Progresso Geral */}
+            {(() => {
+              const completedCount = [
+                dailyPlan?.liturgyCompleted,
+                dailyPlan?.rosaryCompleted,
+                dailyPlan?.lectioCompleted,
+                dailyPlan?.prayersCompleted,
+                dailyPlan?.intercessionCompleted,
+                dailyPlan?.novenaCompleted,
+              ].filter(Boolean).length;
+              const progressPercent = Math.round((completedCount / 6) * 100);
+
+              return (
+                <div className="mb-6">
+                  <div className="flex justify-between items-center text-xs font-semibold mb-2">
+                    <span className="text-muted-foreground">{completedCount} de 6 concluídos</span>
+                    <span className="text-[oklch(0.75_0.12_75)] font-bold">{progressPercent}%</span>
+                  </div>
+                  <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2.5">
+                    <div
+                      className="bg-[oklch(0.75_0.12_75)] h-2.5 rounded-full transition-all duration-500 ease-out"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Checklist */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  label: "Liturgia Diária",
+                  desc: "Leituras e o Evangelho de hoje",
+                  completed: dailyPlan?.liturgyCompleted,
+                  href: "/liturgia",
+                  action: "Ler"
+                },
+                {
+                  label: "Santo Terço",
+                  desc: "Rezar o Terço ou parte dele",
+                  completed: dailyPlan?.rosaryCompleted,
+                  href: "/rosario",
+                  action: "Rezar"
+                },
+                {
+                  label: "Lectio Divina",
+                  desc: "Fazer uma meditação espiritual",
+                  completed: dailyPlan?.lectioCompleted,
+                  href: "/lectio",
+                  action: "Meditar"
+                },
+                {
+                  label: "Devocionário",
+                  desc: "Rezar uma das orações tradicionais",
+                  completed: dailyPlan?.prayersCompleted,
+                  href: "/oracoes",
+                  action: "Rezar"
+                },
+                {
+                  label: "Vela ou Intercessão",
+                  desc: "Acender uma vela ou orar por alguém",
+                  completed: dailyPlan?.intercessionCompleted,
+                  href: "/vela-virtual",
+                  action: "Apoiar"
+                },
+                {
+                  label: "Novena ou Via-Sacra",
+                  desc: "Continuar uma jornada de fé",
+                  completed: dailyPlan?.novenaCompleted,
+                  href: "/novenas",
+                  action: "Seguir"
+                }
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className={`p-4 rounded-xl border transition-all duration-300 flex items-center justify-between gap-3 ${
+                    item.completed
+                      ? "border-green-500/20 bg-green-500/5 dark:bg-green-500/10 text-muted-foreground"
+                      : "border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 dark:hover:bg-black/10"
+                  }`}
+                >
+                  <div className="flex items-start gap-2.5 min-w-0">
+                    <div className="mt-0.5 shrink-0">
+                      {item.completed ? (
+                        <CheckCircle2 className="text-green-500" size={18} />
+                      ) : (
+                        <Circle className="text-muted-foreground" size={18} />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className={`text-sm font-semibold truncate ${item.completed ? "line-through text-muted-foreground" : "text-foreground"}`}>
+                        {item.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">{item.desc}</p>
+                    </div>
+                  </div>
+
+                  {!item.completed && (
+                    <Link href={item.href}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 text-xs border-[oklch(0.75_0.12_75/0.4)] text-[oklch(0.22_0.07_260)] dark:text-white hover:bg-[oklch(0.75_0.12_75/0.1)] py-1 px-3"
+                      >
+                        {item.action}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Acesso Rápido */}
         <div className="mb-8">

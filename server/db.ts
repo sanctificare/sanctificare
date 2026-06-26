@@ -987,3 +987,123 @@ export async function consumePasswordResetToken(
 
   return true;
 }
+
+function todayIsoSaoPaulo(): string {
+  const fmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return fmt.format(new Date());
+}
+
+export async function getDailyPlanStatus(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const today = todayIsoSaoPaulo();
+
+  // Fetch data
+  const logs = await db
+    .select()
+    .from(prayerLogs)
+    .where(eq(prayerLogs.userId, userId))
+    .orderBy(desc(prayerLogs.completedAt))
+    .limit(100);
+
+  const journals = await db
+    .select()
+    .from(lectioJournal)
+    .where(eq(lectioJournal.userId, userId))
+    .orderBy(desc(lectioJournal.journalDate))
+    .limit(100);
+
+  const intentions = await db
+    .select()
+    .from(intentionPrayers)
+    .where(eq(intentionPrayers.userId, userId))
+    .orderBy(desc(intentionPrayers.prayedAt))
+    .limit(100);
+
+  // Timezone formatting helper
+  const formatSaoPaulo = (d: Date) => {
+    const fmt = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Sao_Paulo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    return fmt.format(d);
+  };
+
+  // Check completions for today
+  const liturgyCompleted = logs.some(
+    (l) => l.prayerType === "liturgia" && formatSaoPaulo(new Date(l.completedAt)) === today
+  );
+  
+  const rosaryCompleted = logs.some(
+    (l) => l.prayerType === "rosario" && formatSaoPaulo(new Date(l.completedAt)) === today
+  );
+
+  const lectioCompleted = journals.some((j) => j.journalDate === today);
+
+  const excludedTypes = ["liturgia", "rosario", "lectio_divina", "via_sacra", "vela_virtual", "novena"];
+  const prayersCompleted = logs.some(
+    (l) => !excludedTypes.includes(l.prayerType) && formatSaoPaulo(new Date(l.completedAt)) === today
+  );
+
+  const velaVirtualCompleted = logs.some(
+    (l) => l.prayerType === "vela_virtual" && formatSaoPaulo(new Date(l.completedAt)) === today
+  );
+
+  const intercessionCompleted =
+    velaVirtualCompleted ||
+    intentions.some((i) => formatSaoPaulo(new Date(i.prayedAt)) === today);
+
+  const novenaCompleted = logs.some(
+    (l) =>
+      (l.prayerType === "novena" || l.prayerType === "via_sacra") &&
+      formatSaoPaulo(new Date(l.completedAt)) === today
+  );
+
+  // Combine unique dates of activity
+  const dates = new Set<string>();
+  logs.forEach((l) => dates.add(formatSaoPaulo(new Date(l.completedAt))));
+  journals.forEach((j) => dates.add(j.journalDate));
+  intentions.forEach((i) => dates.add(formatSaoPaulo(new Date(i.prayedAt))));
+
+  const activeDates = Array.from(dates).sort((a, b) => b.localeCompare(a));
+
+  // Calculate streak
+  let streak = 0;
+  const hasActivityToday = activeDates.includes(today);
+
+  const yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  const yesterday = formatSaoPaulo(yesterdayDate);
+  const hasActivityYesterday = activeDates.includes(yesterday);
+
+  if (hasActivityToday || hasActivityYesterday) {
+    let checkDate = hasActivityToday ? new Date() : yesterdayDate;
+    while (true) {
+      const checkStr = formatSaoPaulo(checkDate);
+      if (activeDates.includes(checkStr)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+  }
+
+  return {
+    liturgyCompleted,
+    rosaryCompleted,
+    lectioCompleted,
+    prayersCompleted,
+    intercessionCompleted,
+    novenaCompleted,
+    streak,
+  };
+}

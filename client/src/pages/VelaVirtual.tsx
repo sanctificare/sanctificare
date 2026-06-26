@@ -101,6 +101,7 @@ const RECOLLECTION_PHRASES = [
 export default function VelaVirtual() {
   const { isAuthenticated, loading } = useAuth();
   const [newIntention, setNewIntention] = useState("");
+  const logPrayer = trpc.prayers.logPrayer.useMutation();
   const [candleType, setCandleType] = useState<"intencao" | "defuntos" | "agradecimento" | "adoracao">("intencao");
   
   // Controle da vela local/sessão atual
@@ -476,6 +477,16 @@ export default function VelaVirtual() {
                           // Iniciar o ambiente e modo limpo
                           await startPrayerSpace();
                           setCleanMode(true);
+
+                          // Registrar oração no histórico
+                          try {
+                            await logPrayer.mutateAsync({
+                              prayerType: "vela_virtual",
+                              prayerName: "Vela Virtual"
+                            });
+                          } catch (err) {
+                            console.error("[VelaVirtual] Erro ao registrar log:", err);
+                          }
                         }}
                         className="w-full bg-[oklch(0.82_0.10_80)] hover:bg-[oklch(0.77_0.10_80)] text-[oklch(0.15_0.02_260)] font-semibold"
                       >
