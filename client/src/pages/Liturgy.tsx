@@ -349,7 +349,7 @@ export default function Liturgy() {
                       {!(isTodaySelected && apiSanto) && dailyContent.saint.title && (
                         <p className="text-xs font-medium text-muted-foreground">{dailyContent.saint.title}</p>
                       )}
-                      <p className="text-sm text-foreground/80 leading-relaxed pt-1.5 line-clamp-3">
+                      <p className="text-sm text-foreground/80 leading-relaxed pt-1.5">
                         {isTodaySelected && apiSanto ? apiSanto.biography : dailyContent.saint.summary}
                       </p>
                       {isTodaySelected && apiSanto?.quote && (

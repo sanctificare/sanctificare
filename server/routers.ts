@@ -281,6 +281,12 @@ export const appRouter = router({
             biography = biography.substring(0, indexFontes).trim();
           }
 
+          // Limita a duas frases
+          const sentences = biography.match(/[^.!?]+[.!?]+/g);
+          if (sentences && sentences.length > 2) {
+            biography = sentences.slice(0, 2).join("").trim();
+          }
+
           // Extrai frase de destaque
           let quote: string | null = null;
           const quoteRegex = /[“"«]([^”"»]{20,300})[”"»]/g;
