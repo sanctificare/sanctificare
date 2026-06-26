@@ -33,10 +33,10 @@ const plans = [
   {
     key: "annual" as const,
     name: "Premium Anual",
-    price: "R$ 119,90",
+    price: "R$ 149,00",
     period: "por ano",
-    priceValue: 119.9,
-    monthlyEquiv: "R$ 9,99/mês",
+    priceValue: 149.0,
+    monthlyEquiv: "R$ 12,41/mês",
     features: [
       "Tudo do plano mensal",
       "Equivalente a 2 meses grátis",
@@ -46,7 +46,7 @@ const plans = [
       "Conteúdo exclusivo de datas especiais",
     ],
     highlight: true,
-    badge: "Melhor Oferta — Economize 33%",
+    badge: "Melhor Oferta — Economize 16%",
   },
 ];
 
@@ -330,7 +330,7 @@ export default function Premium() {
                 Migre para o Plano Anual
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Economize 33% e mantenha por mais tempo seu acesso aos conteúdos de oração do app.
+                Economize 16% e mantenha por mais tempo seu acesso aos conteúdos de oração do app.
               </p>
               <Button
                 className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold"
@@ -338,7 +338,7 @@ export default function Premium() {
                 disabled={subscribeMutation.isPending}
               >
                 <Crown size={14} className="mr-2" />
-                {subscribeMutation.isPending ? "Processando..." : "Migrar para Anual — R$ 119,90/ano"}
+                {subscribeMutation.isPending ? "Processando..." : "Migrar para Anual — R$ 149,00/ano"}
               </Button>
             </div>
           </div>

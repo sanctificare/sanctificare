@@ -98,10 +98,10 @@ const plans = [
   },
   {
     name: "Premium Anual",
-    price: "R$ 9,99",
+    price: "R$ 12,41",
     period: "por mês*",
-    badge: "Economize 33%",
-    note: "*Cobrado anualmente (R$ 119,90/ano)",
+    badge: "Economize 16%",
+    note: "*Cobrado anualmente (R$ 149,00/ano)",
     features: [
       "Tudo do acesso mensal",
       "Equivalente a 2 meses sem custo adicional",
