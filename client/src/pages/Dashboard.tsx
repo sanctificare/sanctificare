@@ -457,6 +457,7 @@ export default function Dashboard() {
                           variant={alreadyPrayed ? "outline" : "default"}
                           disabled={prayMutation.isPending}
                           onClick={() => handlePrayForIntention(intention.id)}
+                          className={alreadyPrayed 
                             ? "border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
                             : "bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
