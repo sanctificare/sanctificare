@@ -4,7 +4,7 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { User, Heart, Crown, Calendar, Clock, ChevronRight, BookMarked, Bell } from "lucide-react";
+import { User, Heart, Crown, Calendar, Clock, ChevronRight, Bell } from "lucide-react";
 import { Link } from "wouter";
 import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
@@ -30,7 +30,6 @@ export default function Profile() {
   const { user, isAuthenticated, loading } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: journalEntries } = trpc.lectioJournal.listRecent.useQuery({ limit: 10 }, { enabled: isAuthenticated });
 
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
     return localStorage.getItem("sanctificare.reminders.enabled") === "true";
@@ -202,56 +201,6 @@ export default function Profile() {
             </div>
           )}
 
-          {/* Diário Espiritual (Versículos Salvos) */}
-          <div className="prayer-card p-5 mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
-                Diário Espiritual & Versículos Salvos
-              </h2>
-            </div>
-            <div className="divider-gold mb-4" />
-
-            {journalEntries && journalEntries.length > 0 ? (
-              <div className="space-y-4 max-h-[350px] overflow-y-auto pr-1">
-                {journalEntries.map((entry) => {
-                  const displayDate = new Date(entry.journalDate + "T12:00:00").toLocaleDateString("pt-BR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  });
-                  
-                  return (
-                    <div key={entry.id} className="p-4 rounded-xl border border-border/40 bg-white/30 dark:bg-stone-900/10 space-y-2 last:mb-0">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span className="font-medium">{displayDate}</span>
-                        <span className="font-semibold text-[oklch(0.65_0.14_70)]">
-                          {entry.passageReference}
-                        </span>
-                      </div>
-                      {entry.anchoredPhrase && (
-                        <blockquote className="font-serif italic text-sm text-foreground/80 pl-3 border-l-2 border-[oklch(0.75_0.12_75)] py-0.5 leading-relaxed">
-                          "{entry.anchoredPhrase}"
-                        </blockquote>
-                      )}
-                      {entry.personalNote && (
-                        <p className="text-xs text-foreground/70 pt-1 leading-relaxed border-t border-border/20 mt-1">
-                          <strong>Meditação:</strong> {entry.personalNote}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <BookMarked size={28} className="text-muted-foreground mx-auto mb-2 opacity-35" />
-                <p className="text-sm text-muted-foreground">
-                  Nenhum versículo foi salvo no seu diário espiritual ainda.
-                </p>
-              </div>
-            )}
-          </div>
 
           {/* Histórico completo */}
           <div className="prayer-card p-5">
