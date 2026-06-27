@@ -89,8 +89,8 @@ function buildRosaryAudioTracks(mysterySet: RosaryMysteryAudioSet): RosaryAudioT
 
   tracks.push({
     id: "intro",
-    title: "Sinal da Cruz",
-    description: "Em nome do Pai, do Filho e do Espírito Santo",
+    title: "Oferecimento e Credo",
+    description: "Divino Jesus, nós Vos oferecemos...",
     audioUrl: SINAL_CRUZ_AUDIO_FILE,
     duration: SINAL_CRUZ_AVG_DURATION,
     type: "intro",
@@ -98,8 +98,8 @@ function buildRosaryAudioTracks(mysterySet: RosaryMysteryAudioSet): RosaryAudioT
 
   tracks.push({
     id: "credo",
-    title: "Credo",
-    description: "Creio em Deus Pai",
+    title: "Sinal da Cruz",
+    description: "Em nome do Pai, do Filho e do Espírito Santo",
     audioUrl: CREDO_AUDIO_FILE,
     duration: CREDO_AVG_DURATION,
     type: "credo",

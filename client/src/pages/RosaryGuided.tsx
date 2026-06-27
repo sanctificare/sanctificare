@@ -67,9 +67,9 @@ preservai-nos do fogo do inferno,
 levai as almas todas para o céu,
 especialmente as que mais precisarem da vossa misericórdia. Amém.`;
 
-const SINAL_DA_CRUZ = `Em nome do Pai, do Filho e do Espírito Santo. Amém.
+const SINAL_DA_CRUZ = `Em nome do Pai, do Filho e do Espírito Santo. Amém.`;
 
-Divino Jesus, nós Vos oferecemos este terço que vamos rezar,
+const OFERECIMENTO_E_CREDO = `Divino Jesus, nós Vos oferecemos este terço que vamos rezar,
 meditando nos mistérios da nossa redenção.
 Concedei-nos, por intercessão da Virgem Maria,
 Mãe de Deus e nossa Mãe,
@@ -77,10 +77,25 @@ as virtudes que nos são necessárias
 para bem rezá-lo e a graça de ganharmos
 as indulgências desta santa devoção.
 
-Ó Deus, vinde em nosso auxílio.
-Senhor, socorrei-nos e salvai-nos.
-Glória ao Pai, ao Filho e ao Espírito Santo,
-como era no princípio, agora e sempre. Amém.`;
+Creio em Deus Pai todo-poderoso,
+criador do céu e da terra.
+E em Jesus Cristo, seu único Filho, nosso Senhor,
+que foi concebido pelo poder do Espírito Santo,
+nasceu da Virgem Maria,
+padeceu sob Pôncio Pilatos,
+foi crucificado, morto e sepultado,
+desceu à mansão dos mortos,
+ressuscitou ao terceiro dia,
+subiu aos céus,
+está sentado à direita de Deus Pai todo-poderoso,
+donde há de vir a julgar os vivos e os mortos.
+
+Creio no Espírito Santo,
+na Santa Igreja Católica,
+na comunhão dos santos,
+na remissão dos pecados,
+na ressurreição da carne,
+na vida eterna. Amém.`;
 
 type Step = RosaryStep;
 
@@ -335,16 +350,16 @@ export default function RosaryGuided() {
   const getPrayerDisplay = (): PrayerDisplay => {
     if (step.type === "intro") {
       return {
-        title: "Sinal da Cruz e Oferecimento",
+        title: "Oferecimento e Credo",
         subtitle: "Início do Rosário",
-        text: SINAL_DA_CRUZ,
+        text: OFERECIMENTO_E_CREDO,
       };
     }
     if (step.type === "credo") {
       return {
-        title: "Credo Apostólico",
+        title: "Sinal da Cruz",
         subtitle: "Início do Rosário",
-        text: `Creio em Deus Pai todo-poderoso,\ncriador do céu e da terra.\n\nE em Jesus Cristo, seu único Filho, nosso Senhor,\nque foi concebido pelo poder do Espírito Santo,\nnasceu da Virgem Maria,\npadeceu sob Pôncio Pilatos,\nfoi crucificado, morto e sepultado,\ndesceu à mansão dos mortos,\nressuscitou ao terceiro dia,\nsubiu aos céus,\nestá sentado à direita de Deus Pai todo-poderoso,\ndonde há de vir a julgar os vivos e os mortos.\n\nCreio no Espírito Santo,\nna Santa Igreja Católica,\nna comunhão dos santos,\nna remissão dos pecados,\nna ressurreição da carne,\nna vida eterna. Amém.`,
+        text: SINAL_DA_CRUZ,
       };
     }
     if (step.type === "pai_nosso_initial") return { title: "Pai Nosso", subtitle: "Início - 1 Pai Nosso", text: PAI_NOSSO };
