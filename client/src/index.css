@@ -409,6 +409,19 @@
     border-color: oklch(0.75 0.12 75 / 0.3);
   }
 
+  .dark .prayer-card {
+    background: linear-gradient(145deg, oklch(0.17 0.04 260 / 0.75), oklch(0.14 0.03 260 / 0.5));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.28 0.04 260 / 0.5);
+    border-top: 3px solid oklch(0.75 0.12 75);
+  }
+
+  .dark .prayer-card:hover {
+    box-shadow: 0 12px 32px oklch(0.12 0.03 260 / 0.5), 0 0 16px oklch(0.75 0.12 75 / 0.25);
+    border-color: oklch(0.75 0.12 75 / 0.4);
+  }
+
   /* Card visual padrão (estilo Hallow) */
   .cover-card {
     position: relative;

@@ -339,20 +339,20 @@ export default function Dashboard() {
   const firstName = user?.name?.split(" ")[0] || "Fiel";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden">
+    <div className="dark min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-[oklch(0.12_0.03_260)] text-foreground dark:text-white relative overflow-hidden transition-colors duration-500">
       {/* Golden pattern background */}
-      <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
+      <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] dark:opacity-[0.05] pointer-events-none" />
       
       <AppNav />
 
       <main className="container py-8 relative z-10">
         {/* Saudação */}
         <div className="mb-8 animate-fade-in">
-          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden shadow-lg">
-            <div className="absolute inset-0 bg-pattern-cross opacity-20" />
+          <div className="bg-[oklch(0.22_0.07_260)] dark:bg-white/5 dark:backdrop-blur-md dark:border dark:border-white/10 rounded-2xl p-8 relative overflow-hidden shadow-lg dark:shadow-2xl dark:shadow-gold/5">
+            <div className="absolute inset-0 bg-pattern-cross opacity-20 dark:opacity-10" />
             <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
-                <p className="text-[oklch(0.70_0.03_260)] text-sm font-medium mb-1">{getDayOfWeek()}, {getFormattedDate()}</p>
+                <p className="text-[oklch(0.70_0.03_260)] dark:text-gold-light text-sm font-medium mb-1">{getDayOfWeek()}, {getFormattedDate()}</p>
                 <div className="flex items-center gap-3 flex-wrap mb-2">
                   <h1 className="font-display text-3xl font-bold text-white">
                     Bem-vindo, {firstName}
@@ -364,7 +364,7 @@ export default function Dashboard() {
                     </div>
                   )}
                 </div>
-                <p className="font-serif text-[oklch(0.80_0.02_260)] text-base">
+                <p className="font-serif text-[oklch(0.80_0.02_260)] dark:text-white/80 text-base">
                   Hoje a Igreja contempla os <span className="text-[oklch(0.82_0.10_80)] font-semibold">{getMystery()}</span>
                 </p>
                 {liturgy?.celebration && (
@@ -372,7 +372,7 @@ export default function Dashboard() {
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getLiturgicalColorStyle(liturgy.color)}`}>
                       {liturgy.color ? capitalize(liturgy.color) : "Tempo Litúrgico"}
                     </span>
-                    <span className="text-[oklch(0.90_0.01_260)] text-sm font-medium">
+                    <span className="text-[oklch(0.90_0.01_260)] dark:text-white/90 text-sm font-medium">
                       {liturgy.celebration}
                     </span>
                   </div>
@@ -380,7 +380,7 @@ export default function Dashboard() {
               </div>
               <div className="flex gap-3">
                 <Link href="/rosario">
-                  <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
+                  <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold dark:shadow-lg dark:shadow-gold/10">
                     <RosaryIcon size={15} className="mr-2" />
                     Rezar o Rosário
                   </Button>
@@ -400,7 +400,7 @@ export default function Dashboard() {
 
         {/* Acesso Rápido */}
         <div className="mb-8">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Acesso Rápido</h2>
+          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-gold mb-4">Acesso Rápido</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {quickLinks.map(({ href, label, desc, image, overlay }) => (
               <Link key={href} href={href}>
@@ -434,7 +434,7 @@ export default function Dashboard() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold uppercase tracking-wide">
                   Intenções da Comunidade
                 </h3>
               </div>
@@ -445,10 +445,10 @@ export default function Dashboard() {
                   intentions.slice(0, 3).map((intention) => {
                     const alreadyPrayed = myPrayedIntentions?.includes(intention.id);
                     return (
-                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 transition-all duration-300">
+                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-border/40 dark:border-white/5 bg-white/10 dark:bg-white/5 hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300">
                         <div className="flex-1 min-w-0 pr-4">
-                          <p className="text-sm font-semibold text-foreground truncate">{intention.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                          <p className="text-sm font-semibold text-foreground dark:text-white truncate">{intention.title}</p>
+                          <p className="text-xs text-muted-foreground dark:text-white/50 mt-0.5 truncate">
                             Por: {intention.isAnonymous ? "Anônimo" : intention.authorName} • {intention.prayerCount} {intention.prayerCount === 1 ? "oração" : "orações"}
                           </p>
                         </div>
@@ -458,8 +458,8 @@ export default function Dashboard() {
                           disabled={prayMutation.isPending}
                           onClick={() => handlePrayForIntention(intention.id)}
                           className={alreadyPrayed 
-                            ? "border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 text-xs font-semibold px-3 h-8 flex items-center gap-1"
-                            : "bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 text-xs font-semibold px-3 h-8 flex items-center gap-1"
+                            ? "border-emerald-600/30 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 bg-emerald-500/5 text-xs font-semibold px-3 h-8 flex items-center gap-1"
+                            : "bg-[oklch(0.22_0.07_260)] dark:bg-[oklch(0.75_0.12_75)] text-white dark:text-[oklch(0.15_0.02_260)] hover:bg-[oklch(0.22_0.07_260)]/85 dark:hover:bg-[oklch(0.70_0.13_73)] text-xs font-semibold px-3 h-8 flex items-center gap-1"
                           }
                         >
                           {alreadyPrayed ? (
@@ -478,12 +478,12 @@ export default function Dashboard() {
                     );
                   })
                 ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção ativa no momento.</p>
+                  <p className="text-sm text-muted-foreground dark:text-white/50 text-center py-4">Nenhuma intenção activa no momento.</p>
                 )}
               </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-border/30 text-right">
-              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.22_0.07_260)] hover:underline flex items-center justify-end gap-1">
+            <div className="mt-4 pt-3 border-t border-border/30 dark:border-white/10 text-right">
+              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold hover:underline flex items-center justify-end gap-1">
                 Ver todas as intenções <ChevronRight size={12} />
               </Link>
             </div>
@@ -496,18 +496,18 @@ export default function Dashboard() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold uppercase tracking-wide">
                       Sua Novena Ativa
                     </h3>
                   </div>
                   <div className="divider-gold mb-4" />
                   
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-foreground mb-1">{activeNovena.novena.name}</h4>
-                    <p className="text-xs text-muted-foreground">Dia {activeNovena.completedCount} de {activeNovenaTotalDays} concluído</p>
+                    <h4 className="text-sm font-bold text-foreground dark:text-white mb-1">{activeNovena.novena.name}</h4>
+                    <p className="text-xs text-muted-foreground dark:text-white/50">Dia {activeNovena.completedCount} de {activeNovenaTotalDays} concluído</p>
                   </div>
 
-                  <div className="w-full bg-black/5 rounded-full h-2 overflow-hidden mb-4">
+                  <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden mb-4">
                     <div 
                       className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
                       style={{ width: `${activeNovenaProgressPercent}%` }}
@@ -527,20 +527,20 @@ export default function Dashboard() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold uppercase tracking-wide">
                       Novenas
                     </h3>
                   </div>
                   <div className="divider-gold mb-4" />
                   
                   <div className="mb-4">
-                    <h4 className="text-sm font-bold text-foreground mb-1">Novena de São José</h4>
-                    <p className="text-xs text-muted-foreground">Que tal iniciar uma caminhada de fé com o padroeiro da Igreja universal?</p>
+                    <h4 className="text-sm font-bold text-foreground dark:text-white mb-1">Novena de São José</h4>
+                    <p className="text-xs text-muted-foreground dark:text-white/50">Que tal iniciar uma caminhada de fé com o padroeiro da Igreja universal?</p>
                   </div>
                 </div>
 
                 <Link href="/novenas/novena-de-sao-jose">
-                  <Button className="w-full bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                  <Button className="w-full bg-[oklch(0.22_0.07_260)] dark:bg-[oklch(0.75_0.12_75)] text-white dark:text-[oklch(0.15_0.02_260)] hover:bg-[oklch(0.22_0.07_260)]/85 dark:hover:bg-[oklch(0.70_0.13_73)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
                     Começar Novena
                     <ChevronRight size={14} />
                   </Button>
@@ -558,18 +558,18 @@ export default function Dashboard() {
           <div className="lg:col-span-2 prayer-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen size={16} className="text-[oklch(0.65_0.14_70)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold uppercase tracking-wide">
                 Versículo do Dia
               </h3>
             </div>
             <div className="divider-gold mb-4" />
-            <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] leading-relaxed mb-3">
+            <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] dark:text-white/90 leading-relaxed mb-3">
               "{dynamicVerse.text}"
             </blockquote>
-            <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)]">{dynamicVerse.ref}</p>
+            <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)] dark:text-gold-light">{dynamicVerse.ref}</p>
             <div className="mt-6">
               <Link href="/liturgia">
-                <Button variant="outline" size="sm" className="text-[oklch(0.22_0.07_260)] border-[oklch(0.22_0.07_260/0.3)]">
+                <Button variant="outline" size="sm" className="text-[oklch(0.22_0.07_260)] dark:text-white border-[oklch(0.22_0.07_260/0.3)] dark:border-white/20 dark:hover:bg-white/5">
                   Ver Liturgia do Dia
                   <ChevronRight size={14} className="ml-1" />
                 </Button>
@@ -581,7 +581,7 @@ export default function Dashboard() {
           <div className="prayer-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-gold uppercase tracking-wide">
                 Orações Recentes
               </h3>
             </div>
@@ -590,12 +590,12 @@ export default function Dashboard() {
               <div className="space-y-3">
                 {logs.slice(0, 5).map((log: any) => (
                   <div key={log.id} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] flex items-center justify-center flex-shrink-0">
-                      <Heart size={13} className="text-[oklch(0.55_0.14_15)]" />
+                    <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] dark:bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <Heart size={13} className="text-[oklch(0.55_0.14_15)] dark:text-amber-400" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{log.prayerName}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm font-medium text-foreground dark:text-white/90 truncate">{log.prayerName}</p>
+                      <p className="text-xs text-muted-foreground dark:text-white/50">
                         {new Date(log.completedAt).toLocaleDateString("pt-BR")}
                       </p>
                     </div>
@@ -604,10 +604,10 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="text-center py-6">
-                <Heart size={28} className="text-muted-foreground mx-auto mb-2 opacity-40" />
-                <p className="text-sm text-muted-foreground">Nenhuma oração foi registrada ainda.</p>
+                <Heart size={28} className="text-muted-foreground dark:text-white/30 mx-auto mb-2 opacity-40" />
+                <p className="text-sm text-muted-foreground dark:text-white/50">Nenhuma oração foi registrada ainda.</p>
                 <Link href="/oracoes">
-                  <Button size="sm" variant="outline" className="mt-3 text-xs">
+                  <Button size="sm" variant="outline" className="mt-3 text-xs dark:border-white/20 dark:text-white dark:hover:bg-white/5">
                     Começar a rezar
                   </Button>
                 </Link>
@@ -615,7 +615,7 @@ export default function Dashboard() {
             )}
             {logs && logs.length > 0 && (
               <Link href="/perfil">
-                <Button variant="outline" size="sm" className="w-full mt-4 text-xs">
+                <Button variant="outline" size="sm" className="w-full mt-4 text-xs dark:border-white/20 dark:text-white dark:hover:bg-white/5">
                   Ver histórico completo
                 </Button>
               </Link>
@@ -624,14 +624,14 @@ export default function Dashboard() {
         </div>
 
         {/* Banner Premium */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] dark:from-white/5 dark:to-white/10 dark:border dark:border-white/10 p-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-[oklch(0.75_0.12_75/0.2)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
               <Crown size={22} className="text-[oklch(0.82_0.10_80)]" />
             </div>
             <div>
               <h3 className="font-display text-base font-bold text-white">Aprofunde sua vida de oração</h3>
-              <p className="text-sm text-[oklch(0.75_0.03_260)]">Novenas, meditações e áudios para acompanhar com mais constância a sua caminhada espiritual</p>
+              <p className="text-sm text-[oklch(0.75_0.03_260)] dark:text-white/60">Novenas, meditações e áudios para acompanhar com mais constância a sua caminhada espiritual</p>
             </div>
           </div>
           <Link href="/premium">
