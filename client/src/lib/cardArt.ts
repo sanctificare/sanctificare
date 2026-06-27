@@ -12,48 +12,48 @@ const PRAYER_ART: Record<string, CardArt> = {
   pai_nosso: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.27 0.08 260 / 0.62)" },
   ave_maria: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.46 0.13 18 / 0.58)" },
   gloria: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.52 0.13 80 / 0.55)" },
-  credo: { image: "/assets/via-sacra/estacao-01.webp", overlay: "oklch(0.24 0.07 260 / 0.64)" },
-  salve_rainha: { image: "/assets/via-sacra/estacao-02.webp", overlay: "oklch(0.39 0.16 335 / 0.56)" },
-  angelus: { image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.34 0.08 210 / 0.58)" },
+  credo: { image: "/assets/via-sacra/imagens/1estacao.webp", overlay: "oklch(0.24 0.07 260 / 0.64)" },
+  salve_rainha: { image: "/assets/via-sacra/imagens/2estacao.webp", overlay: "oklch(0.39 0.16 335 / 0.56)" },
+  angelus: { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.34 0.08 210 / 0.58)" },
   fatima: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.53 0.1 120 / 0.55)" },
   anjo_da_guarda: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.45 0.12 40 / 0.56)" },
-  novena: { image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.27 0.09 260 / 0.64)" },
-  meditacao: { image: "/assets/via-sacra/estacao-02.webp", overlay: "oklch(0.38 0.17 20 / 0.58)" },
-  liturgia: { image: "/assets/via-sacra/estacao-01.webp", overlay: "oklch(0.3 0.12 225 / 0.6)" },
+  novena: { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.27 0.09 260 / 0.64)" },
+  meditacao: { image: "/assets/via-sacra/imagens/2estacao.webp", overlay: "oklch(0.38 0.17 20 / 0.58)" },
+  liturgia: { image: "/assets/via-sacra/imagens/1estacao.webp", overlay: "oklch(0.3 0.12 225 / 0.6)" },
   rosario: { image: "/assets/sanctificare-rosary.webp", overlay: "oklch(0.22 0.08 260 / 0.6)" },
-  lectio_divina: { image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.35 0.11 225 / 0.58)" },
+  lectio_divina: { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.35 0.11 225 / 0.58)" },
 };
 
 const NOVENA_ART: Record<string, CardArt> = {
-  "novena-sagrado-coracao-jesus": { image: "/assets/via-sacra/estacao-02.webp", overlay: "oklch(0.39 0.17 22 / 0.58)" },
-  "novena-divino-espirito-santo": { image: "/assets/via-sacra/estacao-03.webp", overlay: "oklch(0.35 0.1 215 / 0.58)" },
+  "novena-sagrado-coracao-jesus": { image: "/assets/via-sacra/imagens/2estacao.webp", overlay: "oklch(0.39 0.17 22 / 0.58)" },
+  "novena-divino-espirito-santo": { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.35 0.1 215 / 0.58)" },
   "novena-nossa-senhora-perpetuo-socorro": { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.45 0.13 290 / 0.56)" },
-  "novena-sao-jose": { image: "/assets/via-sacra/estacao-01.webp", overlay: "oklch(0.42 0.11 110 / 0.56)" },
+  "novena-sao-jose": { image: "/assets/via-sacra/imagens/1estacao.webp", overlay: "oklch(0.42 0.11 110 / 0.56)" },
 };
 
 const LECTIO_STEP_ART: Record<string, string> = {
-  lectio: "/assets/via-sacra/estacao-01.webp",
-  meditatio: "/assets/via-sacra/estacao-02.webp",
-  oratio: "/assets/via-sacra/estacao-03.webp",
+  lectio: "/assets/via-sacra/imagens/1estacao.webp",
+  meditatio: "/assets/via-sacra/imagens/2estacao.webp",
+  oratio: "/assets/via-sacra/imagens/3estacao.webp",
   contemplatio: "/assets/sanctificare-hero.webp",
   actio: "/assets/sanctificare-rosary.webp",
 };
 
 const AUDIO_COLLECTION_ART: Record<string, string> = {
-  "meditacoes-contemplativas": "/assets/via-sacra/estacao-03.webp",
-  "historias-da-biblia": "/assets/via-sacra/estacao-01.webp",
-  "canto-gregoriano": "/assets/via-sacra/estacao-01.webp",
-  "polifonia-sacra": "/assets/via-sacra/estacao-02.webp",
-  "para-meditar": "/assets/via-sacra/estacao-03.webp",
+  "meditacoes-contemplativas": "/assets/via-sacra/imagens/3estacao.webp",
+  "historias-da-biblia": "/assets/via-sacra/imagens/1estacao.webp",
+  "canto-gregoriano": "/assets/via-sacra/imagens/1estacao.webp",
+  "polifonia-sacra": "/assets/via-sacra/imagens/2estacao.webp",
+  "para-meditar": "/assets/via-sacra/imagens/3estacao.webp",
   "mariana": "/assets/sanctificare-rosary.webp",
   "tempos-liturgicos": "/assets/sanctificare-hero.webp",
   // Coleções por Artista/Compositor
-  "js-bach": "/assets/via-sacra/estacao-03.webp",
-  "tomas-luis-de-victoria": "/assets/via-sacra/estacao-02.webp",
-  "palestrina": "/assets/via-sacra/estacao-02.webp",
+  "js-bach": "/assets/via-sacra/imagens/3estacao.webp",
+  "tomas-luis-de-victoria": "/assets/via-sacra/imagens/2estacao.webp",
+  "palestrina": "/assets/via-sacra/imagens/2estacao.webp",
   "mozart": "/assets/sanctificare-hero.webp",
   "schubert": "/assets/sanctificare-rosary.webp",
-  "faure": "/assets/via-sacra/estacao-03.webp",
+  "faure": "/assets/via-sacra/imagens/3estacao.webp",
   "bruckner": "/assets/sanctificare-rosary.webp",
   "handel": "/assets/sanctificare-hero.webp",
 };
@@ -75,7 +75,7 @@ export function getAudioCollectionArt(collectionId: string): string {
 }
 
 export function getLiturgySectionArt(sectionId: string): string {
-  if (sectionId === "first_reading") return "/assets/via-sacra/estacao-01.webp";
-  if (sectionId === "psalm") return "/assets/via-sacra/estacao-03.webp";
-  return "/assets/via-sacra/estacao-02.webp";
+  if (sectionId === "first_reading") return "/assets/via-sacra/imagens/1estacao.webp";
+  if (sectionId === "psalm") return "/assets/via-sacra/imagens/3estacao.webp";
+  return "/assets/via-sacra/imagens/2estacao.webp";
 }
