@@ -434,7 +434,7 @@ export default function Dashboard() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                   Intenções da Comunidade
                 </h3>
               </div>
@@ -457,9 +457,8 @@ export default function Dashboard() {
                           variant={alreadyPrayed ? "outline" : "default"}
                           disabled={prayMutation.isPending}
                           onClick={() => handlePrayForIntention(intention.id)}
-                          className={alreadyPrayed 
-                            ? "border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 text-xs font-semibold px-3 h-8 flex items-center gap-1"
-                            : "bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 text-xs font-semibold px-3 h-8 flex items-center gap-1"
+                            ? "border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
+                            : "bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
                         >
                           {alreadyPrayed ? (
@@ -496,7 +495,7 @@ export default function Dashboard() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                       Sua Novena Ativa
                     </h3>
                   </div>
@@ -516,7 +515,7 @@ export default function Dashboard() {
                 </div>
 
                 <Link href={`/novenas/${activeNovena.novena.slug}`}>
-                  <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                  <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md transition-all">
                     <Play size={12} className="fill-current" />
                     Rezar o Dia {activeNovena.nextDay}
                   </Button>
@@ -527,7 +526,7 @@ export default function Dashboard() {
                 <div>
                   <div className="flex items-center gap-2 mb-4">
                     <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                       Novenas
                     </h3>
                   </div>
@@ -540,7 +539,7 @@ export default function Dashboard() {
                 </div>
 
                 <Link href="/novenas/novena-de-sao-jose">
-                  <Button className="w-full bg-[oklch(0.22_0.07_260)] text-white hover:bg-[oklch(0.22_0.07_260)]/85 font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                  <Button className="w-full bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
                     Começar Novena
                     <ChevronRight size={14} />
                   </Button>
@@ -558,12 +557,12 @@ export default function Dashboard() {
           <div className="lg:col-span-2 prayer-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen size={16} className="text-[oklch(0.65_0.14_70)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                 Versículo do Dia
               </h3>
             </div>
             <div className="divider-gold mb-4" />
-            <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] leading-relaxed mb-3">
+            <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] leading-relaxed mb-3 tracking-tight">
               "{dynamicVerse.text}"
             </blockquote>
             <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)]">{dynamicVerse.ref}</p>
@@ -581,7 +580,7 @@ export default function Dashboard() {
           <div className="prayer-card p-6">
             <div className="flex items-center gap-2 mb-4">
               <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                 Orações Recentes
               </h3>
             </div>
