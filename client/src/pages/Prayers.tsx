@@ -158,7 +158,7 @@ export default function Prayers() {
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
-  const isPremium = !!subscription;
+  const isPremium = true;
 
   const getPrayerCardTheme = (prayerType: string) => PRAYER_CARD_THEMES[prayerType] ?? DEFAULT_PRAYER_CARD_THEME;
 
