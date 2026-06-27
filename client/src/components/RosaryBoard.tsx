@@ -82,9 +82,9 @@ function buildBeads(): { beads: Bead[]; chainPath: string } {
     x: TAIL.crucifix.x,
     y: TAIL.crucifix.y,
     rank: 0,
-    step: { type: "credo" },
+    step: { type: "intro" },
     glyph: "✝",
-    ariaLabel: "Credo Apostólico",
+    ariaLabel: "Oferecimento e Credo",
   });
   beads.push({
     id: "p1",
@@ -187,8 +187,8 @@ function stepToRank(step: RosaryStep): number {
 
 function coreLabel(step: RosaryStep): { kicker: string; title: string; progress?: string } {
   switch (step.type) {
-    case "credo":
-      return { kicker: "Início", title: "Creio em Deus Pai" };
+    case "intro":
+      return { kicker: "Início", title: "Oferecimento e Credo" };
     case "pai_nosso_initial":
       return { kicker: "Início", title: "Pai Nosso" };
     case "ave_maria_initial":

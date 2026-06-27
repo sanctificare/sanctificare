@@ -107,18 +107,17 @@ type PrayerDisplay = {
   mysteryImageUrl?: string;
 };
 
-const TOTAL_PROGRESS_UNITS = 76;
+const TOTAL_PROGRESS_UNITS = 75;
 
 function getStepProgressRank(step: Step): number {
   if (step.type === "intro") return 0;
-  if (step.type === "credo") return 1;
-  if (step.type === "pai_nosso_initial") return 2;
-  if (step.type === "ave_maria_initial") return 2 + step.count;
-  if (step.type === "mystery") return 5 + step.mysteryIndex * 14 + 1;
-  if (step.type === "pai_nosso") return 5 + step.mysteryIndex * 14 + 2;
-  if (step.type === "ave_maria") return 5 + step.mysteryIndex * 14 + 2 + step.count;
-  if (step.type === "gloria") return 5 + step.mysteryIndex * 14 + 13;
-  if (step.type === "fatima") return 5 + step.mysteryIndex * 14 + 14;
+  if (step.type === "pai_nosso_initial") return 1;
+  if (step.type === "ave_maria_initial") return 1 + step.count;
+  if (step.type === "mystery") return 4 + step.mysteryIndex * 14 + 1;
+  if (step.type === "pai_nosso") return 4 + step.mysteryIndex * 14 + 2;
+  if (step.type === "ave_maria") return 4 + step.mysteryIndex * 14 + 2 + step.count;
+  if (step.type === "gloria") return 4 + step.mysteryIndex * 14 + 13;
+  if (step.type === "fatima") return 4 + step.mysteryIndex * 14 + 14;
   if (step.type === "salve") return TOTAL_PROGRESS_UNITS;
   return TOTAL_PROGRESS_UNITS;
 }
@@ -140,8 +139,7 @@ export default function RosaryGuided() {
   const mysteries = ROSARY_MYSTERIES[selectedKey];
 
   const getNextStep = (current: Step): Step => {
-    if (current.type === "intro") return { type: "credo" };
-    if (current.type === "credo") return { type: "pai_nosso_initial" };
+    if (current.type === "intro") return { type: "pai_nosso_initial" };
     if (current.type === "pai_nosso_initial") return { type: "ave_maria_initial", count: 1 };
     if (current.type === "ave_maria_initial") {
       if (current.count < 3) return { type: "ave_maria_initial", count: current.count + 1 };
@@ -163,8 +161,7 @@ export default function RosaryGuided() {
   };
 
   const getPrevStep = (current: Step): Step => {
-    if (current.type === "credo") return { type: "intro" };
-    if (current.type === "pai_nosso_initial") return { type: "credo" };
+    if (current.type === "pai_nosso_initial") return { type: "intro" };
     if (current.type === "ave_maria_initial") {
       if (current.count > 1) return { type: "ave_maria_initial", count: current.count - 1 };
       return { type: "pai_nosso_initial" };
@@ -189,7 +186,6 @@ export default function RosaryGuided() {
     const track = rosaryAudioTracks[trackIndex];
     if (!track) return { type: "intro" };
 
-    if (track.type === "credo") return { type: "credo" };
     if (track.type === "mystery" && track.mysteryNumber) {
       return { type: "mystery", mysteryIndex: track.mysteryNumber - 1 };
     }
@@ -353,13 +349,6 @@ export default function RosaryGuided() {
         title: "Oferecimento e Credo",
         subtitle: "Início do Rosário",
         text: OFERECIMENTO_E_CREDO,
-      };
-    }
-    if (step.type === "credo") {
-      return {
-        title: "Sinal da Cruz",
-        subtitle: "Início do Rosário",
-        text: SINAL_DA_CRUZ,
       };
     }
     if (step.type === "pai_nosso_initial") return { title: "Pai Nosso", subtitle: "Início - 1 Pai Nosso", text: PAI_NOSSO };

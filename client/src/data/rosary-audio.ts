@@ -97,15 +97,6 @@ function buildRosaryAudioTracks(mysterySet: RosaryMysteryAudioSet): RosaryAudioT
   });
 
   tracks.push({
-    id: "credo",
-    title: "Sinal da Cruz",
-    description: "Em nome do Pai, do Filho e do Espírito Santo",
-    audioUrl: CREDO_AUDIO_FILE,
-    duration: CREDO_AVG_DURATION,
-    type: "credo",
-  });
-
-  tracks.push({
     id: "pai-nosso-initial",
     title: "Pai Nosso",
     description: "Pai Nosso inicial do Rosário",
