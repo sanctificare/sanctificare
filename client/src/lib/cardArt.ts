@@ -42,20 +42,22 @@ const LECTIO_STEP_ART: Record<string, string> = {
 const AUDIO_COLLECTION_ART: Record<string, string> = {
   "meditacoes-contemplativas": "/assets/via-sacra/imagens/3estacao.webp",
   "historias-da-biblia": "/assets/via-sacra/imagens/1estacao.webp",
-  "canto-gregoriano": "/assets/via-sacra/imagens/1estacao.webp",
+  "canto-gregoriano": "/assets/composers/canto-gregoriano.png",
   "polifonia-sacra": "/assets/via-sacra/imagens/2estacao.webp",
   "para-meditar": "/assets/via-sacra/imagens/3estacao.webp",
   "mariana": "/assets/sanctificare-rosary.webp",
   "tempos-liturgicos": "/assets/sanctificare-hero.webp",
   // Coleções por Artista/Compositor
-  "js-bach": "/assets/via-sacra/imagens/3estacao.webp",
-  "tomas-luis-de-victoria": "/assets/via-sacra/imagens/2estacao.webp",
-  "palestrina": "/assets/via-sacra/imagens/2estacao.webp",
-  "mozart": "/assets/sanctificare-hero.webp",
-  "schubert": "/assets/sanctificare-rosary.webp",
-  "faure": "/assets/via-sacra/imagens/3estacao.webp",
-  "bruckner": "/assets/sanctificare-rosary.webp",
-  "handel": "/assets/sanctificare-hero.webp",
+  "js-bach": "/assets/composers/js-bach.png",
+  "tomas-luis-de-victoria": "/assets/composers/tomas-luis-de-victoria.png",
+  "palestrina": "/assets/composers/palestrina.png",
+  "mozart": "/assets/composers/mozart.png",
+  "schubert": "/assets/composers/schubert.png",
+  "faure": "/assets/composers/faure.png",
+  "bruckner": "/assets/composers/bruckner.png",
+  "handel": "/assets/composers/handel.png",
+  "charles-gounod": "/assets/composers/charles-gounod.png",
+  "antonio-vivaldi": "/assets/composers/antonio-vivaldi.png",
 };
 
 export function getPrayerArt(prayerType: string): CardArt {
