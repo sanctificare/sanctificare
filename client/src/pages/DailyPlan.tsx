@@ -285,11 +285,11 @@ export default function DailyPlan() {
             <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
             <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.75_0.12_75/0.12)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[oklch(0.50_0.11_70)] mb-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.75_0.12_75/0.12)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[oklch(0.50_0.11_70)] mb-4">
                   <Sparkles size={13} />
                   Roteiro espiritual de hoje
                 </div>
-                <h1 className="font-display text-3xl md:text-4xl font-bold text-[oklch(0.22_0.07_260)] mb-3 leading-tight">
+                <h1 className="font-display text-3xl md:text-4xl font-bold text-[oklch(0.22_0.07_260)] mb-3 leading-tight tracking-tight">
                   Plano Diário de Santificação
                 </h1>
                 <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
@@ -297,10 +297,10 @@ export default function DailyPlan() {
                 </p>
               </div>
 
-              <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.24)] bg-white/60 p-4 shadow-sm">
+              <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.2)] bg-gradient-to-br from-white/95 to-[oklch(0.99_0.005_85)]/95 p-4 shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
                       Constância
                     </p>
                     <p className="mt-1 text-2xl font-bold text-[oklch(0.22_0.07_260)]">
@@ -319,10 +319,11 @@ export default function DailyPlan() {
               </div>
             </div>
 
-            <div className="relative z-10 mt-7 pt-6 border-t border-border/40">
+            <div className="relative z-10 mt-7 pt-6">
+              <div className="divider-gold mb-5" />
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-3">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
                     Progresso de hoje
                   </p>
                   <p className="text-sm font-medium text-[oklch(0.22_0.07_260)]">
@@ -333,9 +334,9 @@ export default function DailyPlan() {
                   {progressPercent}% concluído
                 </span>
               </div>
-              <div className="w-full bg-black/5 rounded-full h-3 overflow-hidden">
+              <div className="w-full bg-[oklch(0.22_0.07_260/0.05)] rounded-full h-2.5 overflow-hidden border border-[oklch(0.22_0.07_260/0.08)] shadow-inner">
                 <div
-                  className="bg-emerald-600 h-3 rounded-full transition-all duration-700"
+                  className="bg-gradient-to-r from-[oklch(0.75_0.12_75)] to-emerald-600 h-2.5 rounded-full transition-all duration-700"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -361,7 +362,7 @@ export default function DailyPlan() {
                   {nextMeta ? (
                     nextMeta.href ? (
                       <Link href={nextMeta.href}>
-                        <Button className="w-full md:w-auto gap-2 bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_260)]">
+                        <Button className="w-full md:w-auto gap-2 bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-lg flex items-center justify-center transition-all">
                           Continuar
                           <ChevronRight size={16} />
                         </Button>
@@ -370,7 +371,7 @@ export default function DailyPlan() {
                       <Button
                         onClick={nextMeta.onClick}
                         disabled={logPrayerMutation.isPending}
-                        className="w-full md:w-auto gap-2 bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_260)]"
+                        className="w-full md:w-auto gap-2 bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-lg flex items-center justify-center transition-all"
                       >
                         Marcar agora
                         <CheckCircle2 size={16} />
@@ -435,7 +436,7 @@ export default function DailyPlan() {
               <div className="prayer-card p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Heart size={16} className="text-[oklch(0.62_0.14_35)]" />
-                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                     Intenção do dia
                   </h3>
                 </div>
@@ -451,7 +452,7 @@ export default function DailyPlan() {
               <div className="prayer-card p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <BarChart2 size={16} className="text-[oklch(0.65_0.14_70)]" />
-                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                     Semana
                   </h3>
                 </div>
@@ -487,7 +488,7 @@ export default function DailyPlan() {
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
                   <span className="flex items-center gap-2">
                     <Settings size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
                       Ajustar rotina
                     </span>
                   </span>
@@ -528,16 +529,16 @@ export default function DailyPlan() {
 
 function DailyMetaRow({ meta }: { meta: DailyMeta }) {
   const content = (
-    <div className={`flex items-center justify-between gap-4 rounded-lg border p-4 transition-colors ${
+    <div className={`flex items-center justify-between gap-4 rounded-lg border p-4 transition-all duration-300 shadow-sm hover:shadow-md ${
       meta.completed
         ? "border-emerald-600/20 bg-emerald-600/5"
-        : "border-border/50 bg-white/45 hover:bg-white/75"
+        : "border-[oklch(0.75_0.12_75/0.2)] bg-gradient-to-br from-white/95 to-[oklch(0.99_0.005_85)]/95 hover:border-[oklch(0.75_0.12_75/0.4)]"
     }`}>
       <div className="flex min-w-0 items-start gap-3">
-        <div className={`mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${
+        <div className={`mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border ${
           meta.completed
-            ? "bg-emerald-600/10 text-emerald-700"
-            : "bg-[oklch(0.75_0.12_75/0.12)] text-[oklch(0.55_0.12_70)]"
+            ? "bg-emerald-600/10 text-emerald-700 border-emerald-600/20"
+            : "bg-[oklch(0.75_0.12_75/0.12)] text-[oklch(0.55_0.12_70)] border-[oklch(0.75_0.12_75/0.2)]"
         }`}>
           {meta.icon}
         </div>
