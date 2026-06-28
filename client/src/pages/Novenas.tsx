@@ -76,8 +76,8 @@ export default function Novenas() {
 
           <div className="cover-card-content">
             <p className="cover-card-title">{novena.name}</p>
-            <p className="text-[0.72rem] text-white/85 mt-1 hidden md:block">{novena.subtitle}</p>
-            <p className="cover-card-desc hidden md:block">{novena.description}</p>
+            <p className="text-[0.72rem] text-white/85 mt-1 hidden lg:block">{novena.subtitle}</p>
+            <p className="cover-card-desc hidden lg:block">{novena.description}</p>
           </div>
         </button>
       </Link>
@@ -187,7 +187,7 @@ export default function Novenas() {
             <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Fé e Entrega ao Senhor</h2>
             <p className="text-sm text-muted-foreground">Caminhos de intimidade com Jesus e docilidade ao Espírito Santo.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
             {faithNovenas.map(renderNovenaCard)}
           </div>
         </section>
@@ -198,7 +198,7 @@ export default function Novenas() {
             <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Intercessão e Devoção</h2>
             <p className="text-sm text-muted-foreground">Una-se à oração da Mãe de Deus e de São José em suas necessidades.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
             {intercessionNovenas.map(renderNovenaCard)}
           </div>
         </section>

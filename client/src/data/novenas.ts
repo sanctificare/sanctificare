@@ -159,26 +159,41 @@ fazei que apreciemos retamente todas as coisas
   {
     id: "novena-nossa-senhora-perpetuo-socorro",
     slug: "novena-nossa-senhora-do-perpetuo-socorro",
-    name: "Nossa Senhora do Perpétuo Socorro",
+    name: "Novena de Nossa Senhora do Perpétuo Socorro",
     subtitle: "Refúgio e auxílio dos cristãos",
-    description: "Nove dias de súplica filial e confiança à sombra do manto da Mãe do Perpétuo Socorro.",
+    description: "Nove dias de súplica filial e confiança na intercessão da Mãe do Perpétuo Socorro.",
     icon: "🌟",
     category: "premium",
     duration: "9 dias",
     days: buildSimpleDays(
       "Entrega filial a Nossa Senhora",
       `Ó Mãe do Perpétuo Socorro,
-    com filial confiança recorremos a vós.
-Acolhei nossas necessidades,
-    fortalecei nossa fé
-e conduzi-nos ao vosso Filho Jesus.
+concedei-me a graça de invocar sempre o vosso poderosíssimo nome,
+que é o socorro dos vivos e a salvação dos moribundos.
 
-    Mãe querida,
-ensina-nos a viver na fidelidade,
-    na paciência e na esperança.
+Ó Mãe puríssima,
+fazei que o vosso nome seja, daqui por diante,
+a minha respiração contínua.
+Não tardeis, Virgem Santíssima, em socorrer-me,
+todas as vezes que vos invocar,
+porque, em todas as tentações,
+em todas as necessidades,
+nunca cessarei de vos chamar,
+repetindo sempre o vosso santo nome: Maria, Maria!
 
-    Maria, Mãe do Perpétuo Socorro,
-    rogai por nós. Amém.`
+Que consolação, que doçura,
+que confiança, que ternura inunda a minha alma,
+ao pronunciar o vosso santo nome
+e somente ao pensar em vós!
+
+Dou graças ao Senhor Deus
+por ter-vos dado, para meu bem,
+um nome tão doce, tão amável, tão poderoso.
+Mas não me basta, ó Mãe querida,
+pronunciar este nome.
+Quero invocar-vos com o amor que vos consagro,
+para que esse amor me mova a chamar-vos sempre:
+Maria, Mãe do Perpétuo Socorro! Amém.`
     ),
   },
   {

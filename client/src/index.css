@@ -476,7 +476,7 @@
     font-size: 0.62rem;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .cover-card-content {
       padding: 0.75rem;
     }
