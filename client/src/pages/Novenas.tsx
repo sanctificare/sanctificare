@@ -68,16 +68,13 @@ export default function Novenas() {
             </div>
           ) : null}
 
-          {novena.category === "premium" ? (
-            <span className="cover-card-kicker badge-premium">Premium</span>
-          ) : (
-            <span className="cover-card-kicker font-semibold rounded-full px-2 py-1 bg-[oklch(0.40_0.10_150/0.80)] text-white">Disponível</span>
-          )}
-
-          <div className="cover-card-content">
-            <p className="cover-card-title">{novena.name}</p>
-            <p className="text-[0.72rem] text-white/85 mt-1 hidden lg:block">{novena.subtitle}</p>
-            <p className="cover-card-desc hidden lg:block">{novena.description}</p>
+          <div className="cover-card-content flex flex-col items-start gap-1">
+            {novena.category === "premium" ? (
+              <span className="badge-premium text-[10px] scale-90 origin-left">Premium</span>
+            ) : (
+              <span className="font-semibold rounded-full px-1.5 py-0.5 bg-[oklch(0.40_0.10_150/0.80)] text-white text-[9px] tracking-wide uppercase">Disponível</span>
+            )}
+            <p className="cover-card-title mt-0.5">{novena.name}</p>
           </div>
         </button>
       </Link>
