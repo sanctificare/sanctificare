@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2 } from "lucide-react";
+import { Menu, X, Crown, BookOpen, Heart, Users, Home, User, ScrollText, Radio, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -115,6 +115,15 @@ export default function AppNav() {
           <div className="flex items-center gap-3">
             {isAuthenticated ? (
               <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-global-search"))}
+                  className="text-[oklch(0.80_0.03_260)] hover:text-white hover:bg-[oklch(0.75_0.12_75/0.1)] rounded-full h-9 w-9 flex items-center justify-center focus:outline-none"
+                  title="Buscar no app (Ctrl + K)"
+                >
+                  <Search size={18} />
+                </Button>
                 <Link href="/premium">
                   <Button
                     size="sm"

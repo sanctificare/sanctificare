@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
 import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Cross, Volume2 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -153,10 +153,23 @@ const DEFAULT_PRAYER_CARD_THEME: PrayerCardTheme = {
 
 export default function Prayers() {
   const { isAuthenticated, loading } = useAuth();
+  const [location] = useLocation();
   const [selectedPrayer, setSelectedPrayer] = useState<Prayer | null>(null);
   const [praying, setPraying] = useState(false);
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
   const logPrayer = trpc.prayers.logPrayer.useMutation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    if (id) {
+      const match = PRAYERS.find(p => p.id === id);
+      if (match) {
+        setSelectedPrayer(match);
+        setPraying(false);
+      }
+    }
+  }, [location]);
 
   const isPremium = true;
 

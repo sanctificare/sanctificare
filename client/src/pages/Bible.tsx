@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AppNav from "@/components/AppNav";
+import { useLocation } from "wouter";
 import { BIBLE_BOOKS, FAMOUS_VERSES, BibleBook } from "@/data/bible";
 import { BookOpen, Search, ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -60,10 +61,37 @@ const CHAPTER_CONTENT: Record<string, Record<number, string[]>> = {
 
 export default function Bible() {
   const { isAuthenticated, loading } = useAuth();
+  const [location] = useLocation();
   const [testament, setTestament] = useState<"old" | "new">("new");
   const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const bookId = params.get("book");
+    const chapterStr = params.get("chapter");
+    if (bookId) {
+      const book = BIBLE_BOOKS.find((b) => b.id === bookId);
+      if (book) {
+        setSelectedBook(book);
+        setTestament(book.testament);
+        if (chapterStr) {
+          const ch = parseInt(chapterStr);
+          if (!isNaN(ch) && ch >= 1 && ch <= book.chapters) {
+            setSelectedChapter(ch);
+          } else {
+            setSelectedChapter(null);
+          }
+        } else {
+          setSelectedChapter(null);
+        }
+      }
+    } else {
+      setSelectedBook(null);
+      setSelectedChapter(null);
+    }
+  }, [location]);
 
   const filteredBooks = BIBLE_BOOKS.filter(
     (b) => b.testament === testament && b.name.toLowerCase().includes(search.toLowerCase())
