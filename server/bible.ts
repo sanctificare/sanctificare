@@ -69,3 +69,59 @@ export function getChapter(bookId: string, chapterNum: number): string[] {
   }
   return chapter.versiculos.map((v) => v.texto);
 }
+
+export interface SearchResult {
+  bookId: string;
+  bookName: string;
+  chapter: number;
+  verse: number;
+  text: string;
+}
+
+const BOOK_INDEX_TO_ID = [
+  "gn", "ex", "lv", "nm", "dt", "js", "jz", "rt", "1sm", "2sm",
+  "1rs", "2rs", "1cr", "2cr", "esd", "ne", "tb", "jt", "est", "1mc",
+  "2mc", "jó", "sl", "pv", "ecl", "ct", "sb", "si", "is", "jr",
+  "lm", "br", "ez", "dn", "os", "jl", "am", "ab", "jn", "mq",
+  "na", "hb", "sf", "ag", "zc", "ml", "mt", "mc", "lc", "jo",
+  "at", "rm", "1co", "2co", "gl", "ef", "fl", "cl", "1ts", "2ts",
+  "1tm", "2tm", "tt", "fm", "hb2", "tg", "1pe", "2pe", "1jo", "2jo",
+  "3jo", "jd", "ap"
+];
+
+/**
+ * Searches the Bible text for a case-insensitive query string.
+ * Limits results to 50 items for speed.
+ */
+export function search(query: string): SearchResult[] {
+  const bible = loadBible();
+  const results: SearchResult[] = [];
+  const lowerQuery = query.toLowerCase().trim();
+
+  if (lowerQuery.length < 3) return results;
+
+  for (let bIndex = 0; bIndex < bible.length; bIndex++) {
+    const book = bible[bIndex];
+    const bookId = BOOK_INDEX_TO_ID[bIndex];
+    if (!bookId) continue;
+
+    for (const chapter of book.capitulos) {
+      for (const verse of chapter.versiculos) {
+        if (verse.texto.toLowerCase().includes(lowerQuery)) {
+          results.push({
+            bookId,
+            bookName: book.livro,
+            chapter: chapter.capitulo,
+            verse: verse.numero,
+            text: verse.texto
+          });
+
+          if (results.length >= 50) {
+            return results;
+          }
+        }
+      }
+    }
+  }
+  return results;
+}

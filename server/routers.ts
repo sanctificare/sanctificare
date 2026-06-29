@@ -43,7 +43,7 @@ import {
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
 import https from "https";
-import { getChapter as getBibleChapter } from "./bible";
+import { getChapter as getBibleChapter, search as searchBible } from "./bible";
 
 const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
 const registerRateMap = new Map<string, { count: number; resetAt: number }>();
@@ -493,6 +493,21 @@ export const appRouter = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: error.message || "Erro ao carregar o capítulo da Bíblia."
+          });
+        }
+      }),
+
+    search: publicProcedure
+      .input(z.object({
+        query: z.string().min(3)
+      }))
+      .query(async ({ input }) => {
+        try {
+          return searchBible(input.query);
+        } catch (error: any) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: error.message || "Erro ao realizar a busca na Bíblia."
           });
         }
       })
