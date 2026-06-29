@@ -401,7 +401,7 @@ export default function Dashboard() {
         {/* Acesso Rápido */}
         <div className="mb-8">
           <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 md:gap-4">
             {quickLinks.map(({ href, label, desc, image, overlay }) => (
               <Link key={href} href={href}>
                 <div className="cover-card aspect-square group cursor-pointer">
