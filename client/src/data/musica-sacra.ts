@@ -82,7 +82,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 938,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%201.%20Kyrie%20eleison.mp3",
+        audioUrl: "/r2-storage/bach-kyrie-eleison.mp3",
       },
       {
         id: "bach-christe-eleison-mass-b-minor",
