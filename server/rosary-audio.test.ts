@@ -16,21 +16,21 @@ function publicPathFromUrl(url: string): string {
 }
 
 describe("rosary-audio", () => {
-  it("deve ter 77 faixas de áudio no rosário completo", () => {
-    // 1 intro + 1 credo + 1 pai_nosso inicial + 3 ave_maria iniciais
+  it("deve ter 76 faixas de áudio no rosário completo", () => {
+    // 1 Oferecimento e Credo (intro) + 1 pai_nosso inicial + 3 ave_maria iniciais
     // + 5 × (1 misterio + 1 pai_nosso + 10 ave_maria + 1 gloria + 1 fatima)
     // + 1 salve rainha
-    expect(rosaryAudioTracks).toHaveLength(77);
+    expect(rosaryAudioTracks).toHaveLength(76);
   });
 
   it("deve ter faixa de introdução", () => {
     const intro = rosaryAudioTracks.find((t) => t.type === "intro");
     expect(intro).toBeDefined();
-    expect(intro?.title).toContain("Sinal da Cruz");
+    expect(intro?.title).toContain("Oferecimento e Credo");
   });
 
-  it("deve ter faixas de credo, mistérios, glória, jaculatória e salve", () => {
-    expect(rosaryAudioTracks.filter((t) => t.type === "credo")).toHaveLength(1);
+  it("deve ter faixas de mistérios, glória, jaculatória e salve", () => {
+    expect(rosaryAudioTracks.filter((t) => t.type === "credo")).toHaveLength(0);
     expect(rosaryAudioTracks.filter((t) => t.type === "mystery")).toHaveLength(5);
     expect(rosaryAudioTracks.filter((t) => t.type === "gloria")).toHaveLength(5);
     expect(rosaryAudioTracks.filter((t) => t.type === "fatima")).toHaveLength(5);
@@ -136,7 +136,7 @@ describe("rosary-audio", () => {
   });
 
   it("deve ordenar cada mistério como anúncio + Pai Nosso + 10 Ave Marias + Glória + Jaculatória", () => {
-    let cursor = 6;
+    let cursor = 5;
     for (let mysteryNumber = 1; mysteryNumber <= 5; mysteryNumber++) {
       const decade = rosaryAudioTracks.slice(cursor, cursor + 14);
       expect(decade[0].type).toBe("mystery");

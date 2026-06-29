@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, Share2, SlidersHorizontal, ListMusic, Volume2, VolumeX } from "lucide-react";
+import { resolveR2Redirect } from "@/const";
 
 interface NovenaAudioDockProps {
   audioUrl: string;
@@ -27,6 +28,20 @@ export default function NovenaAudioDock({
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
+
+  const [playingUrl, setPlayingUrl] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    resolveR2Redirect(audioUrl).then((url) => {
+      if (active) {
+        setPlayingUrl(url);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [audioUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -57,7 +72,7 @@ export default function NovenaAudioDock({
     audio.pause();
     audio.currentTime = 0;
     audio.load();
-  }, [audioUrl]);
+  }, [playingUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -99,7 +114,7 @@ export default function NovenaAudioDock({
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.28_0.08_258)]/95 backdrop-blur-md">
-      <audio ref={audioRef} src={audioUrl} preload="metadata" />
+      <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
       <div className="container py-3">
         <div className="flex flex-col gap-3 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_280px] xl:items-center xl:gap-5">

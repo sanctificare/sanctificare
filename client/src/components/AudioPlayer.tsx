@@ -9,6 +9,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { formatTime } from "@/data/rosary-audio";
+import { resolveR2Redirect } from "@/const";
 import {
   Dialog,
   DialogContent,
@@ -159,6 +160,20 @@ export default function AudioPlayer({
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const activeWordRef = useRef<HTMLSpanElement>(null);
 
+  const [playingUrl, setPlayingUrl] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    resolveR2Redirect(audioUrl).then((url) => {
+      if (active) {
+        setPlayingUrl(url);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, [audioUrl]);
+
   useEffect(() => {
     onPlayStateChange?.(isPlaying);
   }, [isPlaying, onPlayStateChange]);
@@ -204,7 +219,7 @@ export default function AudioPlayer({
     setCurrentTime(0);
     setDuration(0);
     setHasError(false);
-  }, [audioUrl]);
+  }, [playingUrl]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -222,7 +237,7 @@ export default function AudioPlayer({
       .play()
       .then(() => setIsPlaying(true))
       .catch(() => setIsPlaying(false));
-  }, [audioUrl, autoPlay]);
+  }, [playingUrl, autoPlay]);
 
   // Auto-scroll to keep the active word visible in the support dialog
   useEffect(() => {
@@ -415,7 +430,7 @@ export default function AudioPlayer({
 
   return (
     <div className="audio-player-shell">
-      <audio ref={audioRef} src={audioUrl} preload="auto" />
+      <audio ref={audioRef} src={playingUrl} preload="auto" />
 
       <div className="audio-player-artwork">
         <img src={artworkUrl || FALLBACK_ARTWORK_URL} alt="" aria-hidden="true" />

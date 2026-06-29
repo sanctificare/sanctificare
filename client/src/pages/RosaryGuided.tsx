@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
@@ -454,7 +454,7 @@ export default function RosaryGuided() {
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
           <audio
             key={`preload-${currentAudioTrack + 1}`}
-            src={rosaryAudioTracks[currentAudioTrack + 1].audioUrl}
+            src={resolveMediaUrl(rosaryAudioTracks[currentAudioTrack + 1].audioUrl)}
             preload="auto"
             aria-hidden="true"
             style={{ display: "none" }}
@@ -531,7 +531,7 @@ export default function RosaryGuided() {
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
           <audio
             key={`preload-aside-${currentAudioTrack + 1}`}
-            src={rosaryAudioTracks[currentAudioTrack + 1].audioUrl}
+            src={resolveMediaUrl(rosaryAudioTracks[currentAudioTrack + 1].audioUrl)}
             preload="auto"
             aria-hidden="true"
             style={{ display: "none" }}

@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
@@ -900,7 +900,7 @@ export default function VideosBiblicos() {
               ) : (
                 <video
                   ref={videoPlayerRef}
-                  src={selectedVideo.fallbackUrl}
+                  src={resolveMediaUrl(selectedVideo.fallbackUrl)}
                   controls
                   autoPlay
                   playsInline

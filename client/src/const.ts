@@ -58,3 +58,36 @@ export const getApiBaseUrl = () => {
   return "";
 };
 
+export const resolveMediaUrl = (url: string | undefined): string => {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
+    return url;
+  }
+  if (url.startsWith("/")) {
+    if (url.startsWith("/assets/") || url.startsWith("/audio/rosary/")) {
+      return url;
+    }
+    return `${getApiBaseUrl()}${url}`;
+  }
+  return url;
+};
+
+export const resolveR2Redirect = async (url: string | undefined): Promise<string> => {
+  if (!url) return "";
+  const resolved = resolveMediaUrl(url);
+  if (!isMobileApp() || !url.includes("/r2-storage/")) {
+    return resolved;
+  }
+  try {
+    const res = await fetch(resolved, { method: "HEAD" });
+    if (res.ok) {
+      return res.url;
+    }
+  } catch (err) {
+    console.warn("[resolveR2Redirect] Failed to fetch HEAD for redirect:", err);
+  }
+  return resolved;
+};
+
+
+

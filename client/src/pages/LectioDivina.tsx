@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
@@ -267,7 +267,7 @@ export default function LectioDivina() {
     }
 
     setIsAudioChecking(true);
-    const testAudio = new Audio(track.audioUrl);
+    const testAudio = new Audio(resolveMediaUrl(track.audioUrl));
     
     const handleAudioError = () => {
       setIsDailyAudioAvailable(false);
@@ -619,7 +619,7 @@ mas livrai-nos do Mal. Amém!`,
       {autoGuidedActive && currentAudioTrack + 1 < guidedTracks.length && (
         <audio
           key={`preload-guided-${currentAudioTrack + 1}`}
-          src={guidedTracks[currentAudioTrack + 1].audioUrl}
+          src={resolveMediaUrl(guidedTracks[currentAudioTrack + 1].audioUrl)}
           preload="auto"
           aria-hidden="true"
           style={{ display: "none" }}

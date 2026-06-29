@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, resolveMediaUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { Card, CardContent } from "@/components/ui/card";
@@ -122,6 +122,14 @@ export default function VelaVirtual() {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [unavailableTrackIds, setUnavailableTrackIds] = useState<string[]>([]);
 
+  const [resolvedVideoSrc, setResolvedVideoSrc] = useState(resolveMediaUrl(VIDEO_SRC));
+
+  useEffect(() => {
+    resolveR2Redirect(VIDEO_SRC).then((url) => {
+      setResolvedVideoSrc(url);
+    });
+  }, []);
+
   const selectedTrack = useMemo(
     () => AUDIO_TRACKS.find((track) => track.id === selectedTrackId) ?? AUDIO_TRACKS[0],
     [selectedTrackId]
@@ -150,19 +158,27 @@ export default function VelaVirtual() {
       return;
     }
 
-    audio.src = selectedTrack.src;
-    setAudioFailed(false);
+    let active = true;
+    resolveR2Redirect(selectedTrack.src).then((url) => {
+      if (!active) return;
+      audio.src = url;
+      setAudioFailed(false);
 
-    if (isPlaying && !silentGuidedMode) {
-      audio
-        .play()
-        .then(() => {
-          setAudioFailed(false);
-        })
-        .catch(() => {
-          setAudioFailed(true);
-        });
-    }
+      if (isPlaying && !silentGuidedMode) {
+        audio
+          .play()
+          .then(() => {
+            setAudioFailed(false);
+          })
+          .catch(() => {
+            setAudioFailed(true);
+          });
+      }
+    });
+
+    return () => {
+      active = false;
+    };
   }, [selectedTrack, isPlaying, silentGuidedMode]);
 
   useEffect(() => {
@@ -188,7 +204,8 @@ export default function VelaVirtual() {
 
     if (audio && selectedTrack?.src && !silentGuidedMode) {
       try {
-        audio.src = selectedTrack.src;
+        const url = await resolveR2Redirect(selectedTrack.src);
+        audio.src = url;
         audio.currentTime = 0;
         await audio.play();
       } catch (audioErr) {
@@ -310,7 +327,7 @@ export default function VelaVirtual() {
                     <video
                       ref={videoRef}
                       className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${isPlaying ? "opacity-100" : "opacity-90"}`}
-                      src={VIDEO_SRC}
+                      src={resolvedVideoSrc}
                       autoPlay
                       loop
                       muted
