@@ -7,57 +7,9 @@ import AppNav from "@/components/AppNav";
 import { useLocation } from "wouter";
 import { BIBLE_BOOKS, FAMOUS_VERSES, BibleBook } from "@/data/bible";
 import { BookOpen, Search, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
-
-// Conteúdo de exemplo para alguns capítulos famosos
-const CHAPTER_CONTENT: Record<string, Record<number, string[]>> = {
-  jo: {
-    3: [
-      "Havia entre os fariseus um homem chamado Nicodemos, um dos chefes dos judeus.",
-      "Este foi ter com Jesus de noite e disse-lhe: Rabi, sabemos que és um mestre que vem de Deus, porque ninguém pode fazer os sinais que tu fazes, se Deus não estiver com ele.",
-      "Jesus respondeu-lhe: Em verdade, em verdade te digo: quem não nascer de novo não pode ver o reino de Deus.",
-      "Disse-lhe Nicodemos: Como pode um homem nascer sendo velho? Pode, porventura, entrar segunda vez no ventre de sua mãe e nascer?",
-      "Jesus respondeu: Em verdade, em verdade te digo: quem não nascer da água e do Espírito não pode entrar no reino de Deus.",
-      "O que é nascido da carne é carne; e o que é nascido do Espírito é espírito.",
-      "Não te admires de eu te ter dito: Necessário vos é nascer de novo.",
-      "O vento sopra onde quer, e ouves a sua voz, mas não sabes de onde vem nem para onde vai; assim é todo aquele que é nascido do Espírito.",
-      "Respondeu-lhe Nicodemos: Como pode ser isso?",
-      "Jesus respondeu: Tu és mestre em Israel e não sabes estas coisas?",
-      "Em verdade, em verdade te digo: nós falamos do que sabemos e testificamos do que vimos; e não recebeis o nosso testemunho.",
-      "Se vos disse as coisas terrenas e não credes, como crereis se vos disser as celestiais?",
-      "Ninguém subiu ao céu senão o que desceu do céu, o Filho do Homem, que está no céu.",
-      "E como Moisés levantou a serpente no deserto, assim importa que o Filho do Homem seja levantado,",
-      "para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
-      "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
-      "Porque Deus enviou o seu Filho ao mundo, não para que condenasse o mundo, mas para que o mundo fosse salvo por ele.",
-    ],
-  },
-  sl: {
-    23: [
-      "O Senhor é o meu pastor; nada me faltará.",
-      "Ele me faz repousar em pastos verdejantes. Leva-me para junto das águas tranquilas.",
-      "Refrigera a minha alma; guia-me pelas veredas da justiça por amor do seu nome.",
-      "Ainda que eu andasse pelo vale da sombra da morte, não temeria mal algum, porque tu estás comigo; o teu bordão e o teu cajado me consolam.",
-      "Preparas uma mesa perante mim na presença dos meus inimigos; unges a minha cabeça com óleo; o meu cálice transborda.",
-      "Bondade e misericórdia certamente me seguirão todos os dias da minha vida; e habitarei na casa do Senhor por longos dias.",
-    ],
-  },
-  mt: {
-    5: [
-      "Vendo Jesus as multidões, subiu ao monte, e, como se assentasse, aproximaram-se dele os seus discípulos.",
-      "E ele, abrindo a boca, os ensinava, dizendo:",
-      "Bem-aventurados os pobres em espírito, porque deles é o reino dos céus.",
-      "Bem-aventurados os que choram, porque eles serão consolados.",
-      "Bem-aventurados os mansos, porque eles herdarão a terra.",
-      "Bem-aventurados os que têm fome e sede de justiça, porque eles serão fartos.",
-      "Bem-aventurados os misericordiosos, porque eles alcançarão misericórdia.",
-      "Bem-aventurados os limpos de coração, porque eles verão a Deus.",
-      "Bem-aventurados os pacificadores, porque eles serão chamados filhos de Deus.",
-      "Bem-aventurados os que sofrem perseguição por causa da justiça, porque deles é o reino dos céus.",
-    ],
-  },
-};
 
 export default function Bible() {
   const { isAuthenticated, loading } = useAuth();
@@ -66,6 +18,11 @@ export default function Bible() {
   const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [search, setSearch] = useState("");
+
+  const { data: chapterVerses, isLoading: isVersesLoading } = trpc.bible.getChapter.useQuery(
+    { bookId: selectedBook?.id || "", chapter: selectedChapter || 1 },
+    { enabled: !!selectedBook && !!selectedChapter }
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -96,18 +53,6 @@ export default function Bible() {
   const filteredBooks = BIBLE_BOOKS.filter(
     (b) => b.testament === testament && b.name.toLowerCase().includes(search.toLowerCase())
   );
-
-  const getChapterContent = (bookId: string, chapter: number): string[] => {
-    const content = CHAPTER_CONTENT[bookId]?.[chapter];
-    if (content) return content;
-    // Conteúdo genérico para capítulos sem dados
-    return [
-      `Este é o capítulo ${chapter} do livro de ${selectedBook?.name}.`,
-      "O texto completo da Bíblia Sagrada está disponível na versão ampliada do app.",
-      "Nela, você encontra os 73 livros, capítulos e versículos para percorrer as Escrituras com mais amplitude.",
-      "Enquanto isso, permaneça com os capítulos mais conhecidos disponíveis nesta seleção inicial.",
-    ];
-  };
 
   if (loading) {
     return (
@@ -168,14 +113,27 @@ export default function Bible() {
               </div>
               <div className="divider-gold mb-6" />
               <div className="space-y-4">
-                {getChapterContent(selectedBook.id, selectedChapter).map((verse, i) => (
-                  <div key={i} className="flex gap-4">
-                    <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] mt-1 w-6 flex-shrink-0 font-display">
-                      {i + 1}
-                    </span>
-                    <p className="prose-prayer flex-1">{verse}</p>
+                {isVersesLoading ? (
+                  <div className="space-y-4 animate-pulse">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} className="flex gap-4">
+                        <div className="h-4 w-6 bg-[oklch(0.90_0.02_75)] rounded mt-1" />
+                        <div className="h-4 bg-[oklch(0.90_0.02_75)] rounded flex-1" />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  chapterVerses?.map((verse, i) => (
+                    <div key={i} className="flex gap-4 animate-fade-in">
+                      <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] mt-1 w-6 flex-shrink-0 font-display">
+                        {i + 1}
+                      </span>
+                      <p className="prose-prayer flex-1">{verse}</p>
+                    </div>
+                  )) || (
+                    <p className="text-muted-foreground italic text-center">Nenhum versículo encontrado.</p>
+                  )
+                )}
               </div>
             </div>
 
