@@ -41,29 +41,29 @@ export function isDevAuthBypassEnabled(req: Request): boolean {
 }
 
 export function getAllowedOrigins(): Set<string> {
+  const defaults = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "capacitor://localhost",
+  ];
+
   const configured = (process.env.ALLOWED_ORIGINS ?? "")
     .split(",")
     .map(origin => origin.trim())
     .filter(Boolean);
 
   if (configured.length > 0) {
-    return new Set(configured);
+    return new Set([...configured, ...defaults]);
   }
 
   const appUrl = process.env.APP_URL?.trim();
-
-  if (process.env.NODE_ENV === "development") {
-    const defaults = [
-      "http://localhost",
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "capacitor://localhost",
-    ];
-    if (appUrl) defaults.push(appUrl);
-    return new Set(defaults);
+  const list = [...defaults];
+  if (appUrl) {
+    list.push(appUrl);
   }
 
-  return new Set(appUrl ? [appUrl] : []);
+  return new Set(list);
 }
 
 export function isTrustedUnsafeRequestSource(
