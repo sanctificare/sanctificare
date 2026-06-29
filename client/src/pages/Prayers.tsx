@@ -175,10 +175,25 @@ export default function Prayers() {
 
   const getPrayerCardTheme = (prayerType: string) => PRAYER_CARD_THEMES[prayerType] ?? DEFAULT_PRAYER_CARD_THEME;
 
+  const handleCompletePrayerSilent = async (prayer: Prayer) => {
+    if (!isAuthenticated) return;
+    try {
+      await logPrayer.mutateAsync({ prayerType: prayer.type, prayerName: prayer.name });
+      toast.success("Oração registrada!", { description: `${prayer.name} adicionada ao seu histórico.` });
+    } catch (err) {
+      console.error("Erro ao registrar oração:", err);
+    }
+  };
+
   const handleOpenPrayer = (prayer: Prayer) => {
     if (prayer.category === "premium" && !isPremium) return;
     setSelectedPrayer(prayer);
     setPraying(false);
+
+    // Automatically register text-only prayers when opened
+    if (!prayer.audioUrl) {
+      handleCompletePrayerSilent(prayer);
+    }
   };
 
   const handleCompletePrayer = async (prayer: Prayer) => {
@@ -439,6 +454,7 @@ export default function Prayers() {
                     supportTitle="Texto da Oração"
                     supportDescription="Acompanhe a leitura"
                     supportText={selectedPrayer.content}
+                    onTrackEnd={() => handleCompletePrayer(selectedPrayer)}
                   />
                 </div>
               ) : (
@@ -447,17 +463,12 @@ export default function Prayers() {
                 </div>
               )}
 
-              <div className="flex gap-3 pt-4 border-t">
+              <div className="flex gap-3 pt-4 border-t justify-end">
                 <Button
-                  className="flex-1 bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold"
-                  onClick={() => handleCompletePrayer(selectedPrayer)}
-                  disabled={logPrayer.isPending}
+                  className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold px-6"
+                  onClick={() => setSelectedPrayer(null)}
                 >
-                  <Heart size={15} className="mr-2" />
-                  {logPrayer.isPending ? "Registrando..." : "Marcar como rezada"}
-                </Button>
-                <Button variant="outline" onClick={() => setSelectedPrayer(null)}>
-                  <X size={15} />
+                  Fechar
                 </Button>
               </div>
             </>
