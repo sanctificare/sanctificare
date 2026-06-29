@@ -822,39 +822,8 @@ export default function Bible() {
             )}
           </div>
 
-          {/* COLUNA DIREITA: Traduções e Capítulos (col-span-3) */}
+          {/* COLUNA DIREITA: Capítulos (col-span-3) */}
           <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
-            <a
-              href="/dashboard"
-              className="flex items-center gap-1.5 text-xs opacity-75 hover:opacity-100 font-semibold mb-4 transition-all"
-            >
-              <ChevronLeft size={14} /> Voltar para o início
-            </a>
-
-            {/* Traduções */}
-            <div>
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2.5">TRADUÇÕES</p>
-              <div className="space-y-1.5">
-                <button className="w-full text-left py-2 px-3 text-[11px] font-bold bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 rounded-lg shadow transition-all">
-                  Pe. Matos Soares (PT-BR)
-                </button>
-                <button
-                  onClick={() => toast.info("A Tradução da Vulgata em Latim estará disponível em breve!")}
-                  className="w-full text-left py-2 px-3 text-[11px] font-medium border border-border/30 hover:border-[oklch(0.75_0.12_75/0.4)] rounded-lg transition-all opacity-70 hover:opacity-100"
-                >
-                  Vulgata (Latim)
-                </button>
-                <button
-                  onClick={() => toast.info("A Tradução Septuaginta em Grego estará disponível em breve!")}
-                  className="w-full text-left py-2 px-3 text-[11px] font-medium border border-border/30 hover:border-[oklch(0.75_0.12_75/0.4)] rounded-lg transition-all opacity-70 hover:opacity-100"
-                >
-                  Septuaginta + NT (Grego)
-                </button>
-              </div>
-            </div>
-
-            <div className="divider-gold my-4" />
-
             {/* Capítulos */}
             <div>
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">CAPÍTULOS</p>
