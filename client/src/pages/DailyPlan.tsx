@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import {
+  ArrowRight,
   BarChart2,
   BookOpen,
   Calendar,
@@ -469,21 +470,30 @@ export default function DailyPlan() {
                 </div>
               </details>
 
-              <div className="prayer-card p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <Heart size={16} className="text-[oklch(0.62_0.14_35)]" />
-                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                    Intenção do dia
-                  </h3>
+              <Link href="/intencoes" className="block group">
+                <div className="prayer-card p-6 cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Heart size={16} className="text-[oklch(0.62_0.14_35)] group-hover:scale-110 transition-transform duration-300" />
+                      <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                        Intenção do dia
+                      </h3>
+                    </div>
+                    <ChevronRight size={15} className="text-muted-foreground group-hover:translate-x-1 transition-transform duration-300" />
+                  </div>
+                  <div className="divider-gold mb-4" />
+                  <p className="font-serif text-lg leading-relaxed text-[oklch(0.20_0.04_260)]">
+                    Rezar pela perseverança nas pequenas fidelidades.
+                  </p>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    A santidade costuma amadurecer nos gestos simples que escolhemos repetir com amor.
+                  </p>
+                  <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.55_0.14_35)] group-hover:text-[oklch(0.55_0.14_35/0.8)] transition-colors">
+                    Ver mural de intenções
+                    <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                  </div>
                 </div>
-                <div className="divider-gold mb-4" />
-                <p className="font-serif text-lg leading-relaxed text-[oklch(0.20_0.04_260)]">
-                  Rezar pela perseverança nas pequenas fidelidades.
-                </p>
-                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                  A santidade costuma amadurecer nos gestos simples que escolhemos repetir com amor.
-                </p>
-              </div>
+              </Link>
 
               <div className="prayer-card p-6">
                 <div className="flex items-center gap-2 mb-4">
