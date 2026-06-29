@@ -22,6 +22,7 @@ const mainLinks = [
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
+  { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
 ];
 
