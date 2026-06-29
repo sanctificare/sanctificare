@@ -433,6 +433,42 @@ export default function DailyPlan() {
             </div>
 
             <aside className="space-y-6">
+              <details className="prayer-card p-6 group">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+                  <span className="flex items-center gap-2">
+                    <Settings size={16} className="text-[oklch(0.65_0.14_70)]" />
+                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                      Ajustar rotina
+                    </span>
+                  </span>
+                  <ChevronRight size={15} className="text-muted-foreground transition-transform group-open:rotate-90" />
+                </summary>
+
+                <p className="mt-4 text-xs text-muted-foreground leading-relaxed">
+                  Selecione as práticas que deseja incluir. Metas desativadas não entram no progresso do dia.
+                </p>
+
+                <div className="mt-5 space-y-4">
+                  {dailyMetas.map(meta => (
+                    <div key={meta.key} className="flex items-center justify-between gap-4">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] flex items-center justify-center flex-shrink-0">
+                          {meta.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-semibold text-foreground truncate">{meta.title}</p>
+                          <p className="text-[10px] text-muted-foreground truncate">{meta.encouragement}</p>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={metasConfig[meta.key]}
+                        onCheckedChange={() => handleToggleMetaSetting(meta.key)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </details>
+
               <div className="prayer-card p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Heart size={16} className="text-[oklch(0.62_0.14_35)]" />
@@ -483,42 +519,6 @@ export default function DailyPlan() {
                   </ResponsiveContainer>
                 </div>
               </div>
-
-              <details className="prayer-card p-6 group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
-                  <span className="flex items-center gap-2">
-                    <Settings size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                      Ajustar rotina
-                    </span>
-                  </span>
-                  <ChevronRight size={15} className="text-muted-foreground transition-transform group-open:rotate-90" />
-                </summary>
-
-                <p className="mt-4 text-xs text-muted-foreground leading-relaxed">
-                  Selecione as práticas que deseja incluir. Metas desativadas não entram no progresso do dia.
-                </p>
-
-                <div className="mt-5 space-y-4">
-                  {dailyMetas.map(meta => (
-                    <div key={meta.key} className="flex items-center justify-between gap-4">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] flex items-center justify-center flex-shrink-0">
-                          {meta.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs font-semibold text-foreground truncate">{meta.title}</p>
-                          <p className="text-[10px] text-muted-foreground truncate">{meta.encouragement}</p>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={metasConfig[meta.key]}
-                        onCheckedChange={() => handleToggleMetaSetting(meta.key)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </details>
             </aside>
           </section>
         </div>
