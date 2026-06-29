@@ -600,130 +600,7 @@ export default function Bible() {
                     </div>
                     <p className="text-[11px] text-muted-foreground mt-0.5 font-serif">Tradução Católica de 1956</p>
                   </div>
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowSettings(!showSettings)}
-                    className={`h-9 gap-1.5 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
-                  >
-                    <Settings size={14} /> Opções
-                  </Button>
                 </div>
-
-                {/* Painel de Preferências de Leitura */}
-                {showSettings && (
-                  <div className={`border rounded-xl p-4 shadow-md flex flex-wrap gap-4 items-center justify-between transition-colors duration-300 animate-fade-in text-sm ${
-                    readingTheme === "dark"
-                      ? "bg-slate-950 text-slate-200 border-slate-800"
-                      : readingTheme === "sepia"
-                      ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
-                      : "bg-white text-[oklch(0.22_0.07_260)] border-border"
-                  }`}>
-                    {/* Fonte */}
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Fonte:</span>
-                      <Button
-                        variant={fontFamily === "serif" ? "default" : "outline"}
-                        size="sm"
-                        className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        onClick={() => {
-                          setFontFamily("serif");
-                          localStorage.setItem("sanctificare_bible_font_family", "serif");
-                        }}
-                      >
-                        Serifada
-                      </Button>
-                      <Button
-                        variant={fontFamily === "sans" ? "default" : "outline"}
-                        size="sm"
-                        className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        onClick={() => {
-                          setFontFamily("sans");
-                          localStorage.setItem("sanctificare_bible_font_family", "sans");
-                        }}
-                      >
-                        Sans-Serif
-                      </Button>
-                    </div>
-
-                    {/* Tamanho */}
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tamanho:</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        disabled={fontSize === "sm"}
-                        onClick={() => {
-                          const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
-                          const idx = sizes.indexOf(fontSize);
-                          if (idx > 0) {
-                            setFontSize(sizes[idx - 1]);
-                            localStorage.setItem("sanctificare_bible_font_size", sizes[idx - 1]);
-                          }
-                        }}
-                      >
-                        A-
-                      </Button>
-                      <span className="text-xs uppercase font-bold px-1">{fontSize}</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        disabled={fontSize === "2xl"}
-                        onClick={() => {
-                          const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
-                          const idx = sizes.indexOf(fontSize);
-                          if (idx < sizes.length - 1) {
-                            setFontSize(sizes[idx + 1]);
-                            localStorage.setItem("sanctificare_bible_font_size", sizes[idx + 1]);
-                          }
-                        }}
-                      >
-                        A+
-                      </Button>
-                    </div>
-
-                    {/* Tema */}
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tema:</span>
-                      <Button
-                        variant={readingTheme === "light" ? "default" : "outline"}
-                        size="sm"
-                        className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        onClick={() => {
-                          setReadingTheme("light");
-                          localStorage.setItem("sanctificare_bible_theme", "light");
-                        }}
-                      >
-                        Claro
-                      </Button>
-                      <Button
-                        variant={readingTheme === "sepia" ? "default" : "outline"}
-                        size="sm"
-                        className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                        onClick={() => {
-                          setReadingTheme("sepia");
-                          localStorage.setItem("sanctificare_bible_theme", "sepia");
-                        }}
-                      >
-                        Sépia
-                      </Button>
-                      <Button
-                        variant={readingTheme === "dark" ? "default" : "outline"}
-                        size="sm"
-                        className={`h-8 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
-                        onClick={() => {
-                          setReadingTheme("dark");
-                          localStorage.setItem("sanctificare_bible_theme", "dark");
-                        }}
-                      >
-                        Escuro
-                      </Button>
-                    </div>
-                  </div>
-                )}
 
                 {/* Banner Litúrgico */}
                 {liturgyInfo && (
@@ -824,6 +701,135 @@ export default function Bible() {
 
           {/* COLUNA DIREITA: Capítulos (col-span-3) */}
           <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
+            
+            {/* Opções de Leitura */}
+            <div className="mb-4 flex justify-between items-center">
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Leitura</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowSettings(!showSettings)}
+                className={`h-8 gap-1.5 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : "bg-white"}`}
+              >
+                <Settings size={13} /> Opções
+              </Button>
+            </div>
+
+            {showSettings && (
+              <div className="space-y-4 mb-4 p-3 bg-slate-100/50 dark:bg-slate-900/40 rounded-xl border border-border/20 animate-fade-in">
+                {/* Fonte */}
+                <div className="space-y-1.5">
+                  <span className="font-semibold text-[10px] uppercase tracking-wider text-muted-foreground block">Fonte:</span>
+                  <div className="grid grid-cols-2 gap-1">
+                    <Button
+                      variant={fontFamily === "serif" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setFontFamily("serif");
+                        localStorage.setItem("sanctificare_bible_font_family", "serif");
+                      }}
+                    >
+                      Serifada
+                    </Button>
+                    <Button
+                      variant={fontFamily === "sans" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setFontFamily("sans");
+                        localStorage.setItem("sanctificare_bible_font_family", "sans");
+                      }}
+                    >
+                      Sans-Serif
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Tamanho */}
+                <div className="space-y-1.5">
+                  <span className="font-semibold text-[10px] uppercase tracking-wider text-muted-foreground block">Tamanho:</span>
+                  <div className="flex items-center justify-between gap-2 bg-slate-100/30 dark:bg-slate-900/20 p-1 rounded-lg border border-border/10">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`h-7 w-7 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      disabled={fontSize === "sm"}
+                      onClick={() => {
+                        const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                        const idx = sizes.indexOf(fontSize);
+                        if (idx > 0) {
+                          setFontSize(sizes[idx - 1]);
+                          localStorage.setItem("sanctificare_bible_font_size", sizes[idx - 1]);
+                        }
+                      }}
+                    >
+                      A-
+                    </Button>
+                    <span className="text-[10px] uppercase font-bold px-1">{fontSize}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`h-7 w-7 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      disabled={fontSize === "2xl"}
+                      onClick={() => {
+                        const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                        const idx = sizes.indexOf(fontSize);
+                        if (idx < sizes.length - 1) {
+                          setFontSize(sizes[idx + 1]);
+                          localStorage.setItem("sanctificare_bible_font_size", sizes[idx + 1]);
+                        }
+                      }}
+                    >
+                      A+
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Tema */}
+                <div className="space-y-1.5">
+                  <span className="font-semibold text-[10px] uppercase tracking-wider text-muted-foreground block">Tema:</span>
+                  <div className="grid grid-cols-3 gap-1">
+                    <Button
+                      variant={readingTheme === "light" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("light");
+                        localStorage.setItem("sanctificare_bible_theme", "light");
+                      }}
+                    >
+                      Claro
+                    </Button>
+                    <Button
+                      variant={readingTheme === "sepia" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("sepia");
+                        localStorage.setItem("sanctificare_bible_theme", "sepia");
+                      }}
+                    >
+                      Sépia
+                    </Button>
+                    <Button
+                      variant={readingTheme === "dark" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("dark");
+                        localStorage.setItem("sanctificare_bible_theme", "dark");
+                      }}
+                    >
+                      Escuro
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="divider-gold my-4" />
+
             {/* Capítulos */}
             <div>
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">CAPÍTULOS</p>
