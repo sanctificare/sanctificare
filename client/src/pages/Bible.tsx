@@ -627,6 +627,49 @@ export default function Bible() {
               </div>
             )}
           </div>
+        ) : selectedBook ? (
+          /* Seleção de capítulo */
+          <div className="max-w-3xl mx-auto animate-fade-in">
+            <div className="flex items-center gap-3 mb-6">
+              <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
+                <ChevronLeft size={14} /> Livros
+              </Button>
+              <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
+                {selectedBook.name}
+              </h2>
+            </div>
+
+            {/* Versículos famosos */}
+            {FAMOUS_VERSES[selectedBook.id] && (
+              <div className="prayer-card p-5 mb-6 bg-white border border-border rounded-xl">
+                <p className="text-xs font-display font-semibold text-[oklch(0.65_0.12_70)] uppercase tracking-widest mb-3">
+                  Versículos para meditação
+                </p>
+                <div className="space-y-3">
+                  {FAMOUS_VERSES[selectedBook.id].map((v, i) => (
+                    <p key={i} className="font-serif text-sm italic text-foreground border-l-2 border-[oklch(0.75_0.12_75/0.4)] pl-3">
+                      {v}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <p className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-slate-200 mb-3 uppercase tracking-wide">
+              Capítulos ({selectedBook.chapters})
+            </p>
+            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2">
+              {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
+                <button
+                  key={ch}
+                  onClick={() => setSelectedChapter(ch)}
+                  className="h-10 w-full rounded-lg bg-white border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all"
+                >
+                  {ch}
+                </button>
+              ))}
+            </div>
+          </div>
         ) : (
           /* Telas de Livros / Favoritos / Busca */
           <div className="max-w-4xl mx-auto">
