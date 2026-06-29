@@ -113,7 +113,7 @@ export default function NovenaAudioDock({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.28_0.08_258)]/95 backdrop-blur-md">
+    <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#bf9926]/30 bg-[#151f32]/95 backdrop-blur-md">
       <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
       <div className="container py-3">
@@ -122,7 +122,7 @@ export default function NovenaAudioDock({
             <img src={coverUrl} alt={title} className="w-12 h-12 rounded-md object-cover border border-white/25" />
             <div className="min-w-0">
               <p className="text-sm font-semibold text-white truncate">{title}</p>
-              <p className="text-xs text-[oklch(0.90_0.02_85)] truncate">{subtitle}</p>
+              <p className="text-xs text-slate-300 truncate">{subtitle}</p>
             </div>
           </div>
 
@@ -131,7 +131,7 @@ export default function NovenaAudioDock({
               <Button
                 type="button"
                 variant="ghost"
-                className="h-8 px-3 text-[oklch(0.92_0.03_85)] hover:text-white hover:bg-white/10"
+                className="h-8 px-3 text-slate-200 hover:text-white hover:bg-white/10"
                 onClick={skipIntro}
               >
                 <SkipForward size={14} className="mr-1" />
@@ -140,14 +140,14 @@ export default function NovenaAudioDock({
               <Button
                 type="button"
                 onClick={togglePlay}
-                className="h-10 w-10 rounded-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] p-0"
+                className="h-10 w-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-[#151f32] p-0"
               >
                 {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
               </Button>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-[oklch(0.90_0.02_85)] w-9 text-right">{formatTime(currentTime)}</span>
+              <span className="text-[11px] text-slate-300 w-9 text-right">{formatTime(currentTime)}</span>
               <input
                 type="range"
                 min={0}
@@ -155,26 +155,26 @@ export default function NovenaAudioDock({
                 step={0.1}
                 value={currentTime}
                 onChange={(event) => handleSeek(Number(event.target.value))}
-                className="w-full h-1.5 rounded-lg accent-[oklch(0.75_0.12_75)]"
+                className="w-full h-1.5 rounded-lg accent-[#bf9926]"
               />
-              <span className="text-[11px] text-[oklch(0.90_0.02_85)] w-9">-{formatTime(Math.max(duration - currentTime, 0))}</span>
+              <span className="text-[11px] text-slate-300 w-9">-{formatTime(Math.max(duration - currentTime, 0))}</span>
             </div>
           </div>
 
           <div className="flex items-center justify-end gap-1">
-            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-[oklch(0.90_0.02_85)] hover:text-white hover:bg-white/10">
+            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10">
               <Share2 size={14} />
             </Button>
-            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-[oklch(0.90_0.02_85)] hover:text-white hover:bg-white/10">
+            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10">
               <SlidersHorizontal size={14} />
             </Button>
-            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-[oklch(0.90_0.02_85)] hover:text-white hover:bg-white/10">
+            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10">
               <ListMusic size={14} />
             </Button>
             <Button
               type="button"
               variant="ghost"
-              className="h-8 w-8 p-0 text-[oklch(0.90_0.02_85)] hover:text-white hover:bg-white/10"
+              className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10"
               onClick={() => setIsMuted((prev) => !prev)}
             >
               {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -190,7 +190,7 @@ export default function NovenaAudioDock({
                 setVolume(next);
                 if (next > 0) setIsMuted(false);
               }}
-              className="w-20 h-1.5 rounded-lg accent-[oklch(0.90_0.02_85)]"
+              className="w-20 h-1.5 rounded-lg accent-slate-300"
             />
           </div>
         </div>

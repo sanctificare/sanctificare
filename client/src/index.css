@@ -782,11 +782,11 @@
     align-items: start;
     gap: 0.9rem;
     border-radius: 0.55rem;
-    border: 1px solid oklch(0.72 0.08 190 / 0.18);
-    background: oklch(0.2 0.055 195);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #1e293b;
     color: white;
     padding: 0.5rem 0.8rem 0.55rem 0.35rem;
-    box-shadow: 0 16px 38px oklch(0.12 0.04 210 / 0.24);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.4);
   }
 
   .audio-player-body {
@@ -817,7 +817,7 @@
     height: 4rem;
     overflow: hidden;
     border-radius: 0.4rem;
-    background: oklch(0.14 0.04 195);
+    background: #0f172a;
     flex-shrink: 0;
   }
 
@@ -848,7 +848,7 @@
     font-size: 0.82rem;
     line-height: 1.15;
     font-weight: 800;
-    color: oklch(0.99 0.01 95);
+    color: #f8fafc;
   }
 
   .audio-player-copy p {
@@ -859,11 +859,11 @@
     font-size: 0.68rem;
     line-height: 1.15;
     font-weight: 700;
-    color: oklch(0.92 0.06 95);
+    color: #cbd5e1;
   }
 
   .audio-player-copy .audio-player-error {
-    color: oklch(0.84 0.13 28);
+    color: #ef4444;
   }
 
   .audio-player-controls,
@@ -916,7 +916,7 @@
     display: inline-grid;
     place-items: center;
     border-radius: 999px;
-    color: oklch(0.86 0.035 205);
+    color: #94a3b8;
   }
 
   .audio-player-icon-button svg,
@@ -926,7 +926,7 @@
 
   .audio-player-icon-button:hover,
   .audio-player-main-button:hover {
-    background: oklch(1 0 0 / 0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
   }
 
@@ -937,7 +937,7 @@
 
   .audio-player-icon-button:disabled:hover {
     background: transparent;
-    color: oklch(0.86 0.035 205);
+    color: #94a3b8;
   }
 
   .audio-player-main-button {
@@ -953,13 +953,13 @@
     height: 1.95rem;
     border-radius: 999px;
     padding: 0;
-    background: oklch(1 0 0 / 0.18);
+    background: rgba(255, 255, 255, 0.18);
     display: inline-grid;
     place-items: center;
   }
 
   .audio-player-reset:hover {
-    background: oklch(1 0 0 / 0.25);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .audio-player-timeline {
@@ -967,7 +967,7 @@
     gap: 0.35rem;
     font-size: 0.64rem;
     font-weight: 700;
-    color: oklch(0.9 0.035 205);
+    color: #cbd5e1;
     flex: 1 1 auto;
   }
 
@@ -988,8 +988,8 @@
   }
 
   .audio-player-support-button {
-    background: oklch(1 0 0 / 0.07);
-    color: oklch(0.97 0.01 95);
+    background: rgba(255, 255, 255, 0.07);
+    color: #f8fafc;
   }
 
   .audio-player-volume input {
