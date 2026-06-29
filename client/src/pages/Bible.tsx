@@ -17,8 +17,7 @@ import {
   Copy,
   Share2,
   Sparkles,
-  Bookmark,
-  Check
+  Bookmark
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -26,7 +25,7 @@ import { toast } from "sonner";
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 export default function Bible() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [location] = useLocation();
 
   // Navigation states
@@ -126,6 +125,38 @@ export default function Bible() {
     }
   }, [location]);
 
+  // Load default Gênesis 1 on desktop screens if no book is selected
+  useEffect(() => {
+    if (!selectedBook && window.innerWidth >= 1024) {
+      const genesis = BIBLE_BOOKS[0];
+      setSelectedBook(genesis);
+      setSelectedChapter(1);
+    }
+  }, []);
+
+  // Book Category Identifier
+  const getBookCategory = (bookId: string): string => {
+    const pentateuco = ["gn", "ex", "lv", "nm", "dt"];
+    const historicos = ["js", "jz", "rt", "1sm", "2sm", "1rs", "2rs", "1cr", "2cr", "esd", "ne", "tb", "jt", "est", "1mc", "2mc"];
+    const sapienciais = ["jó", "sl", "pv", "ecl", "ct", "sb", "si"];
+    const profeticos = ["is", "jr", "lm", "br", "ez", "dn", "os", "jl", "am", "ab", "jn", "mq", "na", "hb", "sf", "ag", "zc", "ml"];
+    const evangelhos = ["mt", "mc", "lc", "jo"];
+    const atos = ["at"];
+    const epistolas = ["rm", "1co", "2co", "gl", "ef", "fl", "cl", "1ts", "2ts", "1tm", "2tm", "tt", "fm", "hb2", "tg", "1pe", "2pe", "1jo", "2jo", "3jo", "jd"];
+    const apocalipse = ["ap"];
+
+    const id = bookId.toLowerCase();
+    if (pentateuco.includes(id)) return "PENTATEUCO";
+    if (historicos.includes(id)) return "LIVROS HISTÓRICOS";
+    if (sapienciais.includes(id)) return "LIVROS SAPIENCIAIS";
+    if (profeticos.includes(id)) return "LIVROS PROFÉTICOS";
+    if (evangelhos.includes(id)) return "EVANGELHOS";
+    if (atos.includes(id)) return "HISTÓRICO (NT)";
+    if (epistolas.includes(id)) return "EPÍSTOLAS";
+    if (apocalipse.includes(id)) return "PROFÉTICO (NT)";
+    return "BÍBLIA";
+  };
+
   // Liturgy highlighting logic
   const getLiturgyVerseRange = (ref: string): { start: number; end: number } | null => {
     const parts = ref.split(":");
@@ -181,29 +212,36 @@ export default function Bible() {
 
   // Verse action handlers
   const handleVerseClick = (index: number) => {
-    setSelectedVerses(prev => 
-      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
-    );
+    if (selectedVerses.includes(index)) {
+      setSelectedVerses(selectedVerses.filter((i) => i !== index));
+    } else {
+      setSelectedVerses([...selectedVerses, index].sort((a, b) => a - b));
+    }
+  };
+
+  const getSelectedText = () => {
+    if (!chapterVerses) return "";
+    return selectedVerses
+      .map((idx) => {
+        const verseNum = idx + 1;
+        return `${verseNum}. ${chapterVerses[idx]}`;
+      })
+      .join("\n");
   };
 
   const handleCopySelected = () => {
-    if (!selectedBook || !selectedChapter || !chapterVerses) return;
-    const sortedIndices = [...selectedVerses].sort((a, b) => a - b);
-    const textToCopy = sortedIndices.map(idx => `[${idx + 1}] ${chapterVerses[idx]}`).join("\n");
-    const ref = `(${selectedBook.name} ${selectedChapter}:${sortedIndices.map(idx => idx + 1).join(", ")})`;
-    const fullText = `"${textToCopy}"\n\n${ref}\nCompartilhado via Sanctificare`;
-
+    const text = getSelectedText();
+    if (!text || !selectedBook || !selectedChapter) return;
+    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}`;
     navigator.clipboard.writeText(fullText);
-    toast.success("Versículos copiados!");
+    toast.success("Copiado para a área de transferência!");
     setSelectedVerses([]);
   };
 
   const handleShareSelected = async () => {
-    if (!selectedBook || !selectedChapter || !chapterVerses) return;
-    const sortedIndices = [...selectedVerses].sort((a, b) => a - b);
-    const textToCopy = sortedIndices.map(idx => `[${idx + 1}] ${chapterVerses[idx]}`).join("\n");
-    const ref = `(${selectedBook.name} ${selectedChapter}:${sortedIndices.map(idx => idx + 1).join(", ")})`;
-    const fullText = `"${textToCopy}"\n\n${ref}\nCompartilhado via Sanctificare`;
+    const text = getSelectedText();
+    if (!text || !selectedBook || !selectedChapter) return;
+    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}\n\nLido via Sanctificare`;
 
     if (navigator.share) {
       try {
@@ -308,25 +346,17 @@ export default function Bible() {
   };
 
   const fontSizeClasses = {
-    sm: "text-sm",
-    base: "text-base",
-    lg: "text-lg",
-    xl: "text-xl",
-    "2xl": "text-2xl",
+    sm: "text-xs sm:text-sm",
+    base: "text-sm sm:text-base",
+    lg: "text-base sm:text-lg",
+    xl: "text-lg sm:text-xl",
+    "2xl": "text-xl sm:text-2xl",
   };
 
   const fontFamilyClasses = {
     serif: "font-serif leading-relaxed",
     sans: "font-sans leading-normal",
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full animate-pulse" />
-      </div>
-    );
-  }
 
   if (!isAuthenticated) {
     return (
@@ -345,561 +375,182 @@ export default function Bible() {
     <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[readingTheme]}`}>
       <AppNav />
 
-      <main className="container py-8 relative">
-        {/* Header */}
-        <div className="mb-6 animate-fade-in">
-          <div className="flex items-center gap-2 mb-2">
-            <BookOpen size={20} className={readingTheme === "dark" ? "text-slate-400" : "text-[oklch(0.40_0.10_260)]"} />
-            <span className={`text-sm font-medium ${descTextClasses[readingTheme]}`}>Bíblia Sagrada</span>
-          </div>
-          <h1 className={`font-display text-3xl font-bold mb-1 ${headerTextClasses[readingTheme]}`}>
-            Sagrada Escritura
-          </h1>
-          <p className={`font-serif ${descTextClasses[readingTheme]}`}>73 livros para leitura, oração e meditação da Palavra</p>
-        </div>
-
-        {/* Leitura de capítulo */}
-        {selectedBook && selectedChapter ? (
-          <div className="max-w-3xl mx-auto animate-fade-in pb-20">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <Button variant="outline" size="sm" onClick={() => setSelectedChapter(null)} className="gap-2 bg-white">
-                  <ChevronLeft size={14} /> {selectedBook.name}
-                </Button>
-                <span className={`font-display text-sm font-semibold ${headerTextClasses[readingTheme]}`}>
-                  Capítulo {selectedChapter}
-                </span>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowSettings(!showSettings)}
-                className={`gap-1.5 bg-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`}
-              >
-                <Settings size={14} /> Opções
-              </Button>
-            </div>
-
-            {/* Accessibility Settings Panel */}
-            {showSettings && (
-              <div className={`border rounded-xl p-4 mb-6 shadow-md flex flex-wrap gap-4 items-center justify-between transition-colors duration-300 animate-fade-in text-sm ${
-                readingTheme === "dark"
-                  ? "bg-slate-950 text-slate-200 border-slate-800"
-                  : readingTheme === "sepia"
-                  ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
-                  : "bg-white text-[oklch(0.22_0.07_260)] border-border"
-              }`}>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Fonte:</span>
-                  <Button
-                    variant={fontFamily === "serif" ? "default" : "outline"}
-                    size="sm"
-                    className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    onClick={() => {
-                      setFontFamily("serif");
-                      localStorage.setItem("sanctificare_bible_font_family", "serif");
-                    }}
-                  >
-                    Serifada
-                  </Button>
-                  <Button
-                    variant={fontFamily === "sans" ? "default" : "outline"}
-                    size="sm"
-                    className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    onClick={() => {
-                      setFontFamily("sans");
-                      localStorage.setItem("sanctificare_bible_font_family", "sans");
-                    }}
-                  >
-                    Sans-Serif
-                  </Button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tamanho:</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    disabled={fontSize === "sm"}
-                    onClick={() => {
-                      const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
-                      const idx = sizes.indexOf(fontSize);
-                      if (idx > 0) {
-                        setFontSize(sizes[idx - 1]);
-                        localStorage.setItem("sanctificare_bible_font_size", sizes[idx - 1]);
-                      }
-                    }}
-                  >
-                    A-
-                  </Button>
-                  <span className="text-xs uppercase font-bold px-1">{fontSize}</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    disabled={fontSize === "2xl"}
-                    onClick={() => {
-                      const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
-                      const idx = sizes.indexOf(fontSize);
-                      if (idx < sizes.length - 1) {
-                        setFontSize(sizes[idx + 1]);
-                        localStorage.setItem("sanctificare_bible_font_size", sizes[idx + 1]);
-                      }
-                    }}
-                  >
-                    A+
-                  </Button>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tema:</span>
-                  <Button
-                    variant={readingTheme === "light" ? "default" : "outline"}
-                    size="sm"
-                    className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    onClick={() => {
-                      setReadingTheme("light");
-                      localStorage.setItem("sanctificare_bible_theme", "light");
-                    }}
-                  >
-                    Claro
-                  </Button>
-                  <Button
-                    variant={readingTheme === "sepia" ? "default" : "outline"}
-                    size="sm"
-                    className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                    onClick={() => {
-                      setReadingTheme("sepia");
-                      localStorage.setItem("sanctificare_bible_theme", "sepia");
-                    }}
-                  >
-                    Sépia
-                  </Button>
-                  <Button
-                    variant={readingTheme === "dark" ? "default" : "outline"}
-                    size="sm"
-                    className={`h-8 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
-                    onClick={() => {
-                      setReadingTheme("dark");
-                      localStorage.setItem("sanctificare_bible_theme", "dark");
-                    }}
-                  >
-                    Escuro
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Liturgy Banner */}
-            {liturgyInfo && (
-              <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
-                <Sparkles size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
-                <div>
-                  <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Este capítulo faz parte do <strong>{liturgyInfo.label}</strong> de hoje ({selectedBook.name} {selectedChapter}
-                    {liturgyInfo.start ? `:${liturgyInfo.start}-${liturgyInfo.end}` : ""}).
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Reading Card */}
-            <div className={`prayer-card p-8 border rounded-2xl transition-all duration-300 ${themeClasses[readingTheme]}`}>
-              <div className="text-center mb-6">
-                <h2 className="font-display text-2xl font-bold">
-                  {selectedBook.name}
-                </h2>
-                <p className="text-[oklch(0.65_0.12_70)] font-semibold mt-1">Capítulo {selectedChapter}</p>
-              </div>
-              <div className="divider-gold mb-6" />
-
-              <div className="space-y-5">
-                {isVersesLoading ? (
-                  <div className="space-y-4 animate-pulse">
-                    {Array.from({ length: 8 }).map((_, i) => (
-                      <div key={i} className="flex gap-4">
-                        <div className="h-4 w-6 bg-slate-200 dark:bg-slate-800 rounded mt-1" />
-                        <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded flex-1" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  chapterVerses?.map((verse, i) => {
-                    const verseNum = i + 1;
-                    const isSelected = selectedVerses.includes(i);
-                    const isFavorited = favorites.some(
-                      f => f.bookId === selectedBook.id && f.chapter === selectedChapter && f.verse === verseNum
-                    );
-
-                    // Check if this verse is in today's liturgy readings range
-                    const isLiturgyHighlighted = liturgyInfo && liturgyInfo.start && liturgyInfo.end
-                      ? verseNum >= liturgyInfo.start && verseNum <= liturgyInfo.end
-                      : !!liturgyInfo; // if no specific verse range, highlight entire chapter
-
-                    const highlightClass = isSelected
-                      ? "bg-[oklch(0.75_0.12_75/0.25)] ring-2 ring-[oklch(0.75_0.12_75/0.4)] rounded px-1 -mx-1"
-                      : isLiturgyHighlighted
-                      ? "bg-[oklch(0.75_0.12_75/0.08)] border-l-2 border-[oklch(0.75_0.12_75/0.5)] pl-2"
-                      : "";
-
-                    return (
-                      <div
-                        key={i}
-                        onClick={() => handleVerseClick(i)}
-                        className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
-                      >
-                        <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] mt-1.5 w-6 flex-shrink-0 font-display flex items-center gap-1">
-                          {isFavorited && <Star size={8} fill="currentColor" className="text-[oklch(0.75_0.12_75)]" />}
-                          {verseNum}
-                        </span>
-                        <p className={`flex-1 ${fontSizeClasses[fontSize]} ${fontFamilyClasses[fontFamily]}`}>
-                          {verse}
-                        </p>
-                      </div>
-                    );
-                  }) || (
-                    <p className="text-muted-foreground italic text-center">Nenhum versículo encontrado.</p>
-                  )
-                )}
-              </div>
-            </div>
-
-            {/* Navigation buttons */}
-            <div className="flex gap-3 mt-6">
-              <Button
-                variant="outline"
-                disabled={selectedChapter <= 1}
-                onClick={() => setSelectedChapter(selectedChapter - 1)}
-                className="gap-2 bg-white"
-              >
-                <ChevronLeft size={14} /> Anterior
-              </Button>
-              <Button
-                variant="outline"
-                disabled={selectedChapter >= selectedBook.chapters}
-                onClick={() => setSelectedChapter(selectedChapter + 1)}
-                className="gap-2 ml-auto bg-white"
-              >
-                Próximo <ChevronRight size={14} />
-              </Button>
-            </div>
-
-            {/* Selection floating toolbar */}
-            {selectedVerses.length > 0 && (
-              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 border border-border shadow-2xl rounded-full px-5 py-3 flex items-center gap-3 z-50 animate-fade-in text-xs sm:text-sm text-[oklch(0.22_0.07_260)] dark:text-slate-100 max-w-[95%] w-max">
-                <span className="font-semibold whitespace-nowrap">
-                  {selectedVerses.length} {selectedVerses.length === 1 ? "selecionado" : "selecionados"}
-                </span>
-
-                <div className="h-4 w-px bg-border" />
-
-                <button
-                  onClick={handleCopySelected}
-                  className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
-                  title="Copiar"
-                >
-                  <Copy size={15} />
-                  <span className="hidden sm:inline">Copiar</span>
-                </button>
-
-                <button
-                  onClick={handleShareSelected}
-                  className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
-                  title="Compartilhar"
-                >
-                  <Share2 size={15} />
-                  <span className="hidden sm:inline">Compartilhar</span>
-                </button>
-
-                <button
-                  onClick={handleFavoriteSelected}
-                  className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
-                  title={areAllSelectedFavorited() ? "Desfavoritar" : "Favoritar"}
-                >
-                  <Star size={15} fill={areAllSelectedFavorited() ? "currentColor" : "none"} className={areAllSelectedFavorited() ? "text-[oklch(0.75_0.12_75)]" : ""} />
-                  <span className="hidden sm:inline">{areAllSelectedFavorited() ? "Favoritado" : "Favoritar"}</span>
-                </button>
-
-                <div className="h-4 w-px bg-border" />
-
-                <button
-                  onClick={() => setSelectedVerses([])}
-                  className="text-muted-foreground hover:text-foreground font-medium p-1"
-                >
-                  Limpar
-                </button>
-              </div>
-            )}
-          </div>
-        ) : selectedBook ? (
-          /* Seleção de capítulo */
-          <div className="max-w-3xl mx-auto animate-fade-in">
-            <div className="flex items-center gap-3 mb-6">
-              <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
-                <ChevronLeft size={14} /> Livros
-              </Button>
-              <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
-                {selectedBook.name}
-              </h2>
-            </div>
-
-            {/* Versículos famosos */}
-            {FAMOUS_VERSES[selectedBook.id] && (
-              <div className="prayer-card p-5 mb-6 bg-white border border-border rounded-xl">
-                <p className="text-xs font-display font-semibold text-[oklch(0.65_0.12_70)] uppercase tracking-widest mb-3">
-                  Versículos para meditação
-                </p>
-                <div className="space-y-3">
-                  {FAMOUS_VERSES[selectedBook.id].map((v, i) => (
-                    <p key={i} className="font-serif text-sm italic text-foreground border-l-2 border-[oklch(0.75_0.12_75/0.4)] pl-3">
-                      {v}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <p className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-slate-200 mb-3 uppercase tracking-wide">
-              Capítulos ({selectedBook.chapters})
+      <main className="container py-8 relative max-w-7xl mx-auto">
+        
+        {/* =========================================================================
+            1. LAYOUT DESKTOP (3 COLUNAS)
+            ========================================================================= */}
+        <div className="hidden lg:grid grid-cols-12 gap-6 items-start">
+          
+          {/* COLUNA ESQUERDA: Livros, Favoritos e Busca (col-span-3) */}
+          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
+            <h2 className="font-display text-xl font-bold">Escolha o livro</h2>
+            <p className="text-xs opacity-75 mt-1 font-serif leading-relaxed">
+              Tradução do Pe. Manuel de Matos Soares.
             </p>
-            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2">
-              {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
-                <button
-                  key={ch}
-                  onClick={() => setSelectedChapter(ch)}
-                  className="h-10 w-full rounded-lg bg-white border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all"
-                >
-                  {ch}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          /* Telas de Livros / Favoritos / Busca */
-          <div className="max-w-4xl mx-auto">
-            {/* Tabs */}
-            <div className="flex border-b border-border/40 mb-6 gap-2">
+            
+            <div className="divider-gold my-4" />
+            
+            {/* Tabs da Barra Lateral */}
+            <div className="flex border-b border-border/40 mb-4 text-xs font-semibold gap-3">
               <button
                 onClick={() => setActiveTab("books")}
-                className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
-                  activeTab === "books"
-                    ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                className={`pb-2 border-b-2 transition-all ${
+                  activeTab === "books" ? "border-[oklch(0.75_0.12_75)] font-bold text-[oklch(0.75_0.12_75)]" : "border-transparent opacity-65"
                 }`}
               >
                 Livros
               </button>
               <button
                 onClick={() => setActiveTab("favorites")}
-                className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
-                  activeTab === "favorites"
-                    ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                className={`pb-2 border-b-2 transition-all ${
+                  activeTab === "favorites" ? "border-[oklch(0.75_0.12_75)] font-bold text-[oklch(0.75_0.12_75)]" : "border-transparent opacity-65"
                 }`}
               >
                 Favoritos ({favorites.length})
               </button>
               <button
                 onClick={() => setActiveTab("search")}
-                className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
-                  activeTab === "search"
-                    ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                className={`pb-2 border-b-2 transition-all ${
+                  activeTab === "search" ? "border-[oklch(0.75_0.12_75)] font-bold text-[oklch(0.75_0.12_75)]" : "border-transparent opacity-65"
                 }`}
               >
-                Busca Global
+                Busca
               </button>
             </div>
 
-            {/* 1. Tab Livros */}
+            {/* Conteúdo das Tabs */}
             {activeTab === "books" && (
-              <div className="animate-fade-in space-y-6">
-                {/* Last Read Bookmark Card */}
-                {bookmark && (
-                  <div className="prayer-card p-4 border border-[oklch(0.75_0.12_75/0.3)] bg-white/60 backdrop-blur flex items-center justify-between gap-4 rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <Bookmark className="text-[oklch(0.75_0.12_75)] flex-shrink-0" size={20} fill="currentColor" />
-                      <div>
-                        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Última Leitura</p>
-                        <h4 className="font-display font-bold text-sm text-[oklch(0.22_0.07_260)]">
-                          {bookmark.bookName} - Capítulo {bookmark.chapter}
-                        </h4>
-                      </div>
-                    </div>
-                    <Button
-                      size="sm"
-                      onClick={() => {
-                        const book = BIBLE_BOOKS.find(b => b.id === bookmark.bookId);
-                        if (book) {
-                          setSelectedBook(book);
-                          setSelectedChapter(bookmark.chapter);
-                        }
-                      }}
-                      className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white"
-                    >
-                      Continuar
-                    </Button>
-                  </div>
-                )}
-
-                {/* Busca Livro */}
-                <div className="relative mb-6 max-w-md">
-                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    placeholder="Buscar livro..."
-                    value={searchBookQuery}
-                    onChange={(e) => setSearchBookQuery(e.target.value)}
-                    className="pl-9 bg-white"
-                  />
-                  {searchBookQuery && (
-                    <button onClick={() => setSearchBookQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <X size={14} className="text-muted-foreground" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Tabs Testamento */}
-                <div className="flex gap-2">
+              <div className="space-y-3">
+                {/* Filtro Velho/Novo */}
+                <div className="flex gap-1 bg-slate-100/55 dark:bg-slate-900/55 p-1 rounded-lg">
                   <button
                     onClick={() => setTestament("old")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      testament === "old"
-                        ? "bg-[oklch(0.22_0.07_260)] text-white"
-                        : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                    className={`flex-1 py-1 rounded text-center text-[10px] font-bold uppercase transition-all ${
+                      testament === "old" ? "bg-white dark:bg-slate-800 shadow-sm text-foreground" : "opacity-60"
                     }`}
                   >
-                    Antigo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "old").length})
+                    Antigo
                   </button>
                   <button
                     onClick={() => setTestament("new")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      testament === "new"
-                        ? "bg-[oklch(0.22_0.07_260)] text-white"
-                        : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                    className={`flex-1 py-1 rounded text-center text-[10px] font-bold uppercase transition-all ${
+                      testament === "new" ? "bg-white dark:bg-slate-800 shadow-sm text-foreground" : "opacity-60"
                     }`}
                   >
-                    Novo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "new").length})
+                    Novo
                   </button>
                 </div>
 
-                {/* Grid de Livros */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                  {filteredBooks.map((book) => (
-                    <button
-                      key={book.id}
-                      onClick={() => setSelectedBook(book)}
-                      className="prayer-card p-4 text-left group bg-white border border-border hover:border-[oklch(0.75_0.12_75)] transition-all rounded-xl"
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-display text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wide">
-                          {book.abbrev}
-                        </span>
-                        <ChevronRight size={13} className="text-muted-foreground group-hover:text-[oklch(0.65_0.14_70)] transition-colors" />
-                      </div>
-                      <p className="font-semibold text-sm text-[oklch(0.22_0.07_260)] leading-tight">{book.name}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{book.chapters} capítulos</p>
-                    </button>
-                  ))}
+                {/* Filtro por Nome */}
+                <div className="relative mb-2">
+                  <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50" />
+                  <Input
+                    placeholder="Filtrar livros..."
+                    value={searchBookQuery}
+                    onChange={(e) => setSearchBookQuery(e.target.value)}
+                    className="pl-7 h-7 text-xs bg-slate-50 dark:bg-slate-900/40 border-none rounded-lg focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]"
+                  />
                 </div>
 
-                {filteredBooks.length === 0 && (
-                  <div className="text-center py-12">
-                    <BookOpen size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                    <p className="text-muted-foreground">Nenhum livro encontrado para "{searchBookQuery}"</p>
-                  </div>
-                )}
+                {/* Grid Compacto de Livros */}
+                <div className="grid grid-cols-4 gap-1.5 max-h-[48vh] overflow-y-auto pr-1">
+                  {filteredBooks.map((book) => {
+                    const isActive = selectedBook?.id === book.id;
+                    return (
+                      <button
+                        key={book.id}
+                        onClick={() => {
+                          setSelectedBook(book);
+                          setSelectedChapter(1);
+                        }}
+                        className={`py-2 text-center font-display text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all border ${
+                          isActive
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow"
+                            : "bg-slate-50/50 dark:bg-slate-900/30 border-border/20 hover:border-[oklch(0.75_0.12_75/0.4)]"
+                        }`}
+                      >
+                        {book.abbrev}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
-            {/* 2. Tab Favoritos */}
             {activeTab === "favorites" && (
-              <div className="animate-fade-in space-y-4">
+              <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
                 {favorites.length === 0 ? (
-                  <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
-                    <Star size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                    <p className="text-muted-foreground text-sm font-medium">Nenhum versículo favoritado ainda.</p>
-                    <p className="text-xs text-muted-foreground/80 mt-1">Toque nos versículos durante a leitura para favoritá-los.</p>
-                  </div>
+                  <p className="text-xs opacity-60 text-center py-8 font-serif">Nenhum versículo favoritado ainda.</p>
                 ) : (
-                  <div className="space-y-3">
-                    {favorites.map((fav, index) => (
-                      <div
-                        key={index}
-                        className="bg-white border border-border rounded-xl p-4 flex justify-between gap-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] transition-all duration-200"
-                      >
-                        <div
-                          className="cursor-pointer flex-1"
-                          onClick={() => {
-                            const book = BIBLE_BOOKS.find(b => b.id === fav.bookId);
-                            if (book) {
-                              setSelectedBook(book);
-                              setSelectedChapter(fav.chapter);
-                            }
-                          }}
-                        >
-                          <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
-                            {fav.bookName} {fav.chapter}:{fav.verse}
-                          </span>
-                          <p className="font-serif italic text-sm mt-1 text-slate-800">
-                            "{fav.text}"
-                          </p>
-                        </div>
+                  favorites.map((fav, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        const book = BIBLE_BOOKS.find(b => b.id === fav.bookId);
+                        if (book) {
+                          setSelectedBook(book);
+                          setSelectedChapter(fav.chapter);
+                        }
+                      }}
+                      className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
+                    >
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] uppercase">
+                          {fav.bookName} {fav.chapter}:{fav.verse}
+                        </span>
                         <button
-                          onClick={() => {
-                            const updated = favorites.filter((_, i) => i !== index);
-                            setFavorites(updated);
-                            localStorage.setItem("sanctificare_bible_favorites", JSON.stringify(updated));
-                            toast.success("Favorito removido!");
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const newFavs = favorites.filter((_, i) => i !== index);
+                            setFavorites(newFavs);
+                            localStorage.setItem("sanctificare_bible_favorites", JSON.stringify(newFavs));
+                            toast.success("Removido dos favoritos");
                           }}
-                          className="text-muted-foreground hover:text-destructive self-start p-1 transition-colors"
-                          title="Remover dos favoritos"
+                          className="text-muted-foreground hover:text-destructive p-0.5"
                         >
-                          <X size={16} />
+                          <X size={10} />
                         </button>
                       </div>
-                    ))}
-                  </div>
+                      <p className="text-[11px] font-sans line-clamp-3 leading-relaxed opacity-95">
+                        "{fav.text}"
+                      </p>
+                    </div>
+                  ))
                 )}
               </div>
             )}
 
-            {/* 3. Tab Busca Global */}
             {activeTab === "search" && (
-              <div className="animate-fade-in space-y-6">
-                <form onSubmit={handleSearchSubmit} className="flex gap-2">
+              <div className="space-y-3">
+                <form onSubmit={handleSearchSubmit} className="flex gap-1.5">
                   <div className="relative flex-1">
-                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50" />
                     <Input
-                      placeholder="Buscar palavra ou frase em toda a Bíblia..."
+                      placeholder="Pesquisar..."
                       value={globalSearchQuery}
                       onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                      className="pl-9 bg-white"
+                      className="pl-7 h-8 text-xs bg-slate-50 dark:bg-slate-900/40 border-none rounded-lg focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]"
                     />
                   </div>
-                  <Button type="submit" className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_260)] text-white">
-                    Pesquisar
+                  <Button type="submit" size="sm" className="h-8 px-2.5 text-xs bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950">
+                    Ir
                   </Button>
                 </form>
 
                 {isSearching ? (
-                  <div className="space-y-3 animate-pulse">
-                    {Array.from({ length: 4 }).map((_, i) => (
-                      <div key={i} className="h-20 bg-white border border-border rounded-xl p-4" />
+                  <div className="space-y-2 animate-pulse">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div key={i} className="h-16 bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg" />
                     ))}
                   </div>
                 ) : searchResults ? (
-                  <div className="space-y-3">
-                    <p className="text-xs text-muted-foreground font-semibold">
-                      Foram encontradas {searchResults.length} ocorrências {searchResults.length >= 50 ? "(limite máximo exibido)" : ""}.
+                  <div className="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
+                    <p className="text-[9px] text-muted-foreground font-semibold">
+                      {searchResults.length} ocorrências.
                     </p>
-
                     {searchResults.length === 0 ? (
-                      <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
-                        <BookOpen size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                        <p className="text-muted-foreground text-sm font-medium">Nenhum resultado encontrado.</p>
-                      </div>
+                      <p className="text-xs opacity-60 text-center py-8">Nenhum resultado.</p>
                     ) : (
                       searchResults.map((res, index) => (
                         <div
@@ -911,12 +562,12 @@ export default function Bible() {
                               setSelectedChapter(res.chapter);
                             }
                           }}
-                          className="bg-white border border-border rounded-xl p-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] hover:shadow cursor-pointer transition-all duration-200"
+                          className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
                         >
-                          <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
+                          <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] uppercase">
                             {res.bookName} {res.chapter}:{res.verse}
                           </span>
-                          <p className="font-sans text-sm mt-1 text-slate-800">
+                          <p className="text-[11px] font-sans leading-relaxed mt-0.5 line-clamp-3 opacity-95">
                             {res.text}
                           </p>
                         </div>
@@ -924,15 +575,897 @@ export default function Bible() {
                     )}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-white/30 border border-dashed rounded-2xl">
-                    <Search size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                    <p className="text-muted-foreground text-sm">Digite termos como "pastor", "amor", "luz" para pesquisar.</p>
-                  </div>
+                  <p className="text-[10px] text-muted-foreground text-center py-6 leading-relaxed">
+                    Pesquise por termos de fé como "salvação", "creio", "justiça".
+                  </p>
                 )}
               </div>
             )}
           </div>
+
+          {/* COLUNA CENTRAL: Área de Leitura e Texto (col-span-6) */}
+          <div className="col-span-6 space-y-6">
+            {selectedBook && selectedChapter ? (
+              <>
+                {/* Cabeçalho de Leitura */}
+                <div className={`p-6 rounded-2xl border border-border/40 shadow-sm flex items-center justify-between transition-all duration-300 ${themeClasses[readingTheme]}`}>
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <h2 className="font-display text-3xl font-bold">
+                        {selectedBook.name}, {selectedChapter}
+                      </h2>
+                      <span className="bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.65_0.12_70)] text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                        {getBookCategory(selectedBook.id)}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 font-serif">Tradução Católica de 1956</p>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowSettings(!showSettings)}
+                    className={`h-9 gap-1.5 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
+                  >
+                    <Settings size={14} /> Opções
+                  </Button>
+                </div>
+
+                {/* Painel de Preferências de Leitura */}
+                {showSettings && (
+                  <div className={`border rounded-xl p-4 shadow-md flex flex-wrap gap-4 items-center justify-between transition-colors duration-300 animate-fade-in text-sm ${
+                    readingTheme === "dark"
+                      ? "bg-slate-950 text-slate-200 border-slate-800"
+                      : readingTheme === "sepia"
+                      ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
+                      : "bg-white text-[oklch(0.22_0.07_260)] border-border"
+                  }`}>
+                    {/* Fonte */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Fonte:</span>
+                      <Button
+                        variant={fontFamily === "serif" ? "default" : "outline"}
+                        size="sm"
+                        className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        onClick={() => {
+                          setFontFamily("serif");
+                          localStorage.setItem("sanctificare_bible_font_family", "serif");
+                        }}
+                      >
+                        Serifada
+                      </Button>
+                      <Button
+                        variant={fontFamily === "sans" ? "default" : "outline"}
+                        size="sm"
+                        className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        onClick={() => {
+                          setFontFamily("sans");
+                          localStorage.setItem("sanctificare_bible_font_family", "sans");
+                        }}
+                      >
+                        Sans-Serif
+                      </Button>
+                    </div>
+
+                    {/* Tamanho */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tamanho:</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        disabled={fontSize === "sm"}
+                        onClick={() => {
+                          const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                          const idx = sizes.indexOf(fontSize);
+                          if (idx > 0) {
+                            setFontSize(sizes[idx - 1]);
+                            localStorage.setItem("sanctificare_bible_font_size", sizes[idx - 1]);
+                          }
+                        }}
+                      >
+                        A-
+                      </Button>
+                      <span className="text-xs uppercase font-bold px-1">{fontSize}</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        disabled={fontSize === "2xl"}
+                        onClick={() => {
+                          const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                          const idx = sizes.indexOf(fontSize);
+                          if (idx < sizes.length - 1) {
+                            setFontSize(sizes[idx + 1]);
+                            localStorage.setItem("sanctificare_bible_font_size", sizes[idx + 1]);
+                          }
+                        }}
+                      >
+                        A+
+                      </Button>
+                    </div>
+
+                    {/* Tema */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tema:</span>
+                      <Button
+                        variant={readingTheme === "light" ? "default" : "outline"}
+                        size="sm"
+                        className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        onClick={() => {
+                          setReadingTheme("light");
+                          localStorage.setItem("sanctificare_bible_theme", "light");
+                        }}
+                      >
+                        Claro
+                      </Button>
+                      <Button
+                        variant={readingTheme === "sepia" ? "default" : "outline"}
+                        size="sm"
+                        className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                        onClick={() => {
+                          setReadingTheme("sepia");
+                          localStorage.setItem("sanctificare_bible_theme", "sepia");
+                        }}
+                      >
+                        Sépia
+                      </Button>
+                      <Button
+                        variant={readingTheme === "dark" ? "default" : "outline"}
+                        size="sm"
+                        className={`h-8 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
+                        onClick={() => {
+                          setReadingTheme("dark");
+                          localStorage.setItem("sanctificare_bible_theme", "dark");
+                        }}
+                      >
+                        Escuro
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Banner Litúrgico */}
+                {liturgyInfo && (
+                  <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 flex items-start gap-3 shadow-sm">
+                    <Sparkles size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                    <div>
+                      <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Este capítulo faz parte do <strong>{liturgyInfo.label}</strong> de hoje ({selectedBook.name} {selectedChapter}
+                        {liturgyInfo.start ? `:${liturgyInfo.start}-${liturgyInfo.end}` : ""}).
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Texto Bíblico Principal */}
+                <div className={`p-8 border rounded-2xl transition-all duration-300 shadow-sm ${themeClasses[readingTheme]}`}>
+                  <div className="space-y-5">
+                    {isVersesLoading ? (
+                      <div className="space-y-4 animate-pulse">
+                        {Array.from({ length: 8 }).map((_, i) => (
+                          <div key={i} className="flex gap-4">
+                            <div className="h-4 w-6 bg-slate-200 dark:bg-slate-800 rounded mt-1" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded flex-1" />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      chapterVerses?.map((verse, i) => {
+                        const verseNum = i + 1;
+                        const isSelected = selectedVerses.includes(i);
+                        const isFavorited = favorites.some(
+                          f => f.bookId === selectedBook.id && f.chapter === selectedChapter && f.verse === verseNum
+                        );
+
+                        const isLiturgyHighlighted = liturgyInfo && liturgyInfo.start && liturgyInfo.end
+                          ? verseNum >= liturgyInfo.start && verseNum <= liturgyInfo.end
+                          : !!liturgyInfo;
+
+                        const highlightClass = isSelected
+                          ? "bg-[oklch(0.75_0.12_75/0.25)] ring-2 ring-[oklch(0.75_0.12_75/0.4)] rounded px-1 -mx-1"
+                          : isLiturgyHighlighted
+                          ? "bg-[oklch(0.75_0.12_75/0.08)] border-l-2 border-[oklch(0.75_0.12_75/0.5)] pl-2"
+                          : "";
+
+                        return (
+                          <div
+                            key={i}
+                            onClick={() => handleVerseClick(i)}
+                            className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
+                          >
+                            <span className="text-xs font-bold text-red-600 dark:text-[oklch(0.75_0.12_75)] mt-1.5 w-6 flex-shrink-0 font-display flex items-center gap-1">
+                              {isFavorited && <Star size={8} fill="currentColor" className="text-[oklch(0.75_0.12_75)]" />}
+                              {verseNum}
+                            </span>
+                            <p className={`flex-1 ${fontSizeClasses[fontSize]} ${fontFamilyClasses[fontFamily]}`}>
+                              {verse}
+                            </p>
+                          </div>
+                        );
+                      }) || (
+                        <p className="text-muted-foreground italic text-center">Nenhum versículo encontrado.</p>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                {/* Navegação entre Capítulos */}
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    disabled={selectedChapter <= 1}
+                    onClick={() => setSelectedChapter(selectedChapter - 1)}
+                    className={`gap-2 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
+                  >
+                    <ChevronLeft size={14} /> Anterior
+                  </Button>
+                  <Button
+                    variant="outline"
+                    disabled={selectedChapter >= selectedBook.chapters}
+                    onClick={() => setSelectedChapter(selectedChapter + 1)}
+                    className={`gap-2 ml-auto ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
+                  >
+                    Próximo <ChevronRight size={14} />
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-24 bg-white/40 dark:bg-slate-950/20 border border-dashed rounded-3xl">
+                <BookOpen size={48} className="text-muted-foreground/45 mx-auto mb-4" />
+                <h3 className="font-display font-bold text-lg">Nenhum livro selecionado</h3>
+                <p className="text-sm text-muted-foreground max-w-sm mx-auto mt-1 font-serif">
+                  Selecione as escrituras que deseja ler na barra lateral esquerda.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* COLUNA DIREITA: Traduções e Capítulos (col-span-3) */}
+          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
+            <a
+              href="/dashboard"
+              className="flex items-center gap-1.5 text-xs opacity-75 hover:opacity-100 font-semibold mb-4 transition-all"
+            >
+              <ChevronLeft size={14} /> Voltar para o início
+            </a>
+
+            {/* Traduções */}
+            <div>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2.5">TRADUÇÕES</p>
+              <div className="space-y-1.5">
+                <button className="w-full text-left py-2 px-3 text-[11px] font-bold bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 rounded-lg shadow transition-all">
+                  Pe. Matos Soares (PT-BR)
+                </button>
+                <button
+                  onClick={() => toast.info("A Tradução da Vulgata em Latim estará disponível em breve!")}
+                  className="w-full text-left py-2 px-3 text-[11px] font-medium border border-border/30 hover:border-[oklch(0.75_0.12_75/0.4)] rounded-lg transition-all opacity-70 hover:opacity-100"
+                >
+                  Vulgata (Latim)
+                </button>
+                <button
+                  onClick={() => toast.info("A Tradução Septuaginta em Grego estará disponível em breve!")}
+                  className="w-full text-left py-2 px-3 text-[11px] font-medium border border-border/30 hover:border-[oklch(0.75_0.12_75/0.4)] rounded-lg transition-all opacity-70 hover:opacity-100"
+                >
+                  Septuaginta + NT (Grego)
+                </button>
+              </div>
+            </div>
+
+            <div className="divider-gold my-4" />
+
+            {/* Capítulos */}
+            <div>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">CAPÍTULOS</p>
+              {selectedBook ? (
+                <div className="grid grid-cols-4 gap-1.5">
+                  {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => {
+                    const isActive = selectedChapter === ch;
+                    return (
+                      <button
+                        key={ch}
+                        onClick={() => setSelectedChapter(ch)}
+                        className={`py-2 text-center text-xs font-semibold rounded-lg transition-all border ${
+                          isActive
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow font-bold"
+                            : "bg-slate-50/50 dark:bg-slate-900/30 border-border/20 hover:border-[oklch(0.75_0.12_75/0.4)]"
+                        }`}
+                      >
+                        {ch}
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-[11px] text-muted-foreground italic">Selecione um livro primeiro.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* =========================================================================
+            2. LAYOUT MOBILE (COLUNA ÚNICA RESPONSIVA)
+            ========================================================================= */}
+        <div className="lg:hidden">
+          {selectedBook && selectedChapter ? (
+            /* Leitura do Capítulo */
+            <div className="max-w-3xl mx-auto animate-fade-in pb-20">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Button variant="outline" size="sm" onClick={() => setSelectedChapter(null)} className="gap-2 bg-white">
+                    <ChevronLeft size={14} /> {selectedBook.name}
+                  </Button>
+                  <span className={`font-display text-sm font-semibold ${headerTextClasses[readingTheme]}`}>
+                    Capítulo {selectedChapter}
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowSettings(!showSettings)}
+                  className={`gap-1.5 bg-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`}
+                >
+                  <Settings size={14} /> Opções
+                </Button>
+              </div>
+
+              {/* Preferências de Leitura */}
+              {showSettings && (
+                <div className={`border rounded-xl p-4 mb-6 shadow-md flex flex-wrap gap-4 items-center justify-between transition-colors duration-300 animate-fade-in text-sm ${
+                  readingTheme === "dark"
+                    ? "bg-slate-950 text-slate-200 border-slate-800"
+                    : readingTheme === "sepia"
+                    ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
+                    : "bg-white text-[oklch(0.22_0.07_260)] border-border"
+                }`}>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Fonte:</span>
+                    <Button
+                      variant={fontFamily === "serif" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setFontFamily("serif");
+                        localStorage.setItem("sanctificare_bible_font_family", "serif");
+                      }}
+                    >
+                      Serifada
+                    </Button>
+                    <Button
+                      variant={fontFamily === "sans" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setFontFamily("sans");
+                        localStorage.setItem("sanctificare_bible_font_family", "sans");
+                      }}
+                    >
+                      Sans-Serif
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tamanho:</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      disabled={fontSize === "sm"}
+                      onClick={() => {
+                        const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                        const idx = sizes.indexOf(fontSize);
+                        if (idx > 0) {
+                          setFontSize(sizes[idx - 1]);
+                          localStorage.setItem("sanctificare_bible_font_size", sizes[idx - 1]);
+                        }
+                      }}
+                    >
+                      A-
+                    </Button>
+                    <span className="text-xs uppercase font-bold px-1">{fontSize}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`h-8 w-8 p-0 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      disabled={fontSize === "2xl"}
+                      onClick={() => {
+                        const sizes: ("sm" | "base" | "lg" | "xl" | "2xl")[] = ["sm", "base", "lg", "xl", "2xl"];
+                        const idx = sizes.indexOf(fontSize);
+                        if (idx < sizes.length - 1) {
+                          setFontSize(sizes[idx + 1]);
+                          localStorage.setItem("sanctificare_bible_font_size", sizes[idx + 1]);
+                        }
+                      }}
+                    >
+                      A+
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tema:</span>
+                    <Button
+                      variant={readingTheme === "light" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("light");
+                        localStorage.setItem("sanctificare_bible_theme", "light");
+                      }}
+                    >
+                      Claro
+                    </Button>
+                    <Button
+                      variant={readingTheme === "sepia" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("sepia");
+                        localStorage.setItem("sanctificare_bible_theme", "sepia");
+                      }}
+                    >
+                      Sépia
+                    </Button>
+                    <Button
+                      variant={readingTheme === "dark" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("dark");
+                        localStorage.setItem("sanctificare_bible_theme", "dark");
+                      }}
+                    >
+                      Escuro
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Liturgy Banner */}
+              {liturgyInfo && (
+                <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
+                  <Sparkles size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                  <div>
+                    <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Este capítulo faz parte do <strong>{liturgyInfo.label}</strong> de hoje ({selectedBook.name} {selectedChapter}
+                      {liturgyInfo.start ? `:${liturgyInfo.start}-${liturgyInfo.end}` : ""}).
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Texto Principal */}
+              <div className={`prayer-card p-8 border rounded-2xl transition-all duration-300 ${themeClasses[readingTheme]}`}>
+                <div className="text-center mb-6">
+                  <h2 className="font-display text-2xl font-bold">
+                    {selectedBook.name}
+                  </h2>
+                  <p className="text-[oklch(0.65_0.12_70)] font-semibold mt-1">Capítulo {selectedChapter}</p>
+                </div>
+                <div className="divider-gold mb-6" />
+
+                <div className="space-y-5">
+                  {isVersesLoading ? (
+                    <div className="space-y-4 animate-pulse">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="flex gap-4">
+                          <div className="h-4 w-6 bg-slate-200 dark:bg-slate-800 rounded mt-1" />
+                          <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded flex-1" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    chapterVerses?.map((verse, i) => {
+                      const verseNum = i + 1;
+                      const isSelected = selectedVerses.includes(i);
+                      const isFavorited = favorites.some(
+                        f => f.bookId === selectedBook.id && f.chapter === selectedChapter && f.verse === verseNum
+                      );
+
+                      const isLiturgyHighlighted = liturgyInfo && liturgyInfo.start && liturgyInfo.end
+                        ? verseNum >= liturgyInfo.start && verseNum <= liturgyInfo.end
+                        : !!liturgyInfo;
+
+                      const highlightClass = isSelected
+                        ? "bg-[oklch(0.75_0.12_75/0.25)] ring-2 ring-[oklch(0.75_0.12_75/0.4)] rounded px-1 -mx-1"
+                        : isLiturgyHighlighted
+                        ? "bg-[oklch(0.75_0.12_75/0.08)] border-l-2 border-[oklch(0.75_0.12_75/0.5)] pl-2"
+                        : "";
+
+                      return (
+                        <div
+                          key={i}
+                          onClick={() => handleVerseClick(i)}
+                          className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
+                        >
+                          <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] mt-1.5 w-6 flex-shrink-0 font-display flex items-center gap-1">
+                            {isFavorited && <Star size={8} fill="currentColor" className="text-[oklch(0.75_0.12_75)]" />}
+                            {verseNum}
+                          </span>
+                          <p className={`flex-1 ${fontSizeClasses[fontSize]} ${fontFamilyClasses[fontFamily]}`}>
+                            {verse}
+                          </p>
+                        </div>
+                      );
+                    }) || (
+                      <p className="text-muted-foreground italic text-center">Nenhum versículo encontrado.</p>
+                    )
+                  )}
+                </div>
+              </div>
+
+              {/* Botões de Navegação */}
+              <div className="flex gap-3 mt-6">
+                <Button
+                  variant="outline"
+                  disabled={selectedChapter <= 1}
+                  onClick={() => setSelectedChapter(selectedChapter - 1)}
+                  className="gap-2 bg-white"
+                >
+                  <ChevronLeft size={14} /> Anterior
+                </Button>
+                <Button
+                  variant="outline"
+                  disabled={selectedChapter >= selectedBook.chapters}
+                  onClick={() => setSelectedChapter(selectedChapter + 1)}
+                  className="gap-2 ml-auto bg-white"
+                >
+                  Próximo <ChevronRight size={14} />
+                </Button>
+              </div>
+            </div>
+          ) : selectedBook ? (
+            /* Seleção de capítulo */
+            <div className="max-w-3xl mx-auto animate-fade-in">
+              <div className="flex items-center gap-3 mb-6">
+                <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
+                  <ChevronLeft size={14} /> Livros
+                </Button>
+                <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
+                  {selectedBook.name}
+                </h2>
+              </div>
+
+              {/* Versículos famosos */}
+              {FAMOUS_VERSES[selectedBook.id] && (
+                <div className="prayer-card p-5 mb-6 bg-white border border-border rounded-xl">
+                  <p className="text-xs font-display font-semibold text-[oklch(0.65_0.12_70)] uppercase tracking-widest mb-3">
+                    Versículos para meditação
+                  </p>
+                  <div className="space-y-3">
+                    {FAMOUS_VERSES[selectedBook.id].map((v, i) => (
+                      <p key={i} className="font-serif text-sm italic text-foreground border-l-2 border-[oklch(0.75_0.12_75/0.4)] pl-3">
+                        {v}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-slate-200 mb-3 uppercase tracking-wide">
+                Capítulos ({selectedBook.chapters})
+              </p>
+              <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2">
+                {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
+                  <button
+                    key={ch}
+                    onClick={() => setSelectedChapter(ch)}
+                    className="h-10 w-full rounded-lg bg-white border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all"
+                  >
+                    {ch}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Telas de Livros / Favoritos / Busca */
+            <div className="max-w-4xl mx-auto">
+              {/* Tabs */}
+              <div className="flex border-b border-border/40 mb-6 gap-2">
+                <button
+                  onClick={() => setActiveTab("books")}
+                  className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
+                    activeTab === "books"
+                      ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Livros
+                </button>
+                <button
+                  onClick={() => setActiveTab("favorites")}
+                  className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
+                    activeTab === "favorites"
+                      ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Favoritos ({favorites.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("search")}
+                  className={`px-4 py-2.5 border-b-2 font-display text-sm font-semibold transition-all ${
+                    activeTab === "search"
+                      ? "border-[oklch(0.22_0.07_260)] text-[oklch(0.22_0.07_260)] dark:text-slate-100"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Busca Global
+                </button>
+              </div>
+
+              {/* 1. Tab Livros */}
+              {activeTab === "books" && (
+                <div className="animate-fade-in space-y-6">
+                  {/* Last Read Bookmark Card */}
+                  {bookmark && (
+                    <div className="prayer-card p-4 border border-[oklch(0.75_0.12_75/0.3)] bg-white/60 backdrop-blur flex items-center justify-between gap-4 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <Bookmark className="text-[oklch(0.75_0.12_75)] flex-shrink-0" size={20} fill="currentColor" />
+                        <div>
+                          <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Última Leitura</p>
+                          <h4 className="font-display font-bold text-sm text-[oklch(0.22_0.07_260)]">
+                            {bookmark.bookName} - Capítulo {bookmark.chapter}
+                          </h4>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          const book = BIBLE_BOOKS.find(b => b.id === bookmark.bookId);
+                          if (book) {
+                            setSelectedBook(book);
+                            setSelectedChapter(bookmark.chapter);
+                          }
+                        }}
+                        className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white"
+                      >
+                        Continuar
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Busca Livro */}
+                  <div className="relative mb-6 max-w-md">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      placeholder="Buscar livro..."
+                      value={searchBookQuery}
+                      onChange={(e) => setSearchBookQuery(e.target.value)}
+                      className="pl-9 bg-white"
+                    />
+                    {searchBookQuery && (
+                      <button onClick={() => setSearchBookQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <X size={14} className="text-muted-foreground" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Tabs Testamento */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setTestament("old")}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        testament === "old"
+                          ? "bg-[oklch(0.22_0.07_260)] text-white"
+                          : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                      }`}
+                    >
+                      Antigo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "old").length})
+                    </button>
+                    <button
+                      onClick={() => setTestament("new")}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        testament === "new"
+                          ? "bg-[oklch(0.22_0.07_260)] text-white"
+                          : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                      }`}
+                    >
+                      Novo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "new").length})
+                    </button>
+                  </div>
+
+                  {/* Grid de Livros */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {filteredBooks.map((book) => (
+                      <button
+                        key={book.id}
+                        onClick={() => setSelectedBook(book)}
+                        className="prayer-card p-4 text-left group bg-white border border-border hover:border-[oklch(0.75_0.12_75)] transition-all rounded-xl"
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="font-display text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wide">
+                            {book.abbrev}
+                          </span>
+                          <ChevronRight size={13} className="text-muted-foreground group-hover:text-[oklch(0.65_0.14_70)] transition-colors" />
+                        </div>
+                        <p className="font-semibold text-sm text-[oklch(0.22_0.07_260)] leading-tight">{book.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{book.chapters} capítulos</p>
+                      </button>
+                    ))}
+                  </div>
+
+                  {filteredBooks.length === 0 && (
+                    <div className="text-center py-12">
+                      <BookOpen size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                      <p className="text-muted-foreground">Nenhum livro encontrado para "{searchBookQuery}"</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 2. Tab Favoritos */}
+              {activeTab === "favorites" && (
+                <div className="animate-fade-in space-y-4">
+                  {favorites.length === 0 ? (
+                    <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
+                      <Star size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                      <p className="text-muted-foreground text-sm font-medium">Nenhum versículo favoritado ainda.</p>
+                      <p className="text-xs text-muted-foreground/80 mt-1">Toque nos versículos durante a leitura para favoritá-los.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {favorites.map((fav, index) => (
+                        <div
+                          key={index}
+                          className="bg-white border border-border rounded-xl p-4 flex justify-between gap-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] transition-all duration-200"
+                        >
+                          <div
+                            className="cursor-pointer flex-1"
+                            onClick={() => {
+                              const book = BIBLE_BOOKS.find(b => b.id === fav.bookId);
+                              if (book) {
+                                setSelectedBook(book);
+                                setSelectedChapter(fav.chapter);
+                              }
+                            }}
+                          >
+                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
+                              {fav.bookName} {fav.chapter}:{fav.verse}
+                            </span>
+                            <p className="font-serif italic text-sm mt-1 text-slate-800">
+                              "{fav.text}"
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const updated = favorites.filter((_, i) => i !== index);
+                              setFavorites(updated);
+                              localStorage.setItem("sanctificare_bible_favorites", JSON.stringify(updated));
+                              toast.success("Favorito removido!");
+                            }}
+                            className="text-muted-foreground hover:text-destructive self-start p-1 transition-colors"
+                            title="Remover dos favoritos"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 3. Tab Busca Global */}
+              {activeTab === "search" && (
+                <div className="animate-fade-in space-y-6">
+                  <form onSubmit={handleSearchSubmit} className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        placeholder="Buscar palavra ou frase em toda a Bíblia..."
+                        value={globalSearchQuery}
+                        onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                        className="pl-9 bg-white"
+                      />
+                    </div>
+                    <Button type="submit" className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_260)] text-white">
+                      Pesquisar
+                    </Button>
+                  </form>
+
+                  {isSearching ? (
+                    <div className="space-y-3 animate-pulse">
+                      {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="h-20 bg-white border border-border rounded-xl p-4" />
+                      ))}
+                    </div>
+                  ) : searchResults ? (
+                    <div className="space-y-3">
+                      <p className="text-xs text-muted-foreground font-semibold">
+                        Foram encontradas {searchResults.length} ocorrências.
+                      </p>
+
+                      {searchResults.length === 0 ? (
+                        <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
+                          <BookOpen size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                          <p className="text-muted-foreground text-sm font-medium">Nenhum resultado encontrado.</p>
+                        </div>
+                      ) : (
+                        searchResults.map((res, index) => (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              const book = BIBLE_BOOKS.find(b => b.id === res.bookId);
+                              if (book) {
+                                setSelectedBook(book);
+                                setSelectedChapter(res.chapter);
+                              }
+                            }}
+                            className="bg-white border border-border rounded-xl p-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] hover:shadow cursor-pointer transition-all duration-200"
+                          >
+                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
+                              {res.bookName} {res.chapter}:{res.verse}
+                            </span>
+                            <p className="font-sans text-sm mt-1 text-slate-800">
+                              {res.text}
+                            </p>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 bg-white/30 border border-dashed rounded-2xl">
+                      <Search size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                      <p className="text-muted-foreground text-sm">Digite termos como "pastor", "amor", "luz" para pesquisar.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* =========================================================================
+            3. BARRA FLUTUANTE DE AÇÕES DE VERSÍCULO (COMUM)
+            ========================================================================= */}
+        {selectedVerses.length > 0 && (
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 border border-border shadow-2xl rounded-full px-5 py-3 flex items-center gap-3 z-50 animate-fade-in text-xs sm:text-sm text-[oklch(0.22_0.07_260)] dark:text-slate-100 max-w-[95%] w-max">
+            <span className="font-semibold whitespace-nowrap">
+              {selectedVerses.length} {selectedVerses.length === 1 ? "selecionado" : "selecionados"}
+            </span>
+
+            <div className="h-4 w-px bg-border" />
+
+            <button
+              onClick={handleCopySelected}
+              className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
+              title="Copiar"
+            >
+              <Copy size={15} />
+              <span className="hidden sm:inline">Copiar</span>
+            </button>
+
+            <button
+              onClick={handleShareSelected}
+              className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
+              title="Compartilhar"
+            >
+              <Share2 size={15} />
+              <span className="hidden sm:inline">Compartilhar</span>
+            </button>
+
+            <button
+              onClick={handleFavoriteSelected}
+              className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
+              title={areAllSelectedFavorited() ? "Desfavoritar" : "Favoritar"}
+            >
+              <Star size={15} fill={areAllSelectedFavorited() ? "currentColor" : "none"} className={areAllSelectedFavorited() ? "text-[oklch(0.75_0.12_75)]" : ""} />
+              <span className="hidden sm:inline">{areAllSelectedFavorited() ? "Favoritado" : "Favoritar"}</span>
+            </button>
+
+            <div className="h-4 w-px bg-border" />
+
+            <button
+              onClick={() => setSelectedVerses([])}
+              className="text-muted-foreground hover:text-foreground font-medium p-1"
+            >
+              Limpar
+            </button>
+          </div>
         )}
+        
       </main>
     </div>
   );
