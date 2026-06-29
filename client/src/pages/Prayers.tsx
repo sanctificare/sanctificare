@@ -430,7 +430,7 @@ export default function Prayers() {
 
       {/* Modal de Oração */}
       <Dialog open={!!selectedPrayer} onOpenChange={() => setSelectedPrayer(null)}>
-        <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto" aria-describedby={undefined}>
+        <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto [&>[data-slot=dialog-close]_svg]:!size-5" aria-describedby={undefined}>
           {selectedPrayer && (
             <>
               <DialogHeader>
@@ -462,15 +462,6 @@ export default function Prayers() {
                   {selectedPrayer.content}
                 </div>
               )}
-
-              <div className="flex gap-3 pt-4 border-t justify-end">
-                <Button
-                  className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold px-6"
-                  onClick={() => setSelectedPrayer(null)}
-                >
-                  Fechar
-                </Button>
-              </div>
             </>
           )}
         </DialogContent>
