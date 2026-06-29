@@ -346,6 +346,37 @@ export default function DailyPlan() {
           <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem] gap-6">
             <div className="space-y-6">
               <div className="prayer-card p-6 md:p-7">
+                <div className="flex items-center justify-between gap-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={17} className="text-[oklch(0.65_0.14_70)]" />
+                    <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)]">
+                      Metas de Hoje
+                    </h2>
+                  </div>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    {completedMetasCount}/{activeMetasCount}
+                  </span>
+                </div>
+                <div className="divider-gold mb-5" />
+
+                <div className="grid gap-3">
+                  {activeMetasCount === 0 && (
+                    <div className="text-center py-8">
+                      <Sparkles size={26} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                      <p className="text-sm font-medium text-foreground">Nenhuma meta ativa no momento.</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Ative as práticas desejadas em "Ajustar rotina".
+                      </p>
+                    </div>
+                  )}
+
+                  {activeMetas.map(meta => (
+                    <DailyMetaRow key={meta.key} meta={meta} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="prayer-card p-6 md:p-7">
                 <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
@@ -398,37 +429,6 @@ export default function DailyPlan() {
                     </p>
                   </div>
                 )}
-              </div>
-
-              <div className="prayer-card p-6 md:p-7">
-                <div className="flex items-center justify-between gap-4 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={17} className="text-[oklch(0.65_0.14_70)]" />
-                    <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)]">
-                      Metas de Hoje
-                    </h2>
-                  </div>
-                  <span className="text-xs font-semibold text-muted-foreground">
-                    {completedMetasCount}/{activeMetasCount}
-                  </span>
-                </div>
-                <div className="divider-gold mb-5" />
-
-                <div className="grid gap-3">
-                  {activeMetasCount === 0 && (
-                    <div className="text-center py-8">
-                      <Sparkles size={26} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                      <p className="text-sm font-medium text-foreground">Nenhuma meta ativa no momento.</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Ative as práticas desejadas em "Ajustar rotina".
-                      </p>
-                    </div>
-                  )}
-
-                  {activeMetas.map(meta => (
-                    <DailyMetaRow key={meta.key} meta={meta} />
-                  ))}
-                </div>
               </div>
             </div>
 

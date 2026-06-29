@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Cross, Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { getApiBaseUrl, sanitizeAppPath } from "@/const";
+import { getApiBaseUrl, sanitizeAppPath, isMobileApp } from "@/const";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -175,7 +175,10 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    const path = getPostAuthPath();
+    const postAuthPath = getPostAuthPath();
+    const path = isMobileApp()
+      ? window.location.origin + postAuthPath
+      : postAuthPath;
     window.location.href = `${getApiBaseUrl()}/api/oauth/login?path=${encodeURIComponent(path)}`;
   };
 

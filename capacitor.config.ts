@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'br.com.rezaroterco.app',
+  appId: 'com.sanctificare.app',
   appName: 'Sanctificare',
   webDir: 'dist/public',
   plugins: {

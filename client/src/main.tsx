@@ -5,8 +5,37 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
-import { getLoginUrl, getApiBaseUrl } from "./const";
+import { getLoginUrl, getApiBaseUrl, isMobileApp } from "./const";
 import "./index.css";
+
+// Intercept all fetch requests on mobile to use absolute API URL and include credentials
+if (typeof window !== "undefined" && isMobileApp()) {
+  const originalFetch = window.fetch;
+  window.fetch = function (input, init) {
+    let targetInput = input;
+    if (typeof targetInput === "string") {
+      if (targetInput.startsWith("/")) {
+        targetInput = `${getApiBaseUrl()}${targetInput}`;
+      } else if (
+        targetInput.startsWith("http://localhost/") ||
+        targetInput.startsWith("capacitor://localhost/")
+      ) {
+        targetInput = targetInput.replace(
+          /^(http|capacitor):\/\/localhost/,
+          getApiBaseUrl()
+        );
+      }
+    }
+    const updatedInit = { ...init };
+    if (
+      typeof targetInput === "string" &&
+      targetInput.startsWith(getApiBaseUrl())
+    ) {
+      updatedInit.credentials = "include";
+    }
+    return originalFetch.call(this, targetInput, updatedInit);
+  };
+}
 
 const queryClient = new QueryClient();
 let authRedirectInFlight = false;

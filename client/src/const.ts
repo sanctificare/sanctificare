@@ -7,6 +7,18 @@ export const sanitizeAppPath = (
   fallback = DEFAULT_POST_AUTH_PATH
 ) => {
   if (!value || typeof value !== "string") return fallback;
+
+  // Allow absolute URLs on mobile redirect schemes for Capacitor (Android/iOS)
+  const isAllowedOrigin =
+    value.startsWith("http://localhost/") ||
+    value.startsWith("capacitor://localhost/");
+  if (isAllowedOrigin) {
+    if (value.includes("/login") || value.includes("/redefinir-senha")) {
+      return fallback;
+    }
+    return value;
+  }
+
   if (!value.startsWith("/")) return fallback;
   if (value.startsWith("//")) return fallback;
   if (value.startsWith("/login") || value.startsWith("/redefinir-senha")) {

@@ -1,4 +1,4 @@
-package br.com.rezaroterco.app;
+package com.sanctificare.app;
 
 import com.getcapacitor.BridgeActivity;
 
