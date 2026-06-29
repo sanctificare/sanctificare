@@ -75,5 +75,52 @@ export function registerStorageProxy(app: Express) {
 
     res.status(404).send("File not found");
   });
+
+  // Client resolution endpoint: returns JSON { url: signedUrl } instead of redirecting
+  app.get("/api/resolve-r2/*", async (req, res) => {
+    const key = (req.params as Record<string, string>)[0];
+    if (!key) {
+      res.status(400).json({ error: "Missing storage key" });
+      return;
+    }
+
+    try {
+      let bucket = ENV.r2BucketName;
+      let cleanKey = key;
+      let foundInR2 = false;
+
+      if (key.startsWith("vela-virtual/")) {
+        const vKey = key.replace(/^vela-virtual\//, "");
+        if (await storageExists(vKey, "vela-virtual")) {
+          bucket = "vela-virtual";
+          cleanKey = vKey;
+          foundInR2 = true;
+        } else if (await storageExists(key, ENV.r2BucketName)) {
+          bucket = ENV.r2BucketName;
+          cleanKey = key;
+          foundInR2 = true;
+        }
+      } else {
+        if (await storageExists(key, ENV.r2BucketName)) {
+          bucket = ENV.r2BucketName;
+          cleanKey = key;
+          foundInR2 = true;
+        }
+      }
+
+      if (foundInR2) {
+        const signedUrl = await storageGetSignedUrl(cleanKey, bucket);
+        res.json({ url: signedUrl });
+        return;
+      }
+    } catch (err) {
+      console.warn("[ResolveR2Proxy] R2 signed URL resolution failed:", err);
+    }
+
+    // Fallback to absolute local asset URL
+    const scheme = req.headers["x-forwarded-proto"] || req.protocol;
+    const publicUrl = `${scheme}://${req.get("host")}/assets/${key}`;
+    res.json({ url: publicUrl });
+  });
 }
 

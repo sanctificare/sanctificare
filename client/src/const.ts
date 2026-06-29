@@ -79,12 +79,16 @@ export const resolveR2Redirect = async (url: string | undefined): Promise<string
     return resolved;
   }
   try {
-    const res = await fetch(resolved, { method: "HEAD" });
+    const resolveApiUrl = resolved.replace("/r2-storage/", "/api/resolve-r2/");
+    const res = await fetch(resolveApiUrl);
     if (res.ok) {
-      return res.url;
+      const data = await res.json();
+      if (data && data.url) {
+        return data.url;
+      }
     }
   } catch (err) {
-    console.warn("[resolveR2Redirect] Failed to fetch HEAD for redirect:", err);
+    console.warn("[resolveR2Redirect] Failed to resolve via API:", err);
   }
   return resolved;
 };
