@@ -1228,7 +1228,9 @@ export default function Home() {
             <p>© 2026 Sanctificare. Todos os direitos reservados.</p>
             <div className="flex gap-4">
               <span className="cursor-pointer hover:text-white transition-colors">Termos de Uso</span>
-              <span className="cursor-pointer hover:text-white transition-colors">Política de Privacidade</span>
+              <Link href="/privacidade">
+                <a className="hover:text-white transition-colors cursor-pointer">Política de Privacidade</a>
+              </Link>
             </div>
           </div>
         </div>

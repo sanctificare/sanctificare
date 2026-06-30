@@ -27,6 +27,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Novenas from "./pages/Novenas";
 import NovenaDetails from "./pages/NovenaDetails";
 import DailyPlan from "./pages/DailyPlan";
+import Privacy from "./pages/Privacy";
 
 
 function Router() {
@@ -55,6 +56,7 @@ function Router() {
       <Route path="/videos" component={VideosBiblicos} />
       <Route path="/oracao/:id" component={PrayerDetail} />
       <Route path="/redefinir-senha" component={ResetPassword} />
+      <Route path="/privacidade" component={Privacy} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
