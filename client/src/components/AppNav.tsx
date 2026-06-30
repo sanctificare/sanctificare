@@ -208,7 +208,7 @@ export default function AppNav() {
               <div className="px-4 py-2.5 mb-2 bg-[oklch(0.75_0.12_75/0.1)] border-b border-[oklch(0.75_0.12_75/0.15)] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Flame className="text-[oklch(0.75_0.12_75)] animate-pulse" size={16} fill="currentColor" />
-                  <span className="text-xs font-semibold text-[oklch(0.75_0.12_75)]">Ofensiva diária</span>
+                  <span className="text-xs font-semibold text-[oklch(0.75_0.12_75)]">Perseverança diária</span>
                 </div>
                 <span className="text-xs font-bold text-white">{dailyPlan.streak} {dailyPlan.streak === 1 ? "dia" : "dias"}</span>
               </div>

@@ -361,7 +361,7 @@ export default function Dashboard() {
                   {streak.currentStreak > 0 && (
                     <div className="bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-semibold animate-pulse">
                       <Flame size={14} className={streak.prayedToday ? "text-amber-400 fill-amber-400" : "text-amber-200"} />
-                      <span>{streak.currentStreak} {streak.currentStreak === 1 ? "dia" : "dias"} de ofensiva</span>
+                      <span>{streak.currentStreak} {streak.currentStreak === 1 ? "dia" : "dias"} de perseverança</span>
                     </div>
                   )}
                 </div>

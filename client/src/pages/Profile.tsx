@@ -261,7 +261,7 @@ export default function Profile() {
             
             <div className="flex flex-col gap-4">
               <p className="text-xs text-muted-foreground">
-                Ative notificações no seu navegador para receber um lembrete diário de oração no horário selecionado e manter sua ofensiva ativa.
+                Ative notificações no seu navegador para receber um lembrete diário de oração no horário selecionado e manter sua perseverança ativa.
               </p>
 
               <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/20 dark:bg-stone-900/5">
