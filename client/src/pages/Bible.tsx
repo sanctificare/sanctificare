@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import html2canvas from "html2canvas";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -60,6 +61,12 @@ export default function Bible() {
 
   // Selected verses for copying/sharing/favoriting
   const [selectedVerses, setSelectedVerses] = useState<number[]>([]);
+
+  // Card Generator States
+  const [showCardModal, setShowCardModal] = useState(false);
+  const [cardBg, setCardBg] = useState<"classic" | "gold" | "purple" | "dark" | "vitral">("classic");
+  const [cardRatio, setCardRatio] = useState<"stories" | "square">("stories");
+  const [cardFont, setCardFont] = useState<"serif" | "sans">("serif");
 
   // tRPC Queries
   const { data: chapterVerses, isLoading: isVersesLoading } = trpc.bible.getChapter.useQuery(
@@ -243,6 +250,11 @@ export default function Bible() {
       .join("\n");
   };
 
+  const getSelectedTextForCard = () => {
+    if (!chapterVerses) return "";
+    return selectedVerses.map(idx => chapterVerses[idx]).join(" ");
+  };
+
   const handleCopySelected = () => {
     const text = getSelectedText();
     if (!text || !selectedBook || !selectedChapter) return;
@@ -332,6 +344,79 @@ export default function Bible() {
       return;
     }
     setTriggerSearch(globalSearchQuery.trim());
+  };
+
+  // Card downloads & share handlers
+  const handleDownloadCard = async () => {
+    const cardEl = document.getElementById("bible-verse-card");
+    if (!cardEl) return;
+    const toastId = toast.loading("Renderizando seu card...");
+    try {
+      const canvas = await html2canvas(cardEl, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 2
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `sanctificare_${selectedBook?.abbrev}_${selectedChapter}.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.dismiss(toastId);
+      toast.success("Card baixado com sucesso!");
+    } catch (error) {
+      toast.dismiss(toastId);
+      toast.error("Erro ao gerar card.");
+      console.error(error);
+    }
+  };
+
+  const handleShareCard = async () => {
+    const cardEl = document.getElementById("bible-verse-card");
+    if (!cardEl) return;
+    const toastId = toast.loading("Renderizando seu card...");
+    try {
+      const canvas = await html2canvas(cardEl, {
+        useCORS: true,
+        allowTaint: true,
+        scale: 2
+      });
+      toast.dismiss(toastId);
+      canvas.toBlob(async (blob) => {
+        if (!blob) {
+          toast.error("Erro ao criar imagem.");
+          return;
+        }
+        const file = new File([blob], "verse_card.png", { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: "Card Bíblico",
+              text: "Lido no Sanctificare"
+            });
+            toast.success("Compartilhado!");
+          } catch (e) {
+            // Ignored share cancels
+          }
+        } else {
+          toast.error("O dispositivo/navegador não suporta compartilhamento de imagem. Tentando copiar para área de transferência...");
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                [file.type]: file
+              })
+            ]);
+            toast.success("Copiado como imagem!");
+          } catch (err) {
+            toast.error("Falha ao copiar. Baixe o card em seu celular.");
+          }
+        }
+      }, "image/png");
+    } catch (err) {
+      toast.dismiss(toastId);
+      toast.error("Erro ao processar imagem.");
+    }
   };
 
   // Styling maps
@@ -941,7 +1026,7 @@ export default function Bible() {
                     <Button
                       variant={fontFamily === "sans" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-905 hover:bg-slate-900 hover:text-white" : ""}`}
                       onClick={() => {
                         setFontFamily("sans");
                         localStorage.setItem("sanctificare_bible_font_family", "sans");
@@ -1473,6 +1558,15 @@ export default function Bible() {
             </button>
 
             <button
+              onClick={() => setShowCardModal(true)}
+              className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
+              title="Gerar Card"
+            >
+              <Sparkles size={15} className="text-[oklch(0.75_0.12_75)] animate-pulse" />
+              <span className="hidden sm:inline">Card</span>
+            </button>
+
+            <button
               onClick={handleFavoriteSelected}
               className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
               title={areAllSelectedFavorited() ? "Desfavoritar" : "Favoritar"}
@@ -1489,6 +1583,203 @@ export default function Bible() {
             >
               Limpar
             </button>
+          </div>
+        )}
+
+        {/* =========================================================================
+            4. MODAL DO GERADOR DE CARDS VISUAIS
+            ========================================================================= */}
+        {showCardModal && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-slate-900 border border-border shadow-2xl rounded-2xl max-w-2xl w-full p-6 animate-fade-in flex flex-col md:flex-row gap-6 items-center">
+              
+              {/* Esquerda: Card Preview Area */}
+              <div className="flex-1 flex flex-col items-center">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">Prévia do Card</p>
+                
+                {/* O Card em si (alvo do html2canvas) */}
+                <div
+                  id="bible-verse-card"
+                  className={`relative p-8 rounded-2xl border flex flex-col justify-between shadow-2xl overflow-hidden transition-all duration-300 ${
+                    cardBg === "classic"
+                      ? "bg-gradient-to-br from-[#fcf8ed] to-[#f4ecd8] border-[#ebdcb9] text-[#362214]"
+                      : cardBg === "gold"
+                      ? "bg-gradient-to-br from-[#f6e9c9] via-[#e5cf92] to-[#bfa35b] border-[#e2c77e] text-[#3d240d]"
+                      : cardBg === "purple"
+                      ? "bg-gradient-to-br from-[#1e102f] via-[#2d1b4e] to-[#0a0512] border-[#442c70]/40 text-purple-100"
+                      : cardBg === "dark"
+                      ? "bg-gradient-to-br from-[#121824] via-[#1a2333] to-[#0b0f19] border-slate-800 text-slate-100"
+                      : "bg-gradient-to-br from-[#1a2c42] via-[#2c1d3f] to-[#422d1b] border-amber-900/30 text-amber-50"
+                  } ${
+                    cardRatio === "stories"
+                      ? "aspect-[9/16] w-[260px] sm:w-[280px] h-[460px] sm:h-[490px]"
+                      : "aspect-[1/1] w-[280px] sm:w-[300px] h-[280px] sm:h-[300px]"
+                  }`}
+                >
+                  {/* Top decoration */}
+                  <div className="flex flex-col items-center text-center">
+                    <Sparkles size={16} className={`opacity-40 mb-2 ${cardBg === "classic" || cardBg === "gold" ? "text-amber-800" : "text-amber-300"}`} />
+                    <span className="text-[9px] font-bold tracking-widest uppercase opacity-60">
+                      {selectedBook?.name}
+                    </span>
+                  </div>
+
+                  {/* Verses body */}
+                  <div className="flex-1 flex flex-col justify-center items-center text-center px-2 py-4">
+                    <p className={`text-sm sm:text-base leading-relaxed ${
+                      cardFont === "serif" ? "font-serif italic" : "font-sans font-medium"
+                    } line-clamp-[10]`}>
+                      "{getSelectedTextForCard()}"
+                    </p>
+                    <span className="mt-4 text-xs font-bold font-display tracking-wide uppercase opacity-85 block">
+                      {selectedBook?.name} {selectedChapter}:{selectedVerses.map(v => v + 1).join(", ")}
+                    </span>
+                  </div>
+
+                  {/* Bottom branding */}
+                  <div className="flex items-center justify-center gap-1.5 opacity-40 text-[9px] font-semibold uppercase tracking-widest">
+                    <BookOpen size={10} />
+                    <span>Sanctificare</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Direita: Controls Area */}
+              <div className="w-full md:w-72 flex flex-col justify-between self-stretch">
+                <div className="space-y-5">
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-display font-bold text-lg text-foreground">Gerador de Cards</h3>
+                    <button
+                      onClick={() => setShowCardModal(false)}
+                      className="text-muted-foreground hover:text-foreground p-1"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                  
+                  <div className="divider-gold" />
+
+                  {/* Aspect Ratio */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Proporção</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => setCardRatio("stories")}
+                        className={`py-2 text-xs font-semibold rounded-lg border transition-all ${
+                          cardRatio === "stories"
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow"
+                            : "bg-slate-50 dark:bg-slate-900 border-border/20 hover:border-slate-300"
+                        }`}
+                      >
+                        Stories (9:16)
+                      </button>
+                      <button
+                        onClick={() => setCardRatio("square")}
+                        className={`py-2 text-xs font-semibold rounded-lg border transition-all ${
+                          cardRatio === "square"
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow"
+                            : "bg-slate-50 dark:bg-slate-900 border-border/20 hover:border-slate-300"
+                        }`}
+                      >
+                        Feed (1:1)
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Font Selection */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Estilo de Fonte</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => setCardFont("serif")}
+                        className={`py-2 text-xs font-semibold rounded-lg border transition-all ${
+                          cardFont === "serif"
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow"
+                            : "bg-slate-50 dark:bg-slate-900 border-border/20 hover:border-slate-300"
+                        }`}
+                      >
+                        Serifada
+                      </button>
+                      <button
+                        onClick={() => setCardFont("sans")}
+                        className={`py-2 text-xs font-semibold rounded-lg border transition-all ${
+                          cardFont === "sans"
+                            ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow"
+                            : "bg-slate-50 dark:bg-slate-900 border-border/20 hover:border-slate-300"
+                        }`}
+                      >
+                        Sans-Serif
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Background/Theme Selection */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block">Plano de Fundo</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => setCardBg("classic")}
+                        className={`py-1.5 text-[11px] font-medium rounded-lg border transition-all ${
+                          cardBg === "classic" ? "bg-amber-100/50 border-amber-800 font-bold" : "bg-[#fcf8ed] text-slate-800"
+                        }`}
+                      >
+                        Clássico
+                      </button>
+                      <button
+                        onClick={() => setCardBg("gold")}
+                        className={`py-1.5 text-[11px] font-medium rounded-lg border transition-all ${
+                          cardBg === "gold" ? "bg-amber-200/55 border-amber-600 font-bold" : "bg-[#f4ebd8] text-amber-900"
+                        }`}
+                      >
+                        Dourado
+                      </button>
+                      <button
+                        onClick={() => setCardBg("purple")}
+                        className={`py-1.5 text-[11px] font-medium rounded-lg border transition-all ${
+                          cardBg === "purple" ? "bg-purple-900/60 border-purple-400 font-bold text-white" : "bg-[#1e102f] text-purple-200"
+                        }`}
+                      >
+                        Espiritual
+                      </button>
+                      <button
+                        onClick={() => setCardBg("dark")}
+                        className={`py-1.5 text-[11px] font-medium rounded-lg border transition-all ${
+                          cardBg === "dark" ? "bg-slate-800 border-slate-400 font-bold text-white" : "bg-[#121824] text-slate-300"
+                        }`}
+                      >
+                        Escuro
+                      </button>
+                      <button
+                        onClick={() => setCardBg("vitral")}
+                        className={`col-span-2 py-1.5 text-[11px] font-medium rounded-lg border transition-all ${
+                          cardBg === "vitral" ? "bg-cyan-950/70 border-cyan-400 font-bold text-white" : "bg-[#1a2c42] text-cyan-200"
+                        }`}
+                      >
+                        Vitral Sagrado
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="space-y-2 mt-6">
+                  <Button
+                    onClick={handleDownloadCard}
+                    className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white gap-2 font-semibold"
+                  >
+                    Baixar Card (Imagem)
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleShareCard}
+                    className="w-full gap-2"
+                  >
+                    Compartilhar Card
+                  </Button>
+                </div>
+              </div>
+
+            </div>
           </div>
         )}
         
