@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
