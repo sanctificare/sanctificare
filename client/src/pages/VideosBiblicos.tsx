@@ -347,7 +347,7 @@ export default function VideosBiblicos() {
   );
   
   const logPrayer = trpc.prayers.logPrayer.useMutation();
-  const isPremium = !!subscription;
+  const isPremium = true;
 
   // Extract categories dynamically and add Favorites pill
   const categories = useMemo(() => {

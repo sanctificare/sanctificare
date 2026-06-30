@@ -29,7 +29,11 @@ const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
 export default function Profile() {
   const { user, isAuthenticated, loading } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: dbSubscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+  const subscription = {
+    plan: "annual",
+    expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+  };
 
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
     return localStorage.getItem("sanctificare.reminders.enabled") === "true";

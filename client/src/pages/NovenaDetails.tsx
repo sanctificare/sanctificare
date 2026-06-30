@@ -76,7 +76,7 @@ export default function NovenaDetails() {
   const utils = trpc.useUtils();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
-  const isPremium = !!subscription;
+  const isPremium = true;
   
   const selectedNovena = useMemo(() => {
     if (!matched || !params?.slug) return undefined;
