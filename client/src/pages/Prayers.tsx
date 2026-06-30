@@ -12,7 +12,7 @@ import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 type PrayerCardTheme = {
   icon: typeof Crown;

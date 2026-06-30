@@ -25,7 +25,7 @@ import {
   Clock,
 } from "lucide-react";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const VIDEO_SRC = "/r2-storage/vela-virtual/vela-loop.mp4";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
 const BUNNY_VIDEO_ID = "8889173b-bfcb-49fe-b062-39c2d4075018";

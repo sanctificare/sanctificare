@@ -129,7 +129,7 @@ function App() {
             localStorage.setItem("sanctificare.reminders.last_sent", todayStr);
             new Notification("Sanctificare", {
               body: "Está na hora de fazer sua oração diária e manter sua constância espiritual viva!",
-              icon: "/assets/sanctificare-logo-v2.webp"
+              icon: "/assets/logo-sanctificare.webp"
             });
           }
         }

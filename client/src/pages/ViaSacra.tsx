@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { VIA_SACRA_STATIONS } from "@/data/via-sacra";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 export default function ViaSacra() {
   const { isAuthenticated, loading } = useAuth();

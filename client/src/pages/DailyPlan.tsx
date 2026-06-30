@@ -40,7 +40,7 @@ import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Switch } from "@/components/ui/switch";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 interface MetasConfig {
   liturgia: boolean;

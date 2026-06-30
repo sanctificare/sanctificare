@@ -18,7 +18,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
   rosario: "/assets/sanctificare-rosary.webp",

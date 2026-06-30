@@ -12,7 +12,7 @@ import { NOVENAS } from "@/data/novenas";
 import { toast } from "sonner";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 const quickLinks = [
   { href: "/plano-diario", label: "Plano Diário", desc: "Suas metas espirituais", image: "/assets/dashboard/plano-diario.png", overlay: "oklch(0.25 0.09 75 / 0.60)" },

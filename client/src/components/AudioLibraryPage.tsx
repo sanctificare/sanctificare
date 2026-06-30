@@ -14,7 +14,7 @@ import {
 } from "@/data/audio-meditations";
 import { getAudioCollectionArt } from "@/lib/cardArt";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 interface AudioLibraryPageProps {
   eyebrow: string;

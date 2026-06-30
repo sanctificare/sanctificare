@@ -22,7 +22,7 @@ export default function Privacy() {
 
           <div className="flex items-center gap-2">
             <img
-              src="/assets/sanctificare-logo-v2.webp"
+              src="/assets/logo-sanctificare.webp"
               alt="Sanctificare Logo"
               className="w-8 h-8 rounded-full border border-[oklch(0.75_0.12_75)]"
               onError={(e) => {
