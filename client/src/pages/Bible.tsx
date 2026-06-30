@@ -35,6 +35,7 @@ export default function Bible() {
   const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [highlightedVerse, setHighlightedVerse] = useState<number | null>(null);
+  const [scrollTrigger, setScrollTrigger] = useState(0);
   const [searchBookQuery, setSearchBookQuery] = useState("");
 
   // Search states
@@ -153,7 +154,7 @@ export default function Bible() {
       }, 150);
       return () => clearTimeout(timer);
     }
-  }, [highlightedVerse, chapterVerses]);
+  }, [highlightedVerse, chapterVerses, scrollTrigger]);
 
   // Book Category Identifier
   const getBookCategory = (bookId: string): string => {
@@ -592,6 +593,7 @@ export default function Bible() {
                           setSelectedBook(book);
                           setSelectedChapter(fav.chapter);
                           setHighlightedVerse(fav.verse);
+                          setScrollTrigger(prev => prev + 1);
                         }
                       }}
                       className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
@@ -662,6 +664,7 @@ export default function Bible() {
                               setSelectedBook(book);
                               setSelectedChapter(res.chapter);
                               setHighlightedVerse(res.verse);
+                              setScrollTrigger(prev => prev + 1);
                             }
                           }}
                           className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
@@ -1428,6 +1431,7 @@ export default function Bible() {
                                 setSelectedBook(book);
                                 setSelectedChapter(fav.chapter);
                                 setHighlightedVerse(fav.verse);
+                                setScrollTrigger(prev => prev + 1);
                               }
                             }}
                           >
@@ -1502,6 +1506,7 @@ export default function Bible() {
                                 setSelectedBook(book);
                                 setSelectedChapter(res.chapter);
                                 setHighlightedVerse(res.verse);
+                                setScrollTrigger(prev => prev + 1);
                               }
                             }}
                             className="bg-white border border-border rounded-xl p-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] hover:shadow cursor-pointer transition-all duration-200"
