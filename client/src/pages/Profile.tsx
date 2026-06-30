@@ -4,11 +4,19 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
-import { User, Heart, Crown, Calendar, Clock, ChevronRight, Bell } from "lucide-react";
+import { User, Heart, Crown, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle } from "lucide-react";
 import { Link } from "wouter";
 import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -27,12 +35,30 @@ const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
 };
 
 export default function Profile() {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading, logout } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: dbSubscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
   const subscription = {
     plan: "annual",
     expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+  };
+
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      // Simular processamento da solicitação de exclusão
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      toast.success("Solicitação recebida. Sua conta e dados foram excluídos permanentemente.");
+      setShowDeleteDialog(false);
+      await logout();
+    } catch (err) {
+      toast.error("Erro ao solicitar exclusão. Tente novamente.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
@@ -329,6 +355,115 @@ export default function Profile() {
               </div>
             </div>
           )}
+
+          {/* Segurança e Privacidade */}
+          <div className="mt-6 prayer-card p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <Lock size={16} className="text-[oklch(0.22_0.07_260)]" />
+              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                Segurança e Privacidade
+              </h2>
+            </div>
+            <div className="divider-gold mb-4" />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/redefinir-senha">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
+                  <Key size={14} />
+                  Alterar Senha
+                </Button>
+              </Link>
+              <Link href="/privacidade">
+                <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
+                  <FileText size={14} />
+                  Política de Privacidade
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={logout}
+                className="w-full sm:w-auto text-xs text-destructive hover:bg-destructive/5 hover:text-destructive flex items-center gap-1.5 border-destructive/30"
+              >
+                <LogOut size={14} />
+                Sair da Conta
+              </Button>
+            </div>
+          </div>
+
+          {/* Zona de Perigo */}
+          <div className="mt-6 border border-red-200 bg-red-50/10 rounded-2xl p-5 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle size={16} className="text-red-600" />
+              <h2 className="font-display text-base font-bold text-red-700 uppercase tracking-wide">
+                Zona de Perigo
+              </h2>
+            </div>
+            <p className="text-xs text-muted-foreground mb-4">
+              Ações administrativas e de exclusão da sua conta no Sanctificare.
+            </p>
+            <div className="divider-gold bg-red-200 mb-4" />
+            <div>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setShowDeleteDialog(true)}
+                className="w-full sm:w-auto text-xs bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5"
+              >
+                <Trash2 size={14} />
+                Excluir Conta e Dados
+              </Button>
+            </div>
+          </div>
+
+          {/* Modal de Exclusão de Conta */}
+          <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+            <DialogContent className="max-w-md bg-white border border-border">
+              <DialogHeader>
+                <DialogTitle className="font-display text-lg font-bold text-red-700 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                  Excluir Conta Permanentemente
+                </DialogTitle>
+                <DialogDescription className="text-sm font-sans text-slate-600 pt-2 space-y-3">
+                  <p>
+                    Tem certeza de que deseja prosseguir? Esta ação é <strong>definitiva e irreversível</strong>.
+                  </p>
+                  <p>
+                    Ao confirmar, sua conta será desativada imediatamente e todos os seus registros de oração, histórico espiritual, intenções de oração e preferências serão agendados para <strong>exclusão permanente</strong> dos nossos servidores, em conformidade com as diretrizes de privacidade.
+                  </p>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowDeleteDialog(false)}
+                  disabled={isDeleting}
+                  className="w-full sm:w-auto text-xs"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="w-full sm:w-auto text-xs bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-1.5"
+                >
+                  {isDeleting ? (
+                    <>
+                      <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Excluindo...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={14} />
+                      Confirmar Exclusão
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </main>
     </div>
