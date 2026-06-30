@@ -254,7 +254,7 @@ export default function Privacy() {
           </section>
 
           {/* Section 9 */}
-          <section className="space-y-3">
+          <section id="exclusao-dados" className="space-y-3">
             <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">9.</span> Retenção dos dados
             </h2>
