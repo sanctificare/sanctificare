@@ -33,6 +33,7 @@ export default function Bible() {
   const [testament, setTestament] = useState<"old" | "new">("new");
   const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
+  const [highlightedVerse, setHighlightedVerse] = useState<number | null>(null);
   const [searchBookQuery, setSearchBookQuery] = useState("");
 
   // Search states
@@ -133,6 +134,19 @@ export default function Bible() {
       setSelectedChapter(1);
     }
   }, []);
+
+  // Scroll to highlighted verse when chapter verses are loaded
+  useEffect(() => {
+    if (highlightedVerse && chapterVerses && chapterVerses.length > 0) {
+      const timer = setTimeout(() => {
+        const element = document.getElementById(`verse-${highlightedVerse}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightedVerse, chapterVerses]);
 
   // Book Category Identifier
   const getBookCategory = (bookId: string): string => {
@@ -463,6 +477,7 @@ export default function Bible() {
                         onClick={() => {
                           setSelectedBook(book);
                           setSelectedChapter(1);
+                          setHighlightedVerse(null);
                         }}
                         className={`py-2 text-center font-display text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all border ${
                           isActive
@@ -491,6 +506,7 @@ export default function Bible() {
                         if (book) {
                           setSelectedBook(book);
                           setSelectedChapter(fav.chapter);
+                          setHighlightedVerse(fav.verse);
                         }
                       }}
                       className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
@@ -560,6 +576,7 @@ export default function Bible() {
                             if (book) {
                               setSelectedBook(book);
                               setSelectedChapter(res.chapter);
+                              setHighlightedVerse(res.verse);
                             }
                           }}
                           className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
@@ -640,8 +657,12 @@ export default function Bible() {
                           ? verseNum >= liturgyInfo.start && verseNum <= liturgyInfo.end
                           : !!liturgyInfo;
 
+                        const isHighlighted = highlightedVerse === verseNum;
+
                         const highlightClass = isSelected
                           ? "bg-[oklch(0.75_0.12_75/0.25)] ring-2 ring-[oklch(0.75_0.12_75/0.4)] rounded px-1 -mx-1"
+                          : isHighlighted
+                          ? "bg-[oklch(0.75_0.12_75/0.18)] border-l-4 border-[oklch(0.75_0.12_75)] pl-3 rounded-r-lg font-medium transition-all"
                           : isLiturgyHighlighted
                           ? "bg-[oklch(0.75_0.12_75/0.08)] border-l-2 border-[oklch(0.75_0.12_75/0.5)] pl-2"
                           : "";
@@ -649,6 +670,7 @@ export default function Bible() {
                         return (
                           <div
                             key={i}
+                            id={`verse-${verseNum}`}
                             onClick={() => handleVerseClick(i)}
                             className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
                           >
@@ -673,7 +695,10 @@ export default function Bible() {
                   <Button
                     variant="outline"
                     disabled={selectedChapter <= 1}
-                    onClick={() => setSelectedChapter(selectedChapter - 1)}
+                    onClick={() => {
+                      setSelectedChapter(selectedChapter - 1);
+                      setHighlightedVerse(null);
+                    }}
                     className={`gap-2 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
                   >
                     <ChevronLeft size={14} /> Anterior
@@ -681,7 +706,10 @@ export default function Bible() {
                   <Button
                     variant="outline"
                     disabled={selectedChapter >= selectedBook.chapters}
-                    onClick={() => setSelectedChapter(selectedChapter + 1)}
+                    onClick={() => {
+                      setSelectedChapter(selectedChapter + 1);
+                      setHighlightedVerse(null);
+                    }}
                     className={`gap-2 ml-auto ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
                   >
                     Próximo <ChevronRight size={14} />
@@ -840,7 +868,10 @@ export default function Bible() {
                     return (
                       <button
                         key={ch}
-                        onClick={() => setSelectedChapter(ch)}
+                        onClick={() => {
+                          setSelectedChapter(ch);
+                          setHighlightedVerse(null);
+                        }}
                         className={`py-2 text-center text-xs font-semibold rounded-lg transition-all border ${
                           isActive
                             ? "bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-950 border-transparent shadow font-bold"
@@ -899,7 +930,7 @@ export default function Bible() {
                     <Button
                       variant={fontFamily === "serif" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "serif" ? "text-slate-200 border-slate-800 bg-slate-950 hover:bg-slate-900 hover:text-white" : ""}`}
                       onClick={() => {
                         setFontFamily("serif");
                         localStorage.setItem("sanctificare_bible_font_family", "serif");
@@ -1042,8 +1073,12 @@ export default function Bible() {
                         ? verseNum >= liturgyInfo.start && verseNum <= liturgyInfo.end
                         : !!liturgyInfo;
 
+                      const isHighlighted = highlightedVerse === verseNum;
+
                       const highlightClass = isSelected
                         ? "bg-[oklch(0.75_0.12_75/0.25)] ring-2 ring-[oklch(0.75_0.12_75/0.4)] rounded px-1 -mx-1"
+                        : isHighlighted
+                        ? "bg-[oklch(0.75_0.12_75/0.18)] border-l-4 border-[oklch(0.75_0.12_75)] pl-3 rounded-r-lg font-medium transition-all"
                         : isLiturgyHighlighted
                         ? "bg-[oklch(0.75_0.12_75/0.08)] border-l-2 border-[oklch(0.75_0.12_75/0.5)] pl-2"
                         : "";
@@ -1051,6 +1086,7 @@ export default function Bible() {
                       return (
                         <div
                           key={i}
+                          id={`verse-${verseNum}`}
                           onClick={() => handleVerseClick(i)}
                           className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
                         >
@@ -1075,7 +1111,10 @@ export default function Bible() {
                 <Button
                   variant="outline"
                   disabled={selectedChapter <= 1}
-                  onClick={() => setSelectedChapter(selectedChapter - 1)}
+                  onClick={() => {
+                    setSelectedChapter(selectedChapter - 1);
+                    setHighlightedVerse(null);
+                  }}
                   className="gap-2 bg-white"
                 >
                   <ChevronLeft size={14} /> Anterior
@@ -1083,7 +1122,10 @@ export default function Bible() {
                 <Button
                   variant="outline"
                   disabled={selectedChapter >= selectedBook.chapters}
-                  onClick={() => setSelectedChapter(selectedChapter + 1)}
+                  onClick={() => {
+                    setSelectedChapter(selectedChapter + 1);
+                    setHighlightedVerse(null);
+                  }}
                   className="gap-2 ml-auto bg-white"
                 >
                   Próximo <ChevronRight size={14} />
@@ -1125,7 +1167,10 @@ export default function Bible() {
                 {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
                   <button
                     key={ch}
-                    onClick={() => setSelectedChapter(ch)}
+                    onClick={() => {
+                      setSelectedChapter(ch);
+                      setHighlightedVerse(null);
+                    }}
                     className="h-10 w-full rounded-lg bg-white border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all"
                   >
                     {ch}
@@ -1192,6 +1237,7 @@ export default function Bible() {
                           if (book) {
                             setSelectedBook(book);
                             setSelectedChapter(bookmark.chapter);
+                            setHighlightedVerse(null);
                           }
                         }}
                         className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white"
@@ -1246,7 +1292,10 @@ export default function Bible() {
                     {filteredBooks.map((book) => (
                       <button
                         key={book.id}
-                        onClick={() => setSelectedBook(book)}
+                        onClick={() => {
+                          setSelectedBook(book);
+                          setHighlightedVerse(null);
+                        }}
                         className="prayer-card p-4 text-left group bg-white border border-border hover:border-[oklch(0.75_0.12_75)] transition-all rounded-xl"
                       >
                         <div className="flex items-center justify-between mb-1">
@@ -1293,6 +1342,7 @@ export default function Bible() {
                               if (book) {
                                 setSelectedBook(book);
                                 setSelectedChapter(fav.chapter);
+                                setHighlightedVerse(fav.verse);
                               }
                             }}
                           >
@@ -1366,6 +1416,7 @@ export default function Bible() {
                               if (book) {
                                 setSelectedBook(book);
                                 setSelectedChapter(res.chapter);
+                                setHighlightedVerse(res.verse);
                               }
                             }}
                             className="bg-white border border-border rounded-xl p-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] hover:shadow cursor-pointer transition-all duration-200"
