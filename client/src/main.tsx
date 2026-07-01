@@ -5,8 +5,10 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
-import { getLoginUrl, getApiBaseUrl, isMobileApp } from "./const";
+import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredCsrfToken } from "./const";
 import "./index.css";
+import { CapacitorUpdater } from '@capgo/capacitor-updater';
+
 
 // Intercept all fetch requests on mobile to use absolute API URL and include credentials
 if (typeof window !== "undefined" && isMobileApp()) {
@@ -35,6 +37,71 @@ if (typeof window !== "undefined" && isMobileApp()) {
     }
     return originalFetch.call(this, targetInput, updatedInit);
   };
+}
+
+// On native (Capacitor) the CSRF cookie set by the remote API is stored in the
+// native cookie jar and is NOT visible to document.cookie. Fetch the token from
+// the API and persist it so mutations can send the x-csrf-token header.
+if (typeof window !== "undefined" && isMobileApp()) {
+  void (async () => {
+    try {
+      const res = await fetch(`${getApiBaseUrl()}/api/auth/csrf`, {
+        credentials: "include",
+      });
+      if (res.ok) {
+        const data = await res.json().catch(() => null);
+        setStoredCsrfToken(data?.csrfToken);
+      }
+    } catch {
+      /* offline or unreachable — mutations will retry after login */
+    }
+  })();
+}
+
+// Live Updates (OTA) Configuration for Capacitor native environment
+if (typeof window !== "undefined" && isMobileApp()) {
+  void (async () => {
+    try {
+      // 1. Notify that the web app loaded successfully. This prevents the OS from
+      // performing an automatic rollback thinking the new web bundle crashed.
+      await CapacitorUpdater.notifyAppReady();
+
+      // 2. Fetch the latest metadata from the Cloudflare R2 bucket
+      const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
+        headers: { "Cache-Control": "no-cache" },
+      });
+      if (!res.ok) {
+        console.warn("[OTA] Failed to fetch update metadata from server.");
+        return;
+      }
+      const updateData = await res.json();
+      if (!updateData || !updateData.version || !updateData.url) {
+        console.warn("[OTA] Invalid live-update.json format on server.");
+        return;
+      }
+
+      // 3. Get currently active bundle info
+      const current = await CapacitorUpdater.current();
+      const currentVersion = current?.bundle?.id;
+
+      console.log(`[OTA] Local web bundle version: ${currentVersion} | Server version: ${updateData.version}`);
+
+      // 4. Download and apply the new bundle if server version differs from local
+      if (updateData.version !== currentVersion) {
+        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
+        const bundle = await CapacitorUpdater.download({
+          url: updateData.url,
+          version: updateData.version,
+        });
+
+        // 5. Set the new bundle as active (will load on next application restart)
+        await CapacitorUpdater.set({ id: bundle.id });
+        console.log(`[OTA] Update version ${bundle.id} staged successfully. Will load on next restart.`);
+      }
+    } catch (err) {
+      console.error("[OTA] Live update error:", err);
+    }
+  })();
 }
 
 const queryClient = new QueryClient();
@@ -115,7 +182,7 @@ const trpcClient = trpc.createClient({
           ...(init ?? {}),
           headers: (() => {
             const headers = new Headers(init?.headers ?? {});
-            const csrfToken = readCookie("csrf_token");
+            const csrfToken = readCookie("csrf_token") ?? getStoredCsrfToken();
             if (csrfToken) {
               headers.set("x-csrf-token", csrfToken);
             }
