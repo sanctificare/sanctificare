@@ -54,6 +54,22 @@ router.get("/me", injectUserMiddleware, (req: any, res) => {
   res.json(req.user || null);
 });
 
+// Exposes the CSRF token in the response body so native (Capacitor) clients,
+// which cannot read the cookie via document.cookie, can persist and send it
+// back in the x-csrf-token header. Creates the cookie if it does not exist yet.
+router.get("/csrf", (req, res) => {
+  const cookies = req.headers.cookie ? parseCookie(req.headers.cookie) : {};
+  let csrfToken = cookies[CSRF_COOKIE_NAME];
+  if (!csrfToken) {
+    csrfToken = generateCsrfToken();
+    res.cookie(CSRF_COOKIE_NAME, csrfToken, {
+      ...getCsrfCookieOptions(req),
+      maxAge: ENV.sessionTtlMs,
+    });
+  }
+  return res.json({ csrfToken });
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -85,19 +101,23 @@ router.post("/register", async (req, res) => {
     const token = await sdk.createSessionToken(newUser.openId, { name: newUser.name || "" });
     const cookieOptions = getSessionCookieOptions(req);
     const csrfCookieOptions = getCsrfCookieOptions(req);
+    const csrfToken = generateCsrfToken();
 
     if (isDevAuthBypassEnabled(req)) {
       res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
     }
 
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
-    res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+    res.cookie(CSRF_COOKIE_NAME, csrfToken, {
       ...csrfCookieOptions,
       maxAge: ENV.sessionTtlMs,
     });
 
     return res.json({
       success: true,
+      // Returned so native (Capacitor) clients can persist the token: the
+      // CSRF cookie is not readable via document.cookie on Android/iOS.
+      csrfToken,
       user: {
         id: newUser.id,
         email: newUser.email,
@@ -125,19 +145,23 @@ router.post("/login", async (req, res) => {
     const token = await sdk.createSessionToken(user.openId, { name: user.name || "" });
     const cookieOptions = getSessionCookieOptions(req);
     const csrfCookieOptions = getCsrfCookieOptions(req);
+    const csrfToken = generateCsrfToken();
 
     if (isDevAuthBypassEnabled(req)) {
       res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
     }
 
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
-    res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+    res.cookie(CSRF_COOKIE_NAME, csrfToken, {
       ...csrfCookieOptions,
       maxAge: ENV.sessionTtlMs,
     });
 
     return res.json({
       success: true,
+      // Returned so native (Capacitor) clients can persist the token: the
+      // CSRF cookie is not readable via document.cookie on Android/iOS.
+      csrfToken,
       user: {
         id: user.id,
         email: user.email,
@@ -180,7 +204,7 @@ router.post("/forgot-password", async (req, res) => {
         const token = nanoid(48);
         await createPasswordResetToken(user.id, token);
 
-        const appUrl = process.env.APP_URL ?? "http://localhost:5173";
+        const appUrl = ENV.appUrl;
         const resetLink = `${appUrl}/redefinir-senha?token=${token}`;
 
         await sendPasswordResetEmail(

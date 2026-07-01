@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, isMobileApp } from "@/const";
+import {
+  ensureNotificationPermission,
+  scheduleDailyReminder,
+  cancelDailyReminder,
+} from "@/lib/notifications";
 import { Button } from "@/components/ui/button";
 import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
@@ -70,27 +75,27 @@ export default function Profile() {
 
   const handleToggleReminders = async () => {
     if (!remindersEnabled) {
-      if (!("Notification" in window)) {
-        toast.error("Seu navegador não suporta notificações de área de trabalho.");
-        return;
-      }
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
+      const granted = await ensureNotificationPermission();
+      if (granted) {
         localStorage.setItem("sanctificare.reminders.enabled", "true");
         setRemindersEnabled(true);
+        await scheduleDailyReminder(reminderTime);
         toast.success("Lembretes diários ativados com sucesso!");
-        new Notification("Sanctificare", {
-          body: `Lembrete configurado para as ${reminderTime}! Que Deus abençoe sua jornada espiritual.`,
-          icon: LOGO_IMG
-        });
+        if (!isMobileApp() && "Notification" in window) {
+          new Notification("Sanctificare", {
+            body: `Lembrete configurado para as ${reminderTime}! Que Deus abençoe sua jornada espiritual.`,
+            icon: LOGO_IMG,
+          });
+        }
       } else {
         localStorage.setItem("sanctificare.reminders.enabled", "false");
         setRemindersEnabled(false);
-        toast.warning("Permissão de notificação negada. Ative as notificações nas configurações do seu navegador.");
+        toast.warning("Permissão de notificação negada. Ative as notificações nas configurações do seu dispositivo.");
       }
     } else {
       localStorage.setItem("sanctificare.reminders.enabled", "false");
       setRemindersEnabled(false);
+      await cancelDailyReminder();
       toast.info("Lembretes desativados.");
     }
   };
@@ -100,6 +105,7 @@ export default function Profile() {
     setReminderTime(newTime);
     localStorage.setItem("sanctificare.reminders.time", newTime);
     if (remindersEnabled) {
+      void scheduleDailyReminder(newTime);
       toast.success(`Horário do lembrete atualizado para as ${newTime}!`);
     }
   };

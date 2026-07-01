@@ -103,7 +103,6 @@ if (typeof window !== "undefined" && isMobileApp()) {
     }
   })();
 }
-
 const queryClient = new QueryClient();
 let authRedirectInFlight = false;
 

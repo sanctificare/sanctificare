@@ -7,6 +7,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
+import { isMobileApp } from "./const";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -109,6 +110,10 @@ function App() {
   useEffect(() => {
     const checkReminders = () => {
       try {
+        // No app nativo os lembretes são agendados de forma nativa
+        // (LocalNotifications); o intervalo abaixo é apenas fallback web.
+        if (isMobileApp()) return;
+
         const enabled = localStorage.getItem("sanctificare.reminders.enabled") === "true";
         if (!enabled) return;
 
@@ -143,6 +148,35 @@ function App() {
     const interval = setInterval(checkReminders, 30000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Botão físico "voltar" no Android: navega no histórico ou fecha o app.
+  useEffect(() => {
+    if (!isMobileApp()) return;
+
+    let removeListener: (() => void) | undefined;
+
+    void (async () => {
+      try {
+        const { App: CapApp } = await import("@capacitor/app");
+        const handle = await CapApp.addListener("backButton", ({ canGoBack }) => {
+          if (canGoBack || window.history.length > 1) {
+            window.history.back();
+          } else {
+            void CapApp.exitApp();
+          }
+        });
+        removeListener = () => {
+          void handle.remove();
+        };
+      } catch (err) {
+        console.warn("[App] back button listener error:", err);
+      }
+    })();
+
+    return () => {
+      removeListener?.();
+    };
   }, []);
 
   return (

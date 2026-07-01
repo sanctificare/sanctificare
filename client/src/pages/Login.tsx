@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Cross, Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { getApiBaseUrl, sanitizeAppPath, isMobileApp } from "@/const";
+import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken } from "@/const";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -89,7 +89,8 @@ export default function Login() {
   // Mutations
   const loginMutation = useMutation({
     mutationFn: performLogin,
-    onSuccess: async () => {
+    onSuccess: async (data: any) => {
+      setStoredCsrfToken(data?.csrfToken);
       toast.success("Bem-vindo ao Sanctificare!");
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());
@@ -101,7 +102,8 @@ export default function Login() {
 
   const registerMutation = useMutation({
     mutationFn: performRegister,
-    onSuccess: async () => {
+    onSuccess: async (data: any) => {
+      setStoredCsrfToken(data?.csrfToken);
       toast.success("Conta criada com sucesso! Bem-vindo.");
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());

@@ -43,19 +43,47 @@ export const getLoginUrl = (returnPath?: string) => {
 
 export const isMobileApp = () => {
   if (typeof window === "undefined") return false;
+  const cap = (window as any).Capacitor;
+  if (cap?.isNativePlatform?.()) return true;
+  if (typeof cap?.getPlatform === "function" && cap.getPlatform() !== "web") {
+    return true;
+  }
   return (
-    !!(window as any).Capacitor ||
-    window.location.protocol.includes("capacitor") ||
-    window.location.protocol.includes("chrome-extension") ||
-    (window.location.hostname === "localhost" && !window.location.port)
+    window.location.protocol === "capacitor:" ||
+    window.location.protocol === "chrome-extension:"
   );
 };
 
+// Production API origin used by the native (Capacitor) app. Configurable at
+// build time via VITE_API_BASE_URL so the domain is not hard-coded.
+const MOBILE_API_BASE_URL =
+  (import.meta.env?.VITE_API_BASE_URL as string | undefined)?.replace(/\/+$/, "") ||
+  "https://sanctificare.app";
+
 export const getApiBaseUrl = () => {
   if (isMobileApp()) {
-    return "https://sanctificare.app";
+    return MOBILE_API_BASE_URL;
   }
   return "";
+};
+
+// CSRF token persistence for native clients (see server /api/auth/csrf).
+export const CSRF_STORAGE_KEY = "sanctificare.csrf_token";
+
+export const getStoredCsrfToken = (): string | null => {
+  try {
+    return localStorage.getItem(CSRF_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const setStoredCsrfToken = (token: string | null | undefined): void => {
+  try {
+    if (token) localStorage.setItem(CSRF_STORAGE_KEY, token);
+  } catch {
+    /* ignore storage errors */
+  }
 };
 
 export const resolveMediaUrl = (url: string | undefined): string => {
