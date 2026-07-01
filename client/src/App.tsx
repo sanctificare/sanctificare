@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { useEffect } from "react";
 import GlobalSearch from "@/components/GlobalSearch";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -186,6 +187,7 @@ function App() {
           <Toaster />
           <div className="theme-contemplative-a min-h-screen">
             <Router />
+            <MobileBottomNav />
             <GlobalSearch />
           </div>
         </TooltipProvider>
