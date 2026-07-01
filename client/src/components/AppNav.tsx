@@ -56,20 +56,26 @@ export default function AppNav() {
   return (
     <nav className="sticky top-0 z-50 bg-[oklch(0.22_0.07_260)] border-b border-[oklch(0.75_0.12_75/0.3)] shadow-lg">
       <div className="container">
-        <div className="flex items-center justify-between h-16">
+        <div className="relative flex items-center justify-between h-14 lg:h-16">
           {/* Logo */}
           <Link href={isAuthenticated ? "/dashboard" : "/"}>
-            <div className="flex items-center gap-3 cursor-pointer group">
+            <div className="flex w-20 lg:w-auto items-center gap-2 sm:gap-3 cursor-pointer group">
               <img
                 src="/assets/logo-sanctificare.webp"
                 alt="Sanctificare"
-                className="w-9 h-9 rounded-full object-cover"
+                className="w-7 h-7 sm:w-9 sm:h-9 rounded-full object-cover"
               />
-              <span className="hidden sm:inline font-display text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide group-hover:text-[oklch(0.95_0.06_82)] transition-colors">
+              <span className="hidden sm:inline font-display text-sm sm:text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide group-hover:text-[oklch(0.95_0.06_82)] transition-colors">
                 Sanctificare
               </span>
             </div>
           </Link>
+
+          {isAuthenticated && (
+            <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 lg:hidden font-display text-sm font-semibold tracking-wide text-[oklch(0.88_0.08_80)]">
+              Sanctificare
+            </span>
+          )}
 
           {/* Nav Desktop */}
           {isAuthenticated && (
@@ -117,7 +123,7 @@ export default function AppNav() {
           )}
 
           {/* Ações direita */}
-          <div className="flex items-center gap-3">
+          <div className="flex w-20 lg:w-auto justify-end items-center gap-2 sm:gap-3">
             {isAuthenticated ? (
               <>
                 <Button
@@ -133,10 +139,10 @@ export default function AppNav() {
                   variant="ghost"
                   size="icon"
                   onClick={() => window.dispatchEvent(new CustomEvent("open-global-search"))}
-                  className="lg:hidden text-[oklch(0.80_0.03_260)] hover:text-white hover:bg-[oklch(0.75_0.12_75/0.1)] rounded-full h-9 w-9 flex items-center justify-center focus:outline-none"
+                  className="lg:hidden text-[oklch(0.84_0.05_80)] hover:text-white hover:bg-[oklch(0.75_0.12_75/0.15)] rounded-full h-8 w-8 flex items-center justify-center focus:outline-none"
                   title="Buscar no app"
                 >
-                  <Search size={18} />
+                  <Search size={16} />
                 </Button>
                 <Link href="/premium">
                   <Button
@@ -158,7 +164,7 @@ export default function AppNav() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2 rounded-full focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.5)]">
-                      <Avatar className="w-8 h-8 border-2 border-[oklch(0.75_0.12_75/0.5)]">
+                      <Avatar className="w-7 h-7 sm:w-8 sm:h-8 border-2 border-[oklch(0.75_0.12_75/0.5)]">
                         <AvatarFallback className="bg-[oklch(0.35_0.08_255)] text-[oklch(0.88_0.08_80)] text-xs font-display">
                           {initials}
                         </AvatarFallback>
