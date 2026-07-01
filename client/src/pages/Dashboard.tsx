@@ -4,8 +4,9 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock, Flame, CheckCircle2, Circle, Calendar, BarChart2, Users, Check, Play, BookMarked } from "lucide-react";
+import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock, Flame, CheckCircle2, Circle, Calendar, BarChart2, Users, Check, Play, BookMarked, Cross, Volume2, ArrowRight } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
+import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
 import { NOVENAS } from "@/data/novenas";
 import { toast } from "sonner";
@@ -26,6 +27,16 @@ const quickLinks = [
   { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.png", overlay: "oklch(0.30 0.10 190 / 0.60)" },
   { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.png", overlay: "oklch(0.40 0.15 80 / 0.60)" },
   { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.35 0.10 40 / 0.60)" },
+];
+
+const secondaryLinks = [
+  { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
+  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
+  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.36_0.15_20)] bg-[oklch(0.36_0.15_20/0.06)] border-[oklch(0.36_0.15_20/0.15)]" },
+  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", icon: Flame, color: "text-[oklch(0.50_0.10_85)] bg-[oklch(0.50_0.10_85/0.06)] border-[oklch(0.50_0.10_85/0.15)]" },
+  { href: "/musica-sacra", label: "Música Sacra", desc: "Cantos para contemplação", icon: Volume2, color: "text-[oklch(0.34_0.10_300)] bg-[oklch(0.34_0.10_300/0.06)] border-[oklch(0.34_0.10_300/0.15)]" },
+  { href: "/videos", label: "Vídeos", desc: "Passagens ilustradas", icon: Play, color: "text-[oklch(0.40_0.12_15)] bg-[oklch(0.40_0.12_15/0.06)] border-[oklch(0.40_0.12_15/0.15)]" },
+  { href: "/intencoes", label: "Intenções", desc: "Mural da comunidade", icon: Users, color: "text-[oklch(0.30_0.10_190)] bg-[oklch(0.30_0.10_190/0.06)] border-[oklch(0.30_0.10_190/0.15)]" },
 ];
 
 function getDayOfWeek() {
@@ -220,6 +231,45 @@ export default function Dashboard() {
     }
   }, [isAuthenticated]);
 
+  const [metasConfig] = useState<any>(() => {
+    try {
+      const saved = localStorage.getItem("sanctificare.daily_plan.metas");
+      return saved ? JSON.parse(saved) : {
+        liturgia: true,
+        rosario: true,
+        lectio: true,
+        oracoes: false,
+        intercessao: false,
+        novena: true,
+      };
+    } catch {
+      return {
+        liturgia: true,
+        rosario: true,
+        lectio: true,
+        oracoes: false,
+        intercessao: false,
+        novena: true,
+      };
+    }
+  });
+
+  const dailyMetas = [
+    { key: "liturgia", enabled: metasConfig.liturgia, completed: !!dailyPlan?.liturgyCompleted },
+    { key: "rosario", enabled: metasConfig.rosario, completed: !!dailyPlan?.rosaryCompleted },
+    { key: "lectio", enabled: metasConfig.lectio, completed: !!dailyPlan?.lectioCompleted },
+    { key: "oracoes", enabled: metasConfig.oracoes, completed: !!dailyPlan?.prayersCompleted },
+    { key: "intercessao", enabled: metasConfig.intercessao, completed: !!dailyPlan?.intercessionCompleted },
+    { key: "novena", enabled: metasConfig.novena && !!activeNovena, completed: !!dailyPlan?.novenaCompleted },
+  ];
+
+  const activeMetas = dailyMetas.filter(meta => meta.enabled);
+  const completedMetasCount = activeMetas.filter(meta => meta.completed).length;
+  const activeMetasCount = activeMetas.length;
+  const dailyPlanProgressPercent = activeMetasCount > 0
+    ? Math.round((completedMetasCount / activeMetasCount) * 100)
+    : 0;
+
   const logPrayerMutation = trpc.prayers.logPrayer.useMutation({
     onSuccess: () => {
       toast.success("Liturgia Diária registrada no seu histórico!");
@@ -297,7 +347,6 @@ export default function Dashboard() {
     ? Math.round((activeNovena.completedCount / activeNovenaTotalDays) * 100)
     : 0;
 
-  // Determina o versículo dinâmico do dia baseado no Salmo Responsorial ou na lista de fallback
   const dynamicVerse = (() => {
     if (liturgy?.psalm?.refrao) {
       const cleanRefrao = liturgy.psalm.refrao.replace(/^["'«“]|["'»”]$/g, "").trim();
@@ -394,38 +443,227 @@ export default function Dashboard() {
           </div>
         </div>
 
-
-
-        {/* Acesso Rápido */}
-        <div className="mb-8">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Acesso Rápido</h2>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 md:gap-4">
-            {quickLinks.map(({ href, label, desc, image, overlay }) => (
-              <Link key={href} href={href}>
-                <div className="cover-card aspect-square group cursor-pointer">
+        {/* Destaques Principais - Layout Editorial Assimétrico */}
+        <div className="mb-8 animate-fade-in">
+          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Destaques</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Coluna da Esquerda (Col 1) */}
+            <div className="lg:col-span-1 flex flex-col gap-6">
+              {/* Card 1: Santo Rosário */}
+              <Link href="/rosario">
+                <div className="relative overflow-hidden rounded-2xl flex-1 min-h-[340px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6">
                   <img
-                    src={image}
-                    alt={label}
-                    className="cover-card-image"
-                    loading="lazy"
+                    src="/assets/dashboard/rosario.png"
+                    alt="Santo Rosário"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `linear-gradient(to top, oklch(0.10 0.03 260 / 0.86) 0%, ${overlay} 56%, oklch(0.10 0.02 260 / 0.12) 100%)`,
-                    }}
+                    className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.60)] to-[oklch(0.12_0.03_260/0.20)]"
                   />
-                  <div className="cover-card-content">
-                    <p className="cover-card-title">{label}</p>
-                    <p className="cover-card-desc hidden md:block">{desc}</p>
+                  <div className="relative z-10 flex justify-between items-start">
+                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                      Devocional
+                    </span>
+                    <RosaryIcon size={24} className="text-[oklch(0.75_0.12_75)]" />
                   </div>
+                  <div className="relative z-10 mt-auto">
+                    <p className="text-[oklch(0.75_0.12_75)] text-[10px] font-bold uppercase tracking-widest mb-1">{getMystery()}</p>
+                    <h3 className="font-display text-2xl font-bold text-white mb-2">Santo Rosário</h3>
+                    <p className="text-sm text-[oklch(0.95_0.01_80/0.8)] mb-4">Reze o Terço completo com meditações contemplativas.</p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[oklch(0.75_0.12_75)] group-hover:text-[oklch(0.88_0.08_80)] transition-colors">
+                      Rezar agora <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 2: Bíblia Sagrada */}
+              <Link href="/biblia">
+                <div className="relative overflow-hidden rounded-2xl min-h-[220px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.3)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.5)] transition-all duration-300 flex flex-col justify-between p-6 bg-gradient-to-b from-[oklch(0.18_0.04_260)] to-[oklch(0.12_0.03_260)]">
+                  <div className="absolute inset-0 bg-pattern-cross opacity-[0.03] pointer-events-none" />
+                  <div className="absolute inset-2 border border-[oklch(0.75_0.12_75/0.25)] rounded-xl pointer-events-none" />
+                  <div className="absolute left-4 top-2 bottom-2 w-[1px] bg-[oklch(0.75_0.12_75/0.15)] pointer-events-none" />
+                  
+                  <div className="relative z-10 flex justify-between items-start">
+                    <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.75_0.12_75)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase">
+                      Escrituras
+                    </span>
+                    <BookOpen size={18} className="text-[oklch(0.75_0.12_75)]" />
+                  </div>
+                  
+                  <div className="relative z-10 flex flex-col items-center justify-center my-auto py-2 text-center">
+                    <Cross className="w-8 h-8 text-[oklch(0.75_0.12_75)] stroke-[1.5] mb-2 opacity-80" />
+                    <h3 className="font-display text-xl font-bold text-[oklch(0.88_0.08_80)] tracking-wide mb-0.5">BÍBLIA</h3>
+                    <p className="font-display text-[10px] text-[oklch(0.75_0.12_75)] uppercase tracking-[0.2em] font-medium">Sagrada</p>
+                  </div>
+                  
+                  <div className="relative z-10 mt-auto">
+                    <span className="w-full inline-flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-xs font-bold text-[oklch(0.75_0.12_75)] group-hover:bg-[oklch(0.75_0.12_75/0.2)] transition-all">
+                      Abrir Palavra
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Coluna da Direita (Col 2 & 3) */}
+            <div className="lg:col-span-2 flex flex-col gap-6">
+              {/* Card 3: Liturgia Diária */}
+              <Link href="/liturgia">
+                <div className="relative overflow-hidden rounded-2xl min-h-[180px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6">
+                  <img
+                    src="/assets/dashboard/liturgia.png"
+                    alt="Liturgia Diária"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-r from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.70)] to-[oklch(0.12_0.03_260/0.30)]"
+                  />
+                  <div className="relative z-10 flex justify-between items-start">
+                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                      Palavra
+                    </span>
+                    <Sun size={20} className="text-[oklch(0.75_0.12_75)]" />
+                  </div>
+                  <div className="relative z-10 mt-auto">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getLiturgicalColorStyle(liturgy?.color)}`}>
+                        {liturgy?.color ? capitalize(liturgy.color) : "Tempo Litúrgico"}
+                      </span>
+                      <span className="text-xs text-[oklch(0.90_0.01_260)] font-medium truncate max-w-[240px]">
+                        {liturgy?.celebration || "Missa de Hoje"}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-xl font-bold text-white mb-1">Liturgia Diária</h3>
+                    <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1 italic max-w-xl">
+                      {dynamicVerse.text ? `"${dynamicVerse.text}"` : "Leituras e Salmo do dia para acompanhar a Igreja."}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 4: Plano Diário */}
+              <Link href="/plano-diario">
+                <div className="relative overflow-hidden rounded-2xl min-h-[160px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6 bg-white dark:bg-[oklch(0.17_0.04_260)]">
+                  <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
+                  <div className="relative z-10 flex justify-between items-start">
+                    <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.85_0.09_80)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-3 py-1 text-xs font-semibold">
+                      Progresso Espiritual
+                    </span>
+                    <Flame size={18} className={dailyPlanProgressPercent > 0 ? "text-amber-500 fill-amber-500" : "text-muted-foreground"} />
+                  </div>
+                  
+                  <div className="relative z-10 my-4 flex-1 flex flex-col justify-center">
+                    <div className="flex items-baseline justify-between mb-2">
+                      <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-white">Plano Diário</h3>
+                      <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">{dailyPlanProgressPercent}%</span>
+                    </div>
+                    
+                    <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
+                        style={{ width: `${dailyPlanProgressPercent}%` }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="relative z-10 mt-auto">
+                    <p className="text-xs text-muted-foreground line-clamp-1">
+                      {dailyPlanProgressPercent === 100 
+                        ? "Parabéns! Todas as suas metas de hoje foram alcançadas." 
+                        : "Retome suas metas espirituais configuradas para hoje."}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Card 5: Novenas */}
+              <div className="relative overflow-hidden rounded-2xl min-h-[160px] group border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6 bg-white dark:bg-[oklch(0.17_0.04_260)]">
+                <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
+                <div className="relative z-10 flex justify-between items-start">
+                  <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.85_0.09_80)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-3 py-1 text-xs font-semibold">
+                    Devoção de 9 Dias
+                  </span>
+                  <BookMarked size={18} className="text-[oklch(0.75_0.12_75)]" />
+                </div>
+                
+                <div className="relative z-10 my-3 flex-1 flex flex-col justify-center">
+                  {activeNovena ? (
+                    <>
+                      <h4 className="text-sm font-bold text-foreground mb-1 line-clamp-1">{activeNovena.novena.name}</h4>
+                      <p className="text-xs text-muted-foreground mb-2">Dia {activeNovena.completedCount} de {activeNovenaTotalDays} concluído</p>
+                      <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-1.5 overflow-hidden">
+                        <div 
+                          className="bg-[oklch(0.75_0.12_75)] h-1.5 rounded-full transition-all duration-500" 
+                          style={{ width: `${activeNovenaProgressPercent}%` }}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h4 className="text-sm font-bold text-foreground mb-1">Novena de São José</h4>
+                      <p className="text-xs text-muted-foreground line-clamp-2">Inicie uma jornada de fé com o Patrono da Igreja Universal.</p>
+                    </>
+                  )}
+                </div>
+                
+                <div className="relative z-10 mt-auto">
+                  <Link href={activeNovena ? `/novenas/${activeNovena.novena.slug}` : "/novenas"}>
+                    <Button className="w-full bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_250)] text-white text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md transition-all">
+                      {activeNovena ? (
+                        <>
+                          <Play size={10} className="fill-current" />
+                          Rezar Dia {activeNovena.nextDay}
+                        </>
+                      ) : (
+                        <>
+                          Começar Novena
+                          <ChevronRight size={12} />
+                        </>
+                      )}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mais Ferramentas - Grid Compacto */}
+        <div className="mb-8">
+          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Outras Práticas</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+            {secondaryLinks.map(({ href, label, desc, icon: Icon, color }) => (
+              <Link key={href} href={href}>
+                <div className="p-4 rounded-xl border border-border/40 bg-white/60 dark:bg-[oklch(0.17_0.04_260/0.4)] backdrop-blur-md hover:bg-white/80 dark:hover:bg-[oklch(0.17_0.04_260/0.6)] shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex flex-col items-center text-center justify-center gap-2 group h-full">
+                  <div className={`p-2.5 rounded-full ${color} shadow-inner group-hover:scale-110 transition-transform`}>
+                    <Icon size={20} className="stroke-[1.5]" />
+                  </div>
+                  <span className="text-xs font-semibold text-[oklch(0.22_0.07_260)] dark:text-white group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
+                    {label}
+                  </span>
                 </div>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Intenções da Comunidade + Novena Ativa */}
+        {/* Versículo do Dia - Banner Editorial */}
+        <div className="mb-8 animate-fade-in">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] to-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.25)] p-8 shadow-sm text-center">
+            <div className="absolute inset-0 bg-pattern-cross opacity-[0.01]" />
+            <BookOpen size={24} className="text-[oklch(0.75_0.12_75)] mx-auto mb-4 stroke-[1.5]" />
+            <blockquote className="font-serif text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
+              "{dynamicVerse.text}"
+            </blockquote>
+            <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.65_0.14_70)]">
+              {dynamicVerse.ref}
+            </p>
+          </div>
+        </div>
+
+        {/* Intenções da Comunidade + Histórico Recente */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-fade-in">
           {/* Intenções da Comunidade */}
           <div className="lg:col-span-2 prayer-card p-6 flex flex-col justify-between">
@@ -476,7 +714,7 @@ export default function Dashboard() {
                     );
                   })
                 ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção ativa no momento.</p>
+                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção activa no momento.</p>
                 )}
               </div>
             </div>
@@ -487,130 +725,44 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Novena Ativa ou Recomendada */}
-          <div className="prayer-card p-6 flex flex-col justify-between">
-            {activeNovena ? (
-              <>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                      Sua Novena Ativa
-                    </h3>
-                  </div>
-                  <div className="divider-gold mb-4" />
-                  
-                  <div className="mb-4">
-                    <h4 className="text-sm font-bold text-foreground mb-1">{activeNovena.novena.name}</h4>
-                    <p className="text-xs text-muted-foreground">Dia {activeNovena.completedCount} de {activeNovenaTotalDays} concluído</p>
-                  </div>
-
-                  <div className="w-full bg-black/5 rounded-full h-2 overflow-hidden mb-4">
-                    <div 
-                      className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
-                      style={{ width: `${activeNovenaProgressPercent}%` }}
-                    />
-                  </div>
-                </div>
-
-                <Link href={`/novenas/${activeNovena.novena.slug}`}>
-                  <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 shadow-sm hover:shadow-md transition-all">
-                    <Play size={12} className="fill-current" />
-                    Rezar o Dia {activeNovena.nextDay}
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <BookMarked size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                      Novenas
-                    </h3>
-                  </div>
-                  <div className="divider-gold mb-4" />
-                  
-                  <div className="mb-4">
-                    <h4 className="text-sm font-bold text-foreground mb-1">Novena de São José</h4>
-                    <p className="text-xs text-muted-foreground">Que tal iniciar uma caminhada de fé com o padroeiro da Igreja universal?</p>
-                  </div>
-                </div>
-
-                <Link href="/novenas/novena-de-sao-jose">
-                  <Button className="w-full bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all">
-                    Começar Novena
-                    <ChevronRight size={14} />
-                  </Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-
-
-
-        {/* Versículo do Dia + Histórico */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Versículo */}
-          <div className="lg:col-span-2 prayer-card p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <BookOpen size={16} className="text-[oklch(0.65_0.14_70)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                Versículo do Dia
-              </h3>
-            </div>
-            <div className="divider-gold mb-4" />
-            <blockquote className="font-serif text-xl italic text-[oklch(0.25_0.03_260)] leading-relaxed mb-3 tracking-tight">
-              "{dynamicVerse.text}"
-            </blockquote>
-            <p className="text-sm font-semibold text-[oklch(0.65_0.14_70)]">{dynamicVerse.ref}</p>
-            <div className="mt-6">
-              <Link href="/liturgia">
-                <Button variant="outline" size="sm" className="text-[oklch(0.22_0.07_260)] border-[oklch(0.22_0.07_260/0.3)]">
-                  Ver Liturgia do Dia
-                  <ChevronRight size={14} className="ml-1" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-
           {/* Histórico recente */}
-          <div className="prayer-card p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
-              <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                Orações Recentes
-              </h3>
+          <div className="prayer-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
+                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                  Orações Recentes
+                </h3>
+              </div>
+              <div className="divider-gold mb-4" />
+              {logs && logs.length > 0 ? (
+                <div className="space-y-3">
+                  {logs.slice(0, 4).map((log: any) => (
+                    <div key={log.id} className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] flex items-center justify-center flex-shrink-0">
+                        <Heart size={13} className="text-[oklch(0.55_0.14_15)]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">{log.prayerName}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(log.completedAt).toLocaleDateString("pt-BR")}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <Heart size={28} className="text-muted-foreground mx-auto mb-2 opacity-40" />
+                  <p className="text-sm text-muted-foreground">Nenhuma oração foi registrada ainda.</p>
+                  <Link href="/oracoes">
+                    <Button size="sm" variant="outline" className="mt-3 text-xs">
+                      Começar a rezar
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
-            <div className="divider-gold mb-4" />
-            {logs && logs.length > 0 ? (
-              <div className="space-y-3">
-                {logs.slice(0, 5).map((log: any) => (
-                  <div key={log.id} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] flex items-center justify-center flex-shrink-0">
-                      <Heart size={13} className="text-[oklch(0.55_0.14_15)]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{log.prayerName}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(log.completedAt).toLocaleDateString("pt-BR")}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-6">
-                <Heart size={28} className="text-muted-foreground mx-auto mb-2 opacity-40" />
-                <p className="text-sm text-muted-foreground">Nenhuma oração foi registrada ainda.</p>
-                <Link href="/oracoes">
-                  <Button size="sm" variant="outline" className="mt-3 text-xs">
-                    Começar a rezar
-                  </Button>
-                </Link>
-              </div>
-            )}
             {logs && logs.length > 0 && (
               <Link href="/perfil">
                 <Button variant="outline" size="sm" className="w-full mt-4 text-xs">
