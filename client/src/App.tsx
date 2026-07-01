@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import GlobalSearch from "@/components/GlobalSearch";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileTopMenu from "@/components/MobileTopMenu";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
@@ -68,6 +68,29 @@ function Router() {
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
+  );
+}
+
+function AppShell() {
+  const [location] = useLocation();
+  // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
+  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
+
+  return (
+    <>
+      <Toaster />
+      {!isLandingPage && (
+        <div className="hidden lg:block">
+          <AppNav />
+        </div>
+      )}
+      {!isLandingPage && <MobileTopMenu />}
+      <div className="theme-contemplative-a min-h-screen">
+        <Router />
+        {!isLandingPage && <MobileBottomNav />}
+        <GlobalSearch />
+      </div>
+    </>
   );
 }
 
@@ -190,16 +213,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <Toaster />
-          <div className="hidden lg:block">
-            <AppNav />
-          </div>
-          <MobileTopMenu />
-          <div className="theme-contemplative-a min-h-screen">
-            <Router />
-            <MobileBottomNav />
-            <GlobalSearch />
-          </div>
+          <AppShell />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
