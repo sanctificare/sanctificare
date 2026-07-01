@@ -261,7 +261,7 @@ export default function DailyPlan() {
           <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
           <p className="text-muted-foreground mb-6">
-            Entre para ver e acompanhar seu Plano Diário de Santificação.
+            Entre para ver e acompanhar seu Plano Diário.
           </p>
           <a href={getLoginUrl()}><Button>Entrar</Button></a>
         </div>
@@ -279,37 +279,43 @@ export default function DailyPlan() {
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
       <main className="container py-6 md:py-8">
         <div className="max-w-6xl mx-auto space-y-6">
-          <section className="prayer-card p-6 md:p-8 animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
+          <section className="relative overflow-hidden rounded-2xl border border-[oklch(0.75_0.12_75/0.2)] p-6 md:p-8 animate-fade-in flex flex-col justify-between min-h-[220px]">
+            <img
+              src="/assets/dashboard/plano-diario.png"
+              alt="Plano Diário"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.80)] to-[oklch(0.12_0.03_260/0.40)]" />
+            
             <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.75_0.12_75/0.12)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[oklch(0.50_0.11_70)] mb-4">
-                  <Sparkles size={13} />
+                <div className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.75_0.12_75/0.2)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[oklch(0.88_0.08_80)] mb-4 backdrop-blur-sm border border-[oklch(0.75_0.12_75/0.3)] animate-fade-in">
+                  <Sparkles size={13} className="text-[oklch(0.75_0.12_75)]" />
                   Roteiro espiritual de hoje
                 </div>
-                <h1 className="font-display text-3xl md:text-4xl font-bold text-[oklch(0.22_0.07_260)] mb-3 leading-tight tracking-tight">
-                  Plano Diário de Santificação
+                <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3 leading-tight tracking-tight">
+                  Plano Diário
                 </h1>
-                <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
+                <p className="text-sm md:text-base text-[oklch(0.95_0.01_80/0.8)] max-w-2xl leading-relaxed">
                   Um passo concreto por vez: Palavra, oração, meditação e intercessão para sustentar sua comunhão com Deus no cotidiano.
                 </p>
               </div>
 
-              <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.2)] bg-gradient-to-br from-white/95 to-[oklch(0.99_0.005_85)]/95 p-4 shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.7)] backdrop-blur-md p-4 shadow-md hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[oklch(0.75_0.12_75)]">
                       Constância
                     </p>
-                    <p className="mt-1 text-2xl font-bold text-[oklch(0.22_0.07_260)]">
+                    <p className="mt-1 text-2xl font-bold text-white">
                       {dailyPlan?.streak || 0} {dailyPlan?.streak === 1 ? "dia" : "dias"}
                     </p>
                   </div>
-                  <div className="h-12 w-12 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                    <Flame size={24} className={dailyPlan?.streak ? "fill-amber-500 animate-pulse" : ""} />
+                  <div className="h-12 w-12 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/30 flex items-center justify-center">
+                    <Flame size={24} className={dailyPlan?.streak ? "fill-amber-400 animate-pulse text-amber-400" : "text-amber-200"} />
                   </div>
                 </div>
-                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                <p className="mt-3 text-xs leading-relaxed text-[oklch(0.90_0.01_260)]">
                   {dailyPlan?.streak
                     ? "Sua fidelidade diária está criando raiz."
                     : "Comece hoje e volte amanhã para manter a chama acesa."}
@@ -317,24 +323,23 @@ export default function DailyPlan() {
               </div>
             </div>
 
-            <div className="relative z-10 mt-7 pt-6">
-              <div className="divider-gold mb-5" />
+            <div className="relative z-10 mt-7 pt-6 border-t border-[oklch(0.75_0.12_75/0.2)]">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-3">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[oklch(0.75_0.12_75)]">
                     Progresso de hoje
                   </p>
-                  <p className="text-sm font-medium text-[oklch(0.22_0.07_260)]">
+                  <p className="text-sm font-medium text-white">
                     {completedMetasCount} de {activeMetasCount} práticas concluídas
                   </p>
                 </div>
-                <span className="text-sm font-bold text-[oklch(0.55_0.14_35)]">
+                <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">
                   {progressPercent}% concluído
                 </span>
               </div>
-              <div className="w-full bg-[oklch(0.22_0.07_260/0.05)] rounded-full h-2.5 overflow-hidden border border-[oklch(0.22_0.07_260/0.08)] shadow-inner">
+              <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden border border-white/20 shadow-inner">
                 <div
-                  className="bg-gradient-to-r from-[oklch(0.75_0.12_75)] to-emerald-600 h-2.5 rounded-full transition-all duration-700"
+                  className="bg-gradient-to-r from-[oklch(0.75_0.12_75)] to-emerald-500 h-2.5 rounded-full transition-all duration-700"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>

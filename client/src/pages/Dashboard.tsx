@@ -484,32 +484,41 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Card 5: Plano Diário */}
                 <Link href="/plano-diario" aria-label="Abrir card Plano Diário" className="block rounded-2xl focus-gold-ring">
-                  <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-border/40 bg-white dark:bg-[oklch(0.17_0.04_260)] card-interactive flex flex-col justify-between p-5 sm:p-6 h-full">
-                    <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
+                  <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6 h-full">
+                    <img
+                      src="/assets/dashboard/plano-diario.png"
+                      alt="Plano Diário"
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.70)] to-[oklch(0.12_0.03_260/0.30)]"
+                    />
                     <div className="relative z-10 flex justify-between items-start">
-                      <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.85_0.09_80)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-3 py-1 text-xs font-semibold">
+                      <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
                         Progresso Espiritual
                       </span>
-                      <Flame size={18} className={dailyPlanProgressPercent > 0 ? "text-amber-500 fill-amber-500" : "text-muted-foreground"} />
+                      <Flame size={18} className={dailyPlanProgressPercent > 0 ? "text-amber-400 fill-amber-400" : "text-white/60"} />
                     </div>
                     
                     <div className="relative z-10 my-4 flex-1 flex flex-col justify-center">
                       {isDailyPlanLoading ? (
                         <>
                           <div className="flex items-baseline justify-between mb-2">
-                            <h3 className="font-display text-lg font-bold text-navy dark:text-white">Plano Diário</h3>
-                            <Skeleton className="h-4 w-10 rounded" />
+                            <h3 className="font-display text-lg font-bold text-white">Plano Diário</h3>
+                            <Skeleton className="h-4 w-10 rounded bg-white/20" />
                           </div>
-                          <Skeleton className="h-2 w-full rounded-full" />
+                          <Skeleton className="h-2 w-full rounded-full bg-white/20" />
                         </>
                       ) : (
                         <>
                           <div className="flex items-baseline justify-between mb-2">
-                            <h3 className="font-display text-lg font-bold text-navy dark:text-white">Plano Diário</h3>
+                            <h3 className="font-display text-lg font-bold text-white">Plano Diário</h3>
                             <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">{dailyPlanProgressPercent}%</span>
                           </div>
                           
-                          <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+                          <div className="w-full bg-white/10 rounded-full h-2 overflow-hidden">
                             <div 
                               className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
                               style={{ width: `${dailyPlanProgressPercent}%` }}
@@ -521,11 +530,11 @@ export default function Dashboard() {
                     
                     <div className="relative z-10 mt-auto">
                       {isDailyPlanLoading ? (
-                        <Skeleton className="h-4 w-5/6 rounded" />
+                        <Skeleton className="h-4 w-5/6 rounded bg-white/20" />
                       ) : (
-                        <p className="text-xs text-muted-foreground line-clamp-1">
+                        <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1">
                           {dailyPlanProgressPercent === 100 
-                            ? "Parabéns! Todas as suas metas de hoje foram alcançadas." 
+                            ? "Parabéns! Todas as metas de hoje foram alcançadas." 
                             : "Retome suas metas espirituais configuradas para hoje."}
                         </p>
                       )}
