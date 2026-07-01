@@ -9,6 +9,7 @@ import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
 import { NOVENAS } from "@/data/novenas";
+import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import { toast } from "sonner";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
@@ -732,51 +733,50 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Histórico recente */}
+          {/* Vídeos Bíblicos */}
           <div className="prayer-card p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
+                <Play size={16} className="text-[oklch(0.75_0.12_75)]" />
                 <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
-                  Orações Recentes
+                  Vídeos Bíblicos
                 </h3>
               </div>
               <div className="divider-gold mb-4" />
-              {logs && logs.length > 0 ? (
-                <div className="space-y-3">
-                  {logs.slice(0, 4).map((log: any) => (
-                    <div key={log.id} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] flex items-center justify-center flex-shrink-0">
-                        <Heart size={13} className="text-[oklch(0.55_0.14_15)]" />
+              
+              <div className="space-y-3">
+                {BIBLE_VIDEOS.slice(0, 3).map((video) => (
+                  <Link key={video.id} href={`/videos?play=${video.id}`}>
+                    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+                      <div className="relative w-16 h-10 rounded overflow-hidden flex-shrink-0 bg-black/10">
+                        <img 
+                          src={video.thumbnail} 
+                          alt={video.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                          <Play size={12} className="text-white fill-white" />
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{log.prayerName}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(log.completedAt).toLocaleDateString("pt-BR")}
+                        <p className="text-xs font-semibold text-foreground truncate group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
+                          {video.title}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          {video.category} • {video.duration}
                         </p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-6">
-                  <Heart size={28} className="text-muted-foreground mx-auto mb-2 opacity-40" />
-                  <p className="text-sm text-muted-foreground">Nenhuma oração foi registrada ainda.</p>
-                  <Link href="/oracoes">
-                    <Button size="sm" variant="outline" className="mt-3 text-xs">
-                      Começar a rezar
-                    </Button>
                   </Link>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-            {logs && logs.length > 0 && (
-              <Link href="/perfil">
-                <Button variant="outline" size="sm" className="w-full mt-4 text-xs">
-                  Ver histórico completo
-                </Button>
-              </Link>
-            )}
+            
+            <Link href="/videos">
+              <Button variant="outline" size="sm" className="w-full mt-4 text-xs">
+                Ver todos os vídeos
+              </Button>
+            </Link>
           </div>
         </div>
 
