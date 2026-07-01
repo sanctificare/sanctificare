@@ -56,26 +56,20 @@ export default function AppNav() {
   return (
     <nav className="sticky top-0 z-50 bg-[oklch(0.22_0.07_260)] border-b border-[oklch(0.75_0.12_75/0.3)] shadow-lg">
       <div className="container">
-        <div className="relative flex items-center justify-between h-14 lg:h-16">
+        <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Logo */}
           <Link href={isAuthenticated ? "/dashboard" : "/"}>
-            <div className="flex w-20 lg:w-auto items-center gap-2 sm:gap-3 cursor-pointer group">
+            <div className="flex items-center gap-2 sm:gap-3 cursor-pointer group">
               <img
                 src="/assets/logo-sanctificare.webp"
                 alt="Sanctificare"
-                className="w-7 h-7 sm:w-9 sm:h-9 rounded-full object-cover"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
               />
-              <span className="hidden sm:inline font-display text-sm sm:text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide group-hover:text-[oklch(0.95_0.06_82)] transition-colors">
+              <span className="font-display text-base sm:text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide group-hover:text-[oklch(0.95_0.06_82)] transition-colors">
                 Sanctificare
               </span>
             </div>
           </Link>
-
-          {isAuthenticated && (
-            <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 lg:hidden font-display text-sm font-semibold tracking-wide text-[oklch(0.88_0.08_80)]">
-              Sanctificare
-            </span>
-          )}
 
           {/* Nav Desktop */}
           {isAuthenticated && (
@@ -123,7 +117,7 @@ export default function AppNav() {
           )}
 
           {/* Ações direita */}
-          <div className="flex w-20 lg:w-auto justify-end items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {isAuthenticated ? (
               <>
                 <Button
