@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Calendar, ChevronDown } from "lucide-react";
+import { Search, Calendar, Menu, X } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function MobileTopMenu() {
@@ -14,20 +14,27 @@ export default function MobileTopMenu() {
   };
 
   return (
-    <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-[oklch(0.12_0.03_260/0.96)] border-b border-[oklch(0.75_0.12_75/0.25)] backdrop-blur-xl">
+    <>
+      {/* Hamburger button - top right corner */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 flex items-center justify-between text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors"
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 rounded-lg text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors"
+        aria-label="Menu"
       >
-        <span className="text-sm font-medium">Menu</span>
-        <ChevronDown
-          size={20}
-          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-        />
+        {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
+      {/* Overlay */}
       {isOpen && (
-        <div className="border-t border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.16_0.03_260/0.98)]">
+        <div
+          className="fixed inset-0 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Dropdown menu */}
+      {isOpen && (
+        <div className="lg:hidden fixed top-14 right-4 z-50 w-48 rounded-lg bg-[oklch(0.12_0.03_260/0.96)] border border-[oklch(0.75_0.12_75/0.25)] shadow-lg backdrop-blur-xl overflow-hidden">
           <button
             onClick={handleSearch}
             className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors border-b border-[oklch(0.75_0.12_75/0.25)]"
@@ -46,6 +53,6 @@ export default function MobileTopMenu() {
           </a>
         </div>
       )}
-    </div>
+    </>
   );
 }

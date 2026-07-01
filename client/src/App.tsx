@@ -187,7 +187,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <MobileTopMenu />
-          <div className="theme-contemplative-a min-h-screen pt-[3rem] lg:pt-0">
+          <div className="theme-contemplative-a min-h-screen">
             <Router />
             <MobileBottomNav />
             <GlobalSearch />
