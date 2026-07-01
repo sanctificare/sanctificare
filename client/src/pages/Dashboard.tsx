@@ -30,13 +30,13 @@ const quickLinks = [
 ];
 
 const secondaryLinks = [
-  { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
-  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
-  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.36_0.15_20)] bg-[oklch(0.36_0.15_20/0.06)] border-[oklch(0.36_0.15_20/0.15)]" },
-  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", icon: Flame, color: "text-[oklch(0.50_0.10_85)] bg-[oklch(0.50_0.10_85/0.06)] border-[oklch(0.50_0.10_85/0.15)]" },
-  { href: "/musica-sacra", label: "Música Sacra", desc: "Cantos para contemplação", icon: Volume2, color: "text-[oklch(0.34_0.10_300)] bg-[oklch(0.34_0.10_300/0.06)] border-[oklch(0.34_0.10_300/0.15)]" },
-  { href: "/videos", label: "Vídeos", desc: "Passagens ilustradas", icon: Play, color: "text-[oklch(0.40_0.12_15)] bg-[oklch(0.40_0.12_15/0.06)] border-[oklch(0.40_0.12_15/0.15)]" },
-  { href: "/intencoes", label: "Intenções", desc: "Mural da comunidade", icon: Users, color: "text-[oklch(0.30_0.10_190)] bg-[oklch(0.30_0.10_190/0.06)] border-[oklch(0.30_0.10_190/0.15)]" },
+  { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.70_0.15_15)] bg-[oklch(0.70_0.15_15/0.12)] border-[oklch(0.70_0.15_15/0.25)]" },
+  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.65_0.15_240)] bg-[oklch(0.65_0.15_240/0.12)] border-[oklch(0.65_0.15_240/0.25)]" },
+  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.65_0.15_20)] bg-[oklch(0.65_0.15_20/0.12)] border-[oklch(0.65_0.15_20/0.25)]" },
+  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", icon: Flame, color: "text-[oklch(0.75_0.15_85)] bg-[oklch(0.75_0.15_85/0.12)] border-[oklch(0.75_0.15_85/0.25)]" },
+  { href: "/musica-sacra", label: "Música Sacra", desc: "Cantos para contemplação", icon: Volume2, color: "text-[oklch(0.65_0.15_300)] bg-[oklch(0.65_0.15_300/0.12)] border-[oklch(0.65_0.15_300/0.25)]" },
+  { href: "/videos", label: "Vídeos", desc: "Passagens ilustradas", icon: Play, color: "text-[oklch(0.65_0.15_15)] bg-[oklch(0.65_0.15_15/0.12)] border-[oklch(0.65_0.15_15/0.25)]" },
+  { href: "/intencoes", label: "Intenções", desc: "Mural da comunidade", icon: Users, color: "text-[oklch(0.65_0.15_190)] bg-[oklch(0.65_0.15_190/0.12)] border-[oklch(0.65_0.15_190/0.25)]" },
 ];
 
 function getDayOfWeek() {
@@ -388,14 +388,14 @@ export default function Dashboard() {
   const firstName = user?.name?.split(" ")[0] || "Fiel";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden">
+    <div className="min-h-screen bg-[oklch(0.09_0.02_260)] text-white relative overflow-hidden pb-12">
       {/* Golden pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
       
       <main className="container py-8 relative z-10">
         {/* Saudação */}
         <div className="mb-8 animate-fade-in">
-          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden shadow-lg">
+          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden shadow-lg border border-[oklch(0.75_0.12_75/0.25)]">
             <div className="absolute inset-0 bg-pattern-cross opacity-20" />
             <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
@@ -445,7 +445,7 @@ export default function Dashboard() {
 
         {/* Destaques Principais - Layout Editorial Assimétrico */}
         <div className="mb-8 animate-fade-in">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Destaques</h2>
+          <h2 className="font-display text-xl font-bold text-white/95 mb-4">Destaques</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Coluna da Esquerda (Col 1) */}
@@ -543,33 +543,33 @@ export default function Dashboard() {
                 </div>
               </Link>
 
-              {/* Card 4: Plano Diário */}
+              {/* Card 4: Plano Diário - Neon & Dark Mode */}
               <Link href="/plano-diario">
-                <div className="relative overflow-hidden rounded-2xl min-h-[160px] group cursor-pointer border border-border/40 bg-white dark:bg-[oklch(0.17_0.04_260)] shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6">
-                  <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
+                <div className="relative overflow-hidden rounded-2xl min-h-[160px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.75)] hover:bg-[oklch(0.12_0.03_260/0.90)] backdrop-blur-xl shadow-lg shadow-black/20 text-white transition-all duration-300 flex flex-col justify-between p-6">
+                  <div className="absolute inset-0 bg-pattern-cross opacity-[0.05] pointer-events-none" />
                   <div className="relative z-10 flex justify-between items-start">
-                    <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.85_0.09_80)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-3 py-1 text-xs font-semibold">
+                    <span className="bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.35)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
                       Progresso Espiritual
                     </span>
-                    <Flame size={18} className={dailyPlanProgressPercent > 0 ? "text-amber-500 fill-amber-500" : "text-muted-foreground"} />
+                    <Flame size={18} className={dailyPlanProgressPercent > 0 ? "text-amber-400 fill-amber-400 drop-shadow-[0_0_8px_oklch(0.75_0.12_75/0.8)]" : "text-white/40"} />
                   </div>
                   
                   <div className="relative z-10 my-4 flex-1 flex flex-col justify-center">
                     <div className="flex items-baseline justify-between mb-2">
-                      <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-white">Plano Diário</h3>
-                      <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">{dailyPlanProgressPercent}%</span>
+                      <h3 className="font-display text-lg font-bold text-white tracking-wide">Plano Diário</h3>
+                      <span className="text-sm font-bold text-[oklch(0.88_0.08_80)]">{dailyPlanProgressPercent}%</span>
                     </div>
                     
-                    <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-black/35 rounded-full h-2 overflow-hidden shadow-inner">
                       <div 
-                        className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
+                        className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500 shadow-[0_0_12px_oklch(0.75_0.12_75/0.8)]" 
                         style={{ width: `${dailyPlanProgressPercent}%` }}
                       />
                     </div>
                   </div>
                   
                   <div className="relative z-10 mt-auto">
-                    <p className="text-xs text-muted-foreground line-clamp-1">
+                    <p className="text-xs text-white/60 line-clamp-1">
                       {dailyPlanProgressPercent === 100 
                         ? "Parabéns! Todas as suas metas de hoje foram alcançadas." 
                         : "Retome suas metas espirituais configuradas para hoje."}
@@ -637,17 +637,17 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Outras Práticas - Grid Compacto */}
+        {/* Outras Práticas - Grid Compacto Glassmorphic */}
         <div className="mb-8">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Outras Práticas</h2>
+          <h2 className="font-display text-xl font-bold text-white/90 mb-4">Outras Práticas</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {secondaryLinks.map(({ href, label, desc, icon: Icon, color }) => (
               <Link key={href} href={href}>
-                <div className="p-4 rounded-xl border border-border/40 bg-white/60 dark:bg-[oklch(0.17_0.04_260/0.4)] backdrop-blur-md hover:bg-white/80 dark:hover:bg-[oklch(0.17_0.04_260/0.6)] shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex flex-col items-center text-center justify-center gap-2 group h-full">
+                <div className="p-4 rounded-xl border border-[oklch(0.75_0.12_75/0.15)] bg-[oklch(0.12_0.03_260/0.50)] hover:bg-[oklch(0.12_0.03_260/0.75)] backdrop-blur-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex flex-col items-center text-center justify-center gap-2 group h-full">
                   <div className={`p-2.5 rounded-full ${color} shadow-inner group-hover:scale-110 transition-transform`}>
                     <Icon size={20} className="stroke-[1.5]" />
                   </div>
-                  <span className="text-xs font-semibold text-[oklch(0.22_0.07_260)] dark:text-white group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
+                  <span className="text-xs font-semibold text-white/95 group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
                     {label}
                   </span>
                 </div>
@@ -656,28 +656,28 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Versículo do Dia - Banner Editorial */}
+        {/* Versículo do Dia - Banner Litúrgico Vitral */}
         <div className="mb-8 animate-fade-in">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] to-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.25)] p-8 shadow-sm text-center">
-            <div className="absolute inset-0 bg-pattern-cross opacity-[0.01]" />
-            <BookOpen size={24} className="text-[oklch(0.75_0.12_75)] mx-auto mb-4 stroke-[1.5]" />
-            <blockquote className="font-serif text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.16_0.03_260)] via-[oklch(0.12_0.03_260)] to-[oklch(0.09_0.02_260)] border border-[oklch(0.75_0.12_75/0.3)] p-8 shadow-lg text-center">
+            <div className="absolute inset-0 bg-pattern-cross opacity-[0.03] pointer-events-none" />
+            <BookOpen size={24} className="text-[oklch(0.75_0.12_75)] mx-auto mb-4 stroke-[1.5] drop-shadow-[0_0_6px_oklch(0.75_0.12_75/0.5)]" />
+            <blockquote className="font-serif text-xl md:text-2xl italic text-white/95 leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
               "{dynamicVerse.text}"
             </blockquote>
-            <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.65_0.14_70)]">
+            <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.75_0.12_75)]">
               {dynamicVerse.ref}
             </p>
           </div>
         </div>
 
-        {/* Intenções da Comunidade + Histórico Recente */}
+        {/* Intenções da Comunidade + Histórico Recente - Glassmorphic Dark Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-fade-in">
           {/* Intenções da Comunidade */}
-          <div className="lg:col-span-2 prayer-card p-6 flex flex-col justify-between">
+          <div className="lg:col-span-2 bg-[oklch(0.12_0.03_260/0.75)] border border-[oklch(0.75_0.12_75/0.25)] backdrop-blur-xl shadow-lg rounded-2xl p-6 flex flex-col justify-between text-white hover:border-[oklch(0.75_0.12_75/0.45)] transition-all duration-300">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                <Users size={16} className="text-[oklch(0.75_0.12_75)]" />
+                <h3 className="font-display text-sm font-semibold text-white uppercase tracking-[0.15em]">
                   Intenções da Comunidade
                 </h3>
               </div>
@@ -688,10 +688,13 @@ export default function Dashboard() {
                   intentions.slice(0, 3).map((intention) => {
                     const alreadyPrayed = myPrayedIntentions?.includes(intention.id);
                     return (
-                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 transition-all duration-300">
+                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-[oklch(0.75_0.12_75/0.15)] bg-[oklch(0.12_0.03_260/0.4)] hover:bg-[oklch(0.12_0.03_260/0.7)] hover:border-[oklch(0.75_0.12_75/0.35)] transition-all duration-300">
                         <div className="flex-1 min-w-0 pr-4">
-                          <p className="text-sm font-semibold text-foreground truncate">{intention.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                          <div className="flex items-center gap-2">
+                            <Flame size={14} className="text-amber-500 fill-amber-400 animate-pulse drop-shadow-[0_0_6px_rgba(245,158,11,0.8)]" />
+                            <p className="text-sm font-semibold text-white truncate">{intention.title}</p>
+                          </div>
+                          <p className="text-xs text-white/60 mt-0.5 truncate">
                             Por: {intention.isAnonymous ? "Anônimo" : intention.authorName} • {intention.prayerCount} {intention.prayerCount === 1 ? "oração" : "orações"}
                           </p>
                         </div>
@@ -701,8 +704,8 @@ export default function Dashboard() {
                           disabled={prayMutation.isPending}
                           onClick={() => handlePrayForIntention(intention.id)}
                           className={alreadyPrayed 
-                            ? "border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
-                            : "bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
+                            ? "border border-emerald-600/30 text-emerald-400 hover:bg-emerald-500/10 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
+                            : "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
                         >
                           {alreadyPrayed ? (
@@ -721,23 +724,23 @@ export default function Dashboard() {
                     );
                   })
                 ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção activa no momento.</p>
+                  <p className="text-sm text-white/50 text-center py-4">Nenhuma intenção ativa no momento.</p>
                 )}
               </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-border/30 text-right">
-              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.22_0.07_260)] hover:underline flex items-center justify-end gap-1">
+            <div className="mt-4 pt-3 border-t border-white/10 text-right">
+              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.75_0.12_75)] hover:underline flex items-center justify-end gap-1">
                 Ver todas as intenções <ChevronRight size={12} />
               </Link>
             </div>
           </div>
 
           {/* Histórico recente */}
-          <div className="prayer-card p-6 flex flex-col justify-between">
+          <div className="bg-[oklch(0.12_0.03_260/0.75)] border border-[oklch(0.75_0.12_75/0.25)] backdrop-blur-xl shadow-lg rounded-2xl p-6 flex flex-col justify-between text-white hover:border-[oklch(0.75_0.12_75/0.45)] transition-all duration-300">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                <Clock size={16} className="text-[oklch(0.75_0.12_75)]" />
+                <h3 className="font-display text-sm font-semibold text-white uppercase tracking-[0.15em]">
                   Orações Recentes
                 </h3>
               </div>
@@ -746,12 +749,12 @@ export default function Dashboard() {
                 <div className="space-y-3">
                   {logs.slice(0, 4).map((log: any) => (
                     <div key={log.id} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[oklch(0.22_0.07_260/0.08)] flex items-center justify-center flex-shrink-0">
-                        <Heart size={13} className="text-[oklch(0.55_0.14_15)]" />
+                      <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] flex items-center justify-center flex-shrink-0 border border-[oklch(0.75_0.12_75/0.2)]">
+                        <Heart size={13} className="text-[oklch(0.75_0.12_75)]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{log.prayerName}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-sm font-medium text-white truncate">{log.prayerName}</p>
+                        <p className="text-xs text-white/60">
                           {new Date(log.completedAt).toLocaleDateString("pt-BR")}
                         </p>
                       </div>
@@ -760,10 +763,10 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <div className="text-center py-6">
-                  <Heart size={28} className="text-muted-foreground mx-auto mb-2 opacity-40" />
-                  <p className="text-sm text-muted-foreground">Nenhuma oração foi registrada ainda.</p>
+                  <Heart size={28} className="text-white/40 mx-auto mb-2 opacity-40 animate-pulse" />
+                  <p className="text-sm text-white/50">Nenhuma oração foi registrada ainda.</p>
                   <Link href="/oracoes">
-                    <Button size="sm" variant="outline" className="mt-3 text-xs">
+                    <Button size="sm" variant="outline" className="mt-3 text-xs border-white/20 text-white hover:bg-white/10">
                       Começar a rezar
                     </Button>
                   </Link>
@@ -772,7 +775,7 @@ export default function Dashboard() {
             </div>
             {logs && logs.length > 0 && (
               <Link href="/perfil">
-                <Button variant="outline" size="sm" className="w-full mt-4 text-xs">
+                <Button variant="outline" size="sm" className="w-full mt-4 text-xs border-white/20 text-white hover:bg-white/10">
                   Ver histórico completo
                 </Button>
               </Link>
@@ -781,7 +784,7 @@ export default function Dashboard() {
         </div>
 
         {/* Banner Premium */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-6 flex flex-col md:flex-row items-center justify-between gap-4 border border-[oklch(0.75_0.12_75/0.25)]">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-[oklch(0.75_0.12_75/0.2)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
               <Crown size={22} className="text-[oklch(0.82_0.10_80)]" />
