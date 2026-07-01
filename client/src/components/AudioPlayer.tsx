@@ -429,112 +429,115 @@ export default function AudioPlayer({
   }, [timestampedSegments, supportTokens, activeWordIndex, isPlaying, currentTime]);
 
   return (
-    <div className="audio-player-shell">
-      <audio ref={audioRef} src={playingUrl} preload="auto" />
+    <div className="audio-player-container">
+      <div className="audio-player-shell">
+        <audio ref={audioRef} src={playingUrl} preload="auto" />
 
-      <div className="audio-player-artwork">
-        <img src={artworkUrl || FALLBACK_ARTWORK_URL} alt="" aria-hidden="true" />
-      </div>
-
-      <div className="audio-player-body">
-        <div className="audio-player-top-row">
-          <div className="audio-player-copy">
-            <div className="audio-player-title-row">
-              <h3>{title}</h3>
-            </div>
-            {description && <p>{description}</p>}
-            {hasError && <p className="audio-player-error">Este arquivo de áudio não está disponível no momento.</p>}
-          </div>
+        <div className="audio-player-artwork">
+          <img src={artworkUrl || FALLBACK_ARTWORK_URL} alt="" aria-hidden="true" />
         </div>
 
-        <div className="audio-player-bottom-row">
-          <div className="audio-player-timeline">
-            <span>{formatTime(Math.floor(currentTime))}</span>
-            <input
-              type="range"
-              min={0}
-              max={progressMax}
-              step={0.1}
-              value={Math.min(currentTime, progressMax)}
-              onChange={handleSeekChange}
-              aria-label="Progresso do áudio"
-            />
-            <span>-{formatTime(Math.floor(remainingTime))}</span>
+        <div className="audio-player-body">
+          <div className="audio-player-top-row">
+            <div className="audio-player-copy">
+              <div className="audio-player-title-row">
+                <h3>{title}</h3>
+              </div>
+              {description && <p>{description}</p>}
+              {hasError && <p className="audio-player-error">Este arquivo de áudio não está disponível no momento.</p>}
+            </div>
           </div>
 
-          <div className="audio-player-actions">
-            <div className="audio-player-controls" aria-label="Controles de áudio">
-              <button type="button" className="audio-player-reset" onClick={restartTrack} aria-label="Reiniciar áudio">
-                <RotateCcw size={15} />
-              </button>
-              <button
-                type="button"
-                className="audio-player-main-button"
-                onClick={togglePlayPause}
-                aria-label={isPlaying ? "Pausar áudio" : "Reproduzir áudio"}
-              >
-                {isPlaying ? <Pause size={19} fill="currentColor" /> : <Play size={19} fill="currentColor" />}
-              </button>
-            </div>
-
-            <div className="audio-player-actions-divider" />
-
-            <button
-              type="button"
-              className="audio-player-icon-button"
-              onClick={handleShare}
-              aria-label="Compartilhar nas redes sociais"
-            >
-              <Share2 size={17} />
-            </button>
-            {hasSupport ? (
-              <button
-                type="button"
-                className="audio-player-icon-button audio-player-support-button"
-                onClick={() => setIsSupportOpen(true)}
-                aria-label="Texto de apoio"
-              >
-                <BookOpen size={17} />
-              </button>
-            ) : null}
-            <div className="audio-player-volume">
-              <button
-                type="button"
-                className="audio-player-icon-button"
-                onClick={toggleMute}
-                aria-label={isMuted ? "Ativar som" : "Silenciar"}
-              >
-                {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
-              </button>
+          <div className="audio-player-bottom-row">
+            <div className="audio-player-timeline">
+              <span>{formatTime(Math.floor(currentTime))}</span>
               <input
                 type="range"
                 min={0}
-                max={1}
-                step={0.05}
-                value={volumeValue}
-                onChange={handleVolumeChange}
-                aria-label={`Volume ${volumePercent}%`}
+                max={progressMax}
+                step={0.1}
+                value={Math.min(currentTime, progressMax)}
+                onChange={handleSeekChange}
+                aria-label="Progresso do áudio"
               />
+              <span>-{formatTime(Math.floor(remainingTime))}</span>
+            </div>
+
+            <div className="audio-player-actions">
+              <div className="audio-player-controls" aria-label="Controles de áudio">
+                <button type="button" className="audio-player-reset" onClick={restartTrack} aria-label="Reiniciar áudio">
+                  <RotateCcw size={15} />
+                </button>
+                <button
+                  type="button"
+                  className="audio-player-main-button"
+                  onClick={togglePlayPause}
+                  aria-label={isPlaying ? "Pausar áudio" : "Reproduzir áudio"}
+                >
+                  {isPlaying ? <Pause size={19} fill="currentColor" /> : <Play size={19} fill="currentColor" />}
+                </button>
+              </div>
+
+              <div className="audio-player-actions-divider" />
+
+              <button
+                type="button"
+                className="audio-player-icon-button"
+                onClick={handleShare}
+                aria-label="Compartilhar nas redes sociais"
+              >
+                <Share2 size={17} />
+              </button>
+              {hasSupport ? (
+                <button
+                  type="button"
+                  className="audio-player-icon-button audio-player-support-button"
+                  onClick={() => setIsSupportOpen(true)}
+                  aria-label="Texto de apoio"
+                >
+                  <BookOpen size={17} />
+                </button>
+              ) : null}
+              <div className="audio-player-volume">
+                <button
+                  type="button"
+                  className="audio-player-icon-button"
+                  onClick={toggleMute}
+                  aria-label={isMuted ? "Ativar som" : "Silenciar"}
+                >
+                  {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+                </button>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={volumeValue}
+                  onChange={handleVolumeChange}
+                  aria-label={`Volume ${volumePercent}%`}
+                >
+                </input>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <Dialog open={isSupportOpen} onOpenChange={setIsSupportOpen}>
-        <DialogContent className="max-h-[82vh] overflow-hidden sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl text-[oklch(0.22_0.07_260)]">
-              {supportTitle || title}
-            </DialogTitle>
-            {(supportDescription || description) && (
-              <DialogDescription>{supportDescription || description}</DialogDescription>
-            )}
-          </DialogHeader>
-          <div className="max-h-[58vh] overflow-y-auto pr-2 karaoke-scroll">
-            {renderKaraokeText()}
-          </div>
-        </DialogContent>
-      </Dialog>
+        <Dialog open={isSupportOpen} onOpenChange={setIsSupportOpen}>
+          <DialogContent className="max-h-[82vh] overflow-hidden sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="font-display text-2xl text-[oklch(0.22_0.07_260)]">
+                {supportTitle || title}
+              </DialogTitle>
+              {(supportDescription || description) && (
+                <DialogDescription>{supportDescription || description}</DialogDescription>
+              )}
+            </DialogHeader>
+            <div className="max-h-[58vh] overflow-y-auto pr-2 karaoke-scroll">
+              {renderKaraokeText()}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }

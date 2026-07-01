@@ -488,6 +488,13 @@
     }
   }
 
+  @media (max-width: 640px) {
+    .cover-card-title {
+      font-size: 0.82rem;
+      line-height: 1.15;
+    }
+  }
+
   .rosary-board {
     position: relative;
     width: 100%;
@@ -772,13 +779,17 @@
     }
   }
 
-  .audio-player-shell {
+  .audio-player-container {
+    container-type: inline-size;
     width: min(100%, 48rem);
     margin-inline: auto;
+  }
+
+  .audio-player-shell {
+    width: 100%;
     min-height: 4.6rem;
     display: grid;
     grid-template-columns: 4.25rem minmax(0, 1fr);
-    container-type: inline-size;
     align-items: start;
     gap: 0.9rem;
     border-radius: 0.55rem;

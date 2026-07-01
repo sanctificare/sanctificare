@@ -1053,7 +1053,7 @@ export default function Home() {
                 key={plan.name}
                 className={`relative rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between reveal ${
                   plan.highlight
-                    ? "bg-[oklch(0.22_0.07_260)] border-[oklch(0.75_0.12_75)] shadow-xl scale-105 z-10 text-white"
+                    ? "bg-[oklch(0.22_0.07_260)] border-[oklch(0.75_0.12_75)] shadow-xl md:scale-105 z-10 text-white"
                     : "bg-[oklch(0.98_0.005_85)] border-neutral-200 hover:shadow-lg text-[oklch(0.22_0.07_260)]"
                 }`}
                 style={{ animationDelay: `${idx * 0.1}s` }}
