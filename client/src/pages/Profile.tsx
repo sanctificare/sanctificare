@@ -6,6 +6,7 @@ import { User, Heart, Crown, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, 
 import { Link } from "wouter";
 import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -15,6 +16,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { ensureNotificationPermission, scheduleDailyReminder, cancelDailyReminder } from "@/lib/notifications";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
