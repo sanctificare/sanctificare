@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { useEffect } from "react";
 import GlobalSearch from "@/components/GlobalSearch";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import MobileTopMenu from "@/components/MobileTopMenu";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -185,7 +186,8 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
-          <div className="theme-contemplative-a min-h-screen">
+          <MobileTopMenu />
+          <div className="theme-contemplative-a min-h-screen pt-[3rem] lg:pt-0">
             <Router />
             <MobileBottomNav />
             <GlobalSearch />
