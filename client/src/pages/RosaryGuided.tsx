@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { ROSARY_MYSTERIES, getTodayMystery } from "@/data/prayers";
 import { getRosaryAudioTracks, MYSTERY_AUDIO_SET_BY_KEY } from "@/data/rosary-audio";
@@ -618,8 +617,6 @@ export default function RosaryGuided() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.18_0.04_260)]">
-      <AppNav />
-
       <main
         className="min-h-[calc(100vh-4rem)] bg-cover bg-center bg-fixed"
         style={{

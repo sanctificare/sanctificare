@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { Link } from "wouter";
 import { Headphones, Crown, Clock, Play, type LucideIcon } from "lucide-react";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -89,8 +88,6 @@ export default function AudioLibraryPage({
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className={"container py-8 " + (trackReady ? "pb-36" : "")}>
         <div className="max-w-3xl mx-auto">
           {/* Header */}

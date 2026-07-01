@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { Crown, Check, Shield, Sparkles, AlertCircle, Receipt, ExternalLink, Lock, CreditCard } from "lucide-react";
 import { toast } from "sonner";
@@ -194,8 +193,6 @@ export default function Premium() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-8">
         {/* Header */}
         <div className="text-center mb-10 animate-fade-in">

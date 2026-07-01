@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import {
   Bar,
@@ -278,8 +277,6 @@ export default function DailyPlan() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-6 md:py-8">
         <div className="max-w-6xl mx-auto space-y-6">
           <section className="prayer-card p-6 md:p-8 animate-fade-in relative overflow-hidden">

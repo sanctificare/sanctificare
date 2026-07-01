@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveMediaUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
@@ -283,8 +282,6 @@ export default function VelaVirtual() {
     <div
       className={`min-h-screen text-white transition-colors duration-700 ${selectedAmbience.pageClass}`}
     >
-      {!cleanMode && <AppNav />}
-
       <main className={`transition-all duration-500 ${cleanMode ? "w-full max-w-none p-0" : "container py-8"}`}>
         {!cleanMode && (
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 animate-fade-in border-b border-white/10 pb-4">

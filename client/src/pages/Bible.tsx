@@ -3,7 +3,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import AppNav from "@/components/AppNav";
 import { useLocation } from "wouter";
 import { BIBLE_BOOKS, FAMOUS_VERSES, BibleBook } from "@/data/bible";
 import {
@@ -473,8 +472,6 @@ export default function Bible() {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[readingTheme]}`}>
-      <AppNav />
-
       <main className="container py-8 relative max-w-7xl mx-auto">
         
         {/* =========================================================================

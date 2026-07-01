@@ -3,7 +3,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import NovenaAudioDock from "@/components/NovenaAudioDock";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
 import { Crown, Lock, CheckCircle2, PlayCircle, ArrowLeft, Heart, Info } from "lucide-react";
@@ -175,7 +174,6 @@ export default function NovenaDetails() {
   if (!selectedNovena) {
     return (
       <div className="min-h-screen bg-[oklch(0.965_0.012_82)]">
-        <AppNav />
         <main className="container py-10">
           <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.3)] bg-white p-8 text-center">
             <h1 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] mb-2">Novena não encontrada</h1>
@@ -193,7 +191,6 @@ export default function NovenaDetails() {
     <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
       <div className="pointer-events-none absolute inset-0 bg-pattern-cross opacity-25" />
-      <AppNav />
 
       <main className={`container py-10 relative z-10 ${currentDayContent?.audioUrl && !isLocked ? "pb-36" : ""}`}>
         <div className="mb-5">

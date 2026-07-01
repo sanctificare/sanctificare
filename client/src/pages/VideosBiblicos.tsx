@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { BIBLE_VIDEOS, type BibleVideo } from "@/data/bible-videos";
 import { Play, Lock, Crown, Clock, Sparkles, Film, Video, AlertCircle, Heart, Search, X, Share2 } from "lucide-react";
@@ -576,8 +575,6 @@ export default function VideosBiblicos() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">

@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { Sun, Heart, Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -215,8 +214,6 @@ export default function Liturgy() {
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isZenMode ? "bg-stone-50 dark:bg-stone-950 py-10" : "bg-background"}`}>
-      {!isZenMode && <AppNav />}
-
       {isZenMode && (
         <div className="fixed top-4 left-4 z-50">
           <Button

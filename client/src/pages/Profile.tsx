@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
-import {
-  ensureNotificationPermission,
-  scheduleDailyReminder,
-  cancelDailyReminder,
-} from "@/lib/notifications";
-import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { User, Heart, Crown, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle } from "lucide-react";
 import { Link } from "wouter";
@@ -149,8 +142,6 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-8">
         <div className="max-w-5xl mx-auto">
           {/* Header perfil */}

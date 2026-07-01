@@ -4,7 +4,6 @@ import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import {
   Users, Heart, Plus, Clock, HandHeart, Sparkles,
@@ -307,8 +306,6 @@ export default function Intentions() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">

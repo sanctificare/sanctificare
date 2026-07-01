@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { Crown, Lock, Sparkles, CalendarCheck2 } from "lucide-react";
@@ -106,7 +105,6 @@ export default function Novenas() {
     <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
       <div className="pointer-events-none absolute inset-0 bg-pattern-cross opacity-25" />
-      <AppNav />
 
       <main className="container py-10 relative z-10">
         <div className="mb-8 animate-fade-in text-center">

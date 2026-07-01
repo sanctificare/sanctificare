@@ -3,7 +3,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock, Flame, CheckCircle2, Circle, Calendar, BarChart2, Users, Check, Play, BookMarked } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
@@ -344,8 +343,6 @@ export default function Dashboard() {
       {/* Golden pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
       
-      <AppNav />
-
       <main className="container py-8 relative z-10">
         {/* Saudação */}
         <div className="mb-8 animate-fade-in">

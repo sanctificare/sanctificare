@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import {
@@ -603,8 +602,6 @@ mas livrai-nos do Mal. Amém!`,
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[oklch(0.18_0.03_180)] to-[oklch(0.08_0.01_180)] text-white flex flex-col">
-      <AppNav />
-
       {/* Background Music Audio Element */}
       <audio
         ref={bgAudioRef}

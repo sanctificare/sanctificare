@@ -3,7 +3,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import AppNav from "@/components/AppNav";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
 import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Cross, Volume2 } from "lucide-react";
@@ -234,8 +233,6 @@ export default function Prayers() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <AppNav />
-
       <main className="container py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
