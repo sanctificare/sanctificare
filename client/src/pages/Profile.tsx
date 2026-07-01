@@ -143,24 +143,24 @@ export default function Profile() {
     .slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <main className="container py-8">
+    <div className="min-h-screen bg-cream dark:bg-background">
+      <main className="container py-6 sm:py-8">
         <div className="max-w-5xl mx-auto">
           {/* Header perfil */}
-          <div className="prayer-card p-6 mb-6 animate-fade-in">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-full bg-[oklch(0.22_0.07_260)] flex items-center justify-center border-2 border-[oklch(0.75_0.12_75/0.4)] flex-shrink-0">
+          <div className="prayer-card p-4 sm:p-6 mb-6 animate-fade-in">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-navy flex items-center justify-center border-2 border-[oklch(0.75_0.12_75/0.4)] flex-shrink-0">
                 <span className="font-display text-xl font-bold text-[oklch(0.88_0.08_80)]">{initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <h1 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] truncate">
+                <h1 className="font-display text-xl sm:text-2xl font-bold text-navy truncate">
                   {user?.name || "Fiel Católico"}
                 </h1>
                 <p className="text-sm text-muted-foreground truncate">{user?.email || ""}</p>
                 <div className="flex items-center gap-2 mt-2">
                   {subscription ? (
                     <span className="badge-premium flex items-center gap-1">
-                      <Crown size={10} /> Premium {subscription.plan === "annual" ? "Anual" : "Mensal"}
+                      <Crown size={9} className="sm:w-[10px] sm:h-[10px]" /> Premium {subscription.plan === "annual" ? "Anual" : "Mensal"}
                     </span>
                   ) : (
                     <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium">
@@ -170,9 +170,9 @@ export default function Profile() {
                 </div>
               </div>
               {!subscription && (
-                <Link href="/premium">
-                  <Button size="sm" className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-xs whitespace-nowrap">
-                    <Crown size={12} className="mr-1" />
+                <Link href="/premium" className="w-full sm:w-auto rounded-md focus-gold-ring">
+                  <Button size="sm" className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-[11px] sm:text-xs">
+                    <Crown size={11} className="sm:w-3 sm:h-3 mr-1" />
                     Conhecer Premium
                   </Button>
                 </Link>
@@ -188,8 +188,8 @@ export default function Profile() {
               { label: "Dias de oração", value: new Set(logs?.map((l: any) => new Date(l.completedAt).toDateString()) || []).size, icon: Calendar, color: "text-[oklch(0.40_0.12_150)]" },
             ].map((stat) => (
               <div key={stat.label} className="prayer-card p-4 text-center">
-                <stat.icon size={20} className={`${stat.color} mx-auto mb-2`} />
-                <p className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)]">{stat.value}</p>
+                <stat.icon size={18} className={`sm:w-5 sm:h-5 ${stat.color} mx-auto mb-2`} />
+                <p className="font-display text-2xl font-bold text-navy">{stat.value}</p>
                 <p className="text-xs text-muted-foreground">{stat.label}</p>
               </div>
             ))}
@@ -199,8 +199,8 @@ export default function Profile() {
 
           {/* Orações mais rezadas */}
           {topPrayers.length > 0 && (
-            <div className="prayer-card p-5 mb-6">
-              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] mb-4 uppercase tracking-wide">
+            <div className="prayer-card p-5 sm:p-6 mb-6">
+              <h2 className="section-title-sm mb-4">
                 Orações mais rezadas
               </h2>
               <div className="space-y-3">
@@ -232,10 +232,10 @@ export default function Profile() {
 
 
           {/* Histórico completo */}
-          <div className="prayer-card p-5">
+          <div className="prayer-card p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
-              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h2 className="section-title-sm">
                 Histórico de oração
               </h2>
             </div>
@@ -268,8 +268,8 @@ export default function Profile() {
               <div className="text-center py-8">
                 <Heart size={28} className="text-muted-foreground mx-auto mb-3 opacity-30" />
                 <p className="text-sm text-muted-foreground mb-4">Nenhuma oração foi registrada ainda.</p>
-                <Link href="/oracoes">
-                  <Button size="sm" className="bg-[oklch(0.22_0.07_260)] text-white">
+                <Link href="/oracoes" className="rounded-md focus-gold-ring">
+                  <Button size="sm" className="bg-navy text-white">
                     Começar a rezar
                     <ChevronRight size={14} className="ml-1" />
                   </Button>
@@ -279,10 +279,10 @@ export default function Profile() {
           </div>
 
           {/* Lembretes Diários */}
-          <div className="mt-6 prayer-card p-5">
+          <div className="section-block prayer-card p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <Bell size={16} className="text-[oklch(0.65_0.14_70)]" />
-              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <h2 className="section-title-sm">
                 Lembretes Diários
               </h2>
             </div>
@@ -313,7 +313,7 @@ export default function Profile() {
                   <select
                     value={reminderTime}
                     onChange={handleTimeChange}
-                    className="rounded-lg border border-border/60 bg-white dark:bg-background px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[oklch(0.75_0.12_75)] font-semibold shadow-sm cursor-pointer"
+                    className="rounded-lg border border-border/60 bg-white dark:bg-background px-3 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring font-semibold shadow-sm cursor-pointer"
                   >
                     <option value="06:00">06:00 (Manhã)</option>
                     <option value="08:00">08:00 (Início do dia)</option>
@@ -329,10 +329,10 @@ export default function Profile() {
 
           {/* Assinatura */}
           {subscription && (
-            <div className="mt-6 prayer-card p-5">
+            <div className="section-block prayer-card p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Crown size={16} className="text-[oklch(0.65_0.12_70)]" />
-                <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+                <h2 className="section-title-sm">
                   Minha assinatura
                 </h2>
               </div>
@@ -346,7 +346,7 @@ export default function Profile() {
                     Válido até {new Date(subscription.expiresAt).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
                   </p>
                 </div>
-                <Link href="/premium">
+                <Link href="/premium" className="rounded-md focus-gold-ring">
                   <Button variant="outline" size="sm" className="text-xs">
                     Gerenciar
                   </Button>
@@ -356,22 +356,22 @@ export default function Profile() {
           )}
 
           {/* Segurança e Privacidade */}
-          <div className="mt-6 prayer-card p-5">
+          <div className="section-block prayer-card p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Lock size={16} className="text-[oklch(0.22_0.07_260)]" />
-              <h2 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] uppercase tracking-wide">
+              <Lock size={16} className="text-navy" />
+              <h2 className="section-title-sm">
                 Segurança e Privacidade
               </h2>
             </div>
             <div className="divider-gold mb-4" />
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/redefinir-senha">
+              <Link href="/redefinir-senha" className="rounded-md focus-gold-ring">
                 <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
                   <Key size={14} />
                   Alterar Senha
                 </Button>
               </Link>
-              <Link href="/privacidade">
+              <Link href="/privacidade" className="rounded-md focus-gold-ring">
                 <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
                   <FileText size={14} />
                   Política de Privacidade

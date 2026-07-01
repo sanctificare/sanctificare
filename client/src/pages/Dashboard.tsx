@@ -2,33 +2,17 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { Heart, BookOpen, Sun, Crown, ChevronRight, Clock, Flame, CheckCircle2, Circle, Calendar, BarChart2, Users, Check, Play, BookMarked, Cross, Volume2, ArrowRight } from "lucide-react";
+import { Heart, BookOpen, Sun, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Cross, Volume2, ArrowRight } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
-import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
 import { NOVENAS } from "@/data/novenas";
 import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import { toast } from "sonner";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
-
-const quickLinks = [
-  { href: "/plano-diario", label: "Plano Diário", desc: "Suas metas espirituais", image: "/assets/dashboard/plano-diario.png", overlay: "oklch(0.25 0.09 75 / 0.60)" },
-  { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.png", overlay: "oklch(0.22 0.08 260 / 0.60)" },
-  { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.png", overlay: "oklch(0.28 0.08 145 / 0.60)" },
-  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/dashboard/lectio.png", overlay: "oklch(0.32 0.11 240 / 0.60)" },
-  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.png", overlay: "oklch(0.36 0.15 20 / 0.60)" },
-  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.png", overlay: "oklch(0.50 0.10 85 / 0.56)" },
-  { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.png", overlay: "oklch(0.34 0.10 300 / 0.58)" },
-  { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.png", overlay: "oklch(0.28 0.08 260 / 0.60)" },
-  { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.png", overlay: "oklch(0.40 0.12 15 / 0.60)" },
-  { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.png", overlay: "oklch(0.30 0.10 190 / 0.60)" },
-  { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.png", overlay: "oklch(0.40 0.15 80 / 0.60)" },
-  { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.35 0.10 40 / 0.60)" },
-];
 
 const secondaryLinks = [
   { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
@@ -157,44 +141,14 @@ function calculateStreak(logs: any[] | undefined) {
   return { currentStreak: streak, prayedToday };
 }
 
-function getWeeklyChartData(logs: any[] | undefined) {
-  const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-  const data = [];
-  
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    
-    const dayName = daysOfWeek[d.getDay()];
-    const dateStr = d.toLocaleDateString("pt-BR", { day: "numeric", month: "numeric" });
-    
-    const count = logs?.filter(log => {
-      if (!log.completedAt) return false;
-      const logDate = new Date(log.completedAt);
-      return logDate.getDate() === d.getDate() &&
-             logDate.getMonth() === d.getMonth() &&
-             logDate.getFullYear() === d.getFullYear();
-    }).length || 0;
-    
-    data.push({
-      name: dayName,
-      date: dateStr,
-      quantidade: count,
-    });
-  }
-  
-  return data;
-}
-
 export default function Dashboard() {
   const { user, isAuthenticated, loading } = useAuth();
-  const { data: logs } = trpc.prayers.getRecentLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: allLogs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: liturgy } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: dailyPlan } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: liturgy, isLoading: isLiturgyLoading } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: dailyPlan, isLoading: isDailyPlanLoading } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
 
   const utils = trpc.useUtils();
-  const { data: intentions } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: intentions, isLoading: isIntentionsLoading } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
   const { data: myPrayedIntentions } = trpc.intentions.myPrayed.useQuery(undefined, { enabled: isAuthenticated });
 
   const prayMutation = trpc.intentions.pray.useMutation({
@@ -271,75 +225,7 @@ export default function Dashboard() {
     ? Math.round((completedMetasCount / activeMetasCount) * 100)
     : 0;
 
-  const logPrayerMutation = trpc.prayers.logPrayer.useMutation({
-    onSuccess: () => {
-      toast.success("Liturgia Diária registrada no seu histórico!");
-      utils.prayers.getRecentLogs.invalidate();
-      utils.prayers.getAllLogs.invalidate();
-      utils.dailyPlan.getStatus.invalidate();
-    },
-    onError: (err) => {
-      toast.error(err.message || "Erro ao registrar liturgia.");
-    }
-  });
-
-  const liturgiaLida = !!allLogs?.some(log => {
-    if (!log.completedAt) return false;
-    const logDate = new Date(log.completedAt);
-    const isToday = logDate.getDate() === new Date().getDate() &&
-                    logDate.getMonth() === new Date().getMonth() &&
-                    logDate.getFullYear() === new Date().getFullYear();
-    if (!isToday) return false;
-    return log.prayerType === "liturgia";
-  });
-
-  const handleToggleLiturgia = () => {
-    if (liturgiaLida) {
-      toast.info("Você já concluiu a Liturgia de hoje!");
-      return;
-    }
-    logPrayerMutation.mutate({
-      prayerType: "liturgia",
-      prayerName: "Liturgia Diária",
-    });
-  };
-
   const streak = calculateStreak(allLogs);
-  const chartData = getWeeklyChartData(allLogs);
-
-  const prayedRosaryToday = !!allLogs?.some(log => {
-    if (!log.completedAt) return false;
-    const logDate = new Date(log.completedAt);
-    const isToday = logDate.getDate() === new Date().getDate() &&
-                    logDate.getMonth() === new Date().getMonth() &&
-                    logDate.getFullYear() === new Date().getFullYear();
-    if (!isToday) return false;
-    const name = log.prayerName?.toLowerCase() || "";
-    const type = log.prayerType?.toLowerCase() || "";
-    return name.includes("terço") || name.includes("rosário") || type.includes("rosario") || type.includes("terco");
-  });
-
-  const prayedLectioToday = !!allLogs?.some(log => {
-    if (!log.completedAt) return false;
-    const logDate = new Date(log.completedAt);
-    const isToday = logDate.getDate() === new Date().getDate() &&
-                    logDate.getMonth() === new Date().getMonth() &&
-                    logDate.getFullYear() === new Date().getFullYear();
-    if (!isToday) return false;
-    const name = log.prayerName?.toLowerCase() || "";
-    const type = log.prayerType?.toLowerCase() || "";
-    return name.includes("lectio") || type.includes("lectio");
-  });
-
-  const prayedNovenaToday = !!allLogs?.some(log => {
-    if (!log.completedAt) return false;
-    const logDate = new Date(log.completedAt);
-    const isToday = logDate.getDate() === new Date().getDate() &&
-                    logDate.getMonth() === new Date().getMonth() &&
-                    logDate.getFullYear() === new Date().getFullYear();
-    if (!isToday) return false;
-    return log.prayerType === "novena";
-  });
 
   const activeNovenaTotalDays = activeNovena
     ? Math.max(1, activeNovena.novena.days.length)
@@ -379,7 +265,7 @@ export default function Dashboard() {
           <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
           <p className="text-muted-foreground mb-6">Entre para retomar sua jornada de oração no app.</p>
           <a href={getLoginUrl()}>
-            <Button className="bg-[oklch(0.22_0.07_260)] text-white">Entrar</Button>
+            <Button className="bg-navy text-white">Entrar</Button>
           </a>
         </div>
       </div>
@@ -389,20 +275,20 @@ export default function Dashboard() {
   const firstName = user?.name?.split(" ")[0] || "Fiel";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden">
+    <div className="min-h-screen bg-cream dark:bg-[oklch(0.14_0.03_260)] relative overflow-hidden">
       {/* Golden pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
       
-      <main className="container py-8 relative z-10">
+      <main className="container py-6 sm:py-8 relative z-10">
         {/* Saudação */}
-        <div className="mb-8 animate-fade-in">
-          <div className="bg-[oklch(0.22_0.07_260)] rounded-2xl p-8 relative overflow-hidden shadow-lg">
+        <div className="section-block animate-fade-in">
+          <div className="bg-navy rounded-2xl p-5 sm:p-8 relative overflow-hidden shadow-lg">
             <div className="absolute inset-0 bg-pattern-cross opacity-20" />
             <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <p className="text-[oklch(0.70_0.03_260)] text-sm font-medium mb-1">{getDayOfWeek()}, {getFormattedDate()}</p>
                 <div className="flex items-center gap-3 flex-wrap mb-2">
-                  <h1 className="font-display text-3xl font-bold text-white">
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
                     Bem-vindo, {firstName}
                   </h1>
                   {streak.currentStreak > 0 && (
@@ -412,7 +298,7 @@ export default function Dashboard() {
                     </div>
                   )}
                 </div>
-                <p className="font-serif text-[oklch(0.80_0.02_260)] text-base">
+                <p className="font-serif text-[oklch(0.80_0.02_260)] text-base lead-copy">
                   Hoje a Igreja contempla os <span className="text-[oklch(0.82_0.10_80)] font-semibold">{getMystery()}</span>
                 </p>
                 {liturgy?.celebration && (
@@ -426,15 +312,15 @@ export default function Dashboard() {
                   </div>
                 )}
               </div>
-              <div className="flex gap-3">
-                <Link href="/rosario">
-                  <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
+              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <Link href="/rosario" aria-label="Abrir Santo Rosário">
+                  <Button className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
                     <RosaryIcon size={15} className="mr-2" />
                     Rezar o Rosário
                   </Button>
                 </Link>
-                <Link href="/liturgia">
-                  <Button variant="outline" className="border-[oklch(0.75_0.12_75/0.4)] text-white hover:bg-[oklch(0.75_0.12_75/0.1)] bg-transparent">
+                <Link href="/liturgia" aria-label="Abrir Liturgia Diária">
+                  <Button variant="outline" className="w-full sm:w-auto border-[oklch(0.75_0.12_75/0.4)] text-white hover:bg-[oklch(0.75_0.12_75/0.1)] bg-transparent">
                     <Sun size={15} className="mr-2" />
                     Liturgia
                   </Button>
@@ -445,28 +331,30 @@ export default function Dashboard() {
         </div>
 
         {/* Destaques Principais - Layout Editorial Assimétrico */}
-        <div className="mb-8 animate-fade-in">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Destaques</h2>
+        <div className="section-block animate-fade-in">
+          <h2 className="section-title mb-4">Destaques</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Coluna da Esquerda (Col 1) */}
             <div className="lg:col-span-1 flex flex-col gap-6">
               {/* Card 1: Santo Rosário */}
-              <Link href="/rosario">
-                <div className="relative overflow-hidden rounded-2xl flex-1 min-h-[340px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6">
+              <Link href="/rosario" aria-label="Abrir card Santo Rosário" className="block rounded-2xl focus-gold-ring">
+                <div className="relative overflow-hidden rounded-2xl flex-1 min-h-[280px] sm:min-h-[340px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6">
                   <img
                     src="/assets/dashboard/rosario.png"
                     alt="Santo Rosário"
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div
                     className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.60)] to-[oklch(0.12_0.03_260/0.20)]"
                   />
                   <div className="relative z-10 flex justify-between items-start">
-                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-semibold backdrop-blur-sm">
                       Devocional
                     </span>
-                    <RosaryIcon size={24} className="text-[oklch(0.75_0.12_75)]" />
+                    <RosaryIcon size={20} className="sm:w-6 sm:h-6 text-[oklch(0.75_0.12_75)]" />
                   </div>
                   <div className="relative z-10 mt-auto">
                     <p className="text-[oklch(0.75_0.12_75)] text-[10px] font-bold uppercase tracking-widest mb-1">{getMystery()}</p>
@@ -480,17 +368,17 @@ export default function Dashboard() {
               </Link>
 
               {/* Card 2: Bíblia Sagrada */}
-              <Link href="/biblia">
-                <div className="relative overflow-hidden rounded-2xl min-h-[220px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.3)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.5)] transition-all duration-300 flex flex-col justify-between p-6 bg-gradient-to-b from-[oklch(0.18_0.04_260)] to-[oklch(0.12_0.03_260)]">
+              <Link href="/biblia" aria-label="Abrir card Bíblia Sagrada" className="block rounded-2xl focus-gold-ring">
+                <div className="relative overflow-hidden rounded-2xl min-h-[200px] sm:min-h-[220px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.3)] card-interactive hover:border-[oklch(0.75_0.12_75/0.5)] flex flex-col justify-between p-5 sm:p-6 bg-gradient-to-b from-[oklch(0.18_0.04_260)] to-[oklch(0.12_0.03_260)]">
                   <div className="absolute inset-0 bg-pattern-cross opacity-[0.03] pointer-events-none" />
                   <div className="absolute inset-2 border border-[oklch(0.75_0.12_75/0.25)] rounded-xl pointer-events-none" />
                   <div className="absolute left-4 top-2 bottom-2 w-[1px] bg-[oklch(0.75_0.12_75/0.15)] pointer-events-none" />
                   
                   <div className="relative z-10 flex justify-between items-start">
-                    <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.75_0.12_75)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-wider uppercase">
+                    <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.75_0.12_75)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase">
                       Escrituras
                     </span>
-                    <BookOpen size={18} className="text-[oklch(0.75_0.12_75)]" />
+                    <BookOpen size={16} className="sm:w-[18px] sm:h-[18px] text-[oklch(0.75_0.12_75)]" />
                   </div>
                   
                   <div className="relative z-10 flex flex-col items-center justify-center my-auto py-2 text-center">
@@ -511,42 +399,57 @@ export default function Dashboard() {
             {/* Coluna da Direita (Col 2 & 3) */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               {/* Card 3: Liturgia Diária */}
-              <Link href="/liturgia">
-                <div className="relative overflow-hidden rounded-2xl min-h-[180px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6">
+              <Link href="/liturgia" aria-label="Abrir card Liturgia Diária" className="block rounded-2xl focus-gold-ring">
+                <div className="relative overflow-hidden rounded-2xl min-h-[170px] sm:min-h-[180px] group cursor-pointer border border-[oklch(0.75_0.12_75/0.2)] card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6">
                   <img
                     src="/assets/dashboard/liturgia.png"
                     alt="Liturgia Diária"
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div
                     className="absolute inset-0 bg-gradient-to-r from-[oklch(0.12_0.03_260/0.95)] via-[oklch(0.12_0.03_260/0.70)] to-[oklch(0.12_0.03_260/0.30)]"
                   />
                   <div className="relative z-10 flex justify-between items-start">
-                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-3 py-1 text-xs font-semibold backdrop-blur-sm">
+                    <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-semibold backdrop-blur-sm">
                       Palavra
                     </span>
-                    <Sun size={20} className="text-[oklch(0.75_0.12_75)]" />
+                    <Sun size={18} className="sm:w-5 sm:h-5 text-[oklch(0.75_0.12_75)]" />
                   </div>
                   <div className="relative z-10 mt-auto">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getLiturgicalColorStyle(liturgy?.color)}`}>
-                        {liturgy?.color ? capitalize(liturgy.color) : "Tempo Litúrgico"}
-                      </span>
-                      <span className="text-xs text-[oklch(0.90_0.01_260)] font-medium truncate max-w-[240px]">
-                        {liturgy?.celebration || "Missa de Hoje"}
-                      </span>
+                      {isLiturgyLoading ? (
+                        <>
+                          <Skeleton className="h-5 w-28 rounded" />
+                          <Skeleton className="h-4 w-44 rounded" />
+                        </>
+                      ) : (
+                        <>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${getLiturgicalColorStyle(liturgy?.color)}`}>
+                            {liturgy?.color ? capitalize(liturgy.color) : "Tempo Litúrgico"}
+                          </span>
+                          <span className="text-xs text-[oklch(0.90_0.01_260)] font-medium truncate max-w-[240px]">
+                            {liturgy?.celebration || "Missa de Hoje"}
+                          </span>
+                        </>
+                      )}
                     </div>
                     <h3 className="font-display text-xl font-bold text-white mb-1">Liturgia Diária</h3>
-                    <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1 italic max-w-xl">
-                      {dynamicVerse.text ? `"${dynamicVerse.text}"` : "Leituras e Salmo do dia para acompanhar a Igreja."}
-                    </p>
+                    {isLiturgyLoading ? (
+                      <Skeleton className="h-4 w-4/5 rounded" />
+                    ) : (
+                      <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1 italic max-w-xl">
+                        {dynamicVerse.text ? `"${dynamicVerse.text}"` : "Leituras e Salmo do dia para acompanhar a Igreja."}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>
 
               {/* Card 4: Plano Diário */}
-              <Link href="/plano-diario">
-                <div className="relative overflow-hidden rounded-2xl min-h-[160px] group cursor-pointer border border-border/40 bg-white dark:bg-[oklch(0.17_0.04_260)] shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-6">
+              <Link href="/plano-diario" aria-label="Abrir card Plano Diário" className="block rounded-2xl focus-gold-ring">
+                <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-border/40 bg-white dark:bg-[oklch(0.17_0.04_260)] card-interactive flex flex-col justify-between p-5 sm:p-6">
                   <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
                   <div className="relative z-10 flex justify-between items-start">
                     <span className="bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.85_0.09_80)] border border-[oklch(0.75_0.12_75/0.2)] rounded-full px-3 py-1 text-xs font-semibold">
@@ -556,32 +459,48 @@ export default function Dashboard() {
                   </div>
                   
                   <div className="relative z-10 my-4 flex-1 flex flex-col justify-center">
-                    <div className="flex items-baseline justify-between mb-2">
-                      <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-white">Plano Diário</h3>
-                      <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">{dailyPlanProgressPercent}%</span>
-                    </div>
-                    
-                    <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden">
-                      <div 
-                        className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
-                        style={{ width: `${dailyPlanProgressPercent}%` }}
-                      />
-                    </div>
+                    {isDailyPlanLoading ? (
+                      <>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <h3 className="font-display text-lg font-bold text-navy dark:text-white">Plano Diário</h3>
+                          <Skeleton className="h-4 w-10 rounded" />
+                        </div>
+                        <Skeleton className="h-2 w-full rounded-full" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-baseline justify-between mb-2">
+                          <h3 className="font-display text-lg font-bold text-navy dark:text-white">Plano Diário</h3>
+                          <span className="text-sm font-bold text-[oklch(0.75_0.12_75)]">{dailyPlanProgressPercent}%</span>
+                        </div>
+                        
+                        <div className="w-full bg-black/5 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+                          <div 
+                            className="bg-[oklch(0.75_0.12_75)] h-2 rounded-full transition-all duration-500" 
+                            style={{ width: `${dailyPlanProgressPercent}%` }}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                   
                   <div className="relative z-10 mt-auto">
-                    <p className="text-xs text-muted-foreground line-clamp-1">
-                      {dailyPlanProgressPercent === 100 
-                        ? "Parabéns! Todas as suas metas de hoje foram alcançadas." 
-                        : "Retome suas metas espirituais configuradas para hoje."}
-                    </p>
+                    {isDailyPlanLoading ? (
+                      <Skeleton className="h-4 w-5/6 rounded" />
+                    ) : (
+                      <p className="text-xs text-muted-foreground line-clamp-1">
+                        {dailyPlanProgressPercent === 100 
+                          ? "Parabéns! Todas as suas metas de hoje foram alcançadas." 
+                          : "Retome suas metas espirituais configuradas para hoje."}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>
 
               {/* Card 5: Novenas */}
-              <Link href={activeNovena ? `/novenas/${activeNovena.novena.slug}` : "/novenas"}>
-                <div className="relative overflow-hidden rounded-2xl min-h-[160px] group cursor-pointer border border-border/30 shadow-md hover:shadow-xl hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300 flex flex-col justify-between p-6">
+              <Link href={activeNovena ? `/novenas/${activeNovena.novena.slug}` : "/novenas"} aria-label="Abrir card Novenas" className="block rounded-2xl focus-gold-ring">
+                <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-border/30 card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6">
                   <img
                     src={activeNovena
                       ? (activeNovena.novena.slug === 'novena-do-sagrado-coracao-de-jesus'
@@ -594,6 +513,8 @@ export default function Dashboard() {
                       : '/assets/novenas/sao-jose.png'
                     }
                     alt="Novena"
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div
@@ -639,16 +560,16 @@ export default function Dashboard() {
         </div>
 
         {/* Outras Práticas - Grid Compacto */}
-        <div className="mb-8">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">Outras Práticas</h2>
+        <div className="section-block">
+          <h2 className="section-title mb-4">Outras Práticas</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
-            {secondaryLinks.map(({ href, label, desc, icon: Icon, color }) => (
-              <Link key={href} href={href}>
-                <div className="p-4 rounded-xl border border-border/40 bg-white/60 dark:bg-[oklch(0.17_0.04_260/0.4)] backdrop-blur-md hover:bg-white/80 dark:hover:bg-[oklch(0.17_0.04_260/0.6)] shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex flex-col items-center text-center justify-center gap-2 group h-full">
-                  <div className={`p-2.5 rounded-full ${color} shadow-inner group-hover:scale-110 transition-transform`}>
-                    <Icon size={20} className="stroke-[1.5]" />
+            {secondaryLinks.map(({ href, label, icon: Icon, color }) => (
+              <Link key={href} href={href} aria-label={`Abrir ${label}`} className="block rounded-xl focus-gold-ring">
+                <div className="p-3 sm:p-4 rounded-xl border border-border/40 bg-white/60 dark:bg-[oklch(0.17_0.04_260/0.4)] backdrop-blur-md hover:bg-white/80 dark:hover:bg-[oklch(0.17_0.04_260/0.6)] card-soft hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex flex-col items-center text-center justify-center gap-1.5 sm:gap-2 group h-full">
+                  <div className={`p-2 sm:p-2.5 rounded-full ${color} shadow-inner group-hover:scale-110 transition-transform`}>
+                    <Icon size={18} className="sm:w-5 sm:h-5 stroke-[1.5]" />
                   </div>
-                  <span className="text-xs font-semibold text-[oklch(0.22_0.07_260)] dark:text-white group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
+                  <span className="text-[11px] sm:text-xs leading-tight line-clamp-2 font-semibold text-navy dark:text-white group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
                     {label}
                   </span>
                 </div>
@@ -658,41 +579,55 @@ export default function Dashboard() {
         </div>
 
         {/* Versículo do Dia - Banner Editorial */}
-        <div className="mb-8 animate-fade-in">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] to-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.25)] p-8 shadow-sm text-center">
+        <div className="section-block animate-fade-in">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] to-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.25)] p-5 sm:p-8 card-soft text-center">
             <div className="absolute inset-0 bg-pattern-cross opacity-[0.01]" />
             <BookOpen size={24} className="text-[oklch(0.75_0.12_75)] mx-auto mb-4 stroke-[1.5]" />
-            <blockquote className="font-serif text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
+            <blockquote className="font-serif text-lg sm:text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
               "{dynamicVerse.text}"
             </blockquote>
-            <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.65_0.14_70)]">
-              {dynamicVerse.ref}
-            </p>
+            {isLiturgyLoading ? (
+              <Skeleton className="h-4 w-32 mx-auto rounded" />
+            ) : (
+              <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.45_0.12_70)] dark:text-[oklch(0.78_0.09_78)]">
+                {dynamicVerse.ref}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Intenções da Comunidade + Histórico Recente */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-fade-in">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 section-block animate-fade-in">
           {/* Intenções da Comunidade */}
-          <div className="lg:col-span-2 prayer-card p-6 flex flex-col justify-between">
+          <div className="lg:col-span-2 prayer-card p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                <h3 className="section-title-sm">
                   Intenções da Comunidade
                 </h3>
               </div>
               <div className="divider-gold mb-4" />
               
               <div className="space-y-3">
-                {intentions && intentions.length > 0 ? (
+                {isIntentionsLoading ? (
+                  Array.from({ length: 3 }).map((_, idx) => (
+                    <div key={`intentions-skeleton-${idx}`} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5">
+                      <div className="flex-1 min-w-0 pr-4 space-y-2">
+                        <Skeleton className="h-4 w-3/4 rounded" />
+                        <Skeleton className="h-3 w-1/2 rounded" />
+                      </div>
+                      <Skeleton className="h-8 w-20 rounded-md" />
+                    </div>
+                  ))
+                ) : intentions && intentions.length > 0 ? (
                   intentions.slice(0, 3).map((intention) => {
                     const alreadyPrayed = myPrayedIntentions?.includes(intention.id);
                     return (
-                      <div key={intention.id} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 transition-all duration-300">
-                        <div className="flex-1 min-w-0 pr-4">
-                          <p className="text-sm font-semibold text-foreground truncate">{intention.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                      <div key={intention.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5 hover:bg-white/20 transition-all duration-300">
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-foreground line-clamp-2 sm:line-clamp-1">{intention.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2 sm:line-clamp-1">
                             Por: {intention.isAnonymous ? "Anônimo" : intention.authorName} • {intention.prayerCount} {intention.prayerCount === 1 ? "oração" : "orações"}
                           </p>
                         </div>
@@ -702,8 +637,8 @@ export default function Dashboard() {
                           disabled={prayMutation.isPending}
                           onClick={() => handlePrayForIntention(intention.id)}
                           className={alreadyPrayed 
-                            ? "border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
-                            : "bg-[oklch(0.22_0.07_260)] text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
+                            ? "w-full sm:w-auto border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
+                            : "w-full sm:w-auto bg-navy text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
                         >
                           {alreadyPrayed ? (
@@ -722,23 +657,23 @@ export default function Dashboard() {
                     );
                   })
                 ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção activa no momento.</p>
+                  <p className="text-sm text-muted-foreground text-center py-4">Nenhuma intenção ativa no momento.</p>
                 )}
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-border/30 text-right">
-              <Link href="/intencoes" className="text-xs font-semibold text-[oklch(0.22_0.07_260)] hover:underline flex items-center justify-end gap-1">
+              <Link href="/intencoes" className="text-xs font-semibold text-navy hover:underline flex items-center justify-end gap-1">
                 Ver todas as intenções <ChevronRight size={12} />
               </Link>
             </div>
           </div>
 
           {/* Vídeos Bíblicos */}
-          <div className="prayer-card p-6 flex flex-col justify-between">
+          <div className="prayer-card p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Play size={16} className="text-[oklch(0.75_0.12_75)]" />
-                <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                <h3 className="section-title-sm">
                   Vídeos Bíblicos
                 </h3>
               </div>
@@ -746,12 +681,14 @@ export default function Dashboard() {
               
               <div className="space-y-3">
                 {BIBLE_VIDEOS.slice(0, 3).map((video) => (
-                  <Link key={video.id} href={`/videos?play=${video.id}`}>
+                  <Link key={video.id} href={`/videos?play=${video.id}`} aria-label={`Abrir vídeo ${video.title}`} className="block rounded-lg focus-gold-ring">
                     <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer group">
                       <div className="relative w-16 h-10 rounded overflow-hidden flex-shrink-0 bg-black/10">
                         <img 
                           src={video.thumbnail} 
                           alt={video.title} 
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
@@ -759,10 +696,10 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-foreground truncate group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
+                        <p className="text-[11px] sm:text-xs font-semibold text-foreground line-clamp-2 group-hover:text-[oklch(0.75_0.12_75)] transition-colors">
                           {video.title}
                         </p>
-                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                        <p className="text-[10px] text-muted-foreground mt-0.5 truncate">
                           {video.category} • {video.duration}
                         </p>
                       </div>
@@ -781,18 +718,18 @@ export default function Dashboard() {
         </div>
 
         {/* Banner Premium */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-5 sm:p-6 flex flex-col md:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3 sm:gap-4">
             <div className="w-12 h-12 rounded-full bg-[oklch(0.75_0.12_75/0.2)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
               <Crown size={22} className="text-[oklch(0.82_0.10_80)]" />
             </div>
             <div>
               <h3 className="font-display text-base font-bold text-white">Aprofunde sua vida de oração</h3>
-              <p className="text-sm text-[oklch(0.75_0.03_260)]">Novenas, meditações e áudios para acompanhar com mais constância a sua caminhada espiritual</p>
+              <p className="text-sm text-[oklch(0.75_0.03_260)] lead-copy">Novenas, meditações e áudios para acompanhar com mais constância a sua caminhada espiritual</p>
             </div>
           </div>
-          <Link href="/premium">
-            <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold whitespace-nowrap">
+          <Link href="/premium" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
               Conhecer planos
               <ChevronRight size={15} className="ml-1" />
             </Button>

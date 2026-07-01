@@ -232,24 +232,24 @@ export default function Prayers() {
   const premiumPrayers = PRAYERS.filter(p => p.category === "premium");
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
-      <main className="container py-8">
+    <div className="min-h-screen bg-cream dark:bg-background">
+      <main className="container py-6 sm:py-8">
         {/* Header */}
-        <div className="mb-8 animate-fade-in">
+        <div className="section-block animate-fade-in">
           <div className="flex items-center gap-2 mb-2">
             <PrayingHandsIcon size={20} className="text-[oklch(0.55_0.14_15)]" />
             <span className="text-sm text-muted-foreground font-medium">Orações</span>
           </div>
-          <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-2">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-navy mb-2">
             Orações Diárias
           </h1>
-          <p className="font-serif text-muted-foreground">
+          <p className="font-serif text-muted-foreground lead-copy">
             Reze com devoção e guarde no histórico a constância da sua vida de oração.
           </p>
         </div>
 
         {/* Rosário em destaque */}
-        <div className="mb-8 rounded-2xl bg-[oklch(0.22_0.07_260)] p-6 relative overflow-hidden">
+        <div className="section-block rounded-2xl bg-navy p-5 sm:p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-pattern-cross opacity-20" />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
@@ -257,10 +257,10 @@ export default function Prayers() {
                 <span className="badge-premium">Destaque</span>
               </div>
               <h2 className="font-display text-xl font-bold text-white mb-1">Rosário</h2>
-              <p className="text-sm text-[oklch(0.75_0.03_260)]">Reze o Santo Rosário com guia completo, mistérios e apoio visual para favorecer o recolhimento.</p>
+              <p className="text-sm text-[oklch(0.75_0.03_260)] lead-copy">Reze o Santo Rosário com guia completo, mistérios e apoio visual para favorecer o recolhimento.</p>
             </div>
-            <Link href="/rosario">
-              <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold whitespace-nowrap">
+            <Link href="/rosario" className="w-full sm:w-auto rounded-md focus-gold-ring">
+              <Button className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
                 Rezar o Rosário
                 <ChevronRight size={15} className="ml-1" />
               </Button>
@@ -269,7 +269,7 @@ export default function Prayers() {
         </div>
 
         {/* Vela Virtual em destaque */}
-        <div className="mb-8 rounded-2xl bg-[oklch(0.12_0.03_260)] p-6 relative overflow-hidden border border-[oklch(0.82_0.10_80/0.18)]">
+        <div className="section-block rounded-2xl bg-[oklch(0.12_0.03_260)] p-5 sm:p-6 relative overflow-hidden border border-[oklch(0.82_0.10_80/0.18)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_oklch(0.82_0.10_80/0.12),_transparent_40%),radial-gradient(circle_at_bottom_left,_oklch(0.55_0.14_15/0.10),_transparent_36%)]" />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
@@ -277,10 +277,10 @@ export default function Prayers() {
                 <span className="badge-premium">Novo espaço</span>
               </div>
               <h2 className="font-display text-xl font-bold text-white mb-1">Vela Virtual</h2>
-              <p className="text-sm text-[oklch(0.78_0.03_260)]">Uma chama acesa, música discreta e um espaço sóbrio para oração pessoal e silêncio interior.</p>
+              <p className="text-sm text-[oklch(0.78_0.03_260)] lead-copy">Uma chama acesa, música discreta e um espaço sóbrio para oração pessoal e silêncio interior.</p>
             </div>
-            <Link href="/vela-virtual">
-              <Button className="bg-[oklch(0.82_0.10_80)] hover:bg-[oklch(0.77_0.10_80)] text-[oklch(0.15_0.02_260)] font-semibold whitespace-nowrap">
+            <Link href="/vela-virtual" className="w-full sm:w-auto rounded-md focus-gold-ring">
+              <Button className="w-full sm:w-auto bg-[oklch(0.82_0.10_80)] hover:bg-[oklch(0.77_0.10_80)] text-[oklch(0.15_0.02_260)] font-semibold">
                 Abrir Vela Virtual
                 <Flame size={15} className="ml-1" />
               </Button>
@@ -289,11 +289,11 @@ export default function Prayers() {
         </div>
 
         {/* Orações Básicas */}
-        <div className="mb-8">
-          <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-4">
+        <div className="section-block">
+          <h2 className="section-title mb-4">
             Orações Tradicionais
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
             {basicPrayers.map((prayer) => (
               (() => {
                 const theme = getPrayerCardTheme(prayer.type);
@@ -302,34 +302,34 @@ export default function Prayers() {
                   <button
                     key={prayer.id}
                     onClick={() => handleOpenPrayer(prayer)}
-                    className={`group relative rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${theme.surface} ${theme.ring}`}
+                    className={`group relative rounded-2xl border p-3 sm:p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus-gold-ring ${theme.surface} ${theme.ring}`}
                   >
                     <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl" style={{ backgroundColor: theme.accent }} />
                     <div className="mb-3 flex items-start justify-between gap-2 pt-1">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
-                        <Icon size={18} className={theme.iconColor} />
+                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
+                        <Icon size={16} className={`${theme.iconColor} sm:w-[18px] sm:h-[18px]`} />
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <span className={`rounded-full px-2 py-1 text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
+                        <span className={`rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
                           {theme.badgeLabel}
                         </span>
                         <div className="flex gap-1 flex-wrap justify-end">
                           {prayer.audioUrl && (
                             <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
-                              <Volume2 size={10} />
+                              <Volume2 size={9} className="sm:w-[10px] sm:h-[10px]" />
                               <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
                             </span>
                           )}
-                          <span className="rounded-full bg-black/10 px-2 py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)]">
-                            <Clock size={11} />
+                          <span className="rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)]">
+                            <Clock size={10} className="sm:w-[11px] sm:h-[11px]" />
                             <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
                           </span>
                         </div>
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] mb-1 line-clamp-2">{prayer.name}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{prayer.description}</p>
+                      <h3 className="font-display text-base font-bold text-navy mb-1 line-clamp-2">{prayer.name}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3">{prayer.description}</p>
                     </div>
                   </button>
                 );
@@ -339,16 +339,16 @@ export default function Prayers() {
         </div>
 
         {/* Orações Premium */}
-        <div>
+        <div className="section-block">
           <div className="flex items-center gap-3 mb-4">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">
+            <h2 className="section-title">
               Conteúdo Premium
             </h2>
             <span className="badge-premium flex items-center gap-1">
               <Crown size={10} /> Premium
             </span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
             {premiumPrayers.map((prayer) => (
               (() => {
                 const theme = getPrayerCardTheme(prayer.type);
@@ -357,13 +357,13 @@ export default function Prayers() {
                   <button
                     key={prayer.id}
                     onClick={() => handleOpenPrayer(prayer)}
-                    className={`group relative rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${theme.surface} ${theme.ring} ${!isPremium ? "opacity-90" : ""}`}
+                    className={`group relative rounded-2xl border p-3 sm:p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus-gold-ring ${theme.surface} ${theme.ring} ${!isPremium ? "opacity-90" : ""}`}
                   >
                 {!isPremium && (
                   <div className="absolute inset-0 rounded-2xl bg-[oklch(0.97_0.01_85/0.48)] backdrop-blur-[2px] flex items-center justify-center z-20">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
-                        <Lock size={16} className="text-[oklch(0.65_0.12_70)]" />
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
+                        <Lock size={14} className="sm:w-4 sm:h-4 text-[oklch(0.65_0.12_70)]" />
                       </div>
                       <span className="text-xs font-semibold text-[oklch(0.40_0.08_260)]">Premium</span>
                     </div>
@@ -371,32 +371,32 @@ export default function Prayers() {
                 )}
                 <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl" style={{ backgroundColor: theme.accent }} />
                 <div className="mb-3 flex items-start justify-between gap-2 pt-1 relative z-10">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
-                    <Icon size={18} className={theme.iconColor} />
+                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
+                    <Icon size={16} className={`${theme.iconColor} sm:w-[18px] sm:h-[18px]`} />
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <span className={`rounded-full px-2 py-1 text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
+                    <span className={`rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-semibold tracking-[0.03em] ${theme.badgeBg} ${theme.badgeText}`}>
                       {theme.badgeLabel}
                     </span>
                     <div className="flex gap-1 flex-wrap justify-end">
                       {prayer.audioUrl && (
                         <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
-                          <Volume2 size={10} />
+                          <Volume2 size={9} className="sm:w-[10px] sm:h-[10px]" />
                           <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
                         </span>
                       )}
-                      <span className="rounded-full bg-[oklch(0.82_0.10_80/0.88)] text-[oklch(0.17_0.02_260)] px-2 py-1 flex items-center gap-1">
-                        <Crown size={11} />
+                      <span className="rounded-full bg-[oklch(0.82_0.10_80/0.88)] text-[oklch(0.17_0.02_260)] px-1.5 sm:px-2 py-0.5 sm:py-1 flex items-center gap-1">
+                        <Crown size={10} className="sm:w-[11px] sm:h-[11px]" />
                         <span className="text-[10px] font-semibold tracking-[0.03em]">Premium</span>
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="relative z-10">
-                  <h3 className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] mb-1 line-clamp-2">{prayer.name}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-3">{prayer.description}</p>
-                  <div className="inline-flex rounded-full bg-black/10 px-2 py-1 items-center gap-1 text-[oklch(0.25_0.05_260)]">
-                    <Clock size={11} />
+                  <h3 className="font-display text-base font-bold text-navy mb-1 line-clamp-2">{prayer.name}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3">{prayer.description}</p>
+                  <div className="inline-flex rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 items-center gap-1 text-[oklch(0.25_0.05_260)]">
+                    <Clock size={10} className="sm:w-[11px] sm:h-[11px]" />
                     <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
                   </div>
                 </div>
@@ -407,16 +407,16 @@ export default function Prayers() {
           </div>
 
           {!isPremium && (
-            <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.05)] p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="mt-4 sm:mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.05)] p-5 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Crown size={20} className="text-[oklch(0.65_0.12_70)]" />
                 <div>
-                  <p className="font-semibold text-sm text-[oklch(0.22_0.07_260)]">Desbloqueie todo o conteúdo</p>
+                  <p className="font-semibold text-sm text-navy">Desbloqueie todo o conteúdo</p>
                   <p className="text-xs text-muted-foreground">Novenas, meditações e áudios para aprofundar sua vida de oração.</p>
                 </div>
               </div>
-              <Link href="/premium">
-                <Button className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold text-sm whitespace-nowrap">
+              <Link href="/premium" className="w-full sm:w-auto rounded-md focus-gold-ring">
+                <Button className="w-full sm:w-auto bg-navy hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold text-sm">
                   Ver Planos Premium
                 </Button>
               </Link>
@@ -433,7 +433,7 @@ export default function Prayers() {
               <DialogHeader>
                 <div className="flex items-center gap-3 mb-2">
                   <div>
-                    <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)]">
+                    <DialogTitle className="font-display text-xl text-navy">
                       {selectedPrayer.name}
                     </DialogTitle>
                     <p className="text-xs text-muted-foreground">{selectedPrayer.description}</p>
