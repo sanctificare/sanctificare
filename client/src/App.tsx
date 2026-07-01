@@ -33,6 +33,9 @@ import DailyPlan from "./pages/DailyPlan";
 import Privacy from "./pages/Privacy";
 
 
+import AppNav from "@/components/AppNav";
+
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
@@ -186,6 +189,9 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
+          <div className="hidden lg:block">
+            <AppNav />
+          </div>
           <MobileTopMenu />
           <div className="theme-contemplative-a min-h-screen">
             <Router />
