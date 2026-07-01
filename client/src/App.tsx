@@ -31,6 +31,7 @@ import Novenas from "./pages/Novenas";
 import NovenaDetails from "./pages/NovenaDetails";
 import DailyPlan from "./pages/DailyPlan";
 import Privacy from "./pages/Privacy";
+import Explore from "./pages/Explore";
 
 
 import AppNav from "@/components/AppNav";
@@ -45,6 +46,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/explore" component={Explore} />
       <Route path="/oracoes" component={Prayers} />
       <Route path="/rosario" component={RosaryGuided} />
       <Route path="/liturgia" component={Liturgy} />

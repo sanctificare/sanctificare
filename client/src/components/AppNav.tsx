@@ -10,13 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Crown, BookOpen, Users, Home, User, ScrollText, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search } from "lucide-react";
+import { Crown, BookOpen, Users, Home, User, ScrollText, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 
 const mainLinks = [
-  { href: "/dashboard", label: "Início", icon: Home },
+  { href: "/explore", label: "Explore", icon: Compass },
   { href: "/plano-diario", label: "Plano Diário", icon: CheckCircle2 },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
@@ -35,7 +35,7 @@ const moreLinks = [
 ];
 
 const mobilePrimaryLinks = [
-  { href: "/dashboard", label: "Início", icon: Home },
+  { href: "/explore", label: "Explore", icon: Compass },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/rosario", label: "Terço", icon: RosaryIcon },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
