@@ -115,6 +115,7 @@ export default function Liturgy() {
 
 
   const [liturgyAudio, setLiturgyAudio] = useState<LiturgyDailyAudioTrack | null>(null);
+  const [audioUnavailable, setAudioUnavailable] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false);
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
 
@@ -127,6 +128,7 @@ export default function Liturgy() {
       const candidate = getLiturgyAudioByDate(liturgy?.liturgyDate);
       if (!candidate) {
         setLiturgyAudio(null);
+        setAudioUnavailable(Boolean(liturgy));
         return;
       }
 
@@ -134,10 +136,12 @@ export default function Liturgy() {
         const res = await fetch(candidate.audioUrl, { method: "HEAD" });
         if (!canceled) {
           setLiturgyAudio(res.ok ? candidate : null);
+          setAudioUnavailable(!res.ok);
         }
       } catch {
         if (!canceled) {
           setLiturgyAudio(null);
+          setAudioUnavailable(true);
         }
       }
     }
@@ -335,6 +339,15 @@ export default function Liturgy() {
                   .filter(Boolean)
                   .join("\n\n")}
               />
+            )}
+
+            {!liturgyAudio && audioUnavailable && !isZenMode && (
+              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-100">
+                <p className="font-semibold">Áudio indisponível para esta data</p>
+                <p className="mt-1 text-xs opacity-80">
+                  As leituras em texto seguem disponíveis abaixo para sua oração e acompanhamento da liturgia.
+                </p>
+              </div>
             )}
 
             <LiturgyReadings

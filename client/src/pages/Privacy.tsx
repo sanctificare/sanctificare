@@ -13,11 +13,9 @@ export default function Privacy() {
       {/* Top Header Navigation */}
       <header className="sticky top-0 z-50 bg-[oklch(0.22_0.07_260)] text-[oklch(0.96_0.015_85)] shadow-md border-b border-[oklch(0.75_0.12_75)/0.2]">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/">
-            <a className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-[oklch(0.96_0.015_85)] hover:text-[oklch(0.75_0.12_75)] transition-colors cursor-pointer">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Voltar para o Início</span>
-            </a>
+          <Link href="/" className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-[oklch(0.96_0.015_85)] hover:text-[oklch(0.75_0.12_75)] transition-colors cursor-pointer">
+            <ArrowLeft className="w-4 h-4" />
+            <span>Voltar para o Início</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -358,11 +356,9 @@ export default function Privacy() {
 
         {/* Back Button Footer */}
         <div className="mt-8 text-center">
-          <Link href="/">
-            <a className="inline-flex items-center gap-2 px-6 py-2.5 bg-[oklch(0.22_0.07_260)] text-[oklch(0.96_0.015_85)] hover:bg-[oklch(0.15_0.05_265)] hover:text-white rounded-lg shadow-md hover:shadow-lg transition-all text-sm font-sans font-semibold cursor-pointer">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Voltar para a Página Inicial</span>
-            </a>
+          <Link href="/" className="inline-flex items-center gap-2 px-6 py-2.5 bg-[oklch(0.22_0.07_260)] text-[oklch(0.96_0.015_85)] hover:bg-[oklch(0.15_0.05_265)] hover:text-white rounded-lg shadow-md hover:shadow-lg transition-all text-sm font-sans font-semibold cursor-pointer">
+            <ArrowLeft className="w-4 h-4" />
+            <span>Voltar para a Página Inicial</span>
           </Link>
         </div>
       </main>

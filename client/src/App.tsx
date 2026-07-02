@@ -64,6 +64,7 @@ function Router() {
         <Route path="/novenas/:slug" component={NovenaDetails} />
         <Route path="/intencoes" component={Intentions} />
         <Route path="/perfil" component={Profile} />
+        <Route path="/profile" component={Profile} />
         <Route path="/plano-diario" component={DailyPlan} />
         <Route path="/premium" component={Premium} />
         <Route path="/videos" component={VideosBiblicos} />

@@ -267,16 +267,24 @@ export default function LectioDivina() {
 
     setIsAudioChecking(true);
     const testAudio = new Audio(resolveMediaUrl(track.audioUrl));
+    let settled = false;
+
+    const finishCheck = (available: boolean) => {
+      if (settled) return;
+      settled = true;
+      setIsDailyAudioAvailable(available);
+      setIsAudioChecking(false);
+    };
     
     const handleAudioError = () => {
-      setIsDailyAudioAvailable(false);
-      setIsAudioChecking(false);
+      finishCheck(false);
     };
 
     const handleAudioSuccess = () => {
-      setIsDailyAudioAvailable(true);
-      setIsAudioChecking(false);
+      finishCheck(true);
     };
+
+    const timeoutId = window.setTimeout(() => finishCheck(false), 5000);
 
     testAudio.addEventListener("error", handleAudioError);
     testAudio.addEventListener("canplay", handleAudioSuccess);
@@ -288,6 +296,7 @@ export default function LectioDivina() {
       testAudio.removeEventListener("error", handleAudioError);
       testAudio.removeEventListener("canplay", handleAudioSuccess);
       testAudio.removeEventListener("loadedmetadata", handleAudioSuccess);
+      window.clearTimeout(timeoutId);
       testAudio.pause();
       testAudio.src = "";
     };
@@ -605,9 +614,9 @@ mas livrai-nos do Mal. Amém!`,
       {/* Background Music Audio Element */}
       <audio
         ref={bgAudioRef}
-        src={resolveMediaUrl("/r2-storage/vela-virtual/musica-ambiente.mp3")}
+        src={bgMusic === "instrumental" ? resolveMediaUrl("/r2-storage/vela-virtual/musica-ambiente.mp3") : undefined}
         loop
-        preload="auto"
+        preload="none"
         aria-hidden="true"
         style={{ display: "none" }}
       />
@@ -732,7 +741,7 @@ mas livrai-nos do Mal. Amém!`,
                   <div>
                     {!dailyGospelPassage 
                       ? "A liturgia da data selecionada não está disponível no sistema. Selecionamos a meditação recomendada abaixo para o seu momento de oração."
-                      : "O áudio do Evangelho para a data selecionada não está disponível no sistema. Por favor, escolha outro dia no histórico."}
+                      : "O áudio do Evangelho para a data selecionada não está disponível. Você ainda pode seguir a meditação guiada acompanhando a leitura em texto."}
                   </div>
                 </div>
               )}
@@ -785,7 +794,7 @@ mas livrai-nos do Mal. Amém!`,
 
               <Button
                 onClick={handleStartGuidedSession}
-                disabled={isLiturgyLoading || isAudioChecking || !isDailyAudioAvailable}
+                disabled={isLiturgyLoading || isAudioChecking}
                 id="btn-start-guided-lectio"
                 className="w-full h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -801,7 +810,8 @@ mas livrai-nos do Mal. Amém!`,
                   </span>
                 ) : !isDailyAudioAvailable ? (
                   <span className="flex items-center justify-center gap-2">
-                    Áudio Indisponível
+                    <PlayCircle size={18} className="mr-2" />
+                    Iniciar com leitura em texto
                   </span>
                 ) : (
                   <>

@@ -9,7 +9,7 @@ const mobileLinks = [
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/liturgia", label: "Liturgia", icon: Sun },
-  { href: "/profile", label: "Perfil", icon: User },
+  { href: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
 function isActiveRoute(location: string, href: string) {
