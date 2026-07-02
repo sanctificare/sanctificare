@@ -1,5 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -239,8 +239,12 @@ export default function Home() {
   // A navegação de áudio agora redireciona para a página de detalhes correspondente (/oracao/:id)
 
   useEffect(() => {
-    if (!loading && isAuthenticated) {
+    if (loading) return;
+    if (isAuthenticated) {
       navigate("/dashboard");
+    } else if (isMobileApp()) {
+      // No app nativo a landing de marketing não faz sentido: leva direto ao login.
+      navigate("/login");
     }
   }, [isAuthenticated, loading, navigate]);
 
@@ -276,6 +280,16 @@ export default function Home() {
       elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
+
+  // No app nativo, evitamos exibir a landing de marketing: enquanto o estado de
+  // autentica\u00e7\u00e3o \u00e9 resolvido (ou antes do redirect para /login), mostramos um splash.
+  if (isMobileApp() && !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background selection:bg-[oklch(0.75_0.12_75/0.3)] selection:text-[oklch(0.15_0.02_260)]">
