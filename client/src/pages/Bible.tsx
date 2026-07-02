@@ -180,7 +180,7 @@ export default function Bible() {
 
   // Liturgy highlighting logic
   const getLiturgyVerseRange = (ref: string): { start: number; end: number } | null => {
-    const parts = ref.split(":");
+    const parts = ref.split(/[:,]/);
     if (parts.length < 2) return null;
     const versePart = parts[1].trim();
     const range = versePart.split("-");
@@ -208,7 +208,7 @@ export default function Bible() {
         const ref = reading.data.referencia.toLowerCase();
         if (ref.includes(matchName)) {
           const afterBook = ref.replace(matchName, "").trim();
-          const words = afterBook.split(/[\s:;]+/);
+          const words = afterBook.split(/[\s:,;]+/);
           const chapter = parseInt(words[0]);
           if (chapter === selectedChapter) {
             const range = getLiturgyVerseRange(reading.data.referencia);

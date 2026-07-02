@@ -4,6 +4,7 @@ import type {
   LiturgyPrayers,
   LiturgyReading,
 } from "../drizzle/schema";
+import { loadBible } from "./bible";
 
 // Fonte pública da liturgia diária em PT-BR.
 const LITURGIA_API_BASE = "https://liturgia.up.railway.app";
@@ -52,11 +53,125 @@ export function todayIsoSaoPaulo(): string {
 }
 
 /** Normaliza um campo de leitura que pode vir como objeto ou string ("Não há ..."). */
-function normalizeReading(raw: RawReading | string | undefined): LiturgyReading | null {
+function cleanText(text: string): string[] {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove accents
+    .replace(/[^\w\s]/g, "") // remove punctuation
+    .split(/\s+/)
+    .filter(w => w.length >= 3);
+}
+
+function formatRanges(nums: number[]): string {
+  if (nums.length === 0) return "";
+  const sorted = Array.from(new Set(nums)).sort((a, b) => a - b);
+  const ranges: string[] = [];
+  let start = sorted[0];
+  let prev = sorted[0];
+  for (let i = 1; i <= sorted.length; i++) {
+    if (i < sorted.length && sorted[i] === prev + 1) {
+      prev = sorted[i];
+    } else {
+      if (start === prev) {
+        ranges.push(`${start}`);
+      } else {
+        ranges.push(`${start}-${prev}`);
+      }
+      if (i < sorted.length) {
+        start = sorted[i];
+        prev = sorted[i];
+      }
+    }
+  }
+  return ranges.join(".");
+}
+
+export function resolvePsalmVerses(referencia: string, texto: string): string {
+  try {
+    // Se a referência já contiver versículos detalhados (ex: Sl 49(50), 7-8.11), não faz nada
+    if (referencia.includes(",")) {
+      const parts = referencia.split(",");
+      if (parts.length > 1 && /\d+/.test(parts[1])) {
+        return referencia;
+      }
+    }
+
+    const numMatch = referencia.match(/\d+/);
+    if (!numMatch) return referencia;
+    const psalmNum = parseInt(numMatch[0]);
+
+    // Carrega a Bíblia e localiza o livro de Salmos (índice 22)
+    const bible = loadBible();
+    const book = bible[22];
+    if (!book || book.livro !== "Salmos") return referencia;
+
+    const chapter = book.capitulos.find(c => c.capitulo === psalmNum);
+    if (!chapter) return referencia;
+
+    // Divide o texto do salmo em estrofes
+    const stanzas = texto
+      .split("\n")
+      .map(s => s.replace(/^-\s*/, "").trim())
+      .filter(s => s.length > 0);
+
+    if (stanzas.length === 0) return referencia;
+
+    const matchedVerses: number[] = [];
+
+    // Prepara os versículos da Bíblia limpando o texto
+    const bibleVerses = chapter.versiculos.map(v => ({
+      numero: v.numero,
+      words: cleanText(v.texto),
+    }));
+
+    for (const stanza of stanzas) {
+      const stanzaWords = cleanText(stanza);
+      if (stanzaWords.length === 0) continue;
+
+      let bestVerseNum = -1;
+      let maxMatches = 0;
+
+      for (const bVerse of bibleVerses) {
+        if (bVerse.words.length === 0) continue;
+        let matches = 0;
+        for (const word of stanzaWords) {
+          if (bVerse.words.includes(word)) {
+            matches++;
+          }
+        }
+        if (matches > maxMatches) {
+          maxMatches = matches;
+          bestVerseNum = bVerse.numero;
+        }
+      }
+
+      // Definimos um limiar mínimo de correspondência (pelo menos 2 palavras correspondendo)
+      if (bestVerseNum !== -1 && maxMatches >= 2) {
+        matchedVerses.push(bestVerseNum);
+      }
+    }
+
+    if (matchedVerses.length > 0) {
+      const versesStr = formatRanges(matchedVerses);
+      return `${referencia}, ${versesStr}`;
+    }
+  } catch (err) {
+    console.error("[Liturgy] Error resolving psalm verses:", err);
+  }
+  return referencia;
+}
+
+/** Normaliza um campo de leitura que pode vir como objeto ou string ("Não há ..."). */
+function normalizeReading(raw: RawReading | string | undefined, isPsalm = false): LiturgyReading | null {
   if (!raw || typeof raw === "string") return null;
   if (!raw.texto && !raw.referencia) return null;
+  let ref = raw.referencia ?? "";
+  if (isPsalm && ref && raw.texto) {
+    ref = resolvePsalmVerses(ref, raw.texto);
+  }
   return {
-    referencia: raw.referencia ?? "",
+    referencia: ref,
     titulo: raw.titulo,
     texto: raw.texto ?? "",
     refrao: raw.refrao,
@@ -108,7 +223,7 @@ export async function fetchLiturgyForDate(isoDate: string): Promise<InsertDailyL
     celebration: raw.liturgia ?? null,
     color: raw.cor ?? null,
     firstReading: normalizeReading(raw.primeiraLeitura),
-    psalm: normalizeReading(raw.salmo),
+    psalm: normalizeReading(raw.salmo, true),
     secondReading: normalizeReading(raw.segundaLeitura),
     gospel,
     prayers,
