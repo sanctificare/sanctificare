@@ -354,16 +354,12 @@ export default function Home() {
                 ao Altíssimo na <span className="text-[oklch(0.82_0.10_80)] drop-shadow-[0_2px_10px_oklch(0.75_0.12_75/0.3)]">Oração</span>
               </h1>
 
-              <div className="max-w-xl">
-                <p className="font-serif italic text-base text-[oklch(0.85_0.02_260)] leading-relaxed">
-                  "Sede santos, porque eu, o Senhor vosso Deus, sou santo."{" "}
-                  <span className="font-sans font-bold text-xs text-[oklch(0.82_0.10_80)] tracking-wider uppercase ml-1">Lv 19, 2</span>
+              <div className="border-l-2 border-[oklch(0.75_0.12_75)] pl-4 py-2 bg-[oklch(0.75_0.12_75/0.05)] rounded-r-xl max-w-xl">
+                <p className="font-serif italic text-lg sm:text-xl text-[oklch(0.85_0.02_260)] leading-relaxed">
+                  "Sede santos, porque eu, o Senhor vosso Deus, sou santo."
                 </p>
+                <span className="text-xs font-sans font-bold tracking-wider text-[oklch(0.82_0.10_80)] block mt-1 uppercase">Lv 19, 2</span>
               </div>
-
-              <p className="font-serif text-lg text-[oklch(0.85_0.02_260)] leading-relaxed max-w-xl">
-                O Sanctificare acompanha a sua busca diária pela santidade através de uma experiência sóbria, bela e reverente. Reze o Santo Rosário, medite com as leituras do dia e cultive uma intimidade sincera com Deus, livre de distrações e anúncios.
-              </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2 max-w-md">
                 <Link href="/login?tab=cadastrar" className="w-full sm:w-auto">
@@ -380,7 +376,7 @@ export default function Home() {
 
             {/* App Mockup Column */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end animate-fade-in [animation-delay:0.2s]">
-              <div className="relative w-full max-w-[290px]">
+              <div className="relative w-full max-w-[238px]">
                 {/* Golden aura background effect */}
                 <div className="absolute inset-0 bg-[oklch(0.75_0.12_75/0.25)] rounded-[40px] blur-3xl scale-95" />
                 
@@ -457,7 +453,7 @@ export default function Home() {
                 </div>
 
                 {/* Floating reviews widget */}
-                <div className="absolute -bottom-6 -left-6 bg-white text-[oklch(0.12_0.04_260)] rounded-xl p-3 shadow-xl border border-neutral-100 flex items-center gap-2 max-w-[200px] z-20 animate-bounce [animation-duration:4s]">
+                <div className="absolute -bottom-6 -left-3 bg-white text-[oklch(0.12_0.04_260)] rounded-xl p-3 shadow-xl border border-neutral-100 flex items-center gap-2 max-w-[200px] z-20 animate-bounce [animation-duration:4s]">
                   <div className="bg-[oklch(0.75_0.12_75/0.1)] p-1.5 rounded-lg text-[oklch(0.75_0.12_75)]">
                     ✝
                   </div>
