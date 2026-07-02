@@ -324,7 +324,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden py-16 bg-[oklch(0.22_0.07_260)]">
+      <section className="relative min-h-[75vh] flex items-center overflow-hidden py-12 bg-[oklch(0.22_0.07_260)]">
         {/* Background image & gradient overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-35"
@@ -341,7 +341,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             {/* Text details column */}
-            <div className="lg:col-span-7 space-y-8 animate-fade-in text-left">
+            <div className="lg:col-span-7 space-y-6 animate-fade-in text-left">
               <div className="inline-flex items-center gap-2 bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] rounded-full px-4 py-1.5 shadow-sm">
                 <Sparkles size={14} className="text-[oklch(0.82_0.10_80)] animate-pulse" />
                 <span className="text-[oklch(0.82_0.10_80)] text-xs font-display tracking-wider uppercase font-semibold">
@@ -349,16 +349,16 @@ export default function Home() {
                 </span>
               </div>
 
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-5xl font-bold text-white leading-tight">
                 Eleve o seu Coração <br className="hidden sm:inline" />
                 ao Altíssimo na <span className="text-[oklch(0.82_0.10_80)] drop-shadow-[0_2px_10px_oklch(0.75_0.12_75/0.3)]">Oração</span>
               </h1>
 
-              <div className="border-l-2 border-[oklch(0.75_0.12_75)] pl-4 py-2 bg-[oklch(0.75_0.12_75/0.05)] rounded-r-xl max-w-xl">
-                <p className="font-serif italic text-base sm:text-lg text-[oklch(0.85_0.02_260)] leading-relaxed">
-                  "Sede santos, porque eu, o Senhor vosso Deus, sou santo."
+              <div className="max-w-xl">
+                <p className="font-serif italic text-base text-[oklch(0.85_0.02_260)] leading-relaxed">
+                  "Sede santos, porque eu, o Senhor vosso Deus, sou santo."{" "}
+                  <span className="font-sans font-bold text-xs text-[oklch(0.82_0.10_80)] tracking-wider uppercase ml-1">Lv 19, 2</span>
                 </p>
-                <span className="text-xs font-sans font-bold tracking-wider text-[oklch(0.82_0.10_80)] block mt-1 uppercase">Lv 19, 2</span>
               </div>
 
               <p className="font-serif text-lg text-[oklch(0.85_0.02_260)] leading-relaxed max-w-xl">
@@ -380,7 +380,7 @@ export default function Home() {
 
             {/* App Mockup Column */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end animate-fade-in [animation-delay:0.2s]">
-              <div className="relative w-full max-w-[340px]">
+              <div className="relative w-full max-w-[290px]">
                 {/* Golden aura background effect */}
                 <div className="absolute inset-0 bg-[oklch(0.75_0.12_75/0.25)] rounded-[40px] blur-3xl scale-95" />
                 
@@ -457,7 +457,7 @@ export default function Home() {
                 </div>
 
                 {/* Floating reviews widget */}
-                <div className="absolute -bottom-6 -left-10 bg-white text-[oklch(0.12_0.04_260)] rounded-xl p-3 shadow-xl border border-neutral-100 flex items-center gap-2 max-w-[200px] z-20 animate-bounce [animation-duration:4s]">
+                <div className="absolute -bottom-6 -left-6 bg-white text-[oklch(0.12_0.04_260)] rounded-xl p-3 shadow-xl border border-neutral-100 flex items-center gap-2 max-w-[200px] z-20 animate-bounce [animation-duration:4s]">
                   <div className="bg-[oklch(0.75_0.12_75/0.1)] p-1.5 rounded-lg text-[oklch(0.75_0.12_75)]">
                     ✝
                   </div>
