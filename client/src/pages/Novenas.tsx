@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
@@ -48,6 +48,7 @@ export default function Novenas() {
             alt={novena.name}
             className="cover-card-image"
             loading="lazy"
+            onError={(event) => applyImageFallback(event.currentTarget)}
           />
           <div
             className="absolute inset-0"
@@ -83,7 +84,7 @@ export default function Novenas() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full animate-pulse" />
+        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
       </div>
     );
   }
@@ -92,7 +93,7 @@ export default function Novenas() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full mx-auto mb-4" />
+          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
           <p className="text-muted-foreground mb-6">Entre para percorrer as novenas e seus dias de oração.</p>
           <a href={getLoginUrl()}><Button>Entrar</Button></a>
@@ -129,7 +130,12 @@ export default function Novenas() {
                 const totalDays = Math.max(1, novena.days.length);
                 return (
                   <div key={novena.id} className="relative rounded-2xl border border-[oklch(0.72_0.10_75/0.25)] bg-white dark:bg-card p-4 flex gap-4 shadow-sm hover:shadow-md transition-all duration-300">
-                    <img src={art.image} alt={novena.name} className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-border" />
+                    <img
+                      src={art.image}
+                      alt={novena.name}
+                      className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-border"
+                      onError={(event) => applyImageFallback(event.currentTarget)}
+                    />
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
                         <h3 className="font-serif text-lg font-bold text-[oklch(0.22_0.07_260)] truncate">{novena.name}</h3>

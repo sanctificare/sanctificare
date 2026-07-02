@@ -61,7 +61,7 @@ export default function AppNav() {
           <Link href={isAuthenticated ? "/dashboard" : "/"}>
             <div className="flex items-center gap-2 sm:gap-3 cursor-pointer group">
               <img
-                src="/assets/logo-sanctificare-icon.png"
+                src="/assets/logo-sanctificare.webp"
                 alt="Sanctificare"
                 className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_0_6px_oklch(0.75_0.12_75/0.6)]"
               />

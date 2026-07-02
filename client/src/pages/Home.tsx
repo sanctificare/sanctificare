@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
 const HERO_IMG = "/assets/sanctificare-hero.webp";
-const LOGO_IMG = "/assets/logo-sanctificare-icon.png";
+const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
 
 const features = [

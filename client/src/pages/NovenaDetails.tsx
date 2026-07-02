@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import NovenaAudioDock from "@/components/NovenaAudioDock";
 import { trpc } from "@/lib/trpc";
@@ -153,7 +153,7 @@ export default function NovenaDetails() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full animate-pulse" />
+        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
       </div>
     );
   }
@@ -162,7 +162,7 @@ export default function NovenaDetails() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full mx-auto mb-4" />
+          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
           <p className="text-muted-foreground mb-6">Entre para acompanhar esta novena e seus dias de oração.</p>
           <a href={getLoginUrl()}><Button>Entrar</Button></a>
@@ -216,6 +216,7 @@ export default function NovenaDetails() {
                   alt={selectedNovena.name}
                   className="w-12 h-12 rounded-xl object-cover border border-[oklch(0.72_0.10_75/0.35)]"
                   loading="lazy"
+                  onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div>
                   <h1 className="font-serif text-lg font-semibold text-[oklch(0.22_0.07_260)] leading-tight">{selectedNovena.name}</h1>

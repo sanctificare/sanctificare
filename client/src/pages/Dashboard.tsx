@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { applyImageFallback, getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
@@ -250,7 +250,7 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full animate-pulse" />
+          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
           <p className="font-serif text-muted-foreground">Carregando...</p>
         </div>
       </div>
@@ -261,7 +261,7 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 rounded-full mx-auto mb-4" />
+          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
           <p className="text-muted-foreground mb-6">Entre para retomar sua jornada de oração no app.</p>
           <a href={getLoginUrl()}>
@@ -546,7 +546,7 @@ export default function Dashboard() {
                 <Link href={activeNovena ? `/novenas/${activeNovena.novena.slug}` : "/novenas"} aria-label="Abrir card Novenas" className="block rounded-2xl focus-gold-ring">
                   <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-border/30 card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6 h-full">
                     <img
-                      src={activeNovena
+                      src={resolveMediaUrl(activeNovena
                         ? (activeNovena.novena.slug === 'novena-do-sagrado-coracao-de-jesus'
                           ? '/assets/novenas/sagrado-coracao-jesus.png'
                           : activeNovena.novena.slug === 'novena-do-divino-espirito-santo'
@@ -555,10 +555,11 @@ export default function Dashboard() {
                           ? '/assets/novenas/nossa-senhora-perpetuo-socorro.png'
                           : '/assets/novenas/sao-jose.png')
                         : '/assets/novenas/sao-jose.png'
-                      }
+                      )}
                       alt="Novena"
                       loading="lazy"
                       decoding="async"
+                      onError={(event) => applyImageFallback(event.currentTarget)}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div
