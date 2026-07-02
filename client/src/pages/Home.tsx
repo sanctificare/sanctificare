@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
 const HERO_IMG = "/assets/sanctificare-hero.webp";
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/logo-sanctificare-icon.png";
 const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
 
 const features = [
@@ -291,9 +291,7 @@ export default function Home() {
         <div className="container">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[oklch(0.15_0.04_265)] border border-[oklch(0.75_0.12_75/0.5)] flex items-center justify-center shadow-gold overflow-hidden">
-                <img src={LOGO_IMG} alt="Sanctificare Logo" className="w-full h-full object-cover scale-[1.15]" />
-              </div>
+              <img src={LOGO_IMG} alt="Sanctificare Logo" className="w-9 h-9 object-contain drop-shadow-[0_0_6px_oklch(0.75_0.12_75/0.6)]" />
               <span className="font-display text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide">
                 Sanctificare
               </span>
@@ -404,9 +402,7 @@ export default function Home() {
                     {/* Mock App Header */}
                     <div className="mt-4 px-2 flex justify-between items-center">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[oklch(0.15_0.04_265)] border border-[oklch(0.75_0.12_75/0.5)] flex items-center justify-center overflow-hidden">
-                          <img src={LOGO_IMG} alt="Logo" className="w-full h-full object-cover scale-[1.15]" />
-                        </div>
+                        <img src={LOGO_IMG} alt="Logo" className="w-6 h-6 object-contain" />
                         <span className="font-display text-xs text-[oklch(0.88_0.08_80)] font-semibold">Sanctificare</span>
                       </div>
                       <Crown size={12} className="text-[oklch(0.82_0.10_80)]" />
@@ -1174,9 +1170,7 @@ export default function Home() {
         <div className="glow-orb w-[600px] h-[600px] bg-[oklch(0.75_0.12_75)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
 
         <div className="container relative z-10">
-          <div className="w-20 h-20 rounded-full bg-[oklch(0.15_0.04_265)] border-2 border-[oklch(0.75_0.12_75/0.6)] flex items-center justify-center mx-auto mb-8 shadow-gold animate-pulse overflow-hidden">
-            <img src={LOGO_IMG} alt="Sanctificare logo" className="w-full h-full object-cover scale-[1.15]" />
-          </div>
+          <img src={LOGO_IMG} alt="Sanctificare logo" className="w-20 h-20 object-contain mx-auto mb-8 drop-shadow-[0_0_16px_oklch(0.75_0.12_75/0.5)] animate-pulse" />
           
           <h2 className="font-display text-4xl sm:text-5xl font-bold mb-6 leading-tight">
             Edifique Sua Vida <br className="sm:hidden" /> de <span className="text-[oklch(0.82_0.10_80)]">Oração Hoje</span>
@@ -1208,9 +1202,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center border-b border-[oklch(0.75_0.12_75/0.1)] pb-12 mb-12">
             
             <div className="md:col-span-4 flex items-center gap-3 justify-center md:justify-start">
-              <div className="w-8 h-8 rounded-full bg-[oklch(0.15_0.04_265)] border border-[oklch(0.75_0.12_75/0.5)] flex items-center justify-center overflow-hidden">
-                <img src={LOGO_IMG} alt="Sanctificare" className="w-full h-full object-cover scale-[1.15]" />
-              </div>
+              <img src={LOGO_IMG} alt="Sanctificare" className="w-8 h-8 object-contain drop-shadow-[0_0_6px_oklch(0.75_0.12_75/0.6)]" />
               <span className="font-display text-[oklch(0.82_0.10_80)] font-semibold tracking-wide">Sanctificare</span>
             </div>
 
