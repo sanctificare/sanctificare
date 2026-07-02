@@ -1,4 +1,4 @@
-import { eq, desc, and, or, sql, gt, isNull, ne } from "drizzle-orm";
+import { eq, desc, and, or, sql, gt, isNull, ne, inArray } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -17,6 +17,7 @@ import {
   candlePrayers,
   InsertVirtualCandle,
   passwordResetTokens,
+  pushDevices,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -236,6 +237,25 @@ async function bootstrapDb(sql: any) {
     `;
     await sql`
       CREATE INDEX IF NOT EXISTS prt_user_idx ON password_reset_tokens ("userId");
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS push_devices (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        token text NOT NULL,
+        platform varchar(16) NOT NULL,
+        "deviceId" varchar(128),
+        enabled boolean DEFAULT true NOT NULL,
+        "createdAt" timestamp DEFAULT now() NOT NULL,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS push_devices_token_uq ON push_devices (token);
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS push_devices_user_idx ON push_devices ("userId");
     `;
 
     console.log("[Database] Bootstrap completed: all tables and types verified.");
@@ -1093,6 +1113,69 @@ export async function consumePasswordResetToken(
     .where(eq(users.id, userId));
 
   return true;
+}
+
+// ─── Push Devices ─────────────────────────────────────────────────────────────
+
+export async function registerPushDevice(
+  userId: number,
+  input: { token: string; platform: "android" | "ios" | "web"; deviceId?: string | null }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  await db
+    .insert(pushDevices)
+    .values({
+      userId,
+      token: input.token,
+      platform: input.platform,
+      deviceId: input.deviceId ?? null,
+      enabled: true,
+      updatedAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: pushDevices.token,
+      set: {
+        userId,
+        platform: input.platform,
+        deviceId: input.deviceId ?? null,
+        enabled: true,
+        updatedAt: new Date(),
+      },
+    });
+}
+
+export async function unregisterPushDeviceByToken(userId: number, token: string) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  await db
+    .update(pushDevices)
+    .set({ enabled: false, updatedAt: new Date() })
+    .where(and(eq(pushDevices.userId, userId), eq(pushDevices.token, token)));
+}
+
+export async function getEnabledPushTokensByUser(userId: number): Promise<string[]> {
+  const db = await getDb();
+  if (!db) return [];
+
+  const rows = await db
+    .select({ token: pushDevices.token })
+    .from(pushDevices)
+    .where(and(eq(pushDevices.userId, userId), eq(pushDevices.enabled, true)));
+
+  return rows.map(r => r.token);
+}
+
+export async function disablePushTokens(tokens: string[]) {
+  if (tokens.length === 0) return;
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  await db
+    .update(pushDevices)
+    .set({ enabled: false, updatedAt: new Date() })
+    .where(inArray(pushDevices.token, tokens));
 }
 
 function todayIsoSaoPaulo(): string {

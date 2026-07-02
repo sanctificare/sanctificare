@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Headphones, Crown, Clock, Play, type LucideIcon } from "lucide-react";
@@ -141,6 +141,7 @@ export default function AudioLibraryPage({
                     alt={collection.title}
                     className="w-9 h-9 rounded-lg object-cover border border-[oklch(0.72_0.10_75/0.35)]"
                     loading="lazy"
+                    onError={(event) => applyImageFallback(event.currentTarget)}
                   />
                   <div>
                     <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">

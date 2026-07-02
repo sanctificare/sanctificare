@@ -222,3 +222,24 @@ export const passwordResetTokens = pgTable(
 
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
 export type InsertPasswordResetToken = typeof passwordResetTokens.$inferInsert;
+
+export const pushDevices = pgTable(
+  "push_devices",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    token: text("token").notNull(),
+    platform: varchar("platform", { length: 16 }).notNull(),
+    deviceId: varchar("deviceId", { length: 128 }),
+    enabled: boolean("enabled").default(true).notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    tokenUnique: uniqueIndex("push_devices_token_uq").on(table.token),
+    userIdx: index("push_devices_user_idx").on(table.userId),
+  })
+);
+
+export type PushDevice = typeof pushDevices.$inferSelect;
+export type InsertPushDevice = typeof pushDevices.$inferInsert;

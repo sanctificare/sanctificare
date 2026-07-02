@@ -5,12 +5,17 @@ export interface LiturgyDailyAudioTrack {
   audioUrl: string;
 }
 
+const REMOTE_MEDIA_ORIGIN = "https://sanctificare.app";
+
+const toRemoteLiturgyAudioUrl = (dateLabel: string): string =>
+  `${REMOTE_MEDIA_ORIGIN}/audio/liturgia-diaria/${encodeURIComponent(dateLabel)}.mp3`;
+
 const MANUAL_LITURGY_DAILY_AUDIO_TRACKS: LiturgyDailyAudioTrack[] = [
   {
     date: "2026-06-11",
     title: "Liturgia Diaria - 11 de junho",
     description: "Narracao humana da Liturgia Diaria.",
-    audioUrl: "/audio/liturgia-diaria/11 de junho.mp3",
+    audioUrl: toRemoteLiturgyAudioUrl("11 de junho"),
   },
 ];
 
@@ -40,7 +45,7 @@ function buildTrackByDate(date: string): LiturgyDailyAudioTrack | null {
     date,
     title: `Liturgia Diaria - ${dateLabel}`,
     description: "Narracao humana da Liturgia Diaria.",
-    audioUrl: `/audio/liturgia-diaria/${dateLabel}.mp3`,
+    audioUrl: toRemoteLiturgyAudioUrl(dateLabel),
   };
 }
 

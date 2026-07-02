@@ -1,8 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { useEffect } from "react";
-import GlobalSearch from "@/components/GlobalSearch";
+import { Suspense, lazy, useEffect } from "react";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileTopMenu from "@/components/MobileTopMenu";
 import { Route, Switch, useLocation } from "wouter";
@@ -10,31 +9,36 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
 import { isMobileApp } from "./const";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
+import { useAuth } from "./_core/hooks/useAuth";
+import { trpc } from "./lib/trpc";
+import { initNativePushNotifications } from "./lib/push";
 import Login from "./pages/Login";
-import Prayers from "./pages/Prayers";
-import RosaryGuided from "./pages/RosaryGuided";
-import Liturgy from "./pages/Liturgy";
-import LectioDivina from "./pages/LectioDivina";
-import ViaSacra from "./pages/ViaSacra";
-import VelaVirtual from "./pages/VelaVirtual";
-import MusicaSacra from "./pages/MusicaSacra";
-import Bible from "./pages/Bible";
-import Intentions from "./pages/Intentions";
-import Profile from "./pages/Profile";
-import Premium from "./pages/Premium";
-import VideosBiblicos from "./pages/VideosBiblicos";
 import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
-import Novenas from "./pages/Novenas";
-import NovenaDetails from "./pages/NovenaDetails";
-import DailyPlan from "./pages/DailyPlan";
 import Privacy from "./pages/Privacy";
-import Explore from "./pages/Explore";
 
 
 import AppNav from "@/components/AppNav";
+
+const GlobalSearch = lazy(() => import("@/components/GlobalSearch"));
+const Home = lazy(() => import("./pages/Home"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Explore = lazy(() => import("./pages/Explore"));
+const Prayers = lazy(() => import("./pages/Prayers"));
+const RosaryGuided = lazy(() => import("./pages/RosaryGuided"));
+const Liturgy = lazy(() => import("./pages/Liturgy"));
+const LectioDivina = lazy(() => import("./pages/LectioDivina"));
+const ViaSacra = lazy(() => import("./pages/ViaSacra"));
+const VelaVirtual = lazy(() => import("./pages/VelaVirtual"));
+const MusicaSacra = lazy(() => import("./pages/MusicaSacra"));
+const Bible = lazy(() => import("./pages/Bible"));
+const Novenas = lazy(() => import("./pages/Novenas"));
+const NovenaDetails = lazy(() => import("./pages/NovenaDetails"));
+const Intentions = lazy(() => import("./pages/Intentions"));
+const Profile = lazy(() => import("./pages/Profile"));
+const DailyPlan = lazy(() => import("./pages/DailyPlan"));
+const Premium = lazy(() => import("./pages/Premium"));
+const VideosBiblicos = lazy(() => import("./pages/VideosBiblicos"));
 
 
 function Router() {
@@ -42,32 +46,34 @@ function Router() {
   useUserTemplate();
 
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/explore" component={Explore} />
-      <Route path="/oracoes" component={Prayers} />
-      <Route path="/rosario" component={RosaryGuided} />
-      <Route path="/liturgia" component={Liturgy} />
-      <Route path="/lectio" component={LectioDivina} />
-      <Route path="/via-sacra" component={ViaSacra} />
-      <Route path="/vela-virtual" component={VelaVirtual} />
-      <Route path="/musica-sacra" component={MusicaSacra} />
-      <Route path="/biblia" component={Bible} />
-      <Route path="/novenas" component={Novenas} />
-      <Route path="/novenas/:slug" component={NovenaDetails} />
-      <Route path="/intencoes" component={Intentions} />
-      <Route path="/perfil" component={Profile} />
-      <Route path="/plano-diario" component={DailyPlan} />
-      <Route path="/premium" component={Premium} />
-      <Route path="/videos" component={VideosBiblicos} />
-      <Route path="/oracao/:id" component={PrayerDetail} />
-      <Route path="/redefinir-senha" component={ResetPassword} />
-      <Route path="/privacidade" component={Privacy} />
-      <Route path="/404" component={NotFound} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<div className="min-h-[40vh]" />}>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/explore" component={Explore} />
+        <Route path="/oracoes" component={Prayers} />
+        <Route path="/rosario" component={RosaryGuided} />
+        <Route path="/liturgia" component={Liturgy} />
+        <Route path="/lectio" component={LectioDivina} />
+        <Route path="/via-sacra" component={ViaSacra} />
+        <Route path="/vela-virtual" component={VelaVirtual} />
+        <Route path="/musica-sacra" component={MusicaSacra} />
+        <Route path="/biblia" component={Bible} />
+        <Route path="/novenas" component={Novenas} />
+        <Route path="/novenas/:slug" component={NovenaDetails} />
+        <Route path="/intencoes" component={Intentions} />
+        <Route path="/perfil" component={Profile} />
+        <Route path="/plano-diario" component={DailyPlan} />
+        <Route path="/premium" component={Premium} />
+        <Route path="/videos" component={VideosBiblicos} />
+        <Route path="/oracao/:id" component={PrayerDetail} />
+        <Route path="/redefinir-senha" component={ResetPassword} />
+        <Route path="/privacidade" component={Privacy} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
@@ -88,13 +94,18 @@ function AppShell() {
       <div className="theme-contemplative-a min-h-screen">
         <Router />
         {!isLandingPage && <MobileBottomNav />}
-        <GlobalSearch />
+        <Suspense fallback={null}>
+          <GlobalSearch />
+        </Suspense>
       </div>
     </>
   );
 }
 
 function App() {
+  const { isAuthenticated } = useAuth();
+  const registerDeviceMutation = trpc.push.registerDevice.useMutation();
+
   useEffect(() => {
     document.body.classList.add("theme-contemplative-a");
 
@@ -102,6 +113,21 @@ function App() {
       document.body.classList.remove("theme-contemplative-a");
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMobileApp()) return;
+    if (!isAuthenticated) return;
+
+    void initNativePushNotifications({
+      onRegistered: async (token, meta) => {
+        await registerDeviceMutation.mutateAsync({
+          token,
+          platform: meta.platform,
+          deviceId: meta.deviceId ?? null,
+        });
+      },
+    });
+  }, [isAuthenticated, registerDeviceMutation]);
 
   useEffect(() => {
     const handleDocumentClick = (event: MouseEvent) => {

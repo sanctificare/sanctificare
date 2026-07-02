@@ -39,11 +39,15 @@ import {
   validatePasswordResetToken,
   consumePasswordResetToken,
   getDailyPlanStatus,
+  registerPushDevice,
+  unregisterPushDeviceByToken,
+  getEnabledPushTokensByUser,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
 import https from "https";
 import { getChapter as getBibleChapter, search as searchBible } from "./bible";
+import { sendPushToTokens } from "./_core/push";
 
 const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
 const registerRateMap = new Map<string, { count: number; resetAt: number }>();
@@ -477,6 +481,48 @@ export const appRouter = router({
           console.error("[Daily Plan Error]", error);
           throw error;
         }
+      }),
+  }),
+
+  push: router({
+    registerDevice: protectedProcedure
+      .input(
+        z.object({
+          token: z.string().min(20).max(4096),
+          platform: z.enum(["android", "ios", "web"]),
+          deviceId: z.string().max(128).optional().nullable(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        await registerPushDevice(ctx.user.id, input);
+        return { success: true } as const;
+      }),
+
+    unregisterDevice: protectedProcedure
+      .input(z.object({ token: z.string().min(20).max(4096) }))
+      .mutation(async ({ ctx, input }) => {
+        await unregisterPushDeviceByToken(ctx.user.id, input.token);
+        return { success: true } as const;
+      }),
+
+    sendTestToMe: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const tokens = await getEnabledPushTokensByUser(ctx.user.id);
+        if (tokens.length === 0) {
+          return { success: false, reason: "no_devices" } as const;
+        }
+
+        const result = await sendPushToTokens(tokens, {
+          title: "Sanctificare",
+          body: "Push remoto ativo. Que sua jornada de oração seja abençoada!",
+          data: { screen: "/perfil", kind: "test" },
+        });
+
+        return {
+          success: result.successCount > 0,
+          sent: result.successCount,
+          failed: result.failureCount,
+        } as const;
       }),
   }),
 

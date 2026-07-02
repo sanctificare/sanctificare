@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl, resolveMediaUrl } from "@/const";
+import { applyImageFallback, getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -43,9 +43,9 @@ const getPassageImageUrl = (passageId: string) => {
     "lc-15-11-32",
   ];
   if (supportedIds.includes(passageId)) {
-    return `/assets/lectio/${passageId}.png`;
+    return resolveMediaUrl(`/assets/lectio/${passageId}.png`);
   }
-  return COVER_IMG;
+  return resolveMediaUrl(COVER_IMG);
 };
 
 export default function LectioDivina() {
@@ -605,7 +605,7 @@ mas livrai-nos do Mal. Amém!`,
       {/* Background Music Audio Element */}
       <audio
         ref={bgAudioRef}
-        src="/assets/vela-virtual/musica-ambiente.mp3"
+        src={resolveMediaUrl("/r2-storage/vela-virtual/musica-ambiente.mp3")}
         loop
         preload="auto"
         aria-hidden="true"
@@ -633,6 +633,7 @@ mas livrai-nos do Mal. Amém!`,
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
+                  onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
 
@@ -819,6 +820,7 @@ mas livrai-nos do Mal. Amém!`,
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
+                  onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
               </div>

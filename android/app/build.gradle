@@ -27,7 +27,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -49,6 +51,22 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+}
+
+def pruneHeavyWebAssets = tasks.register('pruneHeavyWebAssets', Delete) {
+    delete(
+        'src/main/assets/public/audio/liturgia-diaria/11 de junho.mp3',
+        'src/main/assets/public/audio/rosary/intro-terco.mp3',
+        'src/main/assets/public/audio/rosary/salve rainha.mp3',
+        'src/main/assets/public/audio/rosary/terco.jpeg',
+        'src/main/assets/public/assets/lectio',
+        'src/main/assets/public/assets/novenas',
+        'src/main/assets/public/assets/composers'
+    )
+}
+
+tasks.named('preBuild') {
+    dependsOn(pruneHeavyWebAssets)
 }
 
 apply from: 'capacitor.build.gradle'

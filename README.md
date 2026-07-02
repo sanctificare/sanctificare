@@ -106,6 +106,34 @@ Available pre-defined system envs:
 Do not edit these directly in code or commit `.env` files.
 The envs above are system envs, when use env in website code, refer `server/_core/env.ts` for available list.
 
+### Mobile Push Notifications (FCM)
+
+Remote push is now wired in both app and backend:
+
+- App registers native device token with Capacitor Push Notifications.
+- Backend stores tokens per user and sends notifications via Firebase Admin SDK.
+
+Required server envs (choose one credential strategy):
+
+- `FCM_SERVICE_ACCOUNT_JSON` (full JSON in a single env var), or
+- `FCM_PROJECT_ID`, `FCM_CLIENT_EMAIL`, `FCM_PRIVATE_KEY`
+
+Android setup:
+
+1. Place `google-services.json` in `android/app/google-services.json`.
+2. Build or sync Android after changes: `pnpm exec cap sync android`.
+
+iOS setup:
+
+1. Add `GoogleService-Info.plist` in the iOS app target.
+2. Upload APNs key/certificate in Firebase console.
+3. Enable Push Notifications capability in Xcode.
+
+Notes:
+
+- Without native Firebase files, push registration will not work on device.
+- Local reminders (LocalNotifications) continue to work independently.
+
 ---
 
 ## Frontend Workflow

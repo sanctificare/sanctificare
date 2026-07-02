@@ -103,7 +103,20 @@ if (typeof window !== "undefined" && isMobileApp()) {
     }
   })();
 }
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      retry: 1,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
 let authRedirectInFlight = false;
 
 const readCookie = (name: string) => {

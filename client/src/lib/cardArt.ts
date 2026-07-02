@@ -1,3 +1,5 @@
+import { resolveMediaUrl } from "@/const";
+
 type CardArt = {
   image: string;
   overlay?: string;
@@ -61,23 +63,25 @@ const AUDIO_COLLECTION_ART: Record<string, string> = {
 };
 
 export function getPrayerArt(prayerType: string): CardArt {
-  return PRAYER_ART[prayerType] ?? FALLBACK_ART;
+  const art = PRAYER_ART[prayerType] ?? FALLBACK_ART;
+  return { ...art, image: resolveMediaUrl(art.image) };
 }
 
 export function getNovenaArt(novenaId: string): CardArt {
-  return NOVENA_ART[novenaId] ?? FALLBACK_ART;
+  const art = NOVENA_ART[novenaId] ?? FALLBACK_ART;
+  return { ...art, image: resolveMediaUrl(art.image) };
 }
 
 export function getLectioStepArt(stepKey: string): string {
-  return LECTIO_STEP_ART[stepKey] ?? FALLBACK_ART.image;
+  return resolveMediaUrl(LECTIO_STEP_ART[stepKey] ?? FALLBACK_ART.image);
 }
 
 export function getAudioCollectionArt(collectionId: string): string {
-  return AUDIO_COLLECTION_ART[collectionId] ?? FALLBACK_ART.image;
+  return resolveMediaUrl(AUDIO_COLLECTION_ART[collectionId] ?? FALLBACK_ART.image);
 }
 
 export function getLiturgySectionArt(sectionId: string): string {
-  if (sectionId === "first_reading") return "/assets/via-sacra/imagens/1estacao.webp";
-  if (sectionId === "psalm") return "/assets/via-sacra/imagens/3estacao.webp";
-  return "/assets/via-sacra/imagens/2estacao.webp";
+  if (sectionId === "first_reading") return resolveMediaUrl("/assets/via-sacra/imagens/1estacao.webp");
+  if (sectionId === "psalm") return resolveMediaUrl("/assets/via-sacra/imagens/3estacao.webp");
+  return resolveMediaUrl("/assets/via-sacra/imagens/2estacao.webp");
 }

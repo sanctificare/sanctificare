@@ -34,4 +34,9 @@ export const ENV = {
   stripePriceMonthly: process.env.STRIPE_PRICE_MONTHLY ?? "",
   stripePriceAnnual: process.env.STRIPE_PRICE_ANNUAL ?? "",
   appUrl: process.env.APP_URL ?? "http://localhost:3000",
+  // Firebase Cloud Messaging (FCM)
+  fcmProjectId: process.env.FCM_PROJECT_ID ?? "",
+  fcmClientEmail: process.env.FCM_CLIENT_EMAIL ?? "",
+  fcmPrivateKey: (process.env.FCM_PRIVATE_KEY ?? "").replace(/\\n/g, "\n"),
+  fcmServiceAccountJson: process.env.FCM_SERVICE_ACCOUNT_JSON ?? "",
 };
