@@ -60,11 +60,13 @@ export default function AppNav() {
           {/* Logo */}
           <Link href={isAuthenticated ? "/dashboard" : "/"}>
             <div className="flex items-center gap-2 sm:gap-3 cursor-pointer group">
-              <img
-                src="/assets/logo-sanctificare.webp"
-                alt="Sanctificare"
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
-              />
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[oklch(0.15_0.04_265)] border border-[oklch(0.75_0.12_75/0.5)] flex items-center justify-center overflow-hidden">
+                <img
+                  src="/assets/logo-sanctificare.webp"
+                  alt="Sanctificare"
+                  className="w-full h-full object-cover scale-[1.15]"
+                />
+              </div>
               <span className="font-display text-base sm:text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide group-hover:text-[oklch(0.95_0.06_82)] transition-colors">
                 Sanctificare
               </span>
