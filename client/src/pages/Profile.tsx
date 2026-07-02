@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -34,45 +35,71 @@ const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
   lectio_divina: getPrayerArt("lectio_divina").image,
 };
 
+function safeStorageGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key: string, value: string): boolean {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export default function Profile() {
   const { user, isAuthenticated, loading, logout } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: dbSubscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
-  const subscription = {
-    plan: "annual",
-    expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-  };
+  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+  const deleteAccountMutation = trpc.account.deleteMe.useMutation();
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmationText, setDeleteConfirmationText] = useState("");
+
+  const canConfirmDelete = deleteConfirmationText.trim().toUpperCase() === "EXCLUIR";
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
     try {
-      // Simular processamento da solicitação de exclusão
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      toast.success("Solicitação recebida. Sua conta e dados foram excluídos permanentemente.");
+      const result = await deleteAccountMutation.mutateAsync();
+      if (result.deleted) {
+        toast.success("Conta excluída com sucesso.", {
+          description: "Seus dados foram removidos e sua sessão foi encerrada.",
+        });
+      } else {
+        toast.success("Conta já havia sido removida.", {
+          description: "Sua sessão será encerrada para concluir o processo.",
+        });
+      }
       setShowDeleteDialog(false);
       await logout();
     } catch (err) {
-      toast.error("Erro ao solicitar exclusão. Tente novamente.");
+      toast.error("Erro ao excluir conta. Tente novamente.");
     } finally {
       setIsDeleting(false);
     }
   };
 
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
-    return localStorage.getItem("sanctificare.reminders.enabled") === "true";
+    if (typeof window === "undefined") return false;
+    return safeStorageGet("sanctificare.reminders.enabled") === "true";
   });
   const [reminderTime, setReminderTime] = useState<string>(() => {
-    return localStorage.getItem("sanctificare.reminders.time") || "18:00";
+    if (typeof window === "undefined") return "18:00";
+    return safeStorageGet("sanctificare.reminders.time") || "18:00";
   });
 
   const handleToggleReminders = async () => {
     if (!remindersEnabled) {
       const granted = await ensureNotificationPermission();
       if (granted) {
-        localStorage.setItem("sanctificare.reminders.enabled", "true");
+        safeStorageSet("sanctificare.reminders.enabled", "true");
         setRemindersEnabled(true);
         await scheduleDailyReminder(reminderTime);
         toast.success("Lembretes diários ativados com sucesso!");
@@ -83,12 +110,12 @@ export default function Profile() {
           });
         }
       } else {
-        localStorage.setItem("sanctificare.reminders.enabled", "false");
+        safeStorageSet("sanctificare.reminders.enabled", "false");
         setRemindersEnabled(false);
         toast.warning("Permissão de notificação negada. Ative as notificações nas configurações do seu dispositivo.");
       }
     } else {
-      localStorage.setItem("sanctificare.reminders.enabled", "false");
+      safeStorageSet("sanctificare.reminders.enabled", "false");
       setRemindersEnabled(false);
       await cancelDailyReminder();
       toast.info("Lembretes desativados.");
@@ -98,7 +125,7 @@ export default function Profile() {
   const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newTime = e.target.value;
     setReminderTime(newTime);
-    localStorage.setItem("sanctificare.reminders.time", newTime);
+    safeStorageSet("sanctificare.reminders.time", newTime);
     if (remindersEnabled) {
       void scheduleDailyReminder(newTime);
       toast.success(`Horário do lembrete atualizado para as ${newTime}!`);
@@ -415,7 +442,15 @@ export default function Profile() {
           </div>
 
           {/* Modal de Exclusão de Conta */}
-          <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <Dialog
+            open={showDeleteDialog}
+            onOpenChange={(open) => {
+              setShowDeleteDialog(open);
+              if (!open) {
+                setDeleteConfirmationText("");
+              }
+            }}
+          >
             <DialogContent className="max-w-md bg-white border border-border">
               <DialogHeader>
                 <DialogTitle className="font-display text-lg font-bold text-red-700 flex items-center gap-2">
@@ -429,13 +464,31 @@ export default function Profile() {
                   <p>
                     Ao confirmar, sua conta será desativada imediatamente e todos os seus registros de oração, histórico espiritual, intenções de oração e preferências serão agendados para <strong>exclusão permanente</strong> dos nossos servidores, em conformidade com as diretrizes de privacidade.
                   </p>
+                  <p>
+                    Para confirmar, digite <strong>EXCLUIR</strong> no campo abaixo.
+                  </p>
                 </DialogDescription>
               </DialogHeader>
+              <div className="space-y-2 mt-2">
+                <Input
+                  value={deleteConfirmationText}
+                  onChange={(event) => setDeleteConfirmationText(event.target.value)}
+                  placeholder="Digite EXCLUIR"
+                  aria-label="Confirmação de exclusão"
+                  disabled={isDeleting}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Esta confirmação evita exclusões acidentais da conta.
+                </p>
+              </div>
               <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-4">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setShowDeleteDialog(false)}
+                  onClick={() => {
+                    setShowDeleteDialog(false);
+                    setDeleteConfirmationText("");
+                  }}
                   disabled={isDeleting}
                   className="w-full sm:w-auto text-xs"
                 >
@@ -445,7 +498,7 @@ export default function Profile() {
                   variant="destructive"
                   size="sm"
                   onClick={handleDeleteAccount}
-                  disabled={isDeleting}
+                  disabled={isDeleting || !canConfirmDelete}
                   className="w-full sm:w-auto text-xs bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-1.5"
                 >
                   {isDeleting ? (

@@ -38,6 +38,7 @@ import {
   createPasswordResetToken,
   validatePasswordResetToken,
   consumePasswordResetToken,
+  deleteUserAccount,
   getDailyPlanStatus,
   registerPushDevice,
   unregisterPushDeviceByToken,
@@ -354,6 +355,14 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         await updateTemplatePreference(ctx.user.id, input.template);
         return { success: true };
+      }),
+  }),
+
+  account: router({
+    deleteMe: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const result = await deleteUserAccount(ctx.user.id);
+        return { success: true, deleted: result.deleted } as const;
       }),
   }),
 

@@ -543,6 +543,66 @@ export async function createUser(user: InsertUser) {
   return result[0];
 }
 
+export async function deleteUserAccount(userId: number): Promise<{ deleted: boolean }> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const existingUser = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (existingUser.length === 0) {
+    return { deleted: false };
+  }
+
+  await db.transaction(async (tx) => {
+    const authoredIntentions = await tx
+      .select({ id: prayerIntentions.id })
+      .from(prayerIntentions)
+      .where(eq(prayerIntentions.userId, userId));
+
+    const authoredIntentionIds = authoredIntentions.map((row) => row.id);
+    if (authoredIntentionIds.length > 0) {
+      await tx
+        .delete(intentionMessages)
+        .where(inArray(intentionMessages.intentionId, authoredIntentionIds));
+
+      await tx
+        .delete(intentionPrayers)
+        .where(inArray(intentionPrayers.intentionId, authoredIntentionIds));
+    }
+
+    await tx.delete(intentionMessages).where(eq(intentionMessages.userId, userId));
+    await tx.delete(intentionPrayers).where(eq(intentionPrayers.userId, userId));
+    await tx.delete(prayerIntentions).where(eq(prayerIntentions.userId, userId));
+
+    const userCandles = await tx
+      .select({ id: virtualCandles.id })
+      .from(virtualCandles)
+      .where(eq(virtualCandles.userId, userId));
+
+    const userCandleIds = userCandles.map((row) => row.id);
+    if (userCandleIds.length > 0) {
+      await tx
+        .delete(candlePrayers)
+        .where(inArray(candlePrayers.candleId, userCandleIds));
+    }
+
+    await tx.delete(candlePrayers).where(eq(candlePrayers.userId, userId));
+    await tx.delete(virtualCandles).where(eq(virtualCandles.userId, userId));
+    await tx.delete(prayerLogs).where(eq(prayerLogs.userId, userId));
+    await tx.delete(lectioJournal).where(eq(lectioJournal.userId, userId));
+    await tx.delete(subscriptions).where(eq(subscriptions.userId, userId));
+    await tx.delete(passwordResetTokens).where(eq(passwordResetTokens.userId, userId));
+    await tx.delete(pushDevices).where(eq(pushDevices.userId, userId));
+    await tx.delete(users).where(eq(users.id, userId));
+  });
+
+  return { deleted: true };
+}
+
 // TODO: add feature queries here as your schema grows.
 
 // ─── Prayer Logs ─────────────────────────────────────────────────────────────
@@ -1178,112 +1238,103 @@ export async function disablePushTokens(tokens: string[]) {
     .where(inArray(pushDevices.token, tokens));
 }
 
-function todayIsoSaoPaulo(): string {
-  const fmt = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Sao_Paulo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  return fmt.format(new Date());
+const SAO_PAULO_DATE_FORMATTER = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Sao_Paulo",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function formatSaoPauloDate(d: Date): string {
+  return SAO_PAULO_DATE_FORMATTER.format(d);
 }
 
-export async function getDailyPlanStatus(userId: number) {
-  const db = await getDb();
-  if (!db) throw new Error("DB unavailable");
+export type DailyPlanStatus = {
+  liturgyCompleted: boolean;
+  rosaryCompleted: boolean;
+  lectioCompleted: boolean;
+  prayersCompleted: boolean;
+  intercessionCompleted: boolean;
+  novenaCompleted: boolean;
+  streak: number;
+};
 
-  const today = todayIsoSaoPaulo();
+type DailyPlanPrayerLogLike = {
+  prayerType: string;
+  completedAt: Date | string;
+};
 
-  // Fetch data
-  const logs = await db
-    .select()
-    .from(prayerLogs)
-    .where(eq(prayerLogs.userId, userId))
-    .orderBy(desc(prayerLogs.completedAt))
-    .limit(100);
+type DailyPlanLectioJournalLike = {
+  journalDate: string;
+};
 
-  const journals = await db
-    .select()
-    .from(lectioJournal)
-    .where(eq(lectioJournal.userId, userId))
-    .orderBy(desc(lectioJournal.journalDate))
-    .limit(100);
+type DailyPlanIntentionPrayerLike = {
+  prayedAt: Date | string;
+};
 
-  const intentions = await db
-    .select()
-    .from(intentionPrayers)
-    .where(eq(intentionPrayers.userId, userId))
-    .orderBy(desc(intentionPrayers.prayedAt))
-    .limit(100);
+function toDate(value: Date | string): Date {
+  return value instanceof Date ? value : new Date(value);
+}
 
-  // Timezone formatting helper
-  const formatSaoPaulo = (d: Date) => {
-    const fmt = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "America/Sao_Paulo",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-    return fmt.format(d);
-  };
+export function computeDailyPlanStatusFromData(params: {
+  logs: DailyPlanPrayerLogLike[];
+  journals: DailyPlanLectioJournalLike[];
+  intentions: DailyPlanIntentionPrayerLike[];
+  now?: Date;
+}): DailyPlanStatus {
+  const now = params.now ?? new Date();
+  const today = formatSaoPauloDate(now);
 
-  // Check completions for today
-  const liturgyCompleted = logs.some(
-    (l) => l.prayerType === "liturgia" && formatSaoPaulo(new Date(l.completedAt)) === today
-  );
-  
-  const rosaryCompleted = logs.some(
-    (l) => l.prayerType === "rosario" && formatSaoPaulo(new Date(l.completedAt)) === today
+  const liturgyCompleted = params.logs.some(
+    (l) => l.prayerType === "liturgia" && formatSaoPauloDate(toDate(l.completedAt)) === today
   );
 
-  const lectioCompleted = journals.some((j) => j.journalDate === today);
+  const rosaryCompleted = params.logs.some(
+    (l) => l.prayerType === "rosario" && formatSaoPauloDate(toDate(l.completedAt)) === today
+  );
+
+  const lectioCompleted = params.journals.some((j) => j.journalDate === today);
 
   const excludedTypes = ["liturgia", "rosario", "lectio_divina", "via_sacra", "vela_virtual", "novena"];
-  const prayersCompleted = logs.some(
-    (l) => !excludedTypes.includes(l.prayerType) && formatSaoPaulo(new Date(l.completedAt)) === today
+  const prayersCompleted = params.logs.some(
+    (l) => !excludedTypes.includes(l.prayerType) && formatSaoPauloDate(toDate(l.completedAt)) === today
   );
 
-  const velaVirtualCompleted = logs.some(
-    (l) => l.prayerType === "vela_virtual" && formatSaoPaulo(new Date(l.completedAt)) === today
+  const velaVirtualCompleted = params.logs.some(
+    (l) => l.prayerType === "vela_virtual" && formatSaoPauloDate(toDate(l.completedAt)) === today
   );
 
   const intercessionCompleted =
     velaVirtualCompleted ||
-    intentions.some((i) => formatSaoPaulo(new Date(i.prayedAt)) === today);
+    params.intentions.some((i) => formatSaoPauloDate(toDate(i.prayedAt)) === today);
 
-  const novenaCompleted = logs.some(
+  const novenaCompleted = params.logs.some(
     (l) =>
       (l.prayerType === "novena" || l.prayerType === "via_sacra") &&
-      formatSaoPaulo(new Date(l.completedAt)) === today
+      formatSaoPauloDate(toDate(l.completedAt)) === today
   );
 
-  // Combine unique dates of activity
   const dates = new Set<string>();
-  logs.forEach((l) => dates.add(formatSaoPaulo(new Date(l.completedAt))));
-  journals.forEach((j) => dates.add(j.journalDate));
-  intentions.forEach((i) => dates.add(formatSaoPaulo(new Date(i.prayedAt))));
+  params.logs.forEach((l) => dates.add(formatSaoPauloDate(toDate(l.completedAt))));
+  params.journals.forEach((j) => dates.add(j.journalDate));
+  params.intentions.forEach((i) => dates.add(formatSaoPauloDate(toDate(i.prayedAt))));
 
   const activeDates = Array.from(dates).sort((a, b) => b.localeCompare(a));
-
-  // Calculate streak
-  let streak = 0;
   const hasActivityToday = activeDates.includes(today);
 
-  const yesterdayDate = new Date();
+  const yesterdayDate = new Date(now);
   yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-  const yesterday = formatSaoPaulo(yesterdayDate);
+  const yesterday = formatSaoPauloDate(yesterdayDate);
   const hasActivityYesterday = activeDates.includes(yesterday);
 
+  let streak = 0;
   if (hasActivityToday || hasActivityYesterday) {
-    let checkDate = hasActivityToday ? new Date() : yesterdayDate;
+    let checkDate = hasActivityToday ? new Date(now) : new Date(yesterdayDate);
     while (true) {
-      const checkStr = formatSaoPaulo(checkDate);
-      if (activeDates.includes(checkStr)) {
-        streak++;
-        checkDate.setDate(checkDate.getDate() - 1);
-      } else {
-        break;
-      }
+      const checkStr = formatSaoPauloDate(checkDate);
+      if (!activeDates.includes(checkStr)) break;
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
     }
   }
 
@@ -1296,4 +1347,35 @@ export async function getDailyPlanStatus(userId: number) {
     novenaCompleted,
     streak,
   };
+}
+
+export async function getDailyPlanStatus(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const DAILY_PLAN_HISTORY_LIMIT = 1000;
+
+  // Fetch data
+  const logs = await db
+    .select()
+    .from(prayerLogs)
+    .where(eq(prayerLogs.userId, userId))
+    .orderBy(desc(prayerLogs.completedAt))
+    .limit(DAILY_PLAN_HISTORY_LIMIT);
+
+  const journals = await db
+    .select()
+    .from(lectioJournal)
+    .where(eq(lectioJournal.userId, userId))
+    .orderBy(desc(lectioJournal.journalDate))
+    .limit(DAILY_PLAN_HISTORY_LIMIT);
+
+  const intentions = await db
+    .select()
+    .from(intentionPrayers)
+    .where(eq(intentionPrayers.userId, userId))
+    .orderBy(desc(intentionPrayers.prayedAt))
+    .limit(DAILY_PLAN_HISTORY_LIMIT);
+
+  return computeDailyPlanStatusFromData({ logs, journals, intentions });
 }
