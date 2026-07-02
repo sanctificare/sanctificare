@@ -180,7 +180,7 @@ export default function Profile() {
                 <span className="font-display text-xl font-bold text-[oklch(0.88_0.08_80)]">{initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <h1 className="font-display text-xl sm:text-2xl font-bold text-navy truncate">
+                <h1 className="font-display text-xl sm:text-2xl font-bold text-navy break-words">
                   {user?.name || "Fiel Católico"}
                 </h1>
                 <p className="text-sm text-muted-foreground truncate">{user?.email || ""}</p>
@@ -208,16 +208,16 @@ export default function Profile() {
           </div>
 
           {/* Estatísticas */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
             {[
               { label: "Orações registradas", value: totalPrayers, icon: Heart, color: "text-[oklch(0.55_0.14_15)]" },
               { label: "Práticas diferentes", value: uniqueTypes, icon: User, color: "text-[oklch(0.40_0.10_260)]" },
               { label: "Dias de oração", value: new Set(logs?.map((l: any) => new Date(l.completedAt).toDateString()) || []).size, icon: Calendar, color: "text-[oklch(0.40_0.12_150)]" },
             ].map((stat) => (
-              <div key={stat.label} className="prayer-card p-4 text-center">
-                <stat.icon size={18} className={`sm:w-5 sm:h-5 ${stat.color} mx-auto mb-2`} />
-                <p className="font-display text-2xl font-bold text-navy">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
+              <div key={stat.label} className="prayer-card p-2 sm:p-4 text-center flex flex-col justify-center items-center">
+                <stat.icon size={16} className={`sm:w-5 sm:h-5 ${stat.color} mb-1 sm:mb-2`} />
+                <p className="font-display text-lg sm:text-2xl font-bold text-navy leading-none">{stat.value}</p>
+                <p className="text-[9px] sm:text-xs text-muted-foreground mt-1 leading-tight">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -226,7 +226,7 @@ export default function Profile() {
 
           {/* Orações mais rezadas */}
           {topPrayers.length > 0 && (
-            <div className="prayer-card p-5 sm:p-6 mb-6">
+            <div className="prayer-card p-4 sm:p-6 mb-6">
               <h2 className="section-title-sm mb-4">
                 Orações mais rezadas
               </h2>
@@ -259,7 +259,7 @@ export default function Profile() {
 
 
           {/* Histórico completo */}
-          <div className="prayer-card p-5 sm:p-6">
+          <div className="prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
               <h2 className="section-title-sm">
@@ -306,7 +306,7 @@ export default function Profile() {
           </div>
 
           {/* Lembretes Diários */}
-          <div className="section-block prayer-card p-5 sm:p-6">
+          <div className="section-block prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <Bell size={16} className="text-[oklch(0.65_0.14_70)]" />
               <h2 className="section-title-sm">
@@ -356,7 +356,7 @@ export default function Profile() {
 
           {/* Assinatura */}
           {subscription && (
-            <div className="section-block prayer-card p-5 sm:p-6">
+            <div className="section-block prayer-card p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Crown size={16} className="text-[oklch(0.65_0.12_70)]" />
                 <h2 className="section-title-sm">
@@ -383,7 +383,7 @@ export default function Profile() {
           )}
 
           {/* Segurança e Privacidade */}
-          <div className="section-block prayer-card p-5 sm:p-6">
+          <div className="section-block prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
               <Lock size={16} className="text-navy" />
               <h2 className="section-title-sm">
@@ -392,14 +392,14 @@ export default function Profile() {
             </div>
             <div className="divider-gold mb-4" />
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/redefinir-senha" className="rounded-md focus-gold-ring">
-                <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
+              <Link href="/redefinir-senha" className="w-full sm:w-auto rounded-md focus-gold-ring">
+                <Button variant="outline" size="sm" className="w-full text-xs flex items-center justify-center gap-1.5">
                   <Key size={14} />
                   Alterar Senha
                 </Button>
               </Link>
-              <Link href="/privacidade" className="rounded-md focus-gold-ring">
-                <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs flex items-center gap-1.5">
+              <Link href="/privacidade" className="w-full sm:w-auto rounded-md focus-gold-ring">
+                <Button variant="outline" size="sm" className="w-full text-xs flex items-center justify-center gap-1.5">
                   <FileText size={14} />
                   Política de Privacidade
                 </Button>
@@ -408,7 +408,7 @@ export default function Profile() {
                 variant="outline"
                 size="sm"
                 onClick={logout}
-                className="w-full sm:w-auto text-xs text-destructive hover:bg-destructive/5 hover:text-destructive flex items-center gap-1.5 border-destructive/30"
+                className="w-full sm:w-auto text-xs text-destructive hover:bg-destructive/5 hover:text-destructive flex items-center justify-center gap-1.5 border-destructive/30"
               >
                 <LogOut size={14} />
                 Sair da Conta
@@ -433,7 +433,7 @@ export default function Profile() {
                 variant="destructive"
                 size="sm"
                 onClick={() => setShowDeleteDialog(true)}
-                className="w-full sm:w-auto text-xs bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5"
+                className="w-full sm:w-auto text-xs bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-1.5"
               >
                 <Trash2 size={14} />
                 Excluir Conta e Dados
