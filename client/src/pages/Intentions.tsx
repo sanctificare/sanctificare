@@ -19,7 +19,7 @@ const CATEGORIES = [
   { value: "familia",   label: "Família",              emoji: "👨‍👩‍👧", color: "oklch(0.50 0.15 200)" },
   { value: "conversao", label: "Conversão",            emoji: "✝️",  color: "oklch(0.45 0.12 260)" },
   { value: "trabalho",  label: "Trabalho e Provisão",  emoji: "💼", color: "oklch(0.48 0.14 150)" },
-  { value: "defuntos",  label: "Pelos Defuntos",       emoji: "⚰️", color: "oklch(0.35 0.05 260)" },
+  { value: "defuntos",  label: "Pelos Defuntos",       emoji: "🕯️", color: "oklch(0.35 0.05 260)" },
   { value: "paz",       label: "Paz e Reconciliação",  emoji: "🕊️", color: "oklch(0.50 0.16 240)" },
 ] as const;
 
