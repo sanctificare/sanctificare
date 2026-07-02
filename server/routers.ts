@@ -45,42 +45,37 @@ import {
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
-import https from "https";
 import { getChapter as getBibleChapter, search as searchBible } from "./bible";
 import { sendPushToTokens } from "./_core/push";
+import { createMemoryRateLimiter } from "./_core/rateLimit";
 
-const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
-const registerRateMap = new Map<string, { count: number; resetAt: number }>();
-const loginRateMap = new Map<string, { count: number; resetAt: number }>();
-const forgotRateMap = new Map<string, { count: number; resetAt: number }>();
+const PUBLIC_RATE_WINDOW_MS = 60 * 1000;
+const publicRateLimiter = createMemoryRateLimiter({
+  windowMs: PUBLIC_RATE_WINDOW_MS,
+  cleanupIntervalMs: 5 * 60 * 1000,
+});
 
 function getClientIp(ctx: { req: { ip?: string; socket?: { remoteAddress?: string | null } } }) {
   return ctx.req.ip || ctx.req.socket?.remoteAddress || "unknown";
 }
 
-function checkRateLimit(
-  map: Map<string, { count: number; resetAt: number }>,
-  key: string,
-  maxAttempts: number,
-  windowMs: number
-) {
-  const now = Date.now();
-  const entry = map.get(key);
-
-  if (!entry || entry.resetAt <= now) {
-    map.set(key, { count: 1, resetAt: now + windowMs });
-    return;
-  }
-
-  entry.count += 1;
-  map.set(key, entry);
-
-  if (entry.count > maxAttempts) {
+function enforceTrpcRateLimit(scope: string, key: string, maxAttempts: number) {
+  const namespacedKey = `${scope}:${key}`;
+  if (!publicRateLimiter.allow(namespacedKey, maxAttempts)) {
     throw new TRPCError({
       code: "TOO_MANY_REQUESTS",
       message: "Muitas tentativas. Tente novamente em alguns minutos.",
     });
   }
+}
+
+function getPublicTrpcErrorMessage(error: unknown, fallback: string): string {
+  if (process.env.NODE_ENV === "development") {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+  }
+  return fallback;
 }
 
 export const appRouter = router({
@@ -380,11 +375,12 @@ export const appRouter = router({
       }),
 
     getSantoDoDia: publicProcedure
-      .query(async (): Promise<{ name: string; biography: string; quote: string | null } | null> => {
+      .query(async ({ ctx }): Promise<{ name: string; biography: string; quote: string | null } | null> => {
+        const ip = getClientIp(ctx);
+        enforceTrpcRateLimit("santo", ip, 30);
+
         try {
-          const agent = new https.Agent({ rejectUnauthorized: false });
           const response = await axios.get("https://api-liturgia-diaria.vercel.app/santo-do-dia", {
-            httpsAgent: agent,
             timeout: 10000,
           });
 
@@ -532,13 +528,16 @@ export const appRouter = router({
         bookId: z.string(),
         chapter: z.number().int().positive()
       }))
-      .query(async ({ input }) => {
+      .query(async ({ ctx, input }) => {
+        const ip = getClientIp(ctx);
+        enforceTrpcRateLimit("bible-chapter", ip, 120);
+
         try {
           return getBibleChapter(input.bookId, input.chapter);
-        } catch (error: any) {
+        } catch (error) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: error.message || "Erro ao carregar o capítulo da Bíblia."
+            message: getPublicTrpcErrorMessage(error, "Erro ao carregar o capítulo da Bíblia."),
           });
         }
       }),
@@ -547,13 +546,16 @@ export const appRouter = router({
       .input(z.object({
         query: z.string().min(3)
       }))
-      .query(async ({ input }) => {
+      .query(async ({ ctx, input }) => {
+        const ip = getClientIp(ctx);
+        enforceTrpcRateLimit("bible-search", ip, 45);
+
         try {
           return searchBible(input.query);
-        } catch (error: any) {
+        } catch (error) {
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: error.message || "Erro ao realizar a busca na Bíblia."
+            message: getPublicTrpcErrorMessage(error, "Erro ao realizar a busca na Bíblia."),
           });
         }
       })

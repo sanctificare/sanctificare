@@ -34,6 +34,7 @@ import { sdk } from "./sdk";
 import { upsertDailyLiturgy, getDb } from "../db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "../liturgia";
 import { handleStripeWebhook } from "../stripe-webhook";
+import crypto from "crypto";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -111,13 +112,14 @@ async function fetchLiturgiaHandler(req: express.Request, res: express.Response)
     return res.json({ ok: true, results });
   } catch (error) {
     const err = error as Error;
+    const isDevelopment = process.env.NODE_ENV === "development";
     const payload: Record<string, unknown> = {
-      error: err.message,
+      error: isDevelopment ? err.message : "Internal server error",
       context: { url: req.originalUrl },
       timestamp: new Date().toISOString(),
     };
 
-    if (process.env.NODE_ENV === "development") {
+    if (isDevelopment) {
       payload.stack = err.stack;
     }
 
@@ -130,6 +132,10 @@ async function fetchLiturgiaHandler(req: express.Request, res: express.Response)
 async function startServer() {
   if (process.env.NODE_ENV !== "development" && process.env.DEV_AUTH_BYPASS === "1") {
     throw new Error("DEV_AUTH_BYPASS must never be enabled outside development");
+  }
+
+  if (process.env.NODE_ENV === "production" && ENV.cookieSecret.length < 32) {
+    throw new Error("JWT_SECRET must be configured with at least 32 characters in production");
   }
 
   // Run programmatic database migrations if in production
@@ -158,9 +164,16 @@ async function startServer() {
   const server = createServer(app);
   const allowedOrigins = getAllowedOrigins();
 
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  // Keep a conservative default request body limit to reduce DoS surface.
+  app.use(express.json({ limit: "1mb" }));
+  app.use(express.urlencoded({ limit: "1mb", extended: true }));
+
+  app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (err?.type === "entity.too.large") {
+      return res.status(413).json({ error: "Payload too large" });
+    }
+    return next(err);
+  });
 
   app.use((req, res, next) => {
     const host = req.get("host");
@@ -198,7 +211,16 @@ async function startServer() {
     }
 
     const csrfHeaderToken = req.header(CSRF_HEADER_NAME);
-    if (!csrfHeaderToken || csrfHeaderToken !== csrfCookieToken) {
+    if (!csrfHeaderToken) {
+      return res.status(403).json({ error: "CSRF validation failed" });
+    }
+
+    const csrfFromCookie = Buffer.from(csrfCookieToken, "utf8");
+    const csrfFromHeader = Buffer.from(csrfHeaderToken, "utf8");
+    const isValidCsrfPair =
+      csrfFromCookie.length === csrfFromHeader.length &&
+      crypto.timingSafeEqual(csrfFromCookie, csrfFromHeader);
+    if (!isValidCsrfPair) {
       return res.status(403).json({ error: "CSRF validation failed" });
     }
 

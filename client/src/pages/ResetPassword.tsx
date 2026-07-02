@@ -66,8 +66,8 @@ export default function ResetPassword() {
 
   const validate = () => {
     const newErrors: typeof errors = {};
-    if (!password || password.length < 6) {
-      newErrors.password = "A senha deve ter pelo menos 6 caracteres.";
+    if (!password || password.length < 8) {
+      newErrors.password = "A senha deve ter pelo menos 8 caracteres.";
     }
     if (password !== confirm) {
       newErrors.confirm = "As senhas não coincidem.";
@@ -160,7 +160,7 @@ export default function ResetPassword() {
               <Input
                 id="new-password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Mínimo 6 caracteres"
+                placeholder="Mínimo 8 caracteres"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={resetMutation.isPending}

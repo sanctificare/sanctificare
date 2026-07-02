@@ -4,10 +4,33 @@ import { ENV } from "./env";
 import path from "path";
 import fs from "fs";
 
+function sanitizeStorageKey(key: string): string | null {
+  const normalized = key.replace(/\\/g, "/").trim();
+  if (!normalized || normalized.includes("\0")) return null;
+
+  const segments = normalized.split("/");
+  if (segments.some(segment => segment === "." || segment === "..")) {
+    return null;
+  }
+
+  return normalized;
+}
+
+function safeResolveWithin(baseDir: string, relativePath: string): string | null {
+  const base = path.resolve(baseDir);
+  const resolved = path.resolve(baseDir, relativePath);
+  const prefix = `${base}${path.sep}`;
+  if (resolved !== base && !resolved.startsWith(prefix)) {
+    return null;
+  }
+  return resolved;
+}
+
 export function registerStorageProxy(app: Express) {
   // Proxy for R2 storage — serves files via signed URLs
   app.get("/r2-storage/*", async (req, res) => {
-    const key = (req.params as Record<string, string>)[0];
+    const rawKey = (req.params as Record<string, string>)[0];
+    const key = rawKey ? sanitizeStorageKey(rawKey) : null;
     if (!key) {
       res.status(400).send("Missing storage key");
       return;
@@ -58,12 +81,12 @@ export function registerStorageProxy(app: Express) {
         ? path.resolve(import.meta.dirname, "../..", "client", "public")
         : path.resolve(import.meta.dirname, "public");
 
-      let localFile = path.join(publicDir, "assets", key);
-      if (!fs.existsSync(localFile)) {
-        localFile = path.join(publicDir, key);
+      let localFile = safeResolveWithin(publicDir, path.join("assets", key));
+      if (!localFile || !fs.existsSync(localFile)) {
+        localFile = safeResolveWithin(publicDir, key);
       }
 
-      if (fs.existsSync(localFile)) {
+      if (localFile && fs.existsSync(localFile)) {
         res.set("Cache-Control", "public, max-age=86400");
         res.sendFile(localFile);
         return;
@@ -78,7 +101,8 @@ export function registerStorageProxy(app: Express) {
 
   // Client resolution endpoint: returns JSON { url: signedUrl } instead of redirecting
   app.get("/api/resolve-r2/*", async (req, res) => {
-    const key = (req.params as Record<string, string>)[0];
+    const rawKey = (req.params as Record<string, string>)[0];
+    const key = rawKey ? sanitizeStorageKey(rawKey) : null;
     if (!key) {
       res.status(400).json({ error: "Missing storage key" });
       return;

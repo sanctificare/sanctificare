@@ -5,6 +5,7 @@ import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./s
 import { ENV } from "./env";
 import { sdk } from "./sdk";
 import { hashPassword, comparePassword } from "./authUtils";
+import { createMemoryRateLimiter } from "./rateLimit";
 import { sendPasswordResetEmail } from "./email";
 import { nanoid } from "nanoid";
 import { parse as parseCookie } from "cookie";
@@ -17,6 +18,25 @@ import {
 } from "../db";
 
 const router = Router();
+const AUTH_RATE_WINDOW_MS = 15 * 60 * 1000;
+const authRateLimiter = createMemoryRateLimiter({
+  windowMs: AUTH_RATE_WINDOW_MS,
+  cleanupIntervalMs: 5 * 60 * 1000,
+});
+
+function getRequestRateKey(req: any): string {
+  return req.ip || req.socket?.remoteAddress || "unknown";
+}
+
+function getPublicServerError(error: unknown, fallback = "Erro no servidor"): string {
+  if (process.env.NODE_ENV === "development") {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+    return fallback;
+  }
+  return fallback;
+}
 
 // Middleware to inject user
 export async function injectUserMiddleware(req: any, res: any, next: any) {
@@ -72,6 +92,11 @@ router.get("/csrf", (req, res) => {
 
 router.post("/register", async (req, res) => {
   try {
+    const rateKey = getRequestRateKey(req);
+    if (!authRateLimiter.allow(`register:${rateKey}`, 10)) {
+      return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
+    }
+
     const { name, email, password } = req.body;
     if (!name || name.length < 2) {
       return res.status(400).json({ error: "O nome deve ter pelo menos 2 caracteres" });
@@ -79,8 +104,8 @@ router.post("/register", async (req, res) => {
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       return res.status(400).json({ error: "E-mail inválido" });
     }
-    if (!password || password.length < 6) {
-      return res.status(400).json({ error: "A senha deve ter pelo menos 6 caracteres" });
+    if (!password || password.length < 8) {
+      return res.status(400).json({ error: "A senha deve ter pelo menos 8 caracteres" });
     }
 
     const existingUser = await getUserByEmail(email);
@@ -126,12 +151,17 @@ router.post("/register", async (req, res) => {
     });
   } catch (error: any) {
     console.error("[Auth Register Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 
 router.post("/login", async (req, res) => {
   try {
+    const rateKey = getRequestRateKey(req);
+    if (!authRateLimiter.allow(`login:${rateKey}`, 15)) {
+      return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
+    }
+
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ error: "E-mail e senha são obrigatórios" });
@@ -170,7 +200,7 @@ router.post("/login", async (req, res) => {
     });
   } catch (error: any) {
     console.error("[Auth Login Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 
@@ -186,12 +216,17 @@ router.post("/logout", (req, res) => {
     return res.json({ success: true });
   } catch (error: any) {
     console.error("[Auth Logout Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 
 router.post("/forgot-password", async (req, res) => {
   try {
+    const rateKey = getRequestRateKey(req);
+    if (!authRateLimiter.allow(`forgot:${rateKey}`, 8)) {
+      return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
+    }
+
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ error: "E-mail é obrigatório" });
@@ -220,7 +255,7 @@ router.post("/forgot-password", async (req, res) => {
     return res.json({ success: true });
   } catch (error: any) {
     console.error("[ForgotPassword Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 
@@ -234,15 +269,15 @@ router.get("/validate-reset-token", async (req, res) => {
     return res.json({ valid: userId !== null });
   } catch (error: any) {
     console.error("[ValidateResetToken Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 
 router.post("/reset-password", async (req, res) => {
   try {
     const { token, password } = req.body;
-    if (!token || !password || password.length < 6) {
-      return res.status(400).json({ error: "Token e senha com pelo menos 6 caracteres são obrigatórios" });
+    if (!token || !password || password.length < 8) {
+      return res.status(400).json({ error: "Token e senha com pelo menos 8 caracteres são obrigatórios" });
     }
 
     const newHash = hashPassword(password);
@@ -255,7 +290,7 @@ router.post("/reset-password", async (req, res) => {
     return res.json({ success: true });
   } catch (error: any) {
     console.error("[ResetPassword Error]", error);
-    return res.status(500).json({ error: error.message || "Erro no servidor" });
+    return res.status(500).json({ error: getPublicServerError(error) });
   }
 });
 

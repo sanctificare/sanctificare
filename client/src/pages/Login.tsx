@@ -153,8 +153,8 @@ export default function Login() {
 
     if (!password) {
       newErrors.password = "A senha é obrigatória.";
-    } else if (password.length < 6) {
-      newErrors.password = "A senha deve ter pelo menos 6 caracteres.";
+    } else if (password.length < 8) {
+      newErrors.password = "A senha deve ter pelo menos 8 caracteres.";
     }
 
     if (activeTab === "cadastrar" && !name) {
