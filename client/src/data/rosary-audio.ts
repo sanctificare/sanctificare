@@ -54,7 +54,7 @@ const SINAL_CRUZ_AUDIO_FILE = toRemoteMediaUrl("/audio/rosary/intro-terco.mp3");
 const CREDO_AUDIO_FILE = "/audio/rosary/sinal da cruz.mp3";
 const GLORIA_AUDIO_FILE = "/audio/rosary/gloria.mp3";
 const FATIMA_AUDIO_FILE = "/audio/rosary/jaculatoria.mp3";
-const SALVE_RAINHA_AUDIO_FILE = toRemoteMediaUrl("/audio/rosary/salve rainha.mp3");
+const SALVE_RAINHA_AUDIO_FILE = "https://pub-a66f46a356d6409481c15f875c4e2149.r2.dev/salve%20rainha.mp3";
 
 function getMysteryAudioFiles(mysterySet: RosaryMysteryAudioSet): string[] {
   return Array.from({ length: 5 }, (_, index) => `/audio/rosary/${mysterySet}${index + 1}.mp3`);
