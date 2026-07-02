@@ -11,10 +11,6 @@ export interface RosaryAudioTrack {
 
 export type RosaryMysteryAudioSet = "dolo" | "glor" | "goz" | "lum";
 
-const REMOTE_MEDIA_ORIGIN = "https://sanctificare.app";
-
-const toRemoteMediaUrl = (path: string): string => `${REMOTE_MEDIA_ORIGIN}${path}`;
-
 export const MYSTERY_AUDIO_SET_BY_KEY = {
   sorrowful: "dolo",
   glorious: "glor",
@@ -50,11 +46,10 @@ const GLORIA_AVG_DURATION = 14;
 const FATIMA_AVG_DURATION = 16;
 const SALVE_RAINHA_AVG_DURATION = 55;
 
-const SINAL_CRUZ_AUDIO_FILE = toRemoteMediaUrl("/audio/rosary/intro-terco.mp3");
-const CREDO_AUDIO_FILE = "/audio/rosary/sinal da cruz.mp3";
+const SINAL_CRUZ_AUDIO_FILE = "/audio/rosary/intro-terco.mp3";
 const GLORIA_AUDIO_FILE = "/audio/rosary/gloria.mp3";
 const FATIMA_AUDIO_FILE = "/audio/rosary/jaculatoria.mp3";
-const SALVE_RAINHA_AUDIO_FILE = "https://pub-a66f46a356d6409481c15f875c4e2149.r2.dev/salve%20rainha.mp3";
+const SALVE_RAINHA_AUDIO_FILE = "/audio/rosary/salve rainha.mp3";
 
 function getMysteryAudioFiles(mysterySet: RosaryMysteryAudioSet): string[] {
   return Array.from({ length: 5 }, (_, index) => `/audio/rosary/${mysterySet}${index + 1}.mp3`);

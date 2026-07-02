@@ -31,7 +31,11 @@ function readProgress(): ProgressMap {
 }
 
 function writeProgress(progress: ProgressMap) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  } catch {
+    // Ignore storage failures; state in memory remains consistent for the session.
+  }
 }
 
 function splitCommonPrayers(prayerText: string) {
@@ -75,7 +79,7 @@ export default function NovenaDetails() {
   const utils = trpc.useUtils();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
-  const isPremium = true;
+  const isPremium = Boolean(subscription);
   
   const selectedNovena = useMemo(() => {
     if (!matched || !params?.slug) return undefined;
@@ -95,15 +99,25 @@ export default function NovenaDetails() {
 
   useEffect(() => {
     if (selectedNovena && typeof window !== "undefined") {
-      const saved = localStorage.getItem(`sanctificare.novenas.intention.${selectedNovena.id}`) || "";
-      setIntention(saved);
-      setTempIntention(saved);
+      try {
+        const saved = localStorage.getItem(`sanctificare.novenas.intention.${selectedNovena.id}`) || "";
+        setIntention(saved);
+        setTempIntention(saved);
+      } catch {
+        setIntention("");
+        setTempIntention("");
+      }
     }
   }, [selectedNovena]);
 
   const saveIntention = () => {
     if (!selectedNovena) return;
-    localStorage.setItem(`sanctificare.novenas.intention.${selectedNovena.id}`, tempIntention);
+    try {
+      localStorage.setItem(`sanctificare.novenas.intention.${selectedNovena.id}`, tempIntention);
+    } catch {
+      toast.error("Não foi possível salvar a intenção neste dispositivo.");
+      return;
+    }
     setIntention(tempIntention);
     setIsEditingIntention(false);
     toast.success("Intenção salva com sucesso!");

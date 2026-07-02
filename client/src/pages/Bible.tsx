@@ -24,6 +24,25 @@ import html2canvas from "html2canvas-pro";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
+type BibleFavorite = {
+  bookId: string;
+  bookName: string;
+  chapter: number;
+  verse: number;
+  text: string;
+};
+
+function readBibleFavorites(): BibleFavorite[] {
+  try {
+    const raw = localStorage.getItem("sanctificare_bible_favorites");
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
 export default function Bible() {
   const { isAuthenticated } = useAuth();
   const [location] = useLocation();
@@ -55,9 +74,7 @@ export default function Bible() {
 
   // Bookmark (last read) & Favorites
   const [bookmark, setBookmark] = useState<{ bookId: string; bookName: string; chapter: number } | null>(null);
-  const [favorites, setFavorites] = useState<{ bookId: string; bookName: string; chapter: number; verse: number; text: string }[]>(
-    JSON.parse(localStorage.getItem("sanctificare_bible_favorites") || "[]")
-  );
+  const [favorites, setFavorites] = useState<BibleFavorite[]>(() => readBibleFavorites());
 
   // Selected verses for copying/sharing/favoriting
   const [selectedVerses, setSelectedVerses] = useState<number[]>([]);

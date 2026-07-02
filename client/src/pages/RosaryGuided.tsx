@@ -9,7 +9,6 @@ import AudioPlayer from "@/components/AudioPlayer";
 import RosaryBoard, { type RosaryStep } from "@/components/RosaryBoard";
 import {
   ChevronLeft,
-  ChevronRight,
   Heart,
   CheckCircle,
   RotateCcw,

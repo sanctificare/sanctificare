@@ -170,7 +170,7 @@ export default function Prayers() {
     }
   }, [location]);
 
-  const isPremium = true;
+  const isPremium = Boolean(subscription);
 
   const getPrayerCardTheme = (prayerType: string) => PRAYER_CARD_THEMES[prayerType] ?? DEFAULT_PRAYER_CARD_THEME;
 

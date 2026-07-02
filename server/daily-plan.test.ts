@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
+import * as dbModule from "./db";
 
 function createAuthContext(userId = 1): TrpcContext {
   return {
@@ -29,6 +30,10 @@ function createPublicContext(): TrpcContext {
 }
 
 describe("dailyPlan.getStatus", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("rejeita usuário não autenticado", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
@@ -36,28 +41,35 @@ describe("dailyPlan.getStatus", () => {
   });
 
   it("retorna o status do plano diário para usuário autenticado", async () => {
+    const expectedStatus = {
+      liturgyCompleted: true,
+      rosaryCompleted: false,
+      lectioCompleted: true,
+      prayersCompleted: true,
+      intercessionCompleted: false,
+      novenaCompleted: true,
+      streak: 4,
+    };
+
+    const statusSpy = vi
+      .spyOn(dbModule, "getDailyPlanStatus")
+      .mockResolvedValue(expectedStatus);
+
     const ctx = createAuthContext();
     const caller = appRouter.createCaller(ctx);
-    try {
-      const status = await caller.dailyPlan.getStatus();
-      expect(status).toHaveProperty("liturgyCompleted");
-      expect(status).toHaveProperty("rosaryCompleted");
-      expect(status).toHaveProperty("lectioCompleted");
-      expect(status).toHaveProperty("prayersCompleted");
-      expect(status).toHaveProperty("intercessionCompleted");
-      expect(status).toHaveProperty("novenaCompleted");
-      expect(status).toHaveProperty("streak");
-      
-      expect(typeof status.liturgyCompleted).toBe("boolean");
-      expect(typeof status.rosaryCompleted).toBe("boolean");
-      expect(typeof status.lectioCompleted).toBe("boolean");
-      expect(typeof status.prayersCompleted).toBe("boolean");
-      expect(typeof status.intercessionCompleted).toBe("boolean");
-      expect(typeof status.novenaCompleted).toBe("boolean");
-      expect(typeof status.streak).toBe("number");
-    } catch (e: any) {
-      // O banco de dados pode estar offline/indisponível durante os testes locales sem Docker/Postgres ativos
-      expect(e.message).not.toContain("UNAUTHORIZED");
-    }
+    const status = await caller.dailyPlan.getStatus();
+
+    expect(status).toEqual(expectedStatus);
+    expect(statusSpy).toHaveBeenCalledTimes(1);
+    expect(statusSpy).toHaveBeenCalledWith(1);
+  });
+
+  it("propaga erro de infraestrutura para facilitar observabilidade", async () => {
+    vi.spyOn(dbModule, "getDailyPlanStatus").mockRejectedValue(new Error("DB unavailable"));
+
+    const ctx = createAuthContext();
+    const caller = appRouter.createCaller(ctx);
+
+    await expect(caller.dailyPlan.getStatus()).rejects.toThrow("DB unavailable");
   });
 });

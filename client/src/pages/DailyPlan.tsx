@@ -73,24 +73,40 @@ const DEFAULT_METAS: MetasConfig = {
   novena: true,
 };
 
+const SAO_PAULO_DATE_FORMATTER = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Sao_Paulo",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+function toSaoPauloIsoDate(date: Date): string {
+  return SAO_PAULO_DATE_FORMATTER.format(date);
+}
+
 function getWeeklyChartData(logs: any[] | undefined) {
   const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
   const data = [];
+  const now = new Date();
+  const logDays = new Set<string>();
+
+  logs?.forEach((log) => {
+    if (!log.completedAt) return;
+    logDays.add(toSaoPauloIsoDate(new Date(log.completedAt)));
+  });
 
   for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
 
     const dayName = daysOfWeek[d.getDay()];
-    const dateStr = d.toLocaleDateString("pt-BR", { day: "numeric", month: "numeric" });
-
-    const count = logs?.filter(log => {
-      if (!log.completedAt) return false;
-      const logDate = new Date(log.completedAt);
-      return logDate.getDate() === d.getDate() &&
-        logDate.getMonth() === d.getMonth() &&
-        logDate.getFullYear() === d.getFullYear();
-    }).length || 0;
+    const dateStr = d.toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "numeric",
+      timeZone: "America/Sao_Paulo",
+    });
+    const dayIso = toSaoPauloIsoDate(d);
+    const count = logDays.has(dayIso) ? 1 : 0;
 
     data.push({
       name: dayName,
@@ -122,8 +138,13 @@ export default function DailyPlan() {
   const handleToggleMetaSetting = (key: MetaKey) => {
     const updated = { ...metasConfig, [key]: !metasConfig[key] };
     setMetasConfig(updated);
-    localStorage.setItem("sanctificare.daily_plan.metas", JSON.stringify(updated));
-    toast.success("Rotina diária atualizada!");
+
+    try {
+      localStorage.setItem("sanctificare.daily_plan.metas", JSON.stringify(updated));
+      toast.success("Rotina diária atualizada!");
+    } catch {
+      toast.error("Não foi possível salvar sua rotina neste dispositivo.");
+    }
   };
 
   useEffect(() => {

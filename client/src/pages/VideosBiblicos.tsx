@@ -311,6 +311,54 @@ function HorizontalVideoCard({
   );
 }
 
+function safeStorageSet(key: string, value: string): boolean {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function readFavoriteIds(): string[] {
+  try {
+    const stored = localStorage.getItem("sanctificare_video_favorites");
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((id): id is string => typeof id === "string");
+  } catch {
+    return [];
+  }
+}
+
+function readVideoProgress(): Record<string, { currentTime: number; progressPercent: number }> {
+  try {
+    const stored = localStorage.getItem("sanctificare_video_progress");
+    if (!stored) return {};
+    const parsed = JSON.parse(stored);
+    if (!parsed || typeof parsed !== "object") return {};
+
+    const out: Record<string, { currentTime: number; progressPercent: number }> = {};
+    Object.entries(parsed).forEach(([id, value]) => {
+      if (
+        value &&
+        typeof value === "object" &&
+        typeof (value as any).currentTime === "number" &&
+        typeof (value as any).progressPercent === "number"
+      ) {
+        out[id] = {
+          currentTime: (value as any).currentTime,
+          progressPercent: (value as any).progressPercent,
+        };
+      }
+    });
+    return out;
+  } catch {
+    return {};
+  }
+}
+
 export default function VideosBiblicos() {
   const { isAuthenticated, loading } = useAuth();
   const [filter, setFilter] = useState<"all" | "short" | "long">("all");
@@ -320,23 +368,11 @@ export default function VideosBiblicos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
 
-  const [favorites, setFavorites] = useState<string[]>(() => {
-    try {
-      const stored = localStorage.getItem("sanctificare_video_favorites");
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [favorites, setFavorites] = useState<string[]>(() => readFavoriteIds());
 
-  const [videoProgress, setVideoProgress] = useState<Record<string, { currentTime: number; progressPercent: number }>>(() => {
-    try {
-      const stored = localStorage.getItem("sanctificare_video_progress");
-      return stored ? JSON.parse(stored) : {};
-    } catch {
-      return {};
-    }
-  });
+  const [videoProgress, setVideoProgress] = useState<Record<string, { currentTime: number; progressPercent: number }>>(() =>
+    readVideoProgress()
+  );
 
   const videoPlayerRef = useRef<HTMLVideoElement>(null);
   const lastSavedTimeRef = useRef<Record<string, number>>({});
@@ -346,7 +382,7 @@ export default function VideosBiblicos() {
   );
   
   const logPrayer = trpc.prayers.logPrayer.useMutation();
-  const isPremium = true;
+  const isPremium = Boolean(subscription);
 
   // Extract categories dynamically and add Favorites pill
   const categories = useMemo(() => {
@@ -381,7 +417,7 @@ export default function VideosBiblicos() {
       const updated = prev.includes(videoId)
         ? prev.filter((id) => id !== videoId)
         : [...prev, videoId];
-      localStorage.setItem("sanctificare_video_favorites", JSON.stringify(updated));
+      safeStorageSet("sanctificare_video_favorites", JSON.stringify(updated));
       toast.success(prev.includes(videoId) ? "Removido dos favoritos" : "Adicionado aos favoritos");
       return updated;
     });
@@ -413,7 +449,7 @@ export default function VideosBiblicos() {
             ...prev,
             [videoId]: { currentTime, progressPercent },
           };
-          localStorage.setItem("sanctificare_video_progress", JSON.stringify(updated));
+          safeStorageSet("sanctificare_video_progress", JSON.stringify(updated));
           return updated;
         });
       } else {
@@ -421,7 +457,7 @@ export default function VideosBiblicos() {
           if (!prev[videoId]) return prev;
           const updated = { ...prev };
           delete updated[videoId];
-          localStorage.setItem("sanctificare_video_progress", JSON.stringify(updated));
+          safeStorageSet("sanctificare_video_progress", JSON.stringify(updated));
           return updated;
         });
       }

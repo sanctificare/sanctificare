@@ -23,7 +23,7 @@ export default function Novenas() {
   const [progress] = useState<ProgressMap>(() => readProgress());
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
 
-  const isPremium = true;
+  const isPremium = Boolean(subscription);
 
   const activeNovenas = buildNovenasInProgressItems(progress, NOVENAS);
 

@@ -3,12 +3,20 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Search, Compass, Heart, BookOpen, Flame, Calendar, Users, Sun, Cross, Music, Play, HelpCircle, CheckCircle2, ChevronRight } from "lucide-react";
-import { RosaryIcon } from "@/components/RosaryIcon";
+import { Search, Compass } from "lucide-react";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
-const exploreCards = [
+type ExploreCard = {
+  href: string;
+  label: string;
+  desc: string;
+  image: string;
+  overlay: string;
+  category: "Devocional" | "Estudo" | "Práticas" | "Comunidade";
+};
+
+const exploreCards: ExploreCard[] = [
   { href: "/plano-diario", label: "Plano Diário", desc: "Suas metas espirituais", image: "/assets/dashboard/plano-diario.png", overlay: "oklch(0.25 0.09 75 / 0.60)", category: "Práticas" },
   { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.png", overlay: "oklch(0.22 0.08 260 / 0.60)", category: "Devocional" },
   { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.png", overlay: "oklch(0.28 0.08 145 / 0.60)", category: "Devocional" },
@@ -22,6 +30,24 @@ const exploreCards = [
   { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.png", overlay: "oklch(0.40 0.15 80 / 0.60)", category: "Estudo" },
   { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
 ];
+
+export function filterExploreCards(cards: ExploreCard[], search: string, selectedCategory: string | null): ExploreCard[] {
+  const normalizedSearch = search.trim().toLowerCase();
+
+  return cards.filter((card) => {
+    const matchesSearch =
+      normalizedSearch.length === 0 ||
+      card.label.toLowerCase().includes(normalizedSearch) ||
+      card.desc.toLowerCase().includes(normalizedSearch);
+
+    const matchesCategory =
+      !selectedCategory ||
+      selectedCategory === "Todos" ||
+      card.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+}
 
 export default function Explore() {
   const { isAuthenticated, loading } = useAuth();
@@ -56,12 +82,7 @@ export default function Explore() {
 
   const categories = ["Todos", "Devocional", "Estudo", "Práticas", "Comunidade"];
 
-  const filteredCards = exploreCards.filter(card => {
-    const matchesSearch = card.label.toLowerCase().includes(search.toLowerCase()) || 
-                          card.desc.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = !selectedCategory || selectedCategory === "Todos" || card.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredCards = filterExploreCards(exploreCards, search, selectedCategory);
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden pb-12">
@@ -85,12 +106,17 @@ export default function Explore() {
         {/* Search & Filter Bar */}
         <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-4 bg-white/60 dark:bg-[oklch(0.17_0.04_260/0.4)] backdrop-blur-md border border-border/40 p-4 rounded-xl shadow-sm">
           <div className="relative w-full md:max-w-xs">
+            <label htmlFor="explore-search" className="sr-only">
+              Buscar prática ou recurso
+            </label>
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
+              id="explore-search"
               type="text"
               placeholder="Buscar prática ou recurso..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Buscar prática ou recurso"
               className="pl-9 pr-4 py-2 w-full bg-white dark:bg-[oklch(0.12_0.03_260)] rounded-lg border border-border text-sm focus:outline-none focus:ring-1 focus:ring-[oklch(0.75_0.12_75)] text-foreground bg-transparent"
             />
           </div>
