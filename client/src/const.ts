@@ -92,12 +92,30 @@ export const resolveMediaUrl = (url: string | undefined): string => {
     return url;
   }
   if (url.startsWith("/")) {
-    if (url.startsWith("/assets/") || url.startsWith("/audio/rosary/")) {
+    const shouldServeFromRemoteOnMobile =
+      isMobileApp() && (
+        url.startsWith("/assets/lectio/") ||
+        url.startsWith("/assets/novenas/") ||
+        url.startsWith("/assets/composers/")
+      );
+
+    if (!shouldServeFromRemoteOnMobile && (url.startsWith("/assets/") || url.startsWith("/audio/rosary/"))) {
       return url;
     }
     return `${getApiBaseUrl()}${url}`;
   }
   return url;
+};
+
+export const DEFAULT_IMAGE_FALLBACK = "/assets/logo-sanctificare.webp";
+
+export const applyImageFallback = (
+  img: HTMLImageElement,
+  fallbackUrl: string = DEFAULT_IMAGE_FALLBACK
+): void => {
+  if (img.dataset.fallbackApplied === "1") return;
+  img.dataset.fallbackApplied = "1";
+  img.src = resolveMediaUrl(fallbackUrl);
 };
 
 export const resolveR2Redirect = async (url: string | undefined): Promise<string> => {
