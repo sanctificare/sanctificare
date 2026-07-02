@@ -362,7 +362,7 @@ export default function Home() {
               </div>
 
               <p className="font-serif text-lg text-[oklch(0.85_0.02_260)] leading-relaxed max-w-xl">
-                O Sanctificare acompanha a sua busca diária pela santidade através de uma experiência sóbria, bela e reverente. Reze o Santo Rosário, medite com as leituras litúrgicas do dia e cultive uma intimidade sincera com Deus, livre de distrações e anúncios.
+                O Sanctificare acompanha a sua busca diária pela santidade através de uma experiência sóbria, bela e reverente. Reze o Santo Rosário, medite com as leituras do dia e cultive uma intimidade sincera com Deus, livre de distrações e anúncios.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2 max-w-md">
