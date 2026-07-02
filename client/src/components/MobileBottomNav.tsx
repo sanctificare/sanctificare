@@ -25,8 +25,8 @@ export default function MobileBottomNav() {
 
   return (
     <>
-      <div className="h-[calc(5rem+env(safe-area-inset-bottom))] lg:hidden" />
-      <nav className="fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.96)] text-white shadow-[0_-12px_30px_oklch(0.08_0.02_260/0.22)] backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
+      <div className="mobile-bottom-nav-spacer lg:hidden" />
+      <nav className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.96)] text-white shadow-[0_-12px_30px_oklch(0.08_0.02_260/0.22)] backdrop-blur-xl">
         <div className="grid grid-cols-6 px-2 py-1.5 gap-0.5">
           {mobileLinks.map((item) => {
             const isActive = isActiveRoute(location, item.href);

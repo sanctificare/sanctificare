@@ -92,7 +92,7 @@ function AppShell() {
         </div>
       )}
       {!isLandingPage && <MobileTopMenu />}
-      <div className="theme-contemplative-a min-h-screen">
+      <div className="theme-contemplative-a mobile-app-viewport min-h-[100dvh]">
         <Router />
         {!isLandingPage && <MobileBottomNav />}
         <Suspense fallback={null}>

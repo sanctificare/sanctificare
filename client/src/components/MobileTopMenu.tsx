@@ -18,7 +18,7 @@ export default function MobileTopMenu() {
       {/* Hamburger button - top right corner */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 p-2.5 rounded-full bg-[oklch(0.12_0.03_260/0.85)] backdrop-blur-md border border-[oklch(0.75_0.12_75/0.4)] text-[oklch(0.75_0.12_75)] shadow-lg hover:bg-[oklch(0.18_0.04_260/0.95)] hover:text-[oklch(0.88_0.08_80)] hover:scale-105 active:scale-95 transition-all duration-200"
+        className="mobile-top-menu-trigger lg:hidden fixed z-50 p-2.5 rounded-full bg-[oklch(0.12_0.03_260/0.85)] backdrop-blur-md border border-[oklch(0.75_0.12_75/0.4)] text-[oklch(0.75_0.12_75)] shadow-lg hover:bg-[oklch(0.18_0.04_260/0.95)] hover:text-[oklch(0.88_0.08_80)] hover:scale-105 active:scale-95 transition-all duration-200"
         aria-label="Menu"
       >
         {isOpen ? <X size={22} /> : <Menu size={22} />}
@@ -34,7 +34,7 @@ export default function MobileTopMenu() {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="lg:hidden fixed top-14 right-4 z-50 w-48 rounded-lg bg-[oklch(0.12_0.03_260/0.96)] border border-[oklch(0.75_0.12_75/0.25)] shadow-lg backdrop-blur-xl overflow-hidden">
+        <div className="mobile-top-menu-panel lg:hidden fixed z-50 w-48 rounded-lg bg-[oklch(0.12_0.03_260/0.96)] border border-[oklch(0.75_0.12_75/0.25)] shadow-lg backdrop-blur-xl overflow-hidden">
           <button
             onClick={handleSearch}
             className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors border-b border-[oklch(0.75_0.12_75/0.25)]"
