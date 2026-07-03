@@ -149,6 +149,13 @@ export default function Login() {
     }
   }, []);
 
+  // Marca que o app já iniciou para permitir retornar à landing page sem redirecionamento automático
+  useEffect(() => {
+    if (isMobileApp()) {
+      sessionStorage.setItem('__cap_app_started', '1');
+    }
+  }, []);
+
   const validate = () => {
     const newErrors: typeof errors = {};
     if (!email) {
