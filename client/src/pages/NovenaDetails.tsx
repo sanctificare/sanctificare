@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import NovenaAudioDock from "@/components/NovenaAudioDock";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, PlayCircle, ArrowLeft, Heart, Info } from "lucide-react";
+import { Crown, Lock, CheckCircle2, PlayCircle, ArrowLeft, Info } from "lucide-react";
 import { Link, useRoute } from "wouter";
+import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { getNovenaArt } from "@/lib/cardArt";
 

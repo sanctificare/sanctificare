@@ -16,12 +16,12 @@ import { AUDIO_COLLECTIONS } from "@/data/audio-meditations";
 import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import {
   BookOpen,
-  Heart,
   CalendarCheck2,
   Music,
   Volume2,
   Film,
 } from "lucide-react";
+import { Heart } from "@/components/HeartIcon";
 import { useAuth } from "@/_core/hooks/useAuth";
 
 export default function GlobalSearch() {

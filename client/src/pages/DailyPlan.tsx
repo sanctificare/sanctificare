@@ -21,10 +21,10 @@ import {
   CheckCircle2,
   Circle,
   Flame,
-  Heart,
   Settings,
   Sun,
 } from "lucide-react";
+import { Heart } from "@/components/HeartIcon";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { NOVENAS } from "@/data/novenas";

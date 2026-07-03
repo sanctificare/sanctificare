@@ -9,11 +9,11 @@ import AudioPlayer from "@/components/AudioPlayer";
 import RosaryBoard, { type RosaryStep } from "@/components/RosaryBoard";
 import {
   ChevronLeft,
-  Heart,
   CheckCircle,
   RotateCcw,
   PlayCircle,
 } from "lucide-react";
+import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { Link } from "wouter";
 

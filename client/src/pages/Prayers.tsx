@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
-import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2 } from "lucide-react";
+import { Crown, Clock, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
+import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
 

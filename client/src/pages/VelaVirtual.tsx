@@ -18,10 +18,10 @@ import {
   Users,
   Eye,
   EyeOff,
-  Heart,
   Plus,
   Clock,
 } from "lucide-react";
+import { Heart } from "@/components/HeartIcon";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const VIDEO_SRC = "/r2-storage/vela-virtual/vela-loop.mp4";

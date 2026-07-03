@@ -6,10 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import {
-  Users, Heart, Plus, Clock, HandHeart,
+  Users, Plus, Clock, HandHeart,
   MessageCircle, EyeOff, Send, ChevronDown, ChevronUp, Filter,
   Pencil, Trash2,
 } from "lucide-react";
+import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";

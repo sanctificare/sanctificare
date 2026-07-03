@@ -3,8 +3,7 @@ import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import {
-  Heart, BookOpen, Sun, Users, Crown, Star,
+import { BookOpen, Sun, Users, Crown, Star,
   ChevronRight, Shield,
   Calendar, ArrowRight, Compass, Check,
   Volume2, MessageSquare, Search, Lock,
@@ -13,6 +12,7 @@ import {
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
 import { RosaryIcon } from "@/components/RosaryIcon";
+import { Heart } from "@/components/HeartIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
