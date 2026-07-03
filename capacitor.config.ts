@@ -5,6 +5,9 @@ const config: CapacitorConfig = {
   appName: 'Sanctificare',
   webDir: 'dist/public',
   plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
     },

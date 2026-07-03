@@ -238,6 +238,7 @@ router.post("/forgot-password", async (req, res) => {
       try {
         const token = nanoid(48);
         await createPasswordResetToken(user.id, token);
+        console.log(`[ForgotPassword] Token created for userId=${user.id}`);
 
         const appUrl = ENV.appUrl;
         const resetLink = `${appUrl}/redefinir-senha?token=${token}`;
@@ -247,9 +248,12 @@ router.post("/forgot-password", async (req, res) => {
           user.name ?? "Fiel",
           resetLink
         );
+        console.log(`[ForgotPassword] Email dispatched to ${email}`);
       } catch (err) {
-        console.error("[ForgotPassword] Email send error:", err);
+        console.error("[ForgotPassword] Failed to create token or send email:", err);
       }
+    } else {
+      console.log(`[ForgotPassword] No registered user found for email=${email}`);
     }
 
     return res.json({ success: true });

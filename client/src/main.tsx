@@ -9,6 +9,8 @@ import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredC
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 
+const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
+
 
 // Global error overlay para Capacitor — mostra erros JS na tela em vez de tela branca.
 if (typeof window !== 'undefined' && isMobileApp()) {
@@ -220,8 +222,8 @@ createRoot(document.getElementById("root")!).render(
 );
 
 // Live Updates (OTA) configuration for Capacitor native environment.
-// We only notify app readiness after React has rendered and a short delay
-// to ensure the bundle is healthy before marking it as active.
+// The OTA download is disabled by default so the Android build always uses the
+// synchronized bundle unless explicitly enabled at build time.
 if (typeof window !== "undefined" && isMobileApp()) {
   void (async () => {
     try {
@@ -230,6 +232,11 @@ if (typeof window !== "undefined" && isMobileApp()) {
         requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 200)));
       });
       await CapacitorUpdater.notifyAppReady();
+
+      if (!isOtaEnabled) {
+        console.log("[OTA] Disabled by build flag. Using the synced Android bundle.");
+        return;
+      }
 
       const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
         headers: { "Cache-Control": "no-cache" },
@@ -261,11 +268,13 @@ if (typeof window !== "undefined" && isMobileApp()) {
       }
     } catch (err) {
       console.error("[OTA] Live update error:", err);
-      // Reset to built-in bundle if something went wrong to avoid persistent white screen.
-      try {
-        await CapacitorUpdater.reset();
-      } catch {
-        // Ignore reset errors
+      if (isOtaEnabled) {
+        // Reset to built-in bundle if OTA is enabled and something went wrong.
+        try {
+          await CapacitorUpdater.reset();
+        } catch {
+          // Ignore reset errors
+        }
       }
     }
   })();

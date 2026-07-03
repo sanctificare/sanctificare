@@ -287,6 +287,9 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    if (!process.env.RESEND_API_KEY) {
+      console.warn("[Email] RESEND_API_KEY is not set — password reset emails will only be logged to console (dev mode).");
+    }
   });
 }
 

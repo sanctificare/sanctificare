@@ -211,39 +211,39 @@ export default function Login() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="fixed inset-0 bg-[oklch(0.12_0.03_260)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-          <p className="font-serif text-muted-foreground">Carregando...</p>
+          <p className="font-serif text-[oklch(0.65_0.02_260)]">Carregando...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[oklch(0.12_0.03_260)] text-white flex flex-col items-center relative px-4 overflow-y-auto overflow-x-hidden">
+    <div className="fixed inset-0 bg-[oklch(0.12_0.03_260)] text-white flex flex-col items-center relative overflow-y-auto overflow-x-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[oklch(0.75_0.12_75/0.04)] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[oklch(0.28_0.08_260/0.15)] rounded-full blur-[120px] pointer-events-none" />
 
 
-      <div className="w-full max-w-md z-10 pt-12 pb-10">
+      <div className="w-full max-w-md z-10 pt-4 md:pt-12 pb-4 md:pb-10 px-4">
         {/* Voltar ao início — em fluxo normal, abaixo da status bar */}
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0.02_260)] hover:text-white transition-colors duration-200 mb-6">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-[oklch(0.75_0.02_260)] hover:text-white transition-colors duration-200 mb-3 md:mb-6">
           <ChevronLeft size={16} />
           Voltar ao início
         </Link>
 
-        <div className="text-center mb-8">
+        <div className="text-center mb-3 md:mb-8">
           <Link href="/">
             <img
               src={LOGO_IMG}
               alt="Sanctificare Logo"
-              className="w-20 h-20 rounded-full mx-auto mb-4 border border-[oklch(0.75_0.12_75/0.3)] shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+              className="w-14 h-14 md:w-20 md:h-20 rounded-full mx-auto mb-2 md:mb-4 border border-[oklch(0.75_0.12_75/0.3)] shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
             />
           </Link>
-          <h1 className="font-display text-3xl font-bold tracking-wide text-white mb-2">
+          <h1 className="font-display text-2xl md:text-3xl font-bold tracking-wide text-white mb-1 md:mb-2">
             SANCTIFICARE
           </h1>
           <p className="font-serif text-[oklch(0.75_0.02_260)] text-sm italic">
@@ -363,7 +363,7 @@ export default function Login() {
                   Entrar com o Google
                 </Button>
 
-                <div className="relative my-6 flex items-center justify-center">
+                <div className="relative my-3 md:my-6 flex items-center justify-center">
                   <hr className="w-full border-[oklch(0.28_0.04_260)]" />
                   <span className="absolute bg-[oklch(0.17_0.04_260)] px-3 text-xs text-[oklch(0.55_0.02_260)] font-serif uppercase tracking-wider">
                     ou continue com e-mail
@@ -374,7 +374,7 @@ export default function Login() {
                   setActiveTab(val);
                   setErrors({});
                 }} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-[oklch(0.22_0.04_260)] border border-[oklch(0.28_0.04_260)] p-1 rounded-xl mb-6">
+                    <TabsList className="grid w-full grid-cols-2 bg-[oklch(0.22_0.04_260)] border border-[oklch(0.28_0.04_260)] p-1 rounded-xl mb-3 md:mb-6">
                     <TabsTrigger
                       value="entrar"
                       className="font-display text-xs tracking-wider uppercase text-[oklch(0.75_0.02_260)] data-[state=active]:text-[oklch(0.12_0.03_260)] data-[state=active]:bg-white hover:text-white transition-colors cursor-pointer"
@@ -389,7 +389,7 @@ export default function Login() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
                     {activeTab === "cadastrar" && (
                       <div className="space-y-2">
                         <Label htmlFor="name" className="text-xs text-[oklch(0.75_0.02_260)] font-display tracking-wide uppercase">
@@ -477,7 +477,7 @@ export default function Login() {
                     <Button
                       type="submit"
                       disabled={isPending}
-                      className="w-full mt-6 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold tracking-wide uppercase py-3 rounded-lg flex justify-center items-center gap-2 transition-all duration-300 shadow-md shadow-[oklch(0.75_0.12_75/0.1)] active:scale-[0.98]"
+                      className="w-full mt-2 md:mt-6 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold tracking-wide uppercase py-3 rounded-lg flex justify-center items-center gap-2 transition-all duration-300 shadow-md shadow-[oklch(0.75_0.12_75/0.1)] active:scale-[0.98]"
                     >
                       {isPending ? (
                         <span className="w-5 h-5 border-2 border-[oklch(0.15_0.02_260)] border-t-transparent rounded-full animate-spin" />
@@ -496,7 +496,7 @@ export default function Login() {
         </Card>
 
         {/* Footer info / bible quote */}
-        <div className="text-center mt-8 text-[oklch(0.55_0.02_260)] font-serif text-xs px-6">
+        <div className="hidden md:block text-center mt-8 text-[oklch(0.55_0.02_260)] font-serif text-xs px-6">
           <p className="italic">
             "Buscai em primeiro lugar o Reino de Deus e a sua justiça, e todas estas coisas vos serão dadas por acréscimo."
           </p>

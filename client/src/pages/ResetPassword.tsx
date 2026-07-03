@@ -233,7 +233,7 @@ export default function ResetPassword() {
 
 function PageShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[oklch(0.12_0.03_260)] text-white flex flex-col justify-center items-center relative px-4 overflow-hidden">
+    <div className="fixed inset-0 bg-[oklch(0.12_0.03_260)] text-white flex flex-col justify-center items-center relative px-4 overflow-y-auto overflow-x-hidden">
       <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[oklch(0.75_0.12_75/0.04)] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[oklch(0.28_0.08_260/0.15)] rounded-full blur-[120px] pointer-events-none" />
