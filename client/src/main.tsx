@@ -9,6 +9,37 @@ import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredC
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 
+// Global error overlay for Capacitor — mostra erros JS na tela em vez de tela branca.
+if (typeof window !== 'undefined' && isMobileApp()) {
+  const showFatalError = (msg: string) => {
+    const existing = document.getElementById('__cap_err_overlay');
+    if (existing) return;
+    const el = document.createElement('div');
+    el.id = '__cap_err_overlay';
+    el.style.cssText = [
+      'position:fixed', 'inset:0', 'z-index:99999',
+      'background:#1a0010', 'color:#fff',
+      'font-family:monospace', 'font-size:13px',
+      'padding:24px', 'overflow:auto',
+      'white-space:pre-wrap', 'word-break:break-all',
+    ].join(';');
+    el.textContent = '⚠️ Erro crítico:\n\n' + msg;
+    document.body?.appendChild(el);
+  };
+
+  window.onerror = (_msg, src, line, col, err) => {
+    showFatalError(`${err?.message ?? _msg}\n\n${src}:${line}:${col}\n\n${err?.stack ?? ''}`);
+    return false;
+  };
+
+  window.addEventListener('unhandledrejection', (e) => {
+    const reason = e.reason instanceof Error
+      ? `${e.reason.message}\n${e.reason.stack ?? ''}`
+      : String(e.reason);
+    showFatalError('UnhandledRejection:\n' + reason);
+  });
+}
+
 const rewriteMobileApiUrl = (rawUrl: string) => {
   if (rawUrl.startsWith("/")) {
     return `${getApiBaseUrl()}${rawUrl}`;
@@ -52,7 +83,7 @@ if (typeof window !== "undefined" && isMobileApp()) {
       updatedInit.credentials = "include";
     }
 
-    return originalFetch.call(this, targetInput, updatedInit);
+    return originalFetch.call(window, targetInput, updatedInit);
   };
 }
 
