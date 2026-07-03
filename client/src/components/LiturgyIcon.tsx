@@ -19,21 +19,14 @@ export function LiturgyIcon({
       className={className}
       {...props}
     >
-      {/* Host (Hóstia) */}
-      <circle cx="12" cy="7" r="4.5" />
-      {/* Tiny Cross inside the Host */}
-      <line x1="12" y1="4.5" x2="12" y2="9.5" />
-      <line x1="9.5" y1="7" x2="14.5" y2="7" />
-
-      {/* Chalice Cup (Cálice) */}
-      <path d="M 6.5,13 L 17.5,13" />
-      <path d="M 6.5,13 C 6.5,17.5 10,18.5 12,18.5 C 14,18.5 17.5,17.5 17.5,13" />
+      {/* Book cover outline */}
+      <path d="M 6,3 L 17,3 C 18.1,3 19,3.9 19,5 L 19,19 C 19,20.1 18.1,21 17,21 L 6,21 C 5.4,21 5,20.6 5,20 L 5,4 C 5,3.4 5.4,3 6,3 Z" />
+      {/* Book spine line */}
+      <line x1="8" y1="3" x2="8" y2="21" />
       
-      {/* Stem (Haste) */}
-      <line x1="12" y1="18.5" x2="12" y2="22" />
-      
-      {/* Base */}
-      <path d="M 8.5,22 C 10,21 14,21 15.5,22" />
+      {/* Latin Cross on the cover */}
+      <line x1="13.5" y1="7" x2="13.5" y2="17" />
+      <line x1="11" y1="10.5" x2="16" y2="10.5" />
     </svg>
   );
 }
