@@ -1097,7 +1097,6 @@ export async function recordCandlePrayer(candleId: number, userId: number) {
 
 /**
  * Cria um token de redefinição de senha (TTL: 1 hora).
- * Invalida tokens anteriores do mesmo usuário antes de inserir.
  */
 export async function createPasswordResetToken(
   userId: number,
@@ -1107,17 +1106,6 @@ export async function createPasswordResetToken(
   if (!db) throw new Error("DB unavailable");
 
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // +1 hora
-
-  // Invalida tokens anteriores não utilizados do mesmo usuário
-  await db
-    .update(passwordResetTokens)
-    .set({ usedAt: new Date() })
-    .where(
-      and(
-        eq(passwordResetTokens.userId, userId),
-        isNull(passwordResetTokens.usedAt)
-      )
-    );
 
   await db.insert(passwordResetTokens).values({ userId, token, expiresAt });
 }
@@ -1160,7 +1148,7 @@ export async function consumePasswordResetToken(
   const userId = await validatePasswordResetToken(token);
   if (!userId) return false;
 
-  // Marca o token como usado
+  // Marca o token enviado como usado
   await db
     .update(passwordResetTokens)
     .set({ usedAt: new Date() })
@@ -1171,6 +1159,17 @@ export async function consumePasswordResetToken(
     .update(users)
     .set({ passwordHash: newPasswordHash, updatedAt: new Date() })
     .where(eq(users.id, userId));
+
+  // Após redefinir a senha, invalida quaisquer outros tokens pendentes do usuário.
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(
+      and(
+        eq(passwordResetTokens.userId, userId),
+        isNull(passwordResetTokens.usedAt)
+      )
+    );
 
   return true;
 }

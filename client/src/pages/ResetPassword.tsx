@@ -110,6 +110,16 @@ export default function ResetPassword() {
     );
   }
 
+  // ── Erro técnico ao validar token ──
+  if (tokenQuery.isError) {
+    return (
+      <ErrorScreen
+        title="Erro ao validar o link"
+        message="Não foi possível verificar seu link de recuperação agora. Tente novamente em alguns instantes ou solicite um novo link."
+      />
+    );
+  }
+
   // ── Token inválido ou expirado ──
   if (!tokenQuery.data?.valid) {
     return (
