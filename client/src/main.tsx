@@ -9,7 +9,20 @@ import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredC
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 
-// Global error overlay for Capacitor — mostra erros JS na tela em vez de tela branca.
+// Limpa qualquer bundle OTA desatualizado ou corrompido ANTES de renderizar.
+// Isso garante que o app sempre inicie com os assets embutidos no APK atual.
+// O OTA só será baixado e ativado APÓS o app confirmar que está saudável.
+if (typeof window !== 'undefined' && isMobileApp()) {
+  void (async () => {
+    try {
+      await CapacitorUpdater.reset();
+    } catch {
+      // Ignore — pode falhar se já estiver no bundle padrão
+    }
+  })();
+}
+
+// Global error overlay para Capacitor — mostra erros JS na tela em vez de tela branca.
 if (typeof window !== 'undefined' && isMobileApp()) {
   const showFatalError = (msg: string) => {
     const existing = document.getElementById('__cap_err_overlay');
