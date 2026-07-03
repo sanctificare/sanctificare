@@ -134,18 +134,10 @@ export default function Liturgy() {
         return;
       }
 
-      try {
-        const res = await fetch(candidate.audioUrl, { method: "HEAD" });
-        if (!canceled) {
-          setLiturgyAudio(res.ok ? candidate : null);
-          setAudioUnavailable(!res.ok);
-        }
-      } catch {
-        if (!canceled) {
-          setLiturgyAudio(null);
-          setAudioUnavailable(true);
-        }
-      }
+      // Se temos o candidato na lista manual de áudios da Liturgia, confiamos diretamente na URL
+      // e evitamos fazer uma requisição fetch HEAD, prevenindo possíveis erros de CORS no navegador.
+      setLiturgyAudio(candidate);
+      setAudioUnavailable(false);
     }
 
     checkAudioAvailability();
