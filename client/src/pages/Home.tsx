@@ -243,8 +243,14 @@ export default function Home() {
     if (isAuthenticated) {
       navigate("/dashboard");
     } else if (isMobileApp()) {
-      // No app nativo a landing de marketing não faz sentido: leva direto ao login.
-      navigate("/login");
+      // Na abertura inicial do app, redireciona para /login.
+      // Se o usuário navegar de volta para / (ex: clicando em "Voltar ao início"),
+      // o flag no sessionStorage evita o loop de redirecionamento.
+      if (!sessionStorage.getItem('__cap_app_started')) {
+        sessionStorage.setItem('__cap_app_started', '1');
+        navigate("/login");
+      }
+      // Caso já tenha sido iniciado: exibe a landing normalmente.
     }
   }, [isAuthenticated, loading, navigate]);
 
@@ -281,12 +287,12 @@ export default function Home() {
     };
   }, []);
 
-  // No app nativo, evitamos exibir a landing de marketing: enquanto o estado de
-  // autentica\u00e7\u00e3o \u00e9 resolvido (ou antes do redirect para /login), mostramos um splash.
-  if (isMobileApp() && !isAuthenticated) {
+  // No app nativo, na abertura inicial (antes do redirect para /login), mostramos um splash.
+  // Após a abertura inicial, o flag no sessionStorage permite exibir a landing normalmente.
+  if (isMobileApp() && !isAuthenticated && !sessionStorage.getItem('__cap_app_started')) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
+        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain" />
       </div>
     );
   }
