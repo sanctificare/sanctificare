@@ -152,10 +152,15 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  html,
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body,
   #root {
     min-height: 100%;
@@ -163,6 +168,7 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
   }
 
   a,
@@ -341,6 +347,8 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .mobile-bottom-nav-spacer {
