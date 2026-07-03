@@ -12,6 +12,18 @@ const toRemoteLiturgyAudioUrl = (dateLabel: string): string =>
 
 const MANUAL_LITURGY_DAILY_AUDIO_TRACKS: LiturgyDailyAudioTrack[] = [
   {
+    date: "2026-07-03",
+    title: "Liturgia Diária - 03 de julho",
+    description: "Narração humana da Liturgia Diária.",
+    audioUrl: "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/liturgia030726.mp3",
+  },
+  {
+    date: "2026-07-04",
+    title: "Liturgia Diária - 04 de julho",
+    description: "Narração humana da Liturgia Diária.",
+    audioUrl: "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/liturgia040726.mp3",
+  },
+  {
     date: "2026-06-11",
     title: "Liturgia Diaria - 11 de junho",
     description: "Narracao humana da Liturgia Diaria.",
