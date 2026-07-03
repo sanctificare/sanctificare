@@ -303,15 +303,15 @@ export default function Home() {
         }`}
       >
         <div className="container">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-row items-center justify-between">
+            <div className="flex items-center gap-3 min-w-0">
               <img src={LOGO_IMG} alt="Sanctificare Logo" className="w-9 h-9 object-contain drop-shadow-[0_0_6px_oklch(0.75_0.12_75/0.6)]" />
-              <span className="font-display text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide">
+              <span className="font-display text-lg font-semibold text-[oklch(0.88_0.08_80)] tracking-wide whitespace-nowrap">
                 Sanctificare
               </span>
             </div>
             
-            <div className="flex items-center gap-4 sm:gap-6">
+            <div className="flex items-center justify-end gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
               <a href="#recursos" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
                 Recursos
               </a>
@@ -321,13 +321,13 @@ export default function Home() {
               <a href="#planos" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
                 Planos
               </a>
-              <Link href="/login?tab=entrar" className="text-sm font-semibold text-[oklch(0.80_0.02_260)] hover:text-white transition-colors mr-2">
+              <Link href="/login?tab=entrar" className="text-xs sm:text-sm font-semibold text-[oklch(0.80_0.02_260)] hover:text-white transition-colors whitespace-nowrap">
                 Entrar
               </Link>
               <a href="/login?tab=cadastrar">
                 <Button
                   size="sm"
-                  className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold px-4 py-2 hover:scale-[1.03] transition-all"
+                  className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold px-3 py-2 sm:px-4 hover:scale-[1.03] transition-all"
                 >
                   Criar Conta
                 </Button>
@@ -428,7 +428,7 @@ export default function Home() {
                         {/* Interactive beads ring SVG */}
                         <svg viewBox="0 0 100 100" className="w-32 h-32 text-[oklch(0.75_0.12_75)]">
                           <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" strokeWidth="2.5" strokeDasharray="3 7" className="opacity-70" />
-                          <circle cx="50" cy="12" r="4.5" fill="oklch(0.82_0.10_80)" className="animate-pulse" />
+                          <circle cx="50" cy="12" r="4.5" fill="oklch(0.82_0.10_80)" />
                         </svg>
                         <div className="absolute flex flex-col items-center">
                           <span className="text-[10px] text-neutral-400 uppercase tracking-widest">Mistério</span>
