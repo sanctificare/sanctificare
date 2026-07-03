@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
-import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Volume2 } from "lucide-react";
+import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
@@ -50,7 +50,7 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
     badgeLabel: "Mariana",
   },
   gloria: {
-    icon: Sparkles,
+    icon: Crown,
     accent: "oklch(0.66 0.15 92)",
     surface: "bg-[oklch(0.99_0.01_95)]",
     ring: "border-[oklch(0.86_0.10_92/0.45)] hover:border-[oklch(0.74_0.14_92/0.75)]",

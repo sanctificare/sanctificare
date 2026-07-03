@@ -23,7 +23,6 @@ import {
   Flame,
   Heart,
   Settings,
-  Sparkles,
   Sun,
 } from "lucide-react";
 import { Link } from "wouter";
@@ -311,7 +310,7 @@ export default function DailyPlan() {
             <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center">
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.75_0.12_75/0.2)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-[oklch(0.88_0.08_80)] mb-4 backdrop-blur-sm border border-[oklch(0.75_0.12_75/0.3)] animate-fade-in">
-                  <Sparkles size={13} className="text-[oklch(0.75_0.12_75)]" />
+                  <Calendar size={13} className="text-[oklch(0.75_0.12_75)]" />
                   Roteiro espiritual de hoje
                 </div>
                 <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3 leading-tight tracking-tight">
@@ -386,7 +385,7 @@ export default function DailyPlan() {
                 <div className="grid gap-3">
                   {activeMetasCount === 0 && (
                     <div className="text-center py-8">
-                      <Sparkles size={26} className="text-muted-foreground mx-auto mb-3 opacity-40" />
+                      <Calendar size={26} className="text-muted-foreground mx-auto mb-3 opacity-40" />
                       <p className="text-sm font-medium text-foreground">Nenhuma meta ativa no momento.</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Ative as práticas desejadas em "Ajustar rotina".

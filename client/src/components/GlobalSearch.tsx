@@ -21,7 +21,6 @@ import {
   Music,
   Volume2,
   Film,
-  Sparkles,
 } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 
@@ -140,7 +139,7 @@ export default function GlobalSearch() {
                 onSelect={() => handleSelect(`/biblia?book=${bookId}&chapter=${bookId === "jo" ? 3 : bookId === "sl" ? 23 : 5}`)}
                 className="cursor-pointer flex items-center gap-3 px-3 py-2 text-sm rounded-md data-[selected=true]:bg-black/5 dark:data-[selected=true]:bg-white/10"
               >
-                <Sparkles className="size-4 text-emerald-400 shrink-0" />
+                <BookOpen className="size-4 text-emerald-400 shrink-0" />
                 <div className="flex flex-col min-w-0">
                   <span className="font-serif italic text-foreground text-[13px] line-clamp-1">"{verseText}"</span>
                   <span className="text-[10px] text-muted-foreground">Ir para o capítulo destacado</span>

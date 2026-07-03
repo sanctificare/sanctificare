@@ -15,7 +15,6 @@ import {
   RotateCcw,
   Volume2,
   VolumeX,
-  Sparkles,
   Users,
   Eye,
   EyeOff,
@@ -349,7 +348,7 @@ export default function VelaVirtual() {
                   <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
                       <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)] w-fit">
-                        <Sparkles size={12} />
+                        <Flame size={12} />
                         Oração silenciosa
                       </span>
                       {cleanMode ? (

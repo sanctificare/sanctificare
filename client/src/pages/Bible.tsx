@@ -15,9 +15,11 @@ import {
   Settings,
   Copy,
   Share2,
-  Sparkles,
-  Bookmark
+  Bookmark,
+  Sun,
+  Image,
 } from "lucide-react";
+import { Cross } from "@/components/CrossIcon";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import html2canvas from "html2canvas-pro";
@@ -724,7 +726,7 @@ export default function Bible() {
                 {/* Banner Litúrgico */}
                 {liturgyInfo && (
                   <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 flex items-start gap-3 shadow-sm">
-                    <Sparkles size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                    <Sun size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                     <div>
                       <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
                       <p className="text-xs text-muted-foreground mt-0.5">
@@ -1132,7 +1134,7 @@ export default function Bible() {
               {/* Liturgy Banner */}
               {liturgyInfo && (
                 <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
-                  <Sparkles size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                  <Sun size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                   <div>
                     <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -1581,7 +1583,7 @@ export default function Bible() {
               className="flex items-center gap-1 font-medium hover:text-[oklch(0.75_0.12_75)] transition-colors p-1"
               title="Gerar Card"
             >
-              <Sparkles size={15} className="text-[oklch(0.75_0.12_75)] animate-pulse" />
+              <Image size={15} className="text-[oklch(0.75_0.12_75)]" />
               <span className="hidden sm:inline">Card</span>
             </button>
 
@@ -1637,7 +1639,7 @@ export default function Bible() {
                 >
                   {/* Top decoration */}
                   <div className="flex flex-col items-center text-center">
-                    <Sparkles size={16} className={`opacity-40 mb-2 ${cardBg === "classic" || cardBg === "gold" ? "text-amber-800" : "text-amber-300"}`} />
+                    <Cross size={16} className={`opacity-40 mb-2 ${cardBg === "classic" || cardBg === "gold" ? "text-amber-800" : "text-amber-300"}`} />
                     <span className="text-[9px] font-bold tracking-widest uppercase opacity-60">
                       {selectedBook?.name}
                     </span>

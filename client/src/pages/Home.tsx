@@ -5,13 +5,14 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Heart, BookOpen, Sun, Users, Crown, Star,
-  ChevronRight, Sparkles, Shield,
+  ChevronRight, Shield,
   Calendar, ArrowRight, Compass, Check,
   Volume2, MessageSquare, Search, Lock,
   ChevronDown, ChevronUp, Play, Pause
 } from "lucide-react";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
+import { RosaryIcon } from "@/components/RosaryIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
@@ -122,7 +123,7 @@ const paths = [
   {
     id: "rosario",
     label: "Aprender o Rosário",
-    icon: Sparkles,
+    icon: RosaryIcon,
     desc: "A oração mariana mais tradicional e contemplativa. O Sanctificare oferece um guia interativo passo a passo com contador virtual de Ave-Marias.",
     ctaText: "Acessar Guia do Rosário",
     url: "/login?tab=cadastrar&path=/rosario",
@@ -364,7 +365,7 @@ export default function Home() {
             {/* Text details column */}
             <div className="lg:col-span-7 space-y-6 animate-fade-in text-left">
               <div className="inline-flex items-center gap-2 bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] rounded-full px-4 py-1.5 shadow-sm">
-                <Sparkles size={14} className="text-[oklch(0.82_0.10_80)] animate-pulse" />
+                <Cross size={14} className="text-[oklch(0.82_0.10_80)]" />
                 <span className="text-[oklch(0.82_0.10_80)] text-xs font-display tracking-wider uppercase font-semibold">
                   Seu Santuário de Recolhimento e Devoção
                 </span>
@@ -644,7 +645,7 @@ export default function Home() {
           {/* Em Destaque (Trending) - Carrossel Horizontal */}
           <div className="max-w-5xl mx-auto">
             <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
-              <Sparkles size={18} />
+              <Star size={18} />
               Orações em Destaque
             </h3>
             {/* Scrollable list */}

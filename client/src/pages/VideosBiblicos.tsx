@@ -5,7 +5,7 @@ import { getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { BIBLE_VIDEOS, type BibleVideo } from "@/data/bible-videos";
-import { Play, Lock, Crown, Clock, Sparkles, Film, Video, AlertCircle, Heart, Search, X, Share2 } from "lucide-react";
+import { Play, Lock, Crown, Clock, Film, Video, AlertCircle, Heart, Search, X, Share2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -1004,7 +1004,7 @@ export default function VideosBiblicos() {
 
           <div className="space-y-4 my-6">
             <div className="flex items-start gap-3 p-3 rounded-lg bg-[oklch(0.97_0.01_85)] border border-border">
-              <Sparkles size={18} className="text-[oklch(0.65_0.12_70)] flex-shrink-0 mt-0.5" />
+              <Crown size={18} className="text-[oklch(0.65_0.12_70)] flex-shrink-0 mt-0.5" />
               <div className="text-xs text-[oklch(0.22_0.07_260)] font-serif leading-relaxed">
                 Acesse todos os vídeos curtos e longos gerados por IA, terços completos, novenas exclusivas e meditações diárias guiadas.
               </div>

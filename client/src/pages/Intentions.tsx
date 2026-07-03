@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import {
-  Users, Heart, Plus, Clock, HandHeart, Sparkles,
+  Users, Heart, Plus, Clock, HandHeart,
   MessageCircle, EyeOff, Send, ChevronDown, ChevronUp, Filter,
   Pencil, Trash2,
 } from "lucide-react";
@@ -408,7 +408,7 @@ export default function Intentions() {
                   {/* Graça Alcançada — banner festivo */}
                   {isGrace && (
                     <div className="flex items-center gap-2 mb-3 bg-[oklch(0.70_0.18_85/0.15)] rounded-lg px-3 py-1.5">
-                      <Sparkles size={14} className="text-[oklch(0.55_0.20_85)]" />
+                      <Heart size={14} className="text-[oklch(0.55_0.20_85)]" />
                       <span className="text-xs font-bold text-[oklch(0.45_0.18_85)]">
                         Graça Alcançada — Deus ouviu esta oração! ✨
                       </span>
@@ -464,7 +464,7 @@ export default function Intentions() {
                             disabled={graceMarkMutation.isPending}
                             className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.50_0.18_85)] hover:text-[oklch(0.40_0.20_85)] transition-colors border border-[oklch(0.65_0.18_85/0.4)] hover:border-[oklch(0.65_0.18_85)] rounded-full px-3 py-1 bg-[oklch(0.70_0.18_85/0.06)] hover:bg-[oklch(0.70_0.18_85/0.12)]"
                           >
-                            <Sparkles size={11} />
+                            <Heart size={11} />
                             Graça Alcançada
                           </button>
                           <button

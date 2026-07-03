@@ -3,7 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
-import { Crown, Check, Shield, Sparkles, AlertCircle, Receipt, ExternalLink, Lock, CreditCard } from "lucide-react";
+import { Crown, Check, Shield, AlertCircle, Receipt, ExternalLink, Lock, CreditCard } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { getAudioCollectionArt, getLiturgySectionArt, getNovenaArt } from "@/lib/cardArt";
@@ -212,7 +212,7 @@ export default function Premium() {
             <div className="rounded-2xl border border-[oklch(0.75_0.12_75/0.45)] bg-white p-5 shadow-sm">
               <div className="flex items-start gap-4">
                 <div className="mt-0.5 h-10 w-10 rounded-full bg-[oklch(0.75_0.12_75/0.16)] border border-[oklch(0.75_0.12_75/0.35)] flex items-center justify-center">
-                  <Sparkles size={18} className="text-[oklch(0.65_0.12_70)]" />
+                  <Check size={18} className="text-[oklch(0.65_0.12_70)]" />
                 </div>
                 <div>
                   <p className="font-display text-base font-bold text-[oklch(0.22_0.07_260)]">
@@ -337,7 +337,7 @@ export default function Premium() {
             {subscription && subscription.plan === "monthly" && (
               <div className="max-w-2xl mx-auto mt-6">
                 <div className="prayer-card p-6 text-center">
-                  <Sparkles size={24} className="text-[oklch(0.65_0.12_70)] mx-auto mb-3" />
+                  <Crown size={24} className="text-[oklch(0.65_0.12_70)] mx-auto mb-3" />
                   <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-2">
                     Migre para o Plano Anual
                   </h3>
@@ -508,7 +508,7 @@ export default function Premium() {
                   <div className="p-5 rounded-2xl border border-border bg-white shadow-sm flex flex-col justify-between text-left">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-[oklch(0.22_0.07_260)] mb-1">
-                        <Sparkles size={16} className="text-[oklch(0.65_0.12_70)]" />
+                        <Crown size={16} className="text-[oklch(0.65_0.12_70)]" />
                         <h4 className="font-display text-sm font-bold uppercase tracking-wider">
                           Vantagens do Plano
                         </h4>
