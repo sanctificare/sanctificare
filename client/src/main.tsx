@@ -9,32 +9,49 @@ import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredC
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 
+const rewriteMobileApiUrl = (rawUrl: string) => {
+  if (rawUrl.startsWith("/")) {
+    return `${getApiBaseUrl()}${rawUrl}`;
+  }
+  if (
+    rawUrl.startsWith("http://localhost/") ||
+    rawUrl.startsWith("capacitor://localhost/")
+  ) {
+    return rawUrl.replace(/^(http|capacitor):\/\/localhost/, getApiBaseUrl());
+  }
+  return rawUrl;
+};
+
 
 // Intercept all fetch requests on mobile to use absolute API URL and include credentials
 if (typeof window !== "undefined" && isMobileApp()) {
   const originalFetch = window.fetch;
   window.fetch = function (input, init) {
-    let targetInput = input;
+    let targetInput: RequestInfo | URL = input;
+    let targetUrl: string | null = null;
+
     if (typeof targetInput === "string") {
-      if (targetInput.startsWith("/")) {
-        targetInput = `${getApiBaseUrl()}${targetInput}`;
-      } else if (
-        targetInput.startsWith("http://localhost/") ||
-        targetInput.startsWith("capacitor://localhost/")
-      ) {
-        targetInput = targetInput.replace(
-          /^(http|capacitor):\/\/localhost/,
-          getApiBaseUrl()
-        );
+      targetUrl = rewriteMobileApiUrl(targetInput);
+      targetInput = targetUrl;
+    } else if (targetInput instanceof URL) {
+      targetUrl = rewriteMobileApiUrl(targetInput.toString());
+      targetInput = targetUrl;
+    } else if (targetInput instanceof Request) {
+      targetUrl = rewriteMobileApiUrl(targetInput.url);
+      if (targetUrl !== targetInput.url) {
+        targetInput = new Request(targetUrl, targetInput);
       }
     }
+
     const updatedInit = { ...init };
-    if (
-      typeof targetInput === "string" &&
-      targetInput.startsWith(getApiBaseUrl())
-    ) {
+
+    const resolvedTargetUrl =
+      targetUrl ?? (typeof targetInput === "string" ? targetInput : null);
+
+    if (resolvedTargetUrl && resolvedTargetUrl.startsWith(getApiBaseUrl())) {
       updatedInit.credentials = "include";
     }
+
     return originalFetch.call(this, targetInput, updatedInit);
   };
 }
@@ -58,51 +75,6 @@ if (typeof window !== "undefined" && isMobileApp()) {
   })();
 }
 
-// Live Updates (OTA) Configuration for Capacitor native environment
-if (typeof window !== "undefined" && isMobileApp()) {
-  void (async () => {
-    try {
-      // 1. Notify that the web app loaded successfully. This prevents the OS from
-      // performing an automatic rollback thinking the new web bundle crashed.
-      await CapacitorUpdater.notifyAppReady();
-
-      // 2. Fetch the latest metadata from the Cloudflare R2 bucket
-      const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
-        headers: { "Cache-Control": "no-cache" },
-      });
-      if (!res.ok) {
-        console.warn("[OTA] Failed to fetch update metadata from server.");
-        return;
-      }
-      const updateData = await res.json();
-      if (!updateData || !updateData.version || !updateData.url) {
-        console.warn("[OTA] Invalid live-update.json format on server.");
-        return;
-      }
-
-      // 3. Get currently active bundle info
-      const current = await CapacitorUpdater.current();
-      const currentVersion = current?.bundle?.id;
-
-      console.log(`[OTA] Local web bundle version: ${currentVersion} | Server version: ${updateData.version}`);
-
-      // 4. Download and apply the new bundle if server version differs from local
-      if (updateData.version !== currentVersion) {
-        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
-        const bundle = await CapacitorUpdater.download({
-          url: updateData.url,
-          version: updateData.version,
-        });
-
-        // 5. Set the new bundle as active (will load on next application restart)
-        await CapacitorUpdater.set({ id: bundle.id });
-        console.log(`[OTA] Update version ${bundle.id} staged successfully. Will load on next restart.`);
-      }
-    } catch (err) {
-      console.error("[OTA] Live update error:", err);
-    }
-  })();
-}
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -214,3 +186,56 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </trpc.Provider>
 );
+
+// Live Updates (OTA) configuration for Capacitor native environment.
+// We only notify app readiness after React has rendered and a short delay
+// to ensure the bundle is healthy before marking it as active.
+if (typeof window !== "undefined" && isMobileApp()) {
+  void (async () => {
+    try {
+      // Wait for multiple paint frames to confirm the UI actually rendered.
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 200)));
+      });
+      await CapacitorUpdater.notifyAppReady();
+
+      const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
+        headers: { "Cache-Control": "no-cache" },
+      });
+      if (!res.ok) {
+        console.warn("[OTA] Failed to fetch update metadata from server.");
+        return;
+      }
+
+      const updateData = await res.json();
+      if (!updateData || !updateData.version || !updateData.url || typeof updateData.url !== "string") {
+        console.warn("[OTA] Invalid live-update.json format on server.");
+        return;
+      }
+
+      const current = await CapacitorUpdater.current();
+      const currentVersion = current?.bundle?.id;
+      console.log(`[OTA] Local web bundle version: ${currentVersion} | Server version: ${updateData.version}`);
+
+      if (updateData.version !== currentVersion) {
+        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
+        const bundle = await CapacitorUpdater.download({
+          url: updateData.url,
+          version: updateData.version,
+        });
+
+        await CapacitorUpdater.set({ id: bundle.id });
+        console.log(`[OTA] Update version ${bundle.id} staged successfully. Will load on next restart.`);
+      }
+    } catch (err) {
+      console.error("[OTA] Live update error:", err);
+      // Reset to built-in bundle if something went wrong to avoid persistent white screen.
+      try {
+        await CapacitorUpdater.reset();
+      } catch {
+        // Ignore reset errors
+      }
+    }
+  })();
+}
+

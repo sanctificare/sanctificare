@@ -1,4 +1,4 @@
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, getApiBaseUrl } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -8,7 +8,8 @@ type UseAuthOptions = {
 };
 
 async function fetchMe() {
-  const res = await fetch("/api/auth/me", { credentials: "same-origin" });
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/me`, { credentials: "include" });
   if (!res.ok) {
     throw new Error("Failed to fetch user");
   }
@@ -16,7 +17,8 @@ async function fetchMe() {
 }
 
 async function performLogout() {
-  const res = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/logout`, { method: "POST", credentials: "include" });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error || "Failed to logout");

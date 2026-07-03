@@ -14,10 +14,12 @@ import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken } from 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 async function performLogin(input: any) {
-  const res = await fetch("/api/auth/login", {
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+    credentials: "include",
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
@@ -27,10 +29,12 @@ async function performLogin(input: any) {
 }
 
 async function performRegister(input: any) {
-  const res = await fetch("/api/auth/register", {
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+    credentials: "include",
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
@@ -40,10 +44,12 @@ async function performRegister(input: any) {
 }
 
 async function performForgotPassword(input: any) {
-  const res = await fetch("/api/auth/forgot-password", {
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/forgot-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+    credentials: "include",
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
