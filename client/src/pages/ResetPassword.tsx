@@ -7,12 +7,16 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Lock, Eye, EyeOff, ChevronLeft, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { getApiBaseUrl } from "@/const";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 async function fetchValidateToken({ queryKey }: any) {
   const [_, token] = queryKey;
-  const res = await fetch(`/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`);
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`, {
+    credentials: "include",
+  });
   if (!res.ok) {
     throw new Error("Failed to validate token");
   }
@@ -20,10 +24,12 @@ async function fetchValidateToken({ queryKey }: any) {
 }
 
 async function performResetPassword(input: any) {
-  const res = await fetch("/api/auth/reset-password", {
+  const base = getApiBaseUrl();
+  const res = await fetch(`${base}/api/auth/reset-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+    credentials: "include",
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
