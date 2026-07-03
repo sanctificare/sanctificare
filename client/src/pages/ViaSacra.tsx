@@ -12,9 +12,9 @@ import {
   PlayCircle,
   Square,
   Headphones,
-  Cross,
   RotateCcw,
 } from "lucide-react";
+import { Cross } from "@/components/CrossIcon";
 import { VIA_SACRA_STATIONS } from "@/data/via-sacra";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";

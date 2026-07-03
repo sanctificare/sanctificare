@@ -210,9 +210,9 @@ export const passwordResetTokens = pgTable(
     id: serial("id").primaryKey(),
     userId: integer("userId").notNull(),
     token: varchar("token", { length: 128 }).notNull().unique(),
-    expiresAt: timestamp("expiresAt").notNull(),
-    usedAt: timestamp("usedAt"),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
+    usedAt: timestamp("usedAt", { withTimezone: true }),
+    createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => ({
     tokenIdx: index("prt_token_idx").on(table.token),

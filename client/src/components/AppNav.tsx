@@ -10,10 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Crown, BookOpen, Users, Home, User, ScrollText, Cross, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
+import { Crown, BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
+import { Cross } from "@/components/CrossIcon";
 
 const mainLinks = [
   { href: "/explore", label: "Explore", icon: Compass },

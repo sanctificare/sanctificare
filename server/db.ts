@@ -240,6 +240,16 @@ async function bootstrapDb(sql: any) {
     `;
 
     await sql`
+      ALTER TABLE password_reset_tokens ALTER COLUMN "expiresAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE password_reset_tokens ALTER COLUMN "usedAt" TYPE timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE password_reset_tokens ALTER COLUMN "createdAt" TYPE timestamp with time zone;
+    `;
+
+    await sql`
       CREATE TABLE IF NOT EXISTS push_devices (
         id serial PRIMARY KEY,
         "userId" integer NOT NULL,

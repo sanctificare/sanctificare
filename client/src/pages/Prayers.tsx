@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ComponentType } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
-import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Cross, Volume2 } from "lucide-react";
+import { Crown, Clock, Heart, Lock, ChevronRight, X, Flame, Sparkles, Shield, Bell, Volume2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
+import { Cross } from "@/components/CrossIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 type PrayerCardTheme = {
-  icon: typeof Crown;
+  icon: ComponentType<any>;
   accent: string;
   surface: string;
   ring: string;

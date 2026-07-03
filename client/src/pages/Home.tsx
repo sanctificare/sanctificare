@@ -5,12 +5,13 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Heart, BookOpen, Sun, Users, Crown, Star,
-  ChevronRight, Cross, Sparkles, Shield,
+  ChevronRight, Sparkles, Shield,
   Calendar, ArrowRight, Compass, Check,
   Volume2, MessageSquare, Search, Lock,
   ChevronDown, ChevronUp, Play, Pause
 } from "lucide-react";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
+import { Cross } from "@/components/CrossIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 

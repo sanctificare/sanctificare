@@ -8,8 +8,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Cross, Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken } from "@/const";
+import { Cross } from "@/components/CrossIcon";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
