@@ -182,25 +182,23 @@ function normalizeReading(raw: RawReading | string | undefined, isPsalm = false)
  * Busca a liturgia de uma data na API externa e devolve já no formato da tabela.
  * Lança em caso de erro de rede, timeout ou payload inválido.
  */
+import axios from "axios";
+import https from "https";
+
 export async function fetchLiturgyForDate(isoDate: string): Promise<InsertDailyLiturgy> {
   const { dia, mes, ano } = isoToParts(isoDate);
   const url = `${LITURGIA_API_BASE}/?dia=${dia}&mes=${mes}&ano=${ano}`;
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
   let raw: RawLiturgiaResponse;
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
+    const res = await axios.get<RawLiturgiaResponse>(url, {
+      timeout: FETCH_TIMEOUT_MS,
       headers: { Accept: "application/json" },
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
-    if (!res.ok) {
-      throw new Error(`Liturgia API respondeu ${res.status} para ${isoDate}`);
-    }
-    raw = (await res.json()) as RawLiturgiaResponse;
-  } finally {
-    clearTimeout(timeout);
+    raw = res.data;
+  } catch (error: any) {
+    throw new Error(`Erro ao buscar liturgia da API externa para ${isoDate}: ${error.message}`);
   }
 
   const gospel = normalizeReading(raw.evangelho);
