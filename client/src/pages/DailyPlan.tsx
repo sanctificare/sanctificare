@@ -22,9 +22,9 @@ import {
   Circle,
   Flame,
   Settings,
-  Sun,
 } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { NOVENAS } from "@/data/novenas";
@@ -197,7 +197,7 @@ export default function DailyPlan() {
       encouragement: "Abra espaço para Deus falar primeiro.",
       completed: liturgiaLida,
       enabled: metasConfig.liturgia,
-      icon: <Sun size={18} />,
+      icon: <LiturgyIcon size={18} />,
       onClick: handleToggleLiturgia,
     },
     {

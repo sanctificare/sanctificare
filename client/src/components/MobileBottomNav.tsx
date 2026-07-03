@@ -1,14 +1,15 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { BookOpen, Home, Sun, CalendarCheck2, User, Compass } from "lucide-react";
+import { BookOpen, Home, CalendarCheck2, User, Compass } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 
 const mobileLinks = [
   { href: "/dashboard", label: "Início", icon: Home },
   { href: "/explore", label: "Explore", icon: Compass },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
-  { href: "/liturgia", label: "Liturgia", icon: Sun },
+  { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
   { href: "/perfil", label: "Perfil", icon: User },
 ] as const;
 

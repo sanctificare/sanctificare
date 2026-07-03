@@ -16,10 +16,10 @@ import {
   Copy,
   Share2,
   Bookmark,
-  Sun,
   Image,
 } from "lucide-react";
 import { Cross } from "@/components/CrossIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import html2canvas from "html2canvas-pro";
@@ -726,7 +726,7 @@ export default function Bible() {
                 {/* Banner Litúrgico */}
                 {liturgyInfo && (
                   <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 flex items-start gap-3 shadow-sm">
-                    <Sun size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                    <LiturgyIcon size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                     <div>
                       <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
                       <p className="text-xs text-muted-foreground mt-0.5">
@@ -1134,7 +1134,7 @@ export default function Bible() {
               {/* Liturgy Banner */}
               {liturgyInfo && (
                 <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
-                  <Sun size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
+                  <LiturgyIcon size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                   <div>
                     <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">

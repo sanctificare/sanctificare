@@ -10,18 +10,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Crown, BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, Sun, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
+import { Crown, BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 
 const mainLinks = [
   { href: "/explore", label: "Explore", icon: Compass },
   { href: "/plano-diario", label: "Plano Diário", icon: CheckCircle2 },
   { href: "/rosario", label: "Rosário", icon: RosaryIcon },
   { href: "/oracoes", label: "Orações", icon: PrayingHandsIcon },
-  { href: "/liturgia", label: "Liturgia", icon: Sun },
+  { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
 ];
@@ -39,7 +40,7 @@ const mobilePrimaryLinks = [
   { href: "/explore", label: "Explore", icon: Compass },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/rosario", label: "Terço", icon: RosaryIcon },
-  { href: "/liturgia", label: "Liturgia", icon: Sun },
+  { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
   { href: "/lectio", label: "Lectio", icon: ScrollText },
 ] as const;
 

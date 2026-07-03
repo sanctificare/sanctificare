@@ -3,7 +3,7 @@ import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { BookOpen, Sun, Users, Crown, Star,
+import { BookOpen, Users, Crown, Star,
   ChevronRight, Shield,
   Calendar, ArrowRight, Compass, Check,
   Volume2, MessageSquare, Search, Lock,
@@ -13,6 +13,7 @@ import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Heart } from "@/components/HeartIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
@@ -29,7 +30,7 @@ const features = [
     bg: "bg-[oklch(0.55_0.14_15/0.08)]",
   },
   {
-    icon: Sun,
+    icon: LiturgyIcon,
     title: "Liturgia do Dia",
     description: "Leituras bíblicas, salmo e Evangelho do dia para rezar em sintonia com a Igreja.",
     color: "text-[oklch(0.65_0.14_70)]",
@@ -139,7 +140,7 @@ const paths = [
   {
     id: "liturgia",
     label: "Acompanhar a Liturgia",
-    icon: Sun,
+    icon: LiturgyIcon,
     desc: "Siga o calendário da Igreja Universal todos os dias: Leituras bíblicas, Salmo, Evangelho do dia e homilia comentada.",
     ctaText: "Ver Liturgia de Hoje",
     url: "/login?tab=cadastrar&path=/liturgia",
@@ -611,7 +612,7 @@ export default function Home() {
           {/* Roteiro do Dia (Daily Routine) - Grid compacto */}
           <div className="max-w-5xl mx-auto mb-16">
             <h3 className="font-display text-xl font-bold text-[oklch(0.82_0.10_80)] mb-6 flex items-center gap-2">
-              <Sun size={18} />
+              <LiturgyIcon size={18} />
               Roteiro do Dia
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

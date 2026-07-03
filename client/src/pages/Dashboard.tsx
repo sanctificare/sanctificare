@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { BookOpen, Sun, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight } from "lucide-react";
+import { BookOpen, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { NOVENAS } from "@/data/novenas";
 import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import { toast } from "sonner";
@@ -323,7 +324,7 @@ export default function Dashboard() {
                 </Link>
                 <Link href="/liturgia" aria-label="Abrir Liturgia Diária">
                   <Button variant="outline" className="w-full sm:w-auto border-[oklch(0.75_0.12_75/0.4)] text-white hover:bg-[oklch(0.75_0.12_75/0.1)] bg-transparent">
-                    <Sun size={15} className="mr-2" />
+                    <LiturgyIcon size={15} className="mr-2" />
                     Liturgia
                   </Button>
                 </Link>
@@ -450,7 +451,7 @@ export default function Dashboard() {
                     <span className="bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.88_0.08_80)] border border-[oklch(0.75_0.12_75/0.3)] rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-semibold backdrop-blur-sm">
                       Palavra
                     </span>
-                    <Sun size={18} className="sm:w-5 sm:h-5 text-[oklch(0.75_0.12_75)]" />
+                    <LiturgyIcon size={18} className="sm:w-5 sm:h-5 text-[oklch(0.75_0.12_75)]" />
                   </div>
                   <div className="relative z-10 mt-auto">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">

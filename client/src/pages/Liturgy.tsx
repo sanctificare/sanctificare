@@ -2,9 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Sun, Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { trpc } from "@/lib/trpc";
+import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { toast } from "sonner";
 import LiturgyReadings from "@/components/LiturgyReadings";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -237,7 +238,7 @@ export default function Liturgy() {
         {/* Header */}
         <div className="text-center space-y-2 mb-8 select-none">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Sun className={`w-5 h-5 ${theme.primary}`} />
+            <LiturgyIcon className={`w-5 h-5 ${theme.primary}`} />
             <span className={`text-xs font-bold tracking-widest uppercase ${theme.accentText}`}>LITURGIA DIÁRIA</span>
           </div>
 
