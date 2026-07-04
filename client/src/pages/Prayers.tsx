@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
-import { Crown, Clock, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2, Sun, Star, Calendar } from "lucide-react";
+import { Crown, Clock, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
@@ -51,7 +51,7 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
     badgeLabel: "Mariana",
   },
   gloria: {
-    icon: Sun,
+    icon: Crown,
     accent: "oklch(0.66 0.15 92)",
     surface: "bg-[oklch(0.99_0.01_95)]",
     ring: "border-[oklch(0.86_0.10_92/0.45)] hover:border-[oklch(0.74_0.14_92/0.75)]",
@@ -73,7 +73,7 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
     badgeLabel: "Profissão de Fé",
   },
   salve_rainha: {
-    icon: Star,
+    icon: Crown,
     accent: "oklch(0.60 0.14 335)",
     surface: "bg-[oklch(0.99_0.01_340)]",
     ring: "border-[oklch(0.84_0.09_335/0.45)] hover:border-[oklch(0.72_0.13_335/0.75)]",
@@ -117,7 +117,7 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
     badgeLabel: "Proteção",
   },
   novena: {
-    icon: Calendar,
+    icon: Crown,
     accent: "oklch(0.51 0.11 260)",
     surface: "bg-[oklch(0.97_0.01_260)]",
     ring: "border-[oklch(0.77_0.08_260/0.5)] hover:border-[oklch(0.64_0.11_260/0.78)]",
@@ -141,7 +141,7 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
 };
 
 const DEFAULT_PRAYER_CARD_THEME: PrayerCardTheme = {
-  icon: PrayingHandsIcon,
+  icon: PrayingHandsIcon as unknown as typeof Crown,
   accent: "oklch(0.48 0.09 260)",
   surface: "bg-[oklch(0.98_0.01_260)]",
   ring: "border-[oklch(0.78_0.08_260/0.45)] hover:border-[oklch(0.65_0.10_260/0.75)]",
