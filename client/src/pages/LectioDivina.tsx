@@ -33,10 +33,7 @@ const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const COVER_IMG = "/assets/lectio-cover.png";
 const DAILY_GOSPEL_PASSAGE_ID = "daily-gospel";
 
-const getPassageImageUrl = (passageId: string, dateIso?: string) => {
-  if (passageId === "daily-gospel" && dateIso) {
-    return resolveMediaUrl(`/assets/lectio/daily-gospel-${dateIso}.png`);
-  }
+const getPassageImageUrl = (passageId: string) => {
   const supportedIds = [
     "daily-gospel",
     "mt-5-1-12",
@@ -642,10 +639,10 @@ mas livrai-nos do Mal. Amém!`,
             <div className="w-full text-center bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl">
               <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6">
                 <img
-                  src={getPassageImageUrl(passage.id, selectedDate)}
+                  src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
-                  onError={(event) => applyImageFallback(event.currentTarget, passage.id === "daily-gospel" ? "/assets/lectio/daily-gospel.png" : COVER_IMG)}
+                  onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
 
@@ -830,10 +827,10 @@ mas livrai-nos do Mal. Amém!`,
             <div className="w-full text-center bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col items-center">
               <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6">
                 <img
-                  src={getPassageImageUrl(passage.id, selectedDate)}
+                  src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
-                  onError={(event) => applyImageFallback(event.currentTarget, passage.id === "daily-gospel" ? "/assets/lectio/daily-gospel.png" : COVER_IMG)}
+                  onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
               </div>
@@ -902,7 +899,7 @@ mas livrai-nos do Mal. Amém!`,
                     audioUrl={replayingReading && readingTrack ? readingTrack.audioUrl : currentTrack.audioUrl}
                     title={replayingReading && readingTrack ? readingTrack.title : currentTrack.title}
                     description={replayingReading && readingTrack ? "Reouvindo a leitura" : currentTrack.description}
-                    artworkUrl={getPassageImageUrl(passage.id, selectedDate)}
+                    artworkUrl={getPassageImageUrl(passage.id)}
                     supportTitle={guidedSupport.supportTitle}
                     supportDescription={guidedSupport.supportDescription}
                     supportText={guidedSupport.supportText}
