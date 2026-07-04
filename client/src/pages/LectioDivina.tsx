@@ -640,11 +640,11 @@ mas livrai-nos do Mal. Amém!`,
           {!showGuidedAudio ? (
             /* Guided Setup / Start Screen */
             <div className="w-full text-center bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl">
-              <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6">
+              <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6 bg-stone-900/60 dark:bg-stone-950 flex items-center justify-center">
                 <img
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   onError={(event) => applyImageFallback(event.currentTarget, COVER_IMG)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
@@ -828,11 +828,11 @@ mas livrai-nos do Mal. Amém!`,
           ) : (
             /* Active Guided Session Player */
             <div className="w-full text-center bg-white/5 border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col items-center">
-              <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6">
+              <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden shadow-lg mb-6 bg-stone-900/60 dark:bg-stone-950 flex items-center justify-center">
                 <img
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   onError={(event) => applyImageFallback(event.currentTarget, COVER_IMG)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
