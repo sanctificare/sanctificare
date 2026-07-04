@@ -40,6 +40,7 @@ export interface LiturgyReadingsAudio {
   firstReading?: string;
   secondReading?: string;
   gospel?: string;
+  singedPsalm?: string;
 }
 
 export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): LiturgyReadingsAudio {
@@ -53,7 +54,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
       
       const audio: LiturgyReadingsAudio = {
         firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/1leitura${formattedDate}.mp3`,
-        gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`
+        gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`,
+        singedPsalm: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/salmo${formattedDate}.mp3`
       };
 
       // Apenas dias 5 e 12 têm segunda leitura no R2

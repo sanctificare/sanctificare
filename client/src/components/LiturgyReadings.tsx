@@ -1,9 +1,11 @@
 import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../../../server/routers";
 import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
+import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
+
 
 
 
@@ -155,6 +157,144 @@ function renderTextWithDropCap(
   return <div className="space-y-2">{blocks}</div>;
 }
 
+function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const onLoadedMetadata = () => setDuration(audio.duration);
+    const onEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    audio.addEventListener("loadedmetadata", onLoadedMetadata);
+    audio.addEventListener("ended", onEnded);
+
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+
+    return () => {
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("ended", onEnded);
+    };
+  }, [audioUrl]);
+
+  const formatTime = (time: number) => {
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!audioRef.current) return;
+    const val = parseFloat(e.target.value);
+    audioRef.current.currentTime = val;
+    setCurrentTime(val);
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent p-4 my-3 shadow-sm">
+      <audio ref={audioRef} src={audioUrl} preload="metadata" />
+      <div className="flex items-center justify-between gap-4 mb-3">
+        <div className="flex items-center gap-2">
+          <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+              />
+            </svg>
+          </div>
+          <div className="text-left">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              Salmo Cantado
+            </h4>
+            <p className="text-[10px] text-muted-foreground">
+              Ouça a versão cantada deste salmo
+            </p>
+          </div>
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={togglePlay}
+          className="h-9 w-9 rounded-full bg-amber-500 text-white hover:bg-amber-600 hover:text-white shrink-0 shadow-md transition-all duration-300 hover:scale-105 flex items-center justify-center"
+        >
+          {isPlaying ? (
+            <svg
+              className="w-4 h-4 fill-current"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 9v6m4-6v6" />
+            </svg>
+          ) : (
+            <svg
+              className="w-4 h-4 fill-current ml-0.5"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            </svg>
+          )}
+        </Button>
+      </div>
+
+      <div className="flex items-center gap-2 min-w-0 bg-black/5 dark:bg-white/5 p-2 rounded-lg">
+        <span className="text-[10px] font-mono text-muted-foreground/80 tabular-nums shrink-0">
+          {formatTime(currentTime)}
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={duration || 100}
+          value={currentTime}
+          onChange={handleSeek}
+          className="flex-1 h-1 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+        />
+        <span className="text-[10px] font-mono text-muted-foreground/80 tabular-nums shrink-0">
+          {formatTime(duration)}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }: LiturgyReadingsProps) {
   const [expandedSection, setExpandedSection] = useState<string>("gospel");
 
@@ -165,6 +305,8 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
       </div>
     );
   }
+
+  const audios = getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
 
   const sections = [
     {
@@ -183,6 +325,7 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
       label: "Salmo Responsorial",
       reading: liturgy.psalm,
       isPsalm: true,
+      audioUrl: audios.singedPsalm,
     },
     {
       id: "secondReading",
@@ -261,6 +404,10 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
                       {reading.referencia}
                       {reading.titulo && ` — ${reading.titulo}`}
                     </p>
+
+                    {section.audioUrl && section.id === "psalm" && (
+                      <SingedPsalmPlayer audioUrl={section.audioUrl} />
+                    )}
                     
                     {renderTextWithDropCap(
                       reading.texto,
