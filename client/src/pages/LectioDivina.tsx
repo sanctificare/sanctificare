@@ -30,7 +30,7 @@ import {
 import AudioPlayer from "@/components/AudioPlayer";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
-const COVER_IMG = "/assets/lectio-cover.png";
+const COVER_IMG = "/assets/lectiodivina.webp";
 const DAILY_GOSPEL_PASSAGE_ID = "daily-gospel";
 
 const getPassageImageUrl = (passageId: string) => {
@@ -642,7 +642,7 @@ mas livrai-nos do Mal. Amém!`,
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
-                  onError={(event) => applyImageFallback(event.currentTarget)}
+                  onError={(event) => applyImageFallback(event.currentTarget, COVER_IMG)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
 
@@ -830,7 +830,7 @@ mas livrai-nos do Mal. Amém!`,
                   src={getPassageImageUrl(passage.id)}
                   alt="Lectio Divina Cover"
                   className="w-full h-full object-cover"
-                  onError={(event) => applyImageFallback(event.currentTarget)}
+                  onError={(event) => applyImageFallback(event.currentTarget, COVER_IMG)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
               </div>
