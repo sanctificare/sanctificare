@@ -432,7 +432,7 @@ export default function Liturgy() {
 
       {/* Floating Toolbar */}
       {liturgy && !isFetchingLiturgy && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-background/80 dark:bg-stone-900/80 backdrop-blur-md border border-border shadow-lg rounded-full px-3 py-1.5 transition-all">
+        <div className="fixed bottom-[5.5rem] right-6 lg:bottom-6 lg:right-6 z-50 flex items-center gap-2 bg-background/80 dark:bg-stone-900/80 backdrop-blur-md border border-border shadow-lg rounded-full px-3 py-1.5 transition-all">
           <span className="text-xs text-muted-foreground font-semibold px-2 border-r border-border">Leitura</span>
 
           <button

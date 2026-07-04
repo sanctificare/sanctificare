@@ -698,7 +698,7 @@ export default function VelaVirtual() {
 
       <audio ref={audioRef} loop onError={handleAudioError} />
       {audioFailed && (
-        <div className="fixed bottom-4 right-4 rounded-xl border border-white/10 bg-black/70 px-4 py-3 text-sm text-white/80 shadow-xl">
+        <div className="fixed bottom-[5.5rem] right-4 lg:bottom-4 lg:right-4 rounded-xl border border-white/10 bg-black/70 px-4 py-3 text-sm text-white/80 shadow-xl">
           Trilha selecionada indisponível. Escolha outra opção de som.
         </div>
       )}
