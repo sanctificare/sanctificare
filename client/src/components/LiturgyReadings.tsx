@@ -1,10 +1,10 @@
-import { ChevronDown, ChevronUp, BookOpen, Play, Pause } from "lucide-react";
-import React, { useState, useRef, useEffect } from "react";
+import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
+import React, { useState } from "react";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../../../server/routers";
 import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
-import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
+
 
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
@@ -155,98 +155,6 @@ function renderTextWithDropCap(
   return <div className="space-y-2">{blocks}</div>;
 }
 
-function InlineAudioPlayer({ audioUrl }: { audioUrl: string }) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-  };
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const onLoadedMetadata = () => setDuration(audio.duration);
-    const onEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    };
-
-    audio.addEventListener("play", onPlay);
-    audio.addEventListener("pause", onPause);
-    audio.addEventListener("timeupdate", onTimeUpdate);
-    audio.addEventListener("loadedmetadata", onLoadedMetadata);
-    audio.addEventListener("ended", onEnded);
-
-    setIsPlaying(false);
-    setCurrentTime(0);
-    setDuration(0);
-
-    return () => {
-      audio.removeEventListener("play", onPlay);
-      audio.removeEventListener("pause", onPause);
-      audio.removeEventListener("timeupdate", onTimeUpdate);
-      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
-      audio.removeEventListener("ended", onEnded);
-    };
-  }, [audioUrl]);
-
-  const formatTime = (time: number) => {
-    const mins = Math.floor(time / 60);
-    const secs = Math.floor(time % 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!audioRef.current) return;
-    const val = parseFloat(e.target.value);
-    audioRef.current.currentTime = val;
-    setCurrentTime(val);
-  };
-
-  return (
-    <div className="flex items-center gap-3 p-3 my-2 bg-stone-50 dark:bg-stone-900/60 rounded-xl border border-border/80">
-      <audio ref={audioRef} src={audioUrl} preload="metadata" />
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        onClick={togglePlay}
-        className="h-8 w-8 rounded-full bg-primary/10 hover:bg-primary/20 text-primary shrink-0"
-      >
-        {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-      </Button>
-      <div className="flex-1 flex items-center gap-2 min-w-0">
-        <span className="text-[10px] font-mono text-muted-foreground/80 tabular-nums shrink-0">
-          {formatTime(currentTime)}
-        </span>
-        <input
-          type="range"
-          min={0}
-          max={duration || 100}
-          value={currentTime}
-          onChange={handleSeek}
-          className="flex-1 h-1 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-primary"
-        />
-        <span className="text-[10px] font-mono text-muted-foreground/80 tabular-nums shrink-0">
-          {formatTime(duration)}
-        </span>
-      </div>
-    </div>
-  );
-}
-
 export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }: LiturgyReadingsProps) {
   const [expandedSection, setExpandedSection] = useState<string>("gospel");
 
@@ -257,8 +165,6 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
       </div>
     );
   }
-
-  const audios = getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
 
   const sections = [
     {
@@ -271,7 +177,6 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
       id: "firstReading",
       label: "1ª Leitura",
       reading: liturgy.firstReading,
-      audioUrl: audios.firstReading,
     },
     {
       id: "psalm",
@@ -283,13 +188,11 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
       id: "secondReading",
       label: "2ª Leitura",
       reading: liturgy.secondReading,
-      audioUrl: audios.secondReading,
     },
     {
       id: "gospel",
       label: "Evangelho",
       reading: liturgy.gospel,
-      audioUrl: audios.gospel,
     },
   ];
 
@@ -358,10 +261,6 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
                       {reading.referencia}
                       {reading.titulo && ` — ${reading.titulo}`}
                     </p>
-                    
-                    {section.audioUrl && (
-                      <InlineAudioPlayer audioUrl={section.audioUrl} />
-                    )}
                     
                     {renderTextWithDropCap(
                       reading.texto,

@@ -9,7 +9,7 @@ import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { toast } from "sonner";
 import LiturgyReadings from "@/components/LiturgyReadings";
 import AudioPlayer from "@/components/AudioPlayer";
-import { getLiturgyAudioByDate, type LiturgyDailyAudioTrack } from "@/data/liturgy-audio";
+import { getLiturgyAudioByDate, getLiturgyReadingsAudioByDate, type LiturgyDailyAudioTrack } from "@/data/liturgy-audio";
 import { getDailyContent } from "@/data/daily";
 
 
@@ -116,34 +116,93 @@ export default function Liturgy() {
 
 
 
-  const [liturgyAudio, setLiturgyAudio] = useState<LiturgyDailyAudioTrack | null>(null);
+  interface AudioTrack {
+    url: string;
+    title: string;
+    description: string;
+    supportText?: string;
+  }
+
+  const [playlist, setPlaylist] = useState<AudioTrack[]>([]);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
   const [audioUnavailable, setAudioUnavailable] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false);
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
 
-
-
   useEffect(() => {
-    let canceled = false;
-
-    async function checkAudioAvailability() {
-      const candidate = getLiturgyAudioByDate(liturgy?.liturgyDate);
-      if (!candidate) {
-        setLiturgyAudio(null);
-        setAudioUnavailable(Boolean(liturgy));
-        return;
-      }
-
-      // Se temos o candidato na lista manual de áudios da Liturgia, confiamos diretamente na URL
-      // e evitamos fazer uma requisição fetch HEAD, prevenindo possíveis erros de CORS no navegador.
-      setLiturgyAudio(candidate);
+    if (!liturgy) {
+      setPlaylist([]);
+      setCurrentTrackIndex(0);
       setAudioUnavailable(false);
+      return;
     }
 
-    checkAudioAvailability();
-    return () => {
-      canceled = true;
-    };
+    // 1. Verifica se existe o áudio diário unificado (narração geral)
+    const unifiedAudio = getLiturgyAudioByDate(liturgy.liturgyDate);
+    if (unifiedAudio) {
+      setPlaylist([
+        {
+          url: unifiedAudio.audioUrl,
+          title: unifiedAudio.title,
+          description: unifiedAudio.description || "Narração humana da Liturgia Diária.",
+          supportText: [
+            liturgy.firstReading?.texto,
+            liturgy.psalm?.texto,
+            liturgy.secondReading?.texto,
+            liturgy.gospel?.texto,
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
+        },
+      ]);
+      setCurrentTrackIndex(0);
+      setAudioUnavailable(false);
+      return;
+    }
+
+    // 2. Se não houver áudio unificado, verifica se há áudios individuais no R2 (Julho/26)
+    const individualAudios = getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
+    if (individualAudios.firstReading || individualAudios.gospel) {
+      const tracks: AudioTrack[] = [];
+
+      if (individualAudios.firstReading && liturgy.firstReading) {
+        tracks.push({
+          url: individualAudios.firstReading,
+          title: `1ª Leitura - ${liturgy.firstReading.referencia || ""}`,
+          description: "Acompanhe a primeira leitura",
+          supportText: liturgy.firstReading.texto,
+        });
+      }
+
+      if (individualAudios.secondReading && liturgy.secondReading) {
+        tracks.push({
+          url: individualAudios.secondReading,
+          title: `2ª Leitura - ${liturgy.secondReading.referencia || ""}`,
+          description: "Acompanhe a segunda leitura",
+          supportText: liturgy.secondReading.texto,
+        });
+      }
+
+      if (individualAudios.gospel && liturgy.gospel) {
+        tracks.push({
+          url: individualAudios.gospel,
+          title: `Evangelho - ${liturgy.gospel.referencia || ""}`,
+          description: "Acompanhe a proclamação do Evangelho",
+          supportText: liturgy.gospel.texto,
+        });
+      }
+
+      if (tracks.length > 0) {
+        setPlaylist(tracks);
+        setCurrentTrackIndex(0);
+        setAudioUnavailable(false);
+        return;
+      }
+    }
+
+    setPlaylist([]);
+    setCurrentTrackIndex(0);
+    setAudioUnavailable(true);
   }, [liturgy?.liturgyDate]);
 
   const formattedDate = selectedDate.toLocaleDateString("pt-BR", {
@@ -317,25 +376,25 @@ export default function Liturgy() {
           <>
 
 
-            {liturgyAudio && (
+            {playlist.length > 0 && playlist[currentTrackIndex] && (
               <AudioPlayer
-                audioUrl={liturgyAudio.audioUrl}
-                title={liturgyAudio.title}
-                description={liturgyAudio.description}
-                supportTitle="Texto da liturgia"
-                supportDescription="Acompanhe a leitura enquanto escuta"
-                supportText={[
-                  liturgy.firstReading?.texto,
-                  liturgy.psalm?.texto,
-                  liturgy.secondReading?.texto,
-                  liturgy.gospel?.texto,
-                ]
-                  .filter(Boolean)
-                  .join("\n\n")}
+                key={`${playlist[currentTrackIndex].url}-${currentTrackIndex}`}
+                audioUrl={playlist[currentTrackIndex].url}
+                title={playlist[currentTrackIndex].title}
+                description={playlist[currentTrackIndex].description}
+                supportTitle="Texto da leitura"
+                supportDescription="Acompanhe o texto enquanto escuta"
+                supportText={playlist[currentTrackIndex].supportText}
+                autoPlay={currentTrackIndex > 0}
+                onTrackEnd={() => {
+                  if (currentTrackIndex < playlist.length - 1) {
+                    setCurrentTrackIndex((prev) => prev + 1);
+                  }
+                }}
               />
             )}
 
-            {!liturgyAudio && audioUnavailable && !isZenMode && (
+            {playlist.length === 0 && audioUnavailable && !isZenMode && (
               <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-100">
                 <p className="font-semibold">Áudio indisponível para esta data</p>
                 <p className="mt-1 text-xs opacity-80">
