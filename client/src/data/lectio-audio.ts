@@ -173,13 +173,22 @@ export function getGuidedLectioAudioTracks(passageId: string, dateIso: string): 
     const gospelRelativePath = `${folder}/${gospelFileName}`;
 
     const isJune20 = dateIso.endsWith("-06-20");
-    const duration = isJune20 ? 155 : 61;
+    let audioUrl = getLectioAudioUrl(gospelRelativePath);
+    let duration = isJune20 ? 155 : 61;
+
+    if (month === 7 && yearTwoDigits === "26") {
+      const dayNum = day;
+      if (dayNum >= 5 && dayNum <= 12) {
+        audioUrl = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${dayStr}${monthStr}${yearTwoDigits}.mp3`;
+        duration = 180; // Default estimate, actual is loaded by AudioPlayer
+      }
+    }
 
     tracks.push({
       id: "leitura-evangelho-meditacao",
       title: "Leitura do Evangelho",
       description: "Leitura do Evangelho do Dia",
-      audioUrl: getLectioAudioUrl(gospelRelativePath),
+      audioUrl,
       duration,
       stepKey: "lectio",
     });

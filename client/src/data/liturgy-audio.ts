@@ -35,3 +35,35 @@ export function getLiturgyAudioByDate(date: string | undefined) {
   if (!date) return null;
   return MANUAL_LITURGY_DAILY_AUDIO_TRACKS.find((track) => track.date === date) ?? null;
 }
+
+export interface LiturgyReadingsAudio {
+  firstReading?: string;
+  secondReading?: string;
+  gospel?: string;
+}
+
+export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): LiturgyReadingsAudio {
+  if (!dateIso) return {};
+  const [yearStr, monthStr, dayStr] = dateIso.split("-");
+  if (yearStr === "2026" && monthStr === "07") {
+    const dayNum = parseInt(dayStr, 10);
+    // Temos áudios individuais na pasta de julho26 de 05 a 12 de julho
+    if (dayNum >= 5 && dayNum <= 12) {
+      const formattedDate = `${dayStr}${monthStr}26`; // ex: 050726
+      
+      const audio: LiturgyReadingsAudio = {
+        firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/1leitura${formattedDate}.mp3`,
+        gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`
+      };
+
+      // Apenas dias 5 e 12 têm segunda leitura no R2
+      if (dayNum === 5 || dayNum === 12) {
+        audio.secondReading = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/2leitura${formattedDate}.mp3`;
+      }
+
+      return audio;
+    }
+  }
+  return {};
+}
+
