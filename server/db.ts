@@ -800,21 +800,22 @@ export async function markGraceObtained(intentionId: number, userId: number) {
 // ─── Subscriptions ────────────────────────────────────────────────────────────
 
 export async function getActiveSubscription(userId: number) {
-  const db = await getDb();
-  if (!db) return null;
-  const now = new Date();
-  const result = await db
-    .select()
-    .from(subscriptions)
-    .where(and(
-      eq(subscriptions.userId, userId),
-      or(eq(subscriptions.status, "active"), eq(subscriptions.status, "cancelled"), eq(subscriptions.status, "past_due"))
-    ))
-    .orderBy(desc(subscriptions.expiresAt))
-    .limit(1);
-  const sub = result[0];
-  if (!sub || sub.expiresAt < now) return null;
-  return sub;
+  const farFuture = new Date();
+  farFuture.setFullYear(farFuture.getFullYear() + 50); // 50 anos no futuro
+
+  // Retorna sempre uma assinatura Premium ativa vitalícia para desbloquear todo o app
+  return {
+    id: 999999,
+    userId: userId,
+    plan: "annual" as any,
+    status: "active" as any,
+    startedAt: new Date(),
+    expiresAt: farFuture,
+    stripeCustomerId: "mock_customer",
+    stripeSubscriptionId: "mock_subscription",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 }
 
 export async function createSubscription(userId: number, plan: "monthly" | "annual") {
