@@ -21,6 +21,27 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
+  componentDidCatch(error: Error) {
+    const errorStr = error.toString().toLowerCase();
+    const isChunkError = 
+      errorStr.includes("failed to fetch dynamically imported module") || 
+      errorStr.includes("chunkloaderror") ||
+      errorStr.includes("loading chunk") ||
+      errorStr.includes("failed to fetch");
+
+    if (isChunkError) {
+      const hasReloaded = sessionStorage.getItem("app-chunk-reloaded");
+      if (!hasReloaded) {
+        sessionStorage.setItem("app-chunk-reloaded", "1");
+        window.location.reload();
+      }
+    }
+  }
+
+  componentDidMount() {
+    sessionStorage.removeItem("app-chunk-reloaded");
+  }
+
   render() {
     if (this.state.hasError) {
       return (
