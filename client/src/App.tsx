@@ -36,6 +36,7 @@ const Novenas = lazy(() => import("./pages/Novenas"));
 const NovenaDetails = lazy(() => import("./pages/NovenaDetails"));
 const Intentions = lazy(() => import("./pages/Intentions"));
 const Profile = lazy(() => import("./pages/Profile"));
+const DangerZone = lazy(() => import("./pages/DangerZone"));
 const DailyPlan = lazy(() => import("./pages/DailyPlan"));
 const Premium = lazy(() => import("./pages/Premium"));
 const VideosBiblicos = lazy(() => import("./pages/VideosBiblicos"));
@@ -65,6 +66,7 @@ function Router() {
         <Route path="/intencoes" component={Intentions} />
         <Route path="/perfil" component={Profile} />
         <Route path="/profile" component={Profile} />
+        <Route path="/perfil/zona-de-perigo" component={DangerZone} />
         <Route path="/plano-diario" component={DailyPlan} />
         <Route path="/premium" component={Premium} />
         <Route path="/videos" component={VideosBiblicos} />
