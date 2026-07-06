@@ -133,6 +133,56 @@ describe("oauth return path", () => {
     expect(createSessionTokenMock).toHaveBeenCalledTimes(1);
   });
 
+  it("preserva deep link nativo no OAuth mobile e retorna tokens para o app", async () => {
+    upsertUserMock.mockClear();
+    getAuthorizeUrlMock.mockClear();
+    exchangeCodeForTokenMock.mockClear();
+    getUserInfoMock.mockClear();
+    createSessionTokenMock.mockClear();
+
+    const requestedPath = "sanctificare://callback/dashboard?from=google";
+    const loginRes = await fetch(
+      `${baseUrl}/api/oauth/login?path=${encodeURIComponent(requestedPath)}`,
+      { redirect: "manual" }
+    );
+
+    expect(loginRes.status).toBe(302);
+    const loginLocation = loginRes.headers.get("location");
+    expect(loginLocation).toBeTruthy();
+
+    const authUrl = new URL(loginLocation!);
+    const state = authUrl.searchParams.get("state");
+    expect(state).toBeTruthy();
+
+    const decodedState = JSON.parse(Buffer.from(state!, "base64").toString("utf-8")) as {
+      appPath: string;
+      nonce: string;
+    };
+    expect(decodedState.appPath).toBe(requestedPath);
+
+    const nonce = extractCookieValue(loginRes.headers.get("set-cookie"), "oauth_state_nonce");
+    expect(nonce).toBeTruthy();
+
+    const callbackRes = await fetch(
+      `${baseUrl}/api/oauth/callback?code=test-code&state=${encodeURIComponent(state!)}`,
+      {
+        redirect: "manual",
+        headers: {
+          cookie: `oauth_state_nonce=${nonce}`,
+        },
+      }
+    );
+
+    expect(callbackRes.status).toBe(302);
+    const callbackLocation = callbackRes.headers.get("location");
+    expect(callbackLocation).toBeTruthy();
+    expect(callbackLocation).toContain("sanctificare://callback/dashboard?from=google");
+    expect(callbackLocation).toContain("token=session-token");
+    expect(callbackLocation).toContain("csrf=");
+    expect(upsertUserMock).toHaveBeenCalledTimes(1);
+    expect(createSessionTokenMock).toHaveBeenCalledTimes(1);
+  });
+
   it("normaliza path externo para fallback seguro", async () => {
     upsertUserMock.mockClear();
 

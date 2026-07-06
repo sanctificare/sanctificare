@@ -22,7 +22,8 @@ function sanitizeAppPath(value: string | undefined, fallback = "/dashboard") {
   // Allow absolute URLs on mobile redirect schemes for Capacitor (Android/iOS)
   const isAllowedOrigin =
     value.startsWith("http://localhost/") ||
-    value.startsWith("capacitor://localhost/");
+    value.startsWith("capacitor://localhost/") ||
+    value.startsWith("sanctificare://callback/");
   if (isAllowedOrigin) {
     if (value.includes("/login") || value.includes("/redefinir-senha")) {
       return fallback;
@@ -178,8 +179,9 @@ export function registerOAuthRoutes(app: Express) {
 
       const authCookieOptions = getSessionCookieOptions(req);
       const csrfCookieOptions = getCsrfCookieOptions(req);
+      const csrfToken = generateCsrfToken();
       res.cookie(COOKIE_NAME, sessionToken, { ...authCookieOptions, maxAge: ENV.sessionTtlMs });
-      res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
+      res.cookie(CSRF_COOKIE_NAME, csrfToken, {
         ...csrfCookieOptions,
         maxAge: ENV.sessionTtlMs,
       });
@@ -188,7 +190,7 @@ export function registerOAuthRoutes(app: Express) {
         // Para links profundos do mobile (deep links), enviamos os tokens na URL
         const redirectUrl = new URL(decodedState.appPath.replace("sanctificare://callback", "http://localhost"));
         redirectUrl.searchParams.set("token", sessionToken);
-        redirectUrl.searchParams.set("csrf", generateCsrfToken());
+        redirectUrl.searchParams.set("csrf", csrfToken);
         
         // Reconstrói a URL com o esquema customizado sanctificare://callback
         const finalRedirect = redirectUrl.toString().replace("http://localhost", "sanctificare://callback");

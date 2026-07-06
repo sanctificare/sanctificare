@@ -11,7 +11,8 @@ export const sanitizeAppPath = (
   // Allow absolute URLs on mobile redirect schemes for Capacitor (Android/iOS)
   const isAllowedOrigin =
     value.startsWith("http://localhost/") ||
-    value.startsWith("capacitor://localhost/");
+    value.startsWith("capacitor://localhost/") ||
+    value.startsWith("sanctificare://callback/");
   if (isAllowedOrigin) {
     if (value.includes("/login") || value.includes("/redefinir-senha")) {
       return fallback;
