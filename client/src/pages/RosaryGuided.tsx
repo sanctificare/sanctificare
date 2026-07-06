@@ -13,7 +13,6 @@ import {
   CheckCircle,
   RotateCcw,
   PlayCircle,
-  VolumeX,
 } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
@@ -130,7 +129,6 @@ export default function RosaryGuided() {
   const [currentAudioTrack, setCurrentAudioTrack] = useState(0);
   const [autoRosaryActive, setAutoRosaryActive] = useState(false);
   const [intention, setIntention] = useState("");
-  const [isSilentMode, setIsSilentMode] = useState(false);
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
   const rosaryAudioTracks = useMemo(() => {
@@ -276,23 +274,15 @@ export default function RosaryGuided() {
 
   const resetRosary = () => {
     setAutoRosaryActive(false);
-    setIsSilentMode(false);
     setShowAudio(false);
     setCurrentAudioTrack(0);
     setStep({ type: "intro" });
   };
 
   const handleStartAutomaticRosary = () => {
-    setIsSilentMode(false);
     setAutoRosaryActive(true);
     setCurrentAudioTrack(0);
     setStep({ type: "intro" });
-  };
-
-  const handleStartSilentRosary = () => {
-    setIsSilentMode(true);
-    setAutoRosaryActive(false);
-    setStep(getNextStep({ type: "intro" }));
   };
 
   const handleAudioTrackEnd = () => {
@@ -448,26 +438,15 @@ export default function RosaryGuided() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex justify-center">
           <Button
-            className="flex-1 h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold animate-pulse"
+            className="w-full h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold animate-pulse"
             onClick={handleStartAutomaticRosary}
           >
             <PlayCircle size={18} className="mr-2" />
             Iniciar com áudio
           </Button>
-          <Button
-            variant="outline"
-            className="flex-1 h-12 border border-[oklch(0.22_0.07_260/0.18)] text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.75_0.12_75/0.12)] font-semibold bg-white"
-            onClick={handleStartSilentRosary}
-          >
-            <VolumeX size={18} className="mr-2" />
-            Iniciar em silêncio
-          </Button>
         </div>
-        <p className="text-xs text-muted-foreground text-center mt-3">
-          O modo com áudio segue o terço automaticamente. O modo em silêncio permite rezar e meditar no seu próprio ritmo.
-        </p>
 
         {/* Pré-carrega a próxima faixa enquanto a atual toca, para transição sem gap */}
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
