@@ -135,12 +135,12 @@ export default function Bible() {
     }
   }, [selectedBook, selectedChapter]);
 
-  // Scroll to top on chapter change
+  // Scroll to top on chapter change (only if we are not scrolling to a highlighted verse)
   useEffect(() => {
-    if (selectedBook && selectedChapter) {
+    if (selectedBook && selectedChapter && !highlightedVerse) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [selectedBook, selectedChapter]);
+  }, [selectedBook, selectedChapter, highlightedVerse]);
 
   // Offline Caching
   useEffect(() => {
@@ -218,7 +218,7 @@ export default function Bible() {
         if (element) {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         }
-      }, 150);
+      }, 250);
       return () => clearTimeout(timer);
     }
   }, [highlightedVerse, verses, scrollTrigger]);
@@ -539,7 +539,7 @@ export default function Bible() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]} ${activeTheme === "dark" ? "dark" : ""}`}>
       <main className="container py-8 relative max-w-7xl mx-auto">
         
         {/* =========================================================================
@@ -1441,12 +1441,24 @@ export default function Bible() {
                 <div className="animate-fade-in space-y-6">
                   {/* Last Read Bookmark Card */}
                   {bookmark && (
-                    <div className="prayer-card p-4 border border-[oklch(0.75_0.12_75/0.3)] bg-white/60 backdrop-blur flex items-center justify-between gap-4 rounded-xl">
+                    <div className={`prayer-card p-4 border flex items-center justify-between gap-4 rounded-xl ${
+                      activeTheme === "dark"
+                        ? "!bg-none !bg-slate-950 border-slate-900 text-slate-100"
+                        : activeTheme === "sepia"
+                        ? "!bg-none !bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                        : "bg-white/60 border-[oklch(0.75_0.12_75/0.3)] backdrop-blur"
+                    }`}>
                       <div className="flex items-center gap-3">
                         <Bookmark className="text-[oklch(0.75_0.12_75)] flex-shrink-0" size={20} fill="currentColor" />
                         <div>
                           <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">Última Leitura</p>
-                          <h4 className="font-display font-bold text-sm text-[oklch(0.22_0.07_260)]">
+                          <h4 className={`font-display font-bold text-sm ${
+                            activeTheme === "dark"
+                              ? "text-slate-200"
+                              : activeTheme === "sepia"
+                              ? "text-[#362214]"
+                              : "text-[oklch(0.22_0.07_260)]"
+                          }`}>
                             {bookmark.bookName} - Capítulo {bookmark.chapter}
                           </h4>
                         </div>
@@ -1475,7 +1487,13 @@ export default function Bible() {
                       placeholder="Buscar livro..."
                       value={searchBookQuery}
                       onChange={(e) => setSearchBookQuery(e.target.value)}
-                      className="pl-9 bg-white"
+                      className={`pl-9 border-border ${
+                        activeTheme === "dark" 
+                          ? "bg-slate-950 text-slate-100 border-slate-800 focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]" 
+                          : activeTheme === "sepia"
+                          ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
+                          : "bg-white text-slate-900"
+                      }`}
                     />
                     {searchBookQuery && (
                       <button onClick={() => setSearchBookQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -1490,8 +1508,12 @@ export default function Bible() {
                       onClick={() => setTestament("old")}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                         testament === "old"
-                          ? "bg-[oklch(0.22_0.07_260)] text-white"
-                          : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                          ? (activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] text-slate-950 font-bold" : "bg-[oklch(0.22_0.07_260)] text-white")
+                          : (activeTheme === "dark"
+                              ? "bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700"
+                              : activeTheme === "sepia"
+                              ? "bg-[#fcf8ed] border border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
+                              : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
                       }`}
                     >
                       Antigo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "old").length})
@@ -1500,8 +1522,12 @@ export default function Bible() {
                       onClick={() => setTestament("new")}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                         testament === "new"
-                          ? "bg-[oklch(0.22_0.07_260)] text-white"
-                          : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]"
+                          ? (activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] text-slate-950 font-bold" : "bg-[oklch(0.22_0.07_260)] text-white")
+                          : (activeTheme === "dark"
+                              ? "bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700"
+                              : activeTheme === "sepia"
+                              ? "bg-[#fcf8ed] border border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
+                              : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
                       }`}
                     >
                       Novo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "new").length})
@@ -1517,7 +1543,13 @@ export default function Bible() {
                           setSelectedBook(book);
                           setHighlightedVerse(null);
                         }}
-                        className="prayer-card p-4 text-left group bg-white border border-border hover:border-[oklch(0.75_0.12_75)] transition-all rounded-xl"
+                        className={`prayer-card p-4 text-left group border transition-all rounded-xl ${
+                          activeTheme === "dark"
+                            ? "!bg-none !bg-slate-950 border-slate-900 text-slate-100 hover:border-[oklch(0.75_0.12_75)]"
+                            : activeTheme === "sepia"
+                            ? "!bg-none !bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
+                            : "bg-white border-border hover:border-[oklch(0.75_0.12_75)]"
+                        }`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-display text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wide">
@@ -1525,7 +1557,13 @@ export default function Bible() {
                           </span>
                           <ChevronRight size={13} className="text-muted-foreground group-hover:text-[oklch(0.65_0.14_70)] transition-colors" />
                         </div>
-                        <p className="font-semibold text-sm text-[oklch(0.22_0.07_260)] leading-tight">{book.name}</p>
+                        <p className={`font-semibold text-sm leading-tight ${
+                          activeTheme === "dark" 
+                            ? "text-slate-100" 
+                            : activeTheme === "sepia" 
+                            ? "text-[#362214]" 
+                            : "text-[oklch(0.22_0.07_260)]"
+                        }`}>{book.name}</p>
                         <p className="text-xs text-muted-foreground mt-1">{book.chapters} capítulos</p>
                       </button>
                     ))}
@@ -1544,17 +1582,29 @@ export default function Bible() {
               {activeTab === "favorites" && (
                 <div className="animate-fade-in space-y-4">
                   {favorites.length === 0 ? (
-                    <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
+                    <div className={`text-center py-12 border border-dashed rounded-2xl ${
+                      activeTheme === "dark"
+                        ? "bg-slate-950/50 border-slate-800 text-slate-100"
+                        : activeTheme === "sepia"
+                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                        : "bg-white/50 border-border text-slate-900"
+                    }`}>
                       <Star size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
-                      <p className="text-muted-foreground text-sm font-medium">Nenhum versículo favoritado ainda.</p>
-                      <p className="text-xs text-muted-foreground/80 mt-1">Toque nos versículos durante a leitura para favoritá-los.</p>
+                      <p className="text-sm font-medium">Nenhum versículo favoritado ainda.</p>
+                      <p className="text-xs opacity-80 mt-1">Toque nos versículos durante a leitura para favoritá-los.</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
                       {favorites.map((fav, index) => (
                         <div
                           key={index}
-                          className="bg-white border border-border rounded-xl p-4 flex justify-between gap-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] transition-all duration-200"
+                          className={`border rounded-xl p-4 flex justify-between gap-4 shadow-sm hover:shadow transition-all duration-200 ${
+                            activeTheme === "dark"
+                              ? "bg-slate-950 border-slate-800 hover:border-[oklch(0.75_0.12_75)]"
+                              : activeTheme === "sepia"
+                              ? "bg-[#fcf8ed] border-[#ebdcb9] hover:border-[#362214]"
+                              : "bg-white border-border hover:border-[oklch(0.75_0.12_75)]"
+                          }`}
                         >
                           <div
                             className="cursor-pointer flex-1"
@@ -1571,7 +1621,13 @@ export default function Bible() {
                             <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
                               {fav.bookName} {fav.chapter}:{fav.verse}
                             </span>
-                            <p className="font-serif italic text-sm mt-1 text-slate-800">
+                            <p className={`font-serif italic text-sm mt-1 ${
+                              activeTheme === "dark"
+                                ? "text-slate-300"
+                                : activeTheme === "sepia"
+                                ? "text-[#5c4033]"
+                                : "text-slate-800"
+                            }`}>
                               "{fav.text}"
                             </p>
                           </div>
@@ -1604,7 +1660,13 @@ export default function Bible() {
                         placeholder="Buscar palavra ou frase em toda a Bíblia..."
                         value={globalSearchQuery}
                         onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                        className="pl-9 bg-white"
+                        className={`pl-9 border-border ${
+                          activeTheme === "dark" 
+                            ? "bg-slate-950 text-slate-100 border-slate-800 focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]" 
+                            : activeTheme === "sepia"
+                            ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
+                            : "bg-white text-slate-900"
+                        }`}
                       />
                     </div>
                     <Button type="submit" className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.18_0.06_260)] text-white">
@@ -1615,7 +1677,13 @@ export default function Bible() {
                   {isSearching ? (
                     <div className="space-y-3 animate-pulse">
                       {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="h-20 bg-white border border-border rounded-xl p-4" />
+                        <div key={i} className={`h-20 border rounded-xl p-4 ${
+                          activeTheme === "dark"
+                            ? "bg-slate-950 border-slate-800"
+                            : activeTheme === "sepia"
+                            ? "bg-[#fcf8ed] border-[#ebdcb9]"
+                            : "bg-white border-border"
+                        }`} />
                       ))}
                     </div>
                   ) : searchResults ? (
@@ -1642,12 +1710,24 @@ export default function Bible() {
                                 setScrollTrigger(prev => prev + 1);
                               }
                             }}
-                            className="bg-white border border-border rounded-xl p-4 shadow-sm hover:border-[oklch(0.75_0.12_75)] hover:shadow cursor-pointer transition-all duration-200"
+                            className={`border rounded-xl p-4 shadow-sm hover:shadow cursor-pointer transition-all duration-200 ${
+                              activeTheme === "dark"
+                                ? "bg-slate-950 border-slate-800 text-slate-100 hover:border-[oklch(0.75_0.12_75)]"
+                                : activeTheme === "sepia"
+                                ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
+                                : "bg-white border-border text-slate-900 hover:border-[oklch(0.75_0.12_75)]"
+                            }`}
                           >
                             <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
                               {res.bookName} {res.chapter}:{res.verse}
                             </span>
-                            <p className="font-sans text-sm mt-1 text-slate-800">
+                            <p className={`font-sans text-sm mt-1 ${
+                              activeTheme === "dark"
+                                ? "text-slate-300"
+                                : activeTheme === "sepia"
+                                ? "text-[#5c4033]"
+                                : "text-slate-800"
+                            }`}>
                               {res.text}
                             </p>
                           </div>
