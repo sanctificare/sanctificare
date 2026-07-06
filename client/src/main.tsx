@@ -8,6 +8,7 @@ import App from "./App";
 import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredCsrfToken } from "./const";
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
+import { App as CapApp } from '@capacitor/app';
 
 const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
 
@@ -278,5 +279,33 @@ if (typeof window !== "undefined" && isMobileApp()) {
       }
     }
   })();
+}
+
+// Deep linking handler for Google OAuth in Capacitor mobile app
+if (typeof window !== "undefined" && isMobileApp()) {
+  CapApp.addListener('appUrlOpen', (event: { url: string }) => {
+    try {
+      console.log("[DeepLink] Received URL:", event.url);
+      if (event.url.startsWith("sanctificare://callback")) {
+        const url = new URL(event.url.replace("sanctificare://callback", "http://localhost"));
+        const token = url.searchParams.get("token");
+        const csrf = url.searchParams.get("csrf");
+        
+        if (token) {
+          document.cookie = `app_session_id=${token}; path=/; max-age=2592000; SameSite=Lax`;
+          console.log("[DeepLink] Stored session cookie");
+          if (csrf) {
+            document.cookie = `csrf_token=${csrf}; path=/; max-age=2592000; SameSite=Lax`;
+            setStoredCsrfToken(csrf);
+            console.log("[DeepLink] Stored CSRF cookie and token");
+          }
+          // Redirect WebView locally to the path
+          window.location.replace(url.pathname || "/dashboard");
+        }
+      }
+    } catch (e) {
+      console.error("[DeepLink] Error handling URL:", e);
+    }
+  });
 }
 

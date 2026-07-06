@@ -184,7 +184,18 @@ export function registerOAuthRoutes(app: Express) {
         maxAge: ENV.sessionTtlMs,
       });
 
-      res.redirect(302, decodedState.appPath);
+      if (decodedState.appPath.startsWith("sanctificare://")) {
+        // Para links profundos do mobile (deep links), enviamos os tokens na URL
+        const redirectUrl = new URL(decodedState.appPath.replace("sanctificare://callback", "http://localhost"));
+        redirectUrl.searchParams.set("token", sessionToken);
+        redirectUrl.searchParams.set("csrf", generateCsrfToken());
+        
+        // Reconstrói a URL com o esquema customizado sanctificare://callback
+        const finalRedirect = redirectUrl.toString().replace("http://localhost", "sanctificare://callback");
+        res.redirect(302, finalRedirect);
+      } else {
+        res.redirect(302, decodedState.appPath);
+      }
     } catch (error) {
       console.error("[OAuth] Callback failed", error);
       res.status(500).json({ error: "OAuth callback failed" });
