@@ -218,7 +218,7 @@ export default function Bible() {
         if (element) {
           element.scrollIntoView({ behavior: "smooth", block: "center" });
         }
-      }, 250);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [highlightedVerse, verses, scrollTrigger]);
@@ -1063,7 +1063,18 @@ export default function Bible() {
             <div className="max-w-3xl mx-auto animate-fade-in pb-20">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setSelectedChapter(null)} className="gap-1.5 bg-white text-xs px-2.5 h-8">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSelectedChapter(null)}
+                    className={`gap-1.5 text-xs px-2.5 h-8 ${
+                      activeTheme === "dark"
+                        ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
+                        : activeTheme === "sepia"
+                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2]"
+                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                    }`}
+                  >
                     <ChevronLeft size={14} /> {selectedBook.name}
                   </Button>
                   
@@ -1096,7 +1107,13 @@ export default function Bible() {
                       setSelectedChapter(null);
                       setActiveTab("search");
                     }}
-                    className="h-8 w-8 bg-white"
+                    className={`h-8 w-8 ${
+                      activeTheme === "dark"
+                        ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
+                        : activeTheme === "sepia"
+                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2]"
+                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                    }`}
                     title="Busca na Bíblia"
                   >
                     <Search size={14} />
@@ -1105,7 +1122,13 @@ export default function Bible() {
                     variant="outline"
                     size="sm"
                     onClick={() => setShowSettings(!showSettings)}
-                    className={`gap-1.5 bg-white h-8 ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`}
+                    className={`gap-1.5 h-8 ${
+                      activeTheme === "dark"
+                        ? `bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                        : activeTheme === "sepia"
+                        ? `bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                        : `bg-white border-border text-[oklch(0.22_0.07_260)] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                    }`}
                   >
                     <Settings size={14} /> Opções
                   </Button>
@@ -1322,7 +1345,13 @@ export default function Bible() {
                     setSelectedChapter(selectedChapter - 1);
                     setHighlightedVerse(null);
                   }}
-                  className="gap-2 bg-white"
+                  className={`gap-2 ${
+                    activeTheme === "dark"
+                      ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 disabled:opacity-30"
+                      : activeTheme === "sepia"
+                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                  }`}
                 >
                   <ChevronLeft size={14} /> Anterior
                 </Button>
@@ -1333,7 +1362,13 @@ export default function Bible() {
                     setSelectedChapter(selectedChapter + 1);
                     setHighlightedVerse(null);
                   }}
-                  className="gap-2 ml-auto bg-white"
+                  className={`gap-2 ml-auto ${
+                    activeTheme === "dark"
+                      ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 disabled:opacity-30"
+                      : activeTheme === "sepia"
+                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                  }`}
                 >
                   Próximo <ChevronRight size={14} />
                 </Button>
@@ -1344,7 +1379,18 @@ export default function Bible() {
             <div className="max-w-3xl mx-auto animate-fade-in">
               <div className="flex items-center justify-between gap-3 mb-6">
                 <div className="flex items-center gap-3">
-                  <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSelectedBook(null)}
+                    className={`gap-2 ${
+                      activeTheme === "dark"
+                        ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900"
+                        : activeTheme === "sepia"
+                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                    }`}
+                  >
                     <ChevronLeft size={14} /> Livros
                   </Button>
                   <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
@@ -1359,7 +1405,13 @@ export default function Bible() {
                     setSelectedChapter(null);
                     setActiveTab("search");
                   }}
-                  className="gap-1.5 bg-white h-8 text-xs"
+                  className={`gap-1.5 h-8 text-xs ${
+                    activeTheme === "dark"
+                      ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900"
+                      : activeTheme === "sepia"
+                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                  }`}
                 >
                   <Search size={14} /> Busca na Bíblia
                 </Button>
