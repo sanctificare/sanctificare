@@ -70,6 +70,27 @@ export const getApiBaseUrl = () => {
 
 // CSRF token persistence for native clients (see server /api/auth/csrf).
 export const CSRF_STORAGE_KEY = "sanctificare.csrf_token";
+export const SESSION_STORAGE_KEY = "sanctificare.session_token";
+
+export const getStoredSessionToken = (): string | null => {
+  try {
+    return localStorage.getItem(SESSION_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const setStoredSessionToken = (token: string | null | undefined): void => {
+  try {
+    if (token) {
+      localStorage.setItem(SESSION_STORAGE_KEY, token);
+    } else {
+      localStorage.removeItem(SESSION_STORAGE_KEY);
+    }
+  } catch {
+    /* ignore storage errors */
+  }
+};
 
 export const getStoredCsrfToken = (): string | null => {
   try {
@@ -81,10 +102,19 @@ export const getStoredCsrfToken = (): string | null => {
 
 export const setStoredCsrfToken = (token: string | null | undefined): void => {
   try {
-    if (token) localStorage.setItem(CSRF_STORAGE_KEY, token);
+    if (token) {
+      localStorage.setItem(CSRF_STORAGE_KEY, token);
+    } else {
+      localStorage.removeItem(CSRF_STORAGE_KEY);
+    }
   } catch {
     /* ignore storage errors */
   }
+};
+
+export const clearStoredAuthTokens = (): void => {
+  setStoredSessionToken(null);
+  setStoredCsrfToken(null);
 };
 
 export const resolveMediaUrl = (url: string | undefined): string => {

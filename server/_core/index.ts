@@ -253,7 +253,7 @@ async function startServer() {
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,HEAD");
     res.setHeader(
       "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie, X-CSRF-Token"
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie, X-CSRF-Token, X-Sanctificare-Client"
     );
     if (req.method === "OPTIONS") {
       return res.sendStatus(200);

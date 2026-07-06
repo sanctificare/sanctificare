@@ -1,4 +1,4 @@
-import { getLoginUrl, getApiBaseUrl } from "@/const";
+import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -52,6 +52,7 @@ export function useAuth(options?: UseAuthOptions) {
     } catch (error: unknown) {
       // Ignore unauthorized on logout
     } finally {
+      clearStoredAuthTokens();
       queryClient.setQueryData(["auth", "me"], null);
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       if (typeof window !== "undefined") {

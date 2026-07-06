@@ -5,7 +5,7 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
-import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, setStoredCsrfToken } from "./const";
+import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, getStoredSessionToken, setStoredCsrfToken, setStoredSessionToken } from "./const";
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
@@ -85,10 +85,19 @@ if (typeof window !== "undefined" && isMobileApp()) {
 
     if (resolvedTargetUrl && resolvedTargetUrl.startsWith(getApiBaseUrl())) {
       updatedInit.credentials = "include";
+      const sessionToken = getStoredSessionToken();
+      if (sessionToken) {
+        const headers = new Headers(
+          updatedInit.headers ?? (targetInput instanceof Request ? targetInput.headers : undefined)
+        );
+        headers.set("Authorization", `Bearer ${sessionToken}`);
+        updatedInit.headers = headers;
+      }
     }
 
     return originalFetch.call(window, targetInput, updatedInit);
   };
+  globalThis.fetch = window.fetch;
 }
 
 // On native (Capacitor) the CSRF cookie set by the remote API is stored in the
@@ -197,13 +206,17 @@ const trpcClient = trpc.createClient({
             );
           }
         }
-        return globalThis.fetch(targetInput, {
+        return window.fetch(targetInput, {
           ...(init ?? {}),
           headers: (() => {
             const headers = new Headers(init?.headers ?? {});
             const csrfToken = readCookie("csrf_token") ?? getStoredCsrfToken();
             if (csrfToken) {
               headers.set("x-csrf-token", csrfToken);
+            }
+            const sessionToken = getStoredSessionToken();
+            if (sessionToken) {
+              headers.set("Authorization", `Bearer ${sessionToken}`);
             }
             return headers;
           })(),
@@ -292,6 +305,7 @@ if (typeof window !== "undefined" && isMobileApp()) {
         const csrf = url.searchParams.get("csrf");
         
         if (token) {
+          setStoredSessionToken(token);
           document.cookie = `app_session_id=${token}; path=/; max-age=2592000; SameSite=Lax`;
           console.log("[DeepLink] Stored session cookie");
           if (csrf) {

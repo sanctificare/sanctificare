@@ -24,6 +24,30 @@ vi.mock("./db", async (importOriginal) => {
     getUserByEmail: vi.fn(async (email: string) => {
       return mockUsers.find((u) => u.email === email);
     }),
+    getUserByOpenId: vi.fn(async (openId: string) => {
+      return mockUsers.find((u) => u.openId === openId);
+    }),
+    upsertUser: vi.fn(async (user: any) => {
+      const existing = mockUsers.find((u) => u.openId === user.openId);
+      if (existing) {
+        Object.assign(existing, user, { updatedAt: new Date() });
+        return existing;
+      }
+      const newUser = {
+        id: mockUsers.length + 1,
+        openId: user.openId,
+        email: user.email ?? null,
+        name: user.name ?? null,
+        passwordHash: null,
+        loginMethod: user.loginMethod ?? null,
+        role: user.role ?? "user",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastSignedIn: user.lastSignedIn ?? new Date(),
+      };
+      mockUsers.push(newUser);
+      return newUser;
+    }),
     createUser: vi.fn(async (user: any) => {
       const newUser = {
         id: mockUsers.length + 1,
@@ -93,6 +117,23 @@ describe("auth.credentials REST API", () => {
     const cookies = res.headers["set-cookie"] || [];
     const hasSession = cookies.some((c: string) => c.includes(COOKIE_NAME));
     expect(hasSession).toBe(true);
+  });
+
+  it("authenticates native clients with bearer session token", async () => {
+    const loginRes = await request(app)
+      .post("/api/auth/login")
+      .set("X-Sanctificare-Client", "native")
+      .send({ email: randomEmail, password });
+
+    expect(loginRes.status).toBe(200);
+    expect(loginRes.body.sessionToken).toEqual(expect.any(String));
+
+    const meRes = await request(app)
+      .get("/api/auth/me")
+      .set("Authorization", `Bearer ${loginRes.body.sessionToken}`);
+
+    expect(meRes.status).toBe(200);
+    expect(meRes.body.email).toBe(randomEmail);
   });
 
   it("fails to log in with incorrect password", async () => {

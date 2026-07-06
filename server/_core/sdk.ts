@@ -349,18 +349,34 @@ class SDKServer {
     return data.redirectUrl;
   }
 
+  private getBearerSessionToken(req: Request): string | null {
+    const authorization = req.headers.authorization;
+    const value = Array.isArray(authorization) ? authorization[0] : authorization;
+    if (!value) return null;
+
+    const match = /^Bearer\s+(.+)$/i.exec(value.trim());
+    return match?.[1]?.trim() || null;
+  }
+
   async authenticateRequest(req: Request): Promise<AuthenticatedUser> {
     // Regular authentication flow
     const cookies = this.parseCookies(req.headers.cookie);
     const sessionCookie = cookies.get(COOKIE_NAME);
-    const session = await this.verifySession(sessionCookie);
+    const bearerSessionToken = this.getBearerSessionToken(req);
+    let sessionToken = sessionCookie ?? bearerSessionToken;
+    let session = await this.verifySession(sessionToken);
+
+    if (!session && sessionCookie && bearerSessionToken && bearerSessionToken !== sessionCookie) {
+      sessionToken = bearerSessionToken;
+      session = await this.verifySession(sessionToken);
+    }
 
     if (!session) {
-      throw ForbiddenError("Invalid session cookie");
+      throw ForbiddenError("Invalid session token");
     }
 
     if (session.openId.startsWith(CRON_OPEN_ID_PREFIX)) {
-      const userInfo = await this.getUserInfoWithJwt(sessionCookie ?? "");
+      const userInfo = await this.getUserInfoWithJwt(sessionToken ?? "");
       const taskUid = userInfo.taskUid ?? null;
       if (!taskUid) {
         throw ForbiddenError("Cron session missing task_uid");
@@ -375,7 +391,7 @@ class SDKServer {
     // If user not in DB, sync from OAuth server automatically
     if (!user) {
       try {
-        const userInfo = await this.getUserInfoWithJwt(sessionCookie ?? "");
+        const userInfo = await this.getUserInfoWithJwt(sessionToken ?? "");
         await db.upsertUser({
           openId: userInfo.openId,
           name: userInfo.name || null,

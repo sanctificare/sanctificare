@@ -9,16 +9,20 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken } from "@/const";
+import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 async function performLogin(input: any) {
   const base = getApiBaseUrl();
+  const headers = new Headers({ "Content-Type": "application/json" });
+  if (isMobileApp()) {
+    headers.set("X-Sanctificare-Client", "native");
+  }
   const res = await fetch(`${base}/api/auth/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(input),
     credentials: "include",
   });
@@ -31,9 +35,13 @@ async function performLogin(input: any) {
 
 async function performRegister(input: any) {
   const base = getApiBaseUrl();
+  const headers = new Headers({ "Content-Type": "application/json" });
+  if (isMobileApp()) {
+    headers.set("X-Sanctificare-Client", "native");
+  }
   const res = await fetch(`${base}/api/auth/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(input),
     credentials: "include",
   });
@@ -97,7 +105,9 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationFn: performLogin,
     onSuccess: async (data: any) => {
+      setStoredSessionToken(data?.sessionToken);
       setStoredCsrfToken(data?.csrfToken);
+      queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Bem-vindo ao Sanctificare!");
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());
@@ -110,7 +120,9 @@ export default function Login() {
   const registerMutation = useMutation({
     mutationFn: performRegister,
     onSuccess: async (data: any) => {
+      setStoredSessionToken(data?.sessionToken);
       setStoredCsrfToken(data?.csrfToken);
+      queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Conta criada com sucesso! Bem-vindo.");
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       setLocation(getPostAuthPath());

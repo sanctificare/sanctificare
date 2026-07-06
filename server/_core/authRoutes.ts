@@ -38,6 +38,12 @@ function getPublicServerError(error: unknown, fallback = "Erro no servidor"): st
   return fallback;
 }
 
+function isNativeClientRequest(req: any): boolean {
+  const client = String(req.header?.("x-sanctificare-client") ?? "").toLowerCase();
+  const origin = String(req.header?.("origin") ?? "").toLowerCase();
+  return client === "native" || origin === "capacitor://localhost";
+}
+
 // Middleware to inject user
 export async function injectUserMiddleware(req: any, res: any, next: any) {
   let user = null;
@@ -140,6 +146,7 @@ router.post("/register", async (req, res) => {
 
     return res.json({
       success: true,
+      ...(isNativeClientRequest(req) ? { sessionToken: token } : {}),
       // Returned so native (Capacitor) clients can persist the token: the
       // CSRF cookie is not readable via document.cookie on Android/iOS.
       csrfToken,
@@ -189,6 +196,7 @@ router.post("/login", async (req, res) => {
 
     return res.json({
       success: true,
+      ...(isNativeClientRequest(req) ? { sessionToken: token } : {}),
       // Returned so native (Capacitor) clients can persist the token: the
       // CSRF cookie is not readable via document.cookie on Android/iOS.
       csrfToken,
