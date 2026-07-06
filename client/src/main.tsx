@@ -267,29 +267,36 @@ if (typeof window !== "undefined" && isMobileApp()) {
       }
 
       const current = await CapacitorUpdater.current();
-      const currentVersion = current?.bundle?.id;
+      // IMPORTANT: compare against bundle.version (the version string passed to
+      // download()), NOT bundle.id — the id is an internal UUID (or "builtin")
+      // and never matches the server version, which previously caused an
+      // infinite download → set() → reload loop (app "piscando").
+      const currentVersion = current?.bundle?.version || current?.bundle?.id;
       console.log(`[OTA] Local web bundle version: ${currentVersion} | Server version: ${updateData.version}`);
 
       if (updateData.version !== currentVersion) {
-        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
-        const bundle = await CapacitorUpdater.download({
-          url: updateData.url,
-          version: updateData.version,
-        });
+        // Reuse an already-downloaded bundle for this version, if any.
+        const list = await CapacitorUpdater.list().catch(() => null);
+        let bundle = list?.bundles?.find((b) => b.version === updateData.version);
 
-        await CapacitorUpdater.set({ id: bundle.id });
-        console.log(`[OTA] Update version ${bundle.id} staged successfully. Will load on next restart.`);
+        if (!bundle) {
+          console.log(`[OTA] Downloading new update version ${updateData.version}...`);
+          bundle = await CapacitorUpdater.download({
+            url: updateData.url,
+            version: updateData.version,
+          });
+        }
+
+        // Use next() instead of set(): set() reloads the WebView immediately,
+        // interrupting whatever the user is doing (e.g. login). next() stages
+        // the bundle to be applied on the next app restart.
+        await CapacitorUpdater.next({ id: bundle.id });
+        console.log(`[OTA] Update version ${updateData.version} staged. Will load on next restart.`);
       }
     } catch (err) {
+      // Do NOT call CapacitorUpdater.reset() here: reset() reloads the WebView
+      // immediately and a transient error (e.g. offline) would cause a reload loop.
       console.error("[OTA] Live update error:", err);
-      if (isOtaEnabled) {
-        // Reset to built-in bundle if OTA is enabled and something went wrong.
-        try {
-          await CapacitorUpdater.reset();
-        } catch {
-          // Ignore reset errors
-        }
-      }
     }
   })();
 }
