@@ -162,6 +162,16 @@ export default function AudioPlayer({
 
   const [playingUrl, setPlayingUrl] = useState("");
 
+  const isLogo = useMemo(() => {
+    if (!artworkUrl) return true;
+    const lower = artworkUrl.toLowerCase();
+    return lower.includes("logo-sanctificare") ||
+           lower.includes("logo_sanctificare") ||
+           lower.includes("sanctificare-logo") ||
+           lower.includes("logo");
+  }, [artworkUrl]);
+
+
   useEffect(() => {
     let active = true;
     resolveR2Redirect(audioUrl).then((url) => {
@@ -433,7 +443,7 @@ export default function AudioPlayer({
       <div className="audio-player-shell">
         <audio ref={audioRef} src={playingUrl} preload="auto" />
 
-        <div className="audio-player-artwork">
+        <div className={`audio-player-artwork ${isLogo ? "audio-player-artwork--logo" : ""}`}>
           <img src={artworkUrl || FALLBACK_ARTWORK_URL} alt="" aria-hidden="true" />
         </div>
 
