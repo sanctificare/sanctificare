@@ -34,15 +34,21 @@ interface AudioPlayerProps {
 
 const FALLBACK_ARTWORK_URL = "/assets/logo-sanctificare.webp";
 
-/** 
+/**
  * Split text into tokens preserving whitespace structure for rendering.
  * Returns an array of { word, trailingSpace } objects.
  */
-function tokenizePrayerText(text: string): { word: string; trailingSpace: string; isLineBreak: boolean }[] {
-  const tokens: { word: string; trailingSpace: string; isLineBreak: boolean }[] = [];
+function tokenizePrayerText(
+  text: string
+): { word: string; trailingSpace: string; isLineBreak: boolean }[] {
+  const tokens: {
+    word: string;
+    trailingSpace: string;
+    isLineBreak: boolean;
+  }[] = [];
   // Split on whitespace boundaries but keep newlines as separate tokens
   const parts = text.split(/(\n+|\s+)/);
-  
+
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i];
     if (!part) continue;
@@ -63,7 +69,11 @@ function tokenizePrayerText(text: string): { word: string; trailingSpace: string
 
     // It's a word
     if (part.trim()) {
-      tokens.push({ word: part.trim(), trailingSpace: " ", isLineBreak: false });
+      tokens.push({
+        word: part.trim(),
+        trailingSpace: " ",
+        isLineBreak: false,
+      });
     }
   }
 
@@ -76,7 +86,11 @@ interface TimestampedSegment {
   tokens: { word: string; trailingSpace: string; isLineBreak: boolean }[];
 }
 
-function parseTimeToSeconds(minStr: string, secStr: string, msStr?: string): number {
+function parseTimeToSeconds(
+  minStr: string,
+  secStr: string,
+  msStr?: string
+): number {
   const min = parseInt(minStr, 10);
   const sec = parseInt(secStr, 10);
   const ms = msStr ? parseFloat("0." + msStr) : 0;
@@ -86,7 +100,8 @@ function parseTimeToSeconds(minStr: string, secStr: string, msStr?: string): num
 function parseTimestampedText(text: string): TimestampedSegment[] | null {
   const lines = text.split("\n");
   const segments: TimestampedSegment[] = [];
-  const timestampRegex = /^\[(\d{1,2}):(\d{2})(?:\.(\d+))?\s*-\s*(\d{1,2}):(\d{2})(?:\.(\d+))?\]\s*(.*)$/;
+  const timestampRegex =
+    /^\[(\d{1,2}):(\d{2})(?:\.(\d+))?\s*-\s*(\d{1,2}):(\d{2})(?:\.(\d+))?\]\s*(.*)$/;
 
   let hasTimestamps = false;
 
@@ -94,7 +109,11 @@ function parseTimestampedText(text: string): TimestampedSegment[] | null {
     const trimmed = line.trim();
     if (!trimmed) {
       if (segments.length > 0) {
-        segments[segments.length - 1].tokens.push({ word: "", trailingSpace: "\n", isLineBreak: true });
+        segments[segments.length - 1].tokens.push({
+          word: "",
+          trailingSpace: "\n",
+          isLineBreak: true,
+        });
       }
       continue;
     }
@@ -112,7 +131,7 @@ function parseTimestampedText(text: string): TimestampedSegment[] | null {
 
       const startTime = parseTimeToSeconds(startMin, startSec, startMs);
       const endTime = parseTimeToSeconds(endMin, endSec, endMs);
-      
+
       const tokens = tokenizePrayerText(content);
       segments.push({
         startTime,
@@ -165,16 +184,17 @@ export default function AudioPlayer({
   const isLogo = useMemo(() => {
     if (!artworkUrl) return true;
     const lower = artworkUrl.toLowerCase();
-    return lower.includes("logo-sanctificare") ||
-           lower.includes("logo_sanctificare") ||
-           lower.includes("sanctificare-logo") ||
-           lower.includes("logo");
+    return (
+      lower.includes("logo-sanctificare") ||
+      lower.includes("logo_sanctificare") ||
+      lower.includes("sanctificare-logo") ||
+      lower.includes("logo")
+    );
   }, [artworkUrl]);
-
 
   useEffect(() => {
     let active = true;
-    resolveR2Redirect(audioUrl).then((url) => {
+    resolveR2Redirect(audioUrl).then(url => {
       if (active) {
         setPlayingUrl(url);
       }
@@ -193,7 +213,8 @@ export default function AudioPlayer({
     if (!audio) return;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
+    const updateDuration = () =>
+      setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
     const handleEnded = () => {
       setIsPlaying(false);
       onTrackEnd?.();
@@ -252,7 +273,10 @@ export default function AudioPlayer({
   // Auto-scroll to keep the active word visible in the support dialog
   useEffect(() => {
     if (isSupportOpen && activeWordRef.current) {
-      activeWordRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      activeWordRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   }, [isSupportOpen, currentTime]);
 
@@ -324,7 +348,7 @@ export default function AudioPlayer({
   };
 
   const toggleMute = () => {
-    setIsMuted((muted) => !muted);
+    setIsMuted(muted => !muted);
   };
 
   const progressMax = duration || 100;
@@ -346,27 +370,43 @@ export default function AudioPlayer({
   }, [supportText, timestampedSegments]);
 
   // Calculate which word index is currently active based on audio progress
-  const wordCount = useMemo(() => supportTokens.filter((t) => !t.isLineBreak && t.word).length, [supportTokens]);
+  const wordCount = useMemo(
+    () => supportTokens.filter(t => !t.isLineBreak && t.word).length,
+    [supportTokens]
+  );
   const audioProgress = duration > 0 ? currentTime / duration : 0;
   // Use a small offset so the first word is highlighted at the very start
-  const activeWordIndex = Math.min(Math.floor(audioProgress * wordCount), wordCount - 1);
+  const activeWordIndex = Math.min(
+    Math.floor(audioProgress * wordCount),
+    wordCount - 1
+  );
 
   const renderKaraokeText = useCallback(() => {
     if (timestampedSegments) {
       return (
         <div className="prose-prayer whitespace-pre-line karaoke-text">
           {timestampedSegments.map((segment, segIdx) => {
-            const isSegmentActive = isPlaying && currentTime >= segment.startTime && currentTime <= segment.endTime;
+            const isSegmentActive =
+              isPlaying &&
+              currentTime >= segment.startTime &&
+              currentTime <= segment.endTime;
             const isSegmentSpoken = currentTime > segment.endTime;
-            
+
             // Calculate active word index within this segment if it is active
-            const segmentWords = segment.tokens.filter((t) => !t.isLineBreak && t.word);
+            const segmentWords = segment.tokens.filter(
+              t => !t.isLineBreak && t.word
+            );
             const segmentWordCount = segmentWords.length;
             let activeWordInSegIndex = -1;
-            
+
             if (isSegmentActive && segmentWordCount > 0) {
-              const segProgress = (currentTime - segment.startTime) / (segment.endTime - segment.startTime);
-              activeWordInSegIndex = Math.min(Math.floor(segProgress * segmentWordCount), segmentWordCount - 1);
+              const segProgress =
+                (currentTime - segment.startTime) /
+                (segment.endTime - segment.startTime);
+              activeWordInSegIndex = Math.min(
+                Math.floor(segProgress * segmentWordCount),
+                segmentWordCount - 1
+              );
             }
 
             let wordInSegIdx = -1;
@@ -379,8 +419,11 @@ export default function AudioPlayer({
                   }
 
                   wordInSegIdx++;
-                  const isActive = isSegmentActive && wordInSegIdx === activeWordInSegIndex;
-                  const isSpoken = isSegmentSpoken || (isSegmentActive && wordInSegIdx < activeWordInSegIndex);
+                  const isActive =
+                    isSegmentActive && wordInSegIdx === activeWordInSegIndex;
+                  const isSpoken =
+                    isSegmentSpoken ||
+                    (isSegmentActive && wordInSegIdx < activeWordInSegIndex);
 
                   let className = "karaoke-word";
                   if (isActive) className += " karaoke-word--active";
@@ -430,21 +473,34 @@ export default function AudioPlayer({
               ref={isActive ? activeWordRef : undefined}
               className={className}
             >
-              {token.word}{token.trailingSpace === " " ? " " : ""}
+              {token.word}
+              {token.trailingSpace === " " ? " " : ""}
             </span>
           );
         })}
       </p>
     );
-  }, [timestampedSegments, supportTokens, activeWordIndex, isPlaying, currentTime]);
+  }, [
+    timestampedSegments,
+    supportTokens,
+    activeWordIndex,
+    isPlaying,
+    currentTime,
+  ]);
 
   return (
     <div className="audio-player-container">
       <div className="audio-player-shell">
         <audio ref={audioRef} src={playingUrl} preload="auto" />
 
-        <div className={`audio-player-artwork ${isLogo ? "audio-player-artwork--logo" : ""}`}>
-          <img src={artworkUrl || FALLBACK_ARTWORK_URL} alt="" aria-hidden="true" />
+        <div
+          className={`audio-player-artwork ${isLogo ? "audio-player-artwork--logo" : ""}`}
+        >
+          <img
+            src={artworkUrl || FALLBACK_ARTWORK_URL}
+            alt=""
+            aria-hidden="true"
+          />
         </div>
 
         <div className="audio-player-body">
@@ -454,7 +510,11 @@ export default function AudioPlayer({
                 <h3>{title}</h3>
               </div>
               {description && <p>{description}</p>}
-              {hasError && <p className="audio-player-error">Este arquivo de áudio não está disponível no momento.</p>}
+              {hasError && (
+                <p className="audio-player-error">
+                  Este arquivo de áudio não está disponível no momento.
+                </p>
+              )}
             </div>
           </div>
 
@@ -474,8 +534,16 @@ export default function AudioPlayer({
             </div>
 
             <div className="audio-player-actions">
-              <div className="audio-player-controls" aria-label="Controles de áudio">
-                <button type="button" className="audio-player-reset" onClick={restartTrack} aria-label="Reiniciar áudio">
+              <div
+                className="audio-player-controls"
+                aria-label="Controles de áudio"
+              >
+                <button
+                  type="button"
+                  className="audio-player-reset"
+                  onClick={restartTrack}
+                  aria-label="Reiniciar áudio"
+                >
                   <RotateCcw size={15} />
                 </button>
                 <button
@@ -484,7 +552,11 @@ export default function AudioPlayer({
                   onClick={togglePlayPause}
                   aria-label={isPlaying ? "Pausar áudio" : "Reproduzir áudio"}
                 >
-                  {isPlaying ? <Pause size={19} fill="currentColor" /> : <Play size={19} fill="currentColor" />}
+                  {isPlaying ? (
+                    <Pause size={19} fill="currentColor" />
+                  ) : (
+                    <Play size={19} fill="currentColor" />
+                  )}
                 </button>
               </div>
 
@@ -525,8 +597,7 @@ export default function AudioPlayer({
                   value={volumeValue}
                   onChange={handleVolumeChange}
                   aria-label={`Volume ${volumePercent}%`}
-                >
-                </input>
+                ></input>
               </div>
             </div>
           </div>
@@ -539,7 +610,9 @@ export default function AudioPlayer({
                 {supportTitle || title}
               </DialogTitle>
               {(supportDescription || description) && (
-                <DialogDescription>{supportDescription || description}</DialogDescription>
+                <DialogDescription>
+                  {supportDescription || description}
+                </DialogDescription>
               )}
             </DialogHeader>
             <div className="max-h-[58vh] overflow-y-auto pr-2 karaoke-scroll">

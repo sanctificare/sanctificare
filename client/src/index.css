@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=EB+Garamond:wght@500;600&family=Crimson+Pro:wght@400;500&family=Playfair+Display:wght@600&family=Lora:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=EB+Garamond:wght@500;600&family=Crimson+Pro:wght@400;500&family=Playfair+Display:wght@600&family=Lora:wght@400;500&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -35,14 +35,14 @@
 
   /* Dourado suave para accent */
   --accent: oklch(0.88 0.08 80);
-  --accent-foreground: oklch(0.20 0.04 260);
+  --accent-foreground: oklch(0.2 0.04 260);
 
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
 
   --border: oklch(0.88 0.01 260);
   --input: oklch(0.88 0.01 260);
-  --ring: oklch(0.65 0.10 75);
+  --ring: oklch(0.65 0.1 75);
 
   --radius: 0.5rem;
 
@@ -86,11 +86,11 @@
 
   --border: oklch(0.28 0.04 260);
   --input: oklch(0.28 0.04 260);
-  --ring: oklch(0.65 0.10 75);
+  --ring: oklch(0.65 0.1 75);
 
   --gold: oklch(0.75 0.12 75);
   --gold-light: oklch(0.85 0.09 80);
-  --gold-dark: oklch(0.60 0.12 70);
+  --gold-dark: oklch(0.6 0.12 70);
   --navy: oklch(0.22 0.07 260);
   --navy-light: oklch(0.35 0.08 255);
   --navy-dark: oklch(0.15 0.05 265);
@@ -134,9 +134,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: 'Inter', sans-serif;
-  --font-serif: 'Source Serif 4', 'Lora', serif;
-  --font-display: 'Cinzel', serif;
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Source Serif 4", "Lora", serif;
+  --font-display: "Cinzel", serif;
 }
 
 @layer base {
@@ -147,7 +147,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -183,32 +183,36 @@
   input,
   select,
   textarea,
-  [role='button'] {
+  [role="button"] {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
-  h1, h2, h3 {
-    font-family: 'Cinzel', serif;
+  h1,
+  h2,
+  h3 {
+    font-family: "Cinzel", serif;
     letter-spacing: 0.02em;
   }
 
-  h4, h5, h6 {
-    font-family: 'Cormorant Garamond', serif;
+  h4,
+  h5,
+  h6 {
+    font-family: "Cormorant Garamond", serif;
     font-weight: 600;
   }
 
   .font-serif {
-    font-family: 'Source Serif 4', 'Lora', serif;
+    font-family: "Source Serif 4", "Lora", serif;
   }
 
   .font-display {
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
   }
 
   /* Preset A aplicado globalmente no app */
   .theme-contemplative-a {
-    font-family: 'Crimson Pro', serif;
+    font-family: "Crimson Pro", serif;
   }
 
   .theme-contemplative-a h1,
@@ -219,21 +223,21 @@
   .theme-contemplative-a h6,
   .theme-contemplative-a .font-display,
   .theme-contemplative-a .meditation-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
   }
 
   .theme-contemplative-a .font-serif,
   .theme-contemplative-a .meditation-text,
   .theme-contemplative-a .prose-prayer {
-    font-family: 'Crimson Pro', serif;
+    font-family: "Crimson Pro", serif;
   }
 
   .theme-contemplative-a button,
   .theme-contemplative-a input,
   .theme-contemplative-a textarea,
   .theme-contemplative-a select,
-  .theme-contemplative-a [role='button'] {
-    font-family: 'Inter', sans-serif;
+  .theme-contemplative-a [role="button"] {
+    font-family: "Inter", sans-serif;
   }
 }
 
@@ -271,21 +275,29 @@
 
   /* Gradiente azul marinho */
   .bg-navy-gradient {
-    background: linear-gradient(135deg, oklch(0.22 0.07 260) 0%, oklch(0.15 0.05 265) 100%);
+    background: linear-gradient(
+      135deg,
+      oklch(0.22 0.07 260) 0%,
+      oklch(0.15 0.05 265) 100%
+    );
   }
 
   /* Gradiente dourado */
   .bg-gold-gradient {
-    background: linear-gradient(135deg, oklch(0.80 0.12 80) 0%, oklch(0.65 0.14 70) 100%);
+    background: linear-gradient(
+      135deg,
+      oklch(0.8 0.12 80) 0%,
+      oklch(0.65 0.14 70) 100%
+    );
   }
 
   /* Texto dourado */
   .text-gold {
-    color: oklch(0.70 0.12 75);
+    color: oklch(0.7 0.12 75);
   }
 
   .text-gold-light {
-    color: oklch(0.82 0.10 80);
+    color: oklch(0.82 0.1 80);
   }
 
   .text-navy {
@@ -306,7 +318,7 @@
 
   .section-title {
     color: var(--navy);
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-size: clamp(1.1rem, 1rem + 0.55vw, 1.35rem);
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -315,7 +327,7 @@
 
   .section-title-sm {
     color: var(--navy);
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -391,8 +403,11 @@
   }
 
   .card-interactive {
-    box-shadow: 0 10px 28px oklch(0.22 0.07 260 / 0.10);
-    transition: transform 280ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 280ms cubic-bezier(0.23, 1, 0.32, 1), border-color 280ms cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 10px 28px oklch(0.22 0.07 260 / 0.1);
+    transition:
+      transform 280ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 280ms cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 280ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .card-interactive:hover {
@@ -406,8 +421,14 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Animação de scale-in */
@@ -416,8 +437,14 @@
   }
 
   @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   /* Hover suave para botões */
@@ -451,9 +478,13 @@
 
   /* Premium badge */
   .badge-premium {
-    background: linear-gradient(135deg, oklch(0.80 0.12 80), oklch(0.65 0.14 70));
+    background: linear-gradient(
+      135deg,
+      oklch(0.8 0.12 80),
+      oklch(0.65 0.14 70)
+    );
     color: oklch(0.15 0.02 260);
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -463,7 +494,7 @@
 
   /* Prose para textos de oração */
   .prose-prayer {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-size: 1.15rem;
     line-height: 1.9;
     color: oklch(0.18 0.03 260);
@@ -476,7 +507,7 @@
   .theme-contemplative-a .font-serif,
   .theme-contemplative-a .prose-prayer,
   .theme-contemplative-a .meditation-text {
-    font-family: 'Crimson Pro', serif;
+    font-family: "Crimson Pro", serif;
   }
 
   /* Presets contemplativos para textos de meditacao */
@@ -490,43 +521,43 @@
   }
 
   .meditation-title {
-    color: oklch(0.20 0.03 260);
+    color: oklch(0.2 0.03 260);
     line-height: 1.2;
     letter-spacing: 0.01em;
     margin-bottom: 0.55em;
   }
 
   .theme-contemplative-a .meditation-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 600;
     font-size: clamp(1.7rem, 1.35rem + 1vw, 2.5rem);
   }
 
   .theme-contemplative-a .meditation-text {
-    font-family: 'Crimson Pro', serif;
+    font-family: "Crimson Pro", serif;
     font-weight: 400;
   }
 
   .theme-contemplative-b .meditation-title {
-    font-family: 'EB Garamond', serif;
+    font-family: "EB Garamond", serif;
     font-weight: 600;
     font-size: clamp(1.6rem, 1.3rem + 0.9vw, 2.3rem);
   }
 
   .theme-contemplative-b .meditation-text {
-    font-family: 'Crimson Pro', serif;
+    font-family: "Crimson Pro", serif;
     font-weight: 400;
     line-height: 1.82;
   }
 
   .theme-contemplative-c .meditation-title {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-weight: 600;
     font-size: clamp(1.58rem, 1.25rem + 0.9vw, 2.2rem);
   }
 
   .theme-contemplative-c .meditation-text {
-    font-family: 'Lora', serif;
+    font-family: "Lora", serif;
     font-weight: 400;
     line-height: 1.78;
   }
@@ -541,7 +572,11 @@
 
   /* Estilo de cartão de oração (Premium Light) */
   .prayer-card {
-    background: radial-gradient(circle at center, oklch(1 0 0) 0%, oklch(0.99 0.005 85) 100%);
+    background: radial-gradient(
+      circle at center,
+      oklch(1 0 0) 0%,
+      oklch(0.99 0.005 85) 100%
+    );
     border: none;
     box-shadow: 0 10px 30px oklch(0.22 0.07 260 / 0.05);
     border-top: 2px solid oklch(0.75 0.12 75);
@@ -550,7 +585,9 @@
   }
 
   .prayer-card:hover {
-    box-shadow: 0 15px 40px oklch(0.22 0.07 260 / 0.08), 0 0 15px oklch(0.75 0.12 75 / 0.15);
+    box-shadow:
+      0 15px 40px oklch(0.22 0.07 260 / 0.08),
+      0 0 15px oklch(0.75 0.12 75 / 0.15);
     transform: translateY(-3px);
   }
 
@@ -600,7 +637,7 @@
   }
 
   .cover-card-title {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1.05rem;
     line-height: 1.2;
     font-weight: 600;
@@ -655,11 +692,18 @@
     border-radius: 1.2rem;
     padding: 0.4rem;
     background:
-      radial-gradient(circle at 50% 28%, oklch(0.99 0.01 94 / 0.82), transparent 65%),
-      linear-gradient(180deg, oklch(0.99 0.01 92 / 0.66), oklch(0.97 0.01 87 / 0.2));
+      radial-gradient(
+        circle at 50% 28%,
+        oklch(0.99 0.01 94 / 0.82),
+        transparent 65%
+      ),
+      linear-gradient(
+        180deg,
+        oklch(0.99 0.01 92 / 0.66),
+        oklch(0.97 0.01 87 / 0.2)
+      );
     filter: drop-shadow(0 14px 26px oklch(0.2 0.03 60 / 0.18));
   }
-
 
   .rosary-chain {
     position: absolute;
@@ -681,7 +725,9 @@
     overflow: hidden;
     pointer-events: none;
     border: 3px solid oklch(0.84 0.04 92 / 0.86);
-    box-shadow: 0 10px 24px oklch(0.22 0.03 55 / 0.26), inset 0 1px 2px oklch(0.99 0.02 92 / 0.58);
+    box-shadow:
+      0 10px 24px oklch(0.22 0.03 55 / 0.26),
+      inset 0 1px 2px oklch(0.99 0.02 92 / 0.58);
     background: oklch(0.96 0.01 85);
     z-index: 0;
   }
@@ -693,8 +739,17 @@
     border-radius: 999px;
     z-index: -1;
     background:
-      radial-gradient(circle at 50% 42%, oklch(0.9 0.04 95 / 0.5), oklch(0.88 0.02 100 / 0.14) 52%, transparent 78%),
-      radial-gradient(circle at 22% 72%, oklch(0.78 0.07 145 / 0.14), transparent 68%);
+      radial-gradient(
+        circle at 50% 42%,
+        oklch(0.9 0.04 95 / 0.5),
+        oklch(0.88 0.02 100 / 0.14) 52%,
+        transparent 78%
+      ),
+      radial-gradient(
+        circle at 22% 72%,
+        oklch(0.78 0.07 145 / 0.14),
+        transparent 68%
+      );
     filter: blur(14px);
     pointer-events: none;
   }
@@ -767,8 +822,12 @@
     line-height: 1;
     color: oklch(0.32 0.05 56);
     cursor: pointer;
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease, filter 220ms ease,
-      background 220ms ease, border-color 220ms ease;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 220ms ease,
+      filter 220ms ease,
+      background 220ms ease,
+      border-color 220ms ease;
     z-index: 2;
   }
 
@@ -799,14 +858,17 @@
     filter: drop-shadow(0 0.4px 0.6px oklch(0.2 0.03 250 / 0.18));
   }
 
-
   .rosary-node--hm {
     width: clamp(0.62rem, 4.05%, 0.98rem);
     aspect-ratio: 1;
     font-size: 0.55rem;
     border: 1px solid oklch(0.62 0.1 252 / 0.56);
     background:
-      radial-gradient(circle at 30% 22%, oklch(0.72 0.11 244), oklch(0.42 0.1 255) 66%),
+      radial-gradient(
+        circle at 30% 22%,
+        oklch(0.72 0.11 244),
+        oklch(0.42 0.1 255) 66%
+      ),
       linear-gradient(180deg, oklch(0.56 0.1 246), oklch(0.38 0.09 256));
     box-shadow:
       0 1px 4px oklch(0.17 0.05 250 / 0.34),
@@ -822,7 +884,11 @@
     color: oklch(0.95 0.01 92);
     border: 1px solid oklch(0.72 0.06 77 / 0.58);
     background:
-      radial-gradient(circle at 30% 22%, oklch(0.62 0.1 70), oklch(0.34 0.07 48) 68%),
+      radial-gradient(
+        circle at 30% 22%,
+        oklch(0.62 0.1 70),
+        oklch(0.34 0.07 48) 68%
+      ),
       linear-gradient(180deg, oklch(0.5 0.08 65), oklch(0.34 0.07 48));
     box-shadow:
       0 2px 7px oklch(0.15 0.03 44 / 0.38),
@@ -836,8 +902,14 @@
     font-size: clamp(0.7rem, 2.8vw, 1rem);
     color: oklch(0.37 0.02 248);
     border: 1px solid oklch(0.78 0.02 245 / 0.7);
-    background: radial-gradient(circle at 34% 27%, oklch(0.95 0.01 246), oklch(0.7 0.02 248));
-    box-shadow: 0 3px 10px oklch(0.24 0.01 250 / 0.24), inset 0 1px 3px oklch(1 0 0 / 0.78);
+    background: radial-gradient(
+      circle at 34% 27%,
+      oklch(0.95 0.01 246),
+      oklch(0.7 0.02 248)
+    );
+    box-shadow:
+      0 3px 10px oklch(0.24 0.01 250 / 0.24),
+      inset 0 1px 3px oklch(1 0 0 / 0.78);
   }
 
   .rosary-node--crucifix {
@@ -859,14 +931,26 @@
   .rosary-node.is-prayed.rosary-node--hm,
   .rosary-node.is-prayed.rosary-node--of {
     border-color: oklch(0.78 0.07 82 / 0.6);
-    background: radial-gradient(circle at 34% 24%, oklch(0.68 0.08 80), oklch(0.43 0.07 58));
-    box-shadow: 0 2px 7px oklch(0.19 0.04 56 / 0.4), inset 0 1px 2px oklch(0.84 0.03 88 / 0.26);
+    background: radial-gradient(
+      circle at 34% 24%,
+      oklch(0.68 0.08 80),
+      oklch(0.43 0.07 58)
+    );
+    box-shadow:
+      0 2px 7px oklch(0.19 0.04 56 / 0.4),
+      inset 0 1px 2px oklch(0.84 0.03 88 / 0.26);
   }
 
   .rosary-node.is-prayed.rosary-node--hm {
     border-color: oklch(0.66 0.11 250 / 0.64);
-    background: radial-gradient(circle at 34% 24%, oklch(0.78 0.1 240), oklch(0.49 0.1 254));
-    box-shadow: 0 2px 7px oklch(0.2 0.05 248 / 0.36), inset 0 1px 2px oklch(0.9 0.04 236 / 0.28);
+    background: radial-gradient(
+      circle at 34% 24%,
+      oklch(0.78 0.1 240),
+      oklch(0.49 0.1 254)
+    );
+    box-shadow:
+      0 2px 7px oklch(0.2 0.05 248 / 0.36),
+      inset 0 1px 2px oklch(0.9 0.04 236 / 0.28);
   }
 
   .rosary-node.is-prayed.rosary-node--medal,
@@ -902,17 +986,23 @@
   @keyframes rosaryPulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0.18rem oklch(0.82 0.1 82 / 0.24), 0 4px 12px oklch(0.66 0.1 74 / 0.34);
+      box-shadow:
+        0 0 0 0.18rem oklch(0.82 0.1 82 / 0.24),
+        0 4px 12px oklch(0.66 0.1 74 / 0.34);
     }
     50% {
-      box-shadow: 0 0 0 0.34rem oklch(0.84 0.1 84 / 0.1), 0 6px 18px oklch(0.68 0.11 76 / 0.42);
+      box-shadow:
+        0 0 0 0.34rem oklch(0.84 0.1 84 / 0.1),
+        0 6px 18px oklch(0.68 0.11 76 / 0.42);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .rosary-node.is-active {
       animation: none;
-      box-shadow: 0 0 0 0.32rem oklch(0.8 0.12 80 / 0.34), 0 6px 18px oklch(0.7 0.13 74 / 0.5);
+      box-shadow:
+        0 0 0 0.32rem oklch(0.8 0.12 80 / 0.34),
+        0 6px 18px oklch(0.7 0.13 74 / 0.5);
     }
   }
 
@@ -1082,7 +1172,10 @@
     color: oklch(0.97 0.01 95);
     background: transparent;
     cursor: pointer;
-    transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    transition:
+      background 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
   }
 
   .audio-player-icon-button {
@@ -1258,7 +1351,9 @@
   }
 
   .karaoke-word {
-    transition: color 280ms ease, text-shadow 280ms ease;
+    transition:
+      color 280ms ease,
+      text-shadow 280ms ease;
     display: inline;
   }
 
@@ -1282,11 +1377,14 @@
   }
 
   @keyframes karaokeGlow {
-    0%, 100% {
+    0%,
+    100% {
       text-shadow: 0 0 8px oklch(0.75 0.12 75 / 0.35);
     }
     50% {
-      text-shadow: 0 0 14px oklch(0.75 0.12 75 / 0.55), 0 0 3px oklch(0.82 0.1 80 / 0.3);
+      text-shadow:
+        0 0 14px oklch(0.75 0.12 75 / 0.55),
+        0 0 3px oklch(0.82 0.1 80 / 0.3);
     }
   }
 
@@ -1303,8 +1401,9 @@
   .reveal {
     opacity: 0;
     transform: translateY(32px);
-    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-                transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .reveal.visible {
@@ -1315,8 +1414,9 @@
   .reveal-left {
     opacity: 0;
     transform: translateX(-40px);
-    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-                transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .reveal-left.visible {
@@ -1327,8 +1427,9 @@
   .reveal-right {
     opacity: 0;
     transform: translateX(40px);
-    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-                transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .reveal-right.visible {
@@ -1337,10 +1438,18 @@
   }
 
   /* Stagger children delays */
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-1 {
+    transition-delay: 0.1s;
+  }
+  .reveal-delay-2 {
+    transition-delay: 0.2s;
+  }
+  .reveal-delay-3 {
+    transition-delay: 0.3s;
+  }
+  .reveal-delay-4 {
+    transition-delay: 0.4s;
+  }
 
   /* ── Landing Page: Trust Bar ── */
   .trust-bar {
@@ -1369,7 +1478,7 @@
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-weight: 700;
     font-size: 1.1rem;
     flex-shrink: 0;
@@ -1381,7 +1490,11 @@
     left: calc(50% + 1.5rem);
     width: calc(100% - 3rem);
     height: 2px;
-    background: linear-gradient(to right, oklch(0.75 0.12 75 / 0.4), oklch(0.75 0.12 75 / 0.1));
+    background: linear-gradient(
+      to right,
+      oklch(0.75 0.12 75 / 0.4),
+      oklch(0.75 0.12 75 / 0.1)
+    );
   }
 
   /* ── Landing Page: Showcase alternating rows ── */
@@ -1408,11 +1521,11 @@
 
   /* ── Landing Page: Stat counter ── */
   .stat-counter {
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-weight: 700;
     font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem);
     line-height: 1;
-    background: linear-gradient(135deg, oklch(0.82 0.10 80), oklch(0.70 0.13 73));
+    background: linear-gradient(135deg, oklch(0.82 0.1 80), oklch(0.7 0.13 73));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1428,7 +1541,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-left, .reveal-right {
+    .reveal,
+    .reveal-left,
+    .reveal-right {
       opacity: 1;
       transform: none;
       transition: none;
