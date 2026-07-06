@@ -70,9 +70,19 @@ export default function Bible() {
   const [fontFamily, setFontFamily] = useState<"serif" | "sans">(
     (localStorage.getItem("sanctificare_bible_font_family") as any) || "serif"
   );
-  const [readingTheme, setReadingTheme] = useState<"light" | "sepia" | "dark">(
-    (localStorage.getItem("sanctificare_bible_theme") as any) || "sepia"
+  const [readingTheme, setReadingTheme] = useState<"light" | "sepia" | "dark" | "system">(
+    (localStorage.getItem("sanctificare_bible_theme") as any) || "system"
   );
+
+  const activeTheme = (() => {
+    if (readingTheme !== "system") return readingTheme;
+    if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  const [verses, setVerses] = useState<string[]>([]);
 
   // Bookmark (last read) & Favorites
   const [bookmark, setBookmark] = useState<{ bookId: string; bookName: string; chapter: number } | null>(null);
@@ -125,6 +135,45 @@ export default function Bible() {
     }
   }, [selectedBook, selectedChapter]);
 
+  // Scroll to top on chapter change
+  useEffect(() => {
+    if (selectedBook && selectedChapter) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [selectedBook, selectedChapter]);
+
+  // Offline Caching
+  useEffect(() => {
+    if (chapterVerses && chapterVerses.length > 0) {
+      setVerses(chapterVerses);
+      if (selectedBook && selectedChapter) {
+        try {
+          localStorage.setItem(
+            `sanctificare_bible_cache_${selectedBook.id}_${selectedChapter}`,
+            JSON.stringify(chapterVerses)
+          );
+        } catch (err) {
+          console.warn("Erro ao salvar cache da Bíblia:", err);
+        }
+      }
+    }
+  }, [chapterVerses, selectedBook, selectedChapter]);
+
+  useEffect(() => {
+    if (!chapterVerses && selectedBook && selectedChapter) {
+      try {
+        const saved = localStorage.getItem(`sanctificare_bible_cache_${selectedBook.id}_${selectedChapter}`);
+        if (saved) {
+          setVerses(JSON.parse(saved));
+        } else {
+          setVerses([]);
+        }
+      } catch (err) {
+        console.error("Erro ao ler cache da Bíblia:", err);
+      }
+    }
+  }, [chapterVerses, selectedBook, selectedChapter]);
+
   // URL sync handler
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -163,7 +212,7 @@ export default function Bible() {
 
   // Scroll to highlighted verse when chapter verses are loaded
   useEffect(() => {
-    if (highlightedVerse && chapterVerses && chapterVerses.length > 0) {
+    if (highlightedVerse && verses && verses.length > 0) {
       const timer = setTimeout(() => {
         const element = document.getElementById(`verse-${highlightedVerse}`);
         if (element) {
@@ -172,7 +221,7 @@ export default function Bible() {
       }, 150);
       return () => clearTimeout(timer);
     }
-  }, [highlightedVerse, chapterVerses, scrollTrigger]);
+  }, [highlightedVerse, verses, scrollTrigger]);
 
   // Book Category Identifier
   const getBookCategory = (bookId: string): string => {
@@ -260,18 +309,18 @@ export default function Bible() {
   };
 
   const getSelectedText = () => {
-    if (!chapterVerses) return "";
+    if (!verses || verses.length === 0) return "";
     return selectedVerses
       .map((idx) => {
         const verseNum = idx + 1;
-        return `${verseNum}. ${chapterVerses[idx]}`;
+        return `${verseNum}. ${verses[idx]}`;
       })
       .join("\n");
   };
 
   const getSelectedTextForCard = () => {
-    if (!chapterVerses) return "";
-    return selectedVerses.map(idx => chapterVerses[idx]).join(" ");
+    if (!verses || verses.length === 0) return "";
+    return selectedVerses.map(idx => verses[idx]).join(" ");
   };
 
   const handleCopySelected = () => {
@@ -306,14 +355,14 @@ export default function Bible() {
   };
 
   const handleFavoriteSelected = () => {
-    if (!selectedBook || !selectedChapter || !chapterVerses) return;
+    if (!selectedBook || !selectedChapter || !verses || verses.length === 0) return;
     let newFavs = [...favorites];
     let added = 0;
     let removed = 0;
 
     selectedVerses.forEach(idx => {
       const verseNum = idx + 1;
-      const text = chapterVerses[idx];
+      const text = verses[idx];
       const existIdx = newFavs.findIndex(
         f => f.bookId === selectedBook.id && f.chapter === selectedChapter && f.verse === verseNum
       );
@@ -490,7 +539,7 @@ export default function Bible() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[readingTheme]}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]}`}>
       <main className="container py-8 relative max-w-7xl mx-auto">
         
         {/* =========================================================================
@@ -499,7 +548,7 @@ export default function Bible() {
         <div className="hidden lg:grid grid-cols-12 gap-6 items-start">
           
           {/* COLUNA ESQUERDA: Livros, Favoritos e Busca (col-span-3) */}
-          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
+          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[activeTheme]}`}>
             <h2 className="font-display text-xl font-bold">Escolha o livro</h2>
             <p className="text-xs opacity-75 mt-1 font-serif leading-relaxed">
               Tradução do Pe. Manuel de Matos Soares.
@@ -709,7 +758,7 @@ export default function Bible() {
             {selectedBook && selectedChapter ? (
               <>
                 {/* Cabeçalho de Leitura */}
-                <div className={`p-6 rounded-2xl border border-border/40 shadow-sm flex items-center justify-between transition-all duration-300 ${themeClasses[readingTheme]}`}>
+                <div className={`p-6 rounded-2xl border border-border/40 shadow-sm flex items-center justify-between transition-all duration-300 ${themeClasses[activeTheme]}`}>
                   <div>
                     <div className="flex items-center gap-2.5">
                       <h2 className="font-display text-3xl font-bold">
@@ -738,7 +787,7 @@ export default function Bible() {
                 )}
 
                 {/* Texto Bíblico Principal */}
-                <div className={`p-8 border rounded-2xl transition-all duration-300 shadow-sm ${themeClasses[readingTheme]}`}>
+                <div className={`p-8 border rounded-2xl transition-all duration-300 shadow-sm ${themeClasses[activeTheme]}`}>
                   <div className="space-y-5">
                     {isVersesLoading ? (
                       <div className="space-y-4 animate-pulse">
@@ -750,7 +799,7 @@ export default function Bible() {
                         ))}
                       </div>
                     ) : (
-                      chapterVerses?.map((verse, i) => {
+                      verses?.map((verse, i) => {
                         const verseNum = i + 1;
                         const isSelected = selectedVerses.includes(i);
                         const isFavorited = favorites.some(
@@ -832,7 +881,7 @@ export default function Bible() {
           </div>
 
           {/* COLUNA DIREITA: Capítulos (col-span-3) */}
-          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[readingTheme]}`}>
+          <div className={`col-span-3 p-5 rounded-2xl border border-border/40 shadow-sm sticky top-24 max-h-[82vh] overflow-y-auto transition-all duration-300 ${themeClasses[activeTheme]}`}>
             
             {/* Opções de Leitura */}
             <div className="mb-4 flex justify-between items-center">
@@ -841,7 +890,7 @@ export default function Bible() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowSettings(!showSettings)}
-                className={`h-8 gap-1.5 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : "bg-white"}`}
+                className={`h-8 gap-1.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : "bg-white"}`}
               >
                 <Settings size={13} /> Opções
               </Button>
@@ -921,11 +970,11 @@ export default function Bible() {
                 {/* Tema */}
                 <div className="space-y-1.5">
                   <span className="font-semibold text-[10px] uppercase tracking-wider text-muted-foreground block">Tema:</span>
-                  <div className="grid grid-cols-3 gap-1">
+                  <div className="grid grid-cols-4 gap-0.5">
                     <Button
                       variant={readingTheme === "light" ? "default" : "outline"}
                       size="sm"
-                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
                       onClick={() => {
                         setReadingTheme("light");
                         localStorage.setItem("sanctificare_bible_theme", "light");
@@ -936,7 +985,7 @@ export default function Bible() {
                     <Button
                       variant={readingTheme === "sepia" ? "default" : "outline"}
                       size="sm"
-                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
                       onClick={() => {
                         setReadingTheme("sepia");
                         localStorage.setItem("sanctificare_bible_theme", "sepia");
@@ -947,13 +996,24 @@ export default function Bible() {
                     <Button
                       variant={readingTheme === "dark" ? "default" : "outline"}
                       size="sm"
-                      className={`h-7 text-[10px] px-1 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
+                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
                       onClick={() => {
                         setReadingTheme("dark");
                         localStorage.setItem("sanctificare_bible_theme", "dark");
                       }}
                     >
                       Escuro
+                    </Button>
+                    <Button
+                      variant={readingTheme === "system" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("system");
+                        localStorage.setItem("sanctificare_bible_theme", "system");
+                      }}
+                    >
+                      Auto
                     </Button>
                   </div>
                 </div>
@@ -1002,13 +1062,30 @@ export default function Bible() {
             /* Leitura do Capítulo */
             <div className="max-w-3xl mx-auto animate-fade-in pb-20">
               <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <Button variant="outline" size="sm" onClick={() => setSelectedChapter(null)} className="gap-2 bg-white">
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setSelectedChapter(null)} className="gap-1.5 bg-white text-xs px-2.5 h-8">
                     <ChevronLeft size={14} /> {selectedBook.name}
                   </Button>
-                  <span className={`font-display text-sm font-semibold ${headerTextClasses[readingTheme]}`}>
-                    Capítulo {selectedChapter}
-                  </span>
+                  
+                  {/* Seletor Rápido de Capítulos Mobile */}
+                  <select
+                    value={selectedChapter}
+                    onChange={(e) => setSelectedChapter(Number(e.target.value))}
+                    aria-label="Selecione o capítulo"
+                    className={`font-display text-xs font-bold py-1.5 px-2 rounded-md border focus:outline-none focus:ring-1 focus:ring-[oklch(0.75_0.12_75)] shadow-sm h-8 ${
+                      activeTheme === "dark" 
+                        ? "bg-slate-900 border-slate-800 text-slate-100" 
+                        : activeTheme === "sepia"
+                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
+                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                    }`}
+                  >
+                    {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
+                      <option key={ch} value={ch}>
+                        Capítulo {ch}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <Button
                   variant="outline"
@@ -1097,7 +1174,7 @@ export default function Bible() {
                     <Button
                       variant={readingTheme === "light" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
                       onClick={() => {
                         setReadingTheme("light");
                         localStorage.setItem("sanctificare_bible_theme", "light");
@@ -1108,7 +1185,7 @@ export default function Bible() {
                     <Button
                       variant={readingTheme === "sepia" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
                       onClick={() => {
                         setReadingTheme("sepia");
                         localStorage.setItem("sanctificare_bible_theme", "sepia");
@@ -1119,13 +1196,24 @@ export default function Bible() {
                     <Button
                       variant={readingTheme === "dark" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
+                      className={`h-8 text-xs ${activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
                       onClick={() => {
                         setReadingTheme("dark");
                         localStorage.setItem("sanctificare_bible_theme", "dark");
                       }}
                     >
                       Escuro
+                    </Button>
+                    <Button
+                      variant={readingTheme === "system" ? "default" : "outline"}
+                      size="sm"
+                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
+                      onClick={() => {
+                        setReadingTheme("system");
+                        localStorage.setItem("sanctificare_bible_theme", "system");
+                      }}
+                    >
+                      Auto
                     </Button>
                   </div>
                 </div>
@@ -1146,7 +1234,7 @@ export default function Bible() {
               )}
 
               {/* Texto Principal */}
-              <div className={`prayer-card p-8 border rounded-2xl transition-all duration-300 ${themeClasses[readingTheme]}`}>
+              <div className={`prayer-card p-8 border rounded-2xl transition-all duration-300 ${themeClasses[activeTheme]}`}>
                 <div className="text-center mb-6">
                   <h2 className="font-display text-2xl font-bold">
                     {selectedBook.name}
@@ -1166,7 +1254,7 @@ export default function Bible() {
                       ))}
                     </div>
                   ) : (
-                    chapterVerses?.map((verse, i) => {
+                    verses?.map((verse, i) => {
                       const verseNum = i + 1;
                       const isSelected = selectedVerses.includes(i);
                       const isFavorited = favorites.some(

@@ -109,10 +109,18 @@ export default function VelaVirtual() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(0.55);
+  const [volume, setVolume] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem("sanctificare_vela_volume");
+      return saved ? Number(saved) : 0.55;
+    } catch {
+      return 0.55;
+    }
+  });
   const [videoFailed, setVideoFailed] = useState(false);
   const [audioFailed, setAudioFailed] = useState(false);
   const [cleanMode, setCleanMode] = useState(false);
+  const [showControls, setShowControls] = useState(true);
   const [selectedTrackId, setSelectedTrackId] = useState("instrumental");
   const [silentGuidedMode, setSilentGuidedMode] = useState(false);
   const [selectedAmbienceId, setSelectedAmbienceId] = useState("capela");
@@ -121,6 +129,12 @@ export default function VelaVirtual() {
   const [unavailableTrackIds, setUnavailableTrackIds] = useState<string[]>([]);
 
   const [resolvedVideoSrc, setResolvedVideoSrc] = useState(resolveMediaUrl(VIDEO_SRC));
+
+  useEffect(() => {
+    if (cleanMode) {
+      setShowControls(true);
+    }
+  }, [cleanMode]);
 
   useEffect(() => {
     resolveR2Redirect(VIDEO_SRC).then((url) => {
@@ -144,6 +158,11 @@ export default function VelaVirtual() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = isMuted ? 0 : volume;
+    try {
+      localStorage.setItem("sanctificare_vela_volume", String(volume));
+    } catch (e) {
+      console.warn("Erro ao salvar volume da vela no localStorage:", e);
+    }
   }, [volume, isMuted]);
 
   useEffect(() => {
@@ -202,10 +221,15 @@ export default function VelaVirtual() {
 
     if (audio && selectedTrack?.src && !silentGuidedMode) {
       try {
-        const url = await resolveR2Redirect(selectedTrack.src);
-        audio.src = url;
-        audio.currentTime = 0;
-        await audio.play();
+        if (audio.src) {
+          audio.currentTime = 0;
+          await audio.play();
+        } else {
+          const url = await resolveR2Redirect(selectedTrack.src);
+          audio.src = url;
+          audio.currentTime = 0;
+          await audio.play();
+        }
       } catch (audioErr) {
         console.warn("[VelaVirtual] Audio playback failed/blocked by browser:", audioErr);
       }
@@ -303,7 +327,12 @@ export default function VelaVirtual() {
           >
             <Card className={`transition-all duration-500 ${cleanMode ? "border-none rounded-none bg-black shadow-none w-full" : "overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30"}`}>
               <CardContent className="p-0">
-                <div className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100dvh] sm:h-[92vh]" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}>
+                <div 
+                  onClick={() => {
+                    if (cleanMode) setShowControls(!showControls);
+                  }}
+                  className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100dvh] sm:h-[92vh] cursor-pointer" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}
+                >
                   {BUNNY_LIBRARY_ID ? (
                     isPlaying ? (
                       <iframe
@@ -345,7 +374,12 @@ export default function VelaVirtual() {
                   <div
                     className={`absolute inset-0 transition-all duration-700 ${selectedAmbience.overlayClass}`}
                   />
-                  <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
+                  <div 
+                    onClick={(e) => {
+                      if (cleanMode) e.stopPropagation();
+                    }}
+                    className={`absolute inset-0 flex flex-col justify-between p-4 sm:p-6 transition-all duration-500 ${cleanMode && !showControls ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+                  >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
                       <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)] w-fit">
                         <Flame size={12} />

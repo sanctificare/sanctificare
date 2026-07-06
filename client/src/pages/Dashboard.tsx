@@ -146,9 +146,44 @@ function calculateStreak(logs: any[] | undefined) {
 
 export default function Dashboard() {
   const { user, isAuthenticated, loading } = useAuth();
-  const { data: allLogs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: allLogs, isLoading: isLogsLoading } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: liturgy, isLoading: isLiturgyLoading } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: dailyPlan, isLoading: isDailyPlanLoading } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: dailyPlanFromServer, isLoading: isDailyPlanLoading } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+
+  const [dailyPlan, setDailyPlan] = useState<any>(null);
+  const [prayingId, setPrayingId] = useState<number | null>(null);
+  const [isOffline, setIsOffline] = useState(typeof window !== "undefined" ? !navigator.onLine : false);
+
+  useEffect(() => {
+    if (dailyPlanFromServer) {
+      setDailyPlan(dailyPlanFromServer);
+      localStorage.setItem("sanctificare_offline_daily_plan", JSON.stringify(dailyPlanFromServer));
+    }
+  }, [dailyPlanFromServer]);
+
+  useEffect(() => {
+    if (!dailyPlanFromServer) {
+      try {
+        const saved = localStorage.getItem("sanctificare_offline_daily_plan");
+        if (saved) {
+          setDailyPlan(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Erro ao ler plano diário offline:", err);
+      }
+    }
+  }, [dailyPlanFromServer]);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   const utils = trpc.useUtils();
   const { data: intentions, isLoading: isIntentionsLoading } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
@@ -170,8 +205,15 @@ export default function Dashboard() {
     }
   });
 
-  const handlePrayForIntention = (intentionId: number) => {
-    prayMutation.mutate({ intentionId });
+  const handlePrayForIntention = async (intentionId: number) => {
+    setPrayingId(intentionId);
+    try {
+      await prayMutation.mutateAsync({ intentionId });
+    } catch {
+      // Já tratado
+    } finally {
+      setPrayingId(null);
+    }
   };
 
   const [activeNovena, setActiveNovena] = useState<DashboardActiveNovena | null>(null);
@@ -294,10 +336,18 @@ export default function Dashboard() {
                   <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
                     Bem-vindo, {firstName}
                   </h1>
-                  {streak.currentStreak > 0 && (
+                  {isLogsLoading ? (
+                    <Skeleton className="h-6 w-32 rounded-full" />
+                  ) : streak.currentStreak > 0 ? (
                     <div className="bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-semibold animate-pulse">
                       <Flame size={14} className={streak.prayedToday ? "text-amber-400 fill-amber-400" : "text-amber-200"} />
                       <span>{streak.currentStreak} {streak.currentStreak === 1 ? "dia" : "dias"} de perseverança</span>
+                    </div>
+                  ) : null}
+                  {isOffline && (
+                    <div className="bg-stone-500/20 text-stone-300 border border-stone-500/30 rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-semibold select-none">
+                      <span className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-ping" />
+                      <span>Modo Offline</span>
                     </div>
                   )}
                 </div>
@@ -752,24 +802,21 @@ export default function Dashboard() {
                         <Button 
                           size="sm"
                           variant={alreadyPrayed ? "outline" : "default"}
-                          disabled={prayMutation.isPending}
+                          disabled={prayingId === intention.id}
                           onClick={() => handlePrayForIntention(intention.id)}
                           className={alreadyPrayed 
                             ? "w-full sm:w-auto border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
                             : "w-full sm:w-auto bg-navy text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
                         >
-                          {alreadyPrayed ? (
-                            <>
-                              <Check size={12} />
-                              <span>Rezado</span>
-                            </>
+                          {prayingId === intention.id ? (
+                            <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin mr-1" />
+                          ) : alreadyPrayed ? (
+                            <Check size={12} />
                           ) : (
-                            <>
-                              <Heart size={12} className="fill-current" />
-                              <span>Rezar</span>
-                            </>
+                            <Heart size={12} className="fill-current" />
                           )}
+                          <span>{prayingId === intention.id ? "Registrando..." : alreadyPrayed ? "Rezado" : "Rezar"}</span>
                         </Button>
                       </div>
                     );

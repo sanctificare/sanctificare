@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { trpc } from "@/lib/trpc";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
@@ -110,9 +110,37 @@ export default function Liturgy() {
   const selectedDateIso = formatDateToISO(selectedDate);
   const isTodaySelected = selectedDateIso === formatDateToISO(new Date());
 
-  const { data: liturgy, isLoading: isFetchingLiturgy, error } = trpc.liturgy.getByDate.useQuery(
+  const { data: liturgyFromServer, isLoading: isFetchingLiturgy, error } = trpc.liturgy.getByDate.useQuery(
     { date: selectedDateIso }
   );
+
+  const [liturgy, setLiturgy] = useState<any>(null);
+
+  useEffect(() => {
+    if (liturgyFromServer) {
+      setLiturgy(liturgyFromServer);
+      try {
+        localStorage.setItem(`sanctificare_liturgy_cache_${selectedDateIso}`, JSON.stringify(liturgyFromServer));
+      } catch (err) {
+        console.warn("Erro ao salvar cache da liturgia:", err);
+      }
+    }
+  }, [liturgyFromServer, selectedDateIso]);
+
+  useEffect(() => {
+    if (!liturgyFromServer) {
+      try {
+        const saved = localStorage.getItem(`sanctificare_liturgy_cache_${selectedDateIso}`);
+        if (saved) {
+          setLiturgy(JSON.parse(saved));
+        } else {
+          setLiturgy(null);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar cache da liturgia:", err);
+      }
+    }
+  }, [liturgyFromServer, selectedDateIso]);
 
 
 
@@ -127,7 +155,45 @@ export default function Liturgy() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(0);
   const [audioUnavailable, setAudioUnavailable] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false);
-  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
+  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">(
+    (localStorage.getItem("sanctificare_liturgy_font_size") as any) || "md"
+  );
+  const [fontFamily, setFontFamily] = useState<"serif" | "sans">(
+    (localStorage.getItem("sanctificare_liturgy_font_family") as any) || "serif"
+  );
+
+  const toggleFontFamily = () => {
+    const next = fontFamily === "serif" ? "sans" : "serif";
+    setFontFamily(next);
+    localStorage.setItem("sanctificare_liturgy_font_family", next);
+  };
+
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNextDay();
+    } else if (isRightSwipe) {
+      handlePrevDay();
+    }
+  };
 
   useEffect(() => {
     if (!liturgy) {
@@ -285,7 +351,12 @@ export default function Liturgy() {
         </div>
       )}
 
-      <div className={`mx-auto px-4 py-6 space-y-6 transition-all duration-500 ${isZenMode ? "max-w-2xl" : "max-w-3xl"}`}>
+      <div 
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        className={`mx-auto px-4 py-6 space-y-6 transition-all duration-500 ${isZenMode ? "max-w-2xl" : "max-w-3xl"}`}
+      >
         {/* Header */}
         <div className="text-center space-y-2 mb-8 select-none">
           <div className="flex items-center justify-center gap-2 mb-2">
@@ -403,12 +474,14 @@ export default function Liturgy() {
               </div>
             )}
 
-            <LiturgyReadings
-              liturgy={liturgy}
-              fontSize={fontSize}
-              isZenMode={isZenMode}
-              theme={theme}
-            />
+            <div className={fontFamily === "serif" ? "font-serif" : "font-sans"}>
+              <LiturgyReadings
+                liturgy={liturgy}
+                fontSize={fontSize}
+                isZenMode={isZenMode}
+                theme={theme}
+              />
+            </div>
 
             {/* Log button */}
             {!isZenMode && (
@@ -437,9 +510,12 @@ export default function Liturgy() {
 
           <button
             onClick={() => {
-              if (fontSize === "xl") setFontSize("lg");
-              else if (fontSize === "lg") setFontSize("md");
-              else if (fontSize === "md") setFontSize("sm");
+              let nextSize: "sm" | "md" | "lg" | "xl" = fontSize;
+              if (fontSize === "xl") nextSize = "lg";
+              else if (fontSize === "lg") nextSize = "md";
+              else if (fontSize === "md") nextSize = "sm";
+              setFontSize(nextSize);
+              localStorage.setItem("sanctificare_liturgy_font_size", nextSize);
             }}
             disabled={fontSize === "sm"}
             className="p-1.5 hover:bg-accent rounded-full text-muted-foreground disabled:opacity-30 transition-colors"
@@ -454,15 +530,32 @@ export default function Liturgy() {
 
           <button
             onClick={() => {
-              if (fontSize === "sm") setFontSize("md");
-              else if (fontSize === "md") setFontSize("lg");
-              else if (fontSize === "lg") setFontSize("xl");
+              let nextSize: "sm" | "md" | "lg" | "xl" = fontSize;
+              if (fontSize === "sm") nextSize = "md";
+              else if (fontSize === "md") nextSize = "lg";
+              else if (fontSize === "lg") nextSize = "xl";
+              setFontSize(nextSize);
+              localStorage.setItem("sanctificare_liturgy_font_size", nextSize);
             }}
             disabled={fontSize === "xl"}
             className="p-1.5 hover:bg-accent rounded-full text-muted-foreground disabled:opacity-30 transition-colors"
             title="Aumentar fonte"
           >
             <Plus className="w-4 h-4" />
+          </button>
+
+          <div className="w-px h-4 bg-border mx-1" />
+
+          <button
+            onClick={toggleFontFamily}
+            className={`p-1.5 rounded-full transition-colors ${
+              fontFamily === "serif"
+                ? "bg-accent text-accent-foreground"
+                : "hover:bg-accent text-muted-foreground"
+            }`}
+            title="Alternar estilo de fonte (Serifada / Sem Serifas)"
+          >
+            <Type className="w-4 h-4" />
           </button>
 
           <div className="w-px h-4 bg-border mx-1" />
