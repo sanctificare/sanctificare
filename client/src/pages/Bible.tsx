@@ -1087,14 +1087,29 @@ export default function Bible() {
                     ))}
                   </select>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowSettings(!showSettings)}
-                  className={`gap-1.5 bg-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`}
-                >
-                  <Settings size={14} /> Opções
-                </Button>
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                      setSelectedBook(null);
+                      setSelectedChapter(null);
+                      setActiveTab("search");
+                    }}
+                    className="h-8 w-8 bg-white"
+                    title="Busca na Bíblia"
+                  >
+                    <Search size={14} />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowSettings(!showSettings)}
+                    className={`gap-1.5 bg-white h-8 ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`}
+                  >
+                    <Settings size={14} /> Opções
+                  </Button>
+                </div>
               </div>
 
               {/* Preferências de Leitura */}
@@ -1327,13 +1342,27 @@ export default function Bible() {
           ) : selectedBook ? (
             /* Seleção de capítulo */
             <div className="max-w-3xl mx-auto animate-fade-in">
-              <div className="flex items-center gap-3 mb-6">
-                <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
-                  <ChevronLeft size={14} /> Livros
+              <div className="flex items-center justify-between gap-3 mb-6">
+                <div className="flex items-center gap-3">
+                  <Button variant="outline" size="sm" onClick={() => setSelectedBook(null)} className="gap-2 bg-white">
+                    <ChevronLeft size={14} /> Livros
+                  </Button>
+                  <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
+                    {selectedBook.name}
+                  </h2>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedBook(null);
+                    setSelectedChapter(null);
+                    setActiveTab("search");
+                  }}
+                  className="gap-1.5 bg-white h-8 text-xs"
+                >
+                  <Search size={14} /> Busca na Bíblia
                 </Button>
-                <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-slate-100">
-                  {selectedBook.name}
-                </h2>
               </div>
 
               {/* Versículos famosos */}
@@ -1403,7 +1432,7 @@ export default function Bible() {
                       : "border-transparent text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  Busca Global
+                  Busca na Bíblia
                 </button>
               </div>
 
