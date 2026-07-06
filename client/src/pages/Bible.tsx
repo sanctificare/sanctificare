@@ -490,8 +490,8 @@ export default function Bible() {
   // Styling maps
   const themeClasses = {
     light: "!bg-white text-slate-900 border-slate-100 shadow-sm",
-    sepia: "!bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9] shadow-sm",
-    dark: "!bg-slate-950 text-slate-100 border-slate-900 shadow-none",
+    sepia: "!bg-[#fcf8ed] !bg-none text-[#4a3525] border-[#ebdcb9] shadow-sm",
+    dark: "!bg-slate-950 !bg-none text-slate-100 border-slate-900 shadow-none",
   };
 
   const pageBgClasses = {
