@@ -43,12 +43,21 @@ const Premium = lazy(() => import("./pages/Premium"));
 const VideosBiblicos = lazy(() => import("./pages/VideosBiblicos"));
 
 
+function SuspenseLoader() {
+  return (
+    <div className="w-full min-h-[60vh] flex flex-col items-center justify-center gap-3">
+      <div className="w-8 h-8 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
+      <span className="text-xs text-muted-foreground font-sans animate-pulse">Carregando...</span>
+    </div>
+  );
+}
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
 
   return (
-    <Suspense fallback={<BrandSplash />}>
+    <Suspense fallback={<SuspenseLoader />}>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/login" component={Login} />
