@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, Share2, SlidersHorizontal, ListMusic, Volume2, VolumeX } from "lucide-react";
 import { resolveR2Redirect } from "@/const";
+import { shareText } from "@/lib/share";
+import { toast } from "sonner";
 
 interface NovenaAudioDockProps {
   audioUrl: string;
@@ -112,6 +114,21 @@ export default function NovenaAudioDock({
     setCurrentTime(next);
   };
 
+  const handleShare = async () => {
+    if (typeof window === "undefined") return;
+    const pageUrl = window.location.href;
+    const result = await shareText({
+      title,
+      text: `Estou ouvindo ${title} no Sanctificare. ${pageUrl}`,
+    });
+
+    if (result.status === "copied") {
+      toast.success("Link copiado para compartilhar.");
+    } else if (result.status === "failed") {
+      toast.error("Não foi possível compartilhar agora.");
+    }
+  };
+
   return (
     <div className="fixed bottom-[4.875rem] lg:bottom-0 left-0 right-0 z-50 border-t border-[#bf9926]/30 bg-[#151f32]/95 backdrop-blur-md">
       <audio ref={audioRef} src={playingUrl} preload="metadata" />
@@ -162,7 +179,12 @@ export default function NovenaAudioDock({
           </div>
 
           <div className="flex items-center justify-end gap-1">
-            <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10">
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10"
+              onClick={handleShare}
+            >
               <Share2 size={14} />
             </Button>
             <Button type="button" variant="ghost" className="h-8 w-8 p-0 text-slate-300 hover:text-white hover:bg-white/10">

@@ -10,6 +10,7 @@ import { Heart } from "@/components/HeartIcon";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { shareText } from "@/lib/share";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
@@ -424,16 +425,21 @@ export default function VideosBiblicos() {
     });
   };
 
-  const handleShareVideo = (video: BibleVideo, e: React.MouseEvent) => {
+  const handleShareVideo = async (video: BibleVideo, e: React.MouseEvent) => {
     e.stopPropagation();
     const shareUrl = `${window.location.origin}${window.location.pathname}?v=${video.id}`;
-    navigator.clipboard.writeText(shareUrl).then(() => {
+    const result = await shareText({
+      title: `Vídeo bíblico: ${video.title}`,
+      text: `Assista este vídeo bíblico no Sanctificare: ${shareUrl}`,
+    });
+
+    if (result.status === "copied") {
       toast.success("Link copiado!", {
         description: `Compartilhe com seus amigos para assistirem: "${video.title}"`,
       });
-    }).catch(() => {
+    } else if (result.status === "failed") {
       toast.error("Não foi possível copiar o link.");
-    });
+    }
   };
 
   const updateVideoProgress = (videoId: string, currentTime: number, progressPercent: number) => {

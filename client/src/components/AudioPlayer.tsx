@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { formatTime } from "@/data/rosary-audio";
 import { resolveR2Redirect } from "@/const";
+import { shareText } from "@/lib/share";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -327,23 +329,15 @@ export default function AudioPlayer({
     if (typeof window === "undefined") return;
 
     const pageUrl = window.location.href;
-    const shareData = {
+    const result = await shareText({
       title,
-      text: description || `Estou ouvindo ${title} no Sanctificare.`,
-      url: pageUrl,
-    };
+      text: `${description || `Estou ouvindo ${title} no Sanctificare.`} ${pageUrl}`,
+    });
 
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-        return;
-      }
-
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(pageUrl);
-      }
-    } catch {
-      // Ignora cancelamentos/erros de share para não interromper a oração.
+    if (result.status === "copied") {
+      toast.success("Link copiado para compartilhar.");
+    } else if (result.status === "failed") {
+      toast.error("Não foi possível compartilhar agora.");
     }
   };
 
