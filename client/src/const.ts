@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 const DEFAULT_POST_AUTH_PATH = "/dashboard";
@@ -44,11 +45,7 @@ export const getLoginUrl = (returnPath?: string) => {
 
 export const isMobileApp = () => {
   if (typeof window === "undefined") return false;
-  const cap = (window as any).Capacitor;
-  if (cap?.isNativePlatform?.()) return true;
-  if (typeof cap?.getPlatform === "function" && cap.getPlatform() !== "web") {
-    return true;
-  }
+  if (Capacitor.isNativePlatform()) return true;
   return (
     window.location.protocol === "capacitor:" ||
     window.location.protocol === "chrome-extension:"
