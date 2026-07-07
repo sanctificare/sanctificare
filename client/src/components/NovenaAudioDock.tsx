@@ -133,7 +133,7 @@ export default function NovenaAudioDock({
   };
 
   return (
-    <div className="fixed bottom-[4.875rem] lg:bottom-0 left-0 right-0 z-50 border-t border-[#bf9926]/30 bg-[#151f32]/95 backdrop-blur-md">
+    <div className="fixed bottom-[calc(var(--mobile-bottom-nav-height)+var(--safe-area-bottom))] lg:bottom-0 left-0 right-0 z-50 border-t border-[#bf9926]/30 bg-[#151f32]/95 backdrop-blur-md">
       <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
       <div className="container py-3">

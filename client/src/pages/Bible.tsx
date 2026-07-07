@@ -1696,7 +1696,7 @@ export default function Bible() {
             3. BARRA FLUTUANTE DE AÇÕES DE VERSÍCULO (COMUM)
             ========================================================================= */}
         {selectedVerses.length > 0 && (
-          <div className="fixed bottom-[5.5rem] lg:bottom-6 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 border border-border shadow-2xl rounded-full px-5 py-3 flex items-center gap-3 z-50 animate-fade-in text-xs sm:text-sm text-[oklch(0.22_0.07_260)] dark:text-slate-100 max-w-[95%] w-max">
+          <div className="fixed bottom-[calc(var(--mobile-bottom-nav-height)+var(--safe-area-bottom)+0.5rem)] lg:bottom-6 left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 border border-border shadow-2xl rounded-full px-5 py-3 flex items-center gap-3 z-50 animate-fade-in text-xs sm:text-sm text-[oklch(0.22_0.07_260)] dark:text-slate-100 max-w-[95%] w-max">
             <span className="font-semibold whitespace-nowrap">
               {selectedVerses.length} {selectedVerses.length === 1 ? "selecionado" : "selecionados"}
             </span>
