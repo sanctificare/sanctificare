@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { BookOpen, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight } from "lucide-react";
+import { BookOpen, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2 } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
@@ -13,9 +13,12 @@ import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { NOVENAS } from "@/data/novenas";
 import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import { toast } from "sonner";
+import { shareText } from "@/lib/share";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
+const SANCTIFICARE_SHARE_TEXT = `Conheça o Sanctificare: um app para rezar, acompanhar a liturgia e fortalecer sua vida espiritual. ${SANCTIFICARE_SHARE_URL}`;
 
 const secondaryLinks = [
   { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
@@ -213,6 +216,19 @@ export default function Dashboard() {
       // Já tratado
     } finally {
       setPrayingId(null);
+    }
+  };
+
+  const handleShareSanctificare = async () => {
+    const result = await shareText({
+      title: "Compartilhar o Sanctificare",
+      text: SANCTIFICARE_SHARE_TEXT,
+    });
+
+    if (result.status === "copied") {
+      toast.success("Link do Sanctificare copiado para compartilhar.");
+    } else if (result.status === "failed") {
+      toast.error("Não foi possível abrir o compartilhamento.");
     }
   };
 
@@ -743,6 +759,44 @@ export default function Dashboard() {
                 </div>
               </Link>
             ))}
+          </div>
+        </div>
+
+        {/* Compartilhar o Sanctificare */}
+        <div className="section-block animate-fade-in">
+          <div className="relative overflow-hidden rounded-2xl border border-[oklch(0.75_0.12_75/0.22)] bg-[oklch(0.18_0.04_260)] p-5 sm:p-6 shadow-lg">
+            <img
+              src="/assets/sanctificare-hero.webp"
+              alt="Sanctificare"
+              loading="lazy"
+              decoding="async"
+              onError={(event) => applyImageFallback(event.currentTarget)}
+              className="absolute inset-0 h-full w-full object-cover opacity-55"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.12_0.03_260/0.96)] via-[oklch(0.12_0.03_260/0.78)] to-[oklch(0.12_0.03_260/0.28)]" />
+            <div className="absolute inset-0 bg-pattern-cross opacity-10" />
+
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+              <div className="max-w-2xl">
+                <span className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.75_0.12_75/0.30)] bg-[oklch(0.75_0.12_75/0.16)] px-3 py-1 text-xs font-semibold text-[oklch(0.88_0.08_80)] backdrop-blur-sm">
+                  <Share2 size={13} />
+                  Indique o app
+                </span>
+                <h2 className="mt-3 font-display text-2xl sm:text-3xl font-bold text-white">Compartilhar o Sanctificare</h2>
+                <p className="mt-2 font-serif text-sm sm:text-base leading-relaxed text-[oklch(0.88_0.02_260)]">
+                  Envie um convite simples para amigos que desejam rezar, acompanhar a liturgia e cultivar uma rotina espiritual.
+                </p>
+              </div>
+
+              <Button
+                type="button"
+                onClick={handleShareSanctificare}
+                className="w-full md:w-auto shrink-0 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold"
+              >
+                <Share2 size={15} className="mr-2" />
+                Compartilhar
+              </Button>
+            </div>
           </div>
         </div>
 
