@@ -92,7 +92,11 @@ export default function Bible() {
   // tRPC Queries
   const { data: chapterVerses, isLoading: isVersesLoading } = trpc.bible.getChapter.useQuery(
     { bookId: selectedBook?.id || "", chapter: selectedChapter || 1 },
-    { enabled: !!selectedBook && !!selectedChapter }
+    {
+      enabled: !!selectedBook && !!selectedChapter,
+      staleTime: Infinity,
+      gcTime: 24 * 60 * 60 * 1000,
+    }
   );
 
   const { data: searchResults, isLoading: isSearching } = trpc.bible.search.useQuery(
@@ -100,7 +104,10 @@ export default function Bible() {
     { enabled: triggerSearch.length >= 3 }
   );
 
-  const { data: liturgy } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: liturgy } = trpc.liturgy.getByDate.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 6 * 60 * 60 * 1000,
+  });
 
   // Load bookmark on startup or return to books view
   useEffect(() => {

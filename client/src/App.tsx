@@ -56,8 +56,8 @@ const DailyPlan = lazyWithPreload(() => import("./pages/DailyPlan"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
 
-// Todas as rotas com chunk próprio; pré-carregadas quando o app fica ocioso.
-const PRELOADABLE_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
+// Rotas críticas para navegação imediata após abrir o app.
+const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   GlobalSearch,
   Home,
   Dashboard,
@@ -65,23 +65,10 @@ const PRELOADABLE_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   Prayers,
   RosaryGuided,
   Liturgy,
-  LectioDivina,
-  ViaSacra,
-  VelaVirtual,
-  MusicaSacra,
-  Bible,
-  Novenas,
-  NovenaDetails,
-  Intentions,
-  Profile,
-  DangerZone,
-  DailyPlan,
-  Premium,
-  VideosBiblicos,
 ];
 
-function preloadAllRoutes() {
-  for (const route of PRELOADABLE_ROUTES) {
+function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
+  for (const route of routes) {
     void route.preload();
   }
 }
@@ -176,8 +163,8 @@ function App() {
     };
   }, []);
 
-  // Pré-carrega os chunks de todas as rotas assim que o app fica ocioso.
-  // Depois disso, navegar entre recursos é instantâneo (sem "Carregando...").
+  // Pré-carrega os chunks de navegação mais prováveis quando o app fica ocioso.
+  // Isso melhora fluidez sem baixar todos os módulos logo no boot.
   useEffect(() => {
     const ric = (window as typeof window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -185,13 +172,13 @@ function App() {
     }).requestIdleCallback;
 
     if (typeof ric === "function") {
-      const id = ric(() => preloadAllRoutes(), { timeout: 2000 });
+      const id = ric(() => preloadRoutes(CRITICAL_PRELOAD_ROUTES), { timeout: 2000 });
       return () => {
         (window as typeof window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
       };
     }
 
-    const timer = window.setTimeout(preloadAllRoutes, 1000);
+    const timer = window.setTimeout(() => preloadRoutes(CRITICAL_PRELOAD_ROUTES), 1000);
     return () => window.clearTimeout(timer);
   }, []);
 
@@ -280,10 +267,16 @@ function App() {
       }
     };
 
-    // Executa uma vez imediatamente, depois a cada 30 segundos
+    // Executa uma vez imediatamente e só agenda o intervalo se estiver habilitado.
     checkReminders();
-    const interval = setInterval(checkReminders, 30000);
 
+    const remindersEnabled =
+      localStorage.getItem("sanctificare.reminders.enabled") === "true";
+    if (!remindersEnabled) {
+      return;
+    }
+
+    const interval = setInterval(checkReminders, 30000);
     return () => clearInterval(interval);
   }, []);
 

@@ -487,7 +487,7 @@ export default function AudioPlayer({
   return (
     <div className="audio-player-container">
       <div className="audio-player-shell">
-        <audio ref={audioRef} src={playingUrl} preload="auto" />
+        <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
         <div
           className={`audio-player-artwork ${isLogo ? "audio-player-artwork--logo" : ""}`}

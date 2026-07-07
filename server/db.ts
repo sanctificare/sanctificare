@@ -1,4 +1,4 @@
-import { eq, desc, and, or, sql, gt, isNull, ne, inArray } from "drizzle-orm";
+import { eq, desc, and, or, sql, gt, gte, isNull, ne, inArray } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -266,6 +266,37 @@ async function bootstrapDb(sql: any) {
     `;
     await sql`
       CREATE INDEX IF NOT EXISTS push_devices_user_idx ON push_devices ("userId");
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS users_email_idx ON users (email);
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS subscriptions_user_id_idx ON subscriptions ("userId");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS prayer_logs_user_completed_idx ON prayer_logs ("userId", "completedAt");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS prayer_intentions_active_expires_idx ON prayer_intentions ("isActive", "expiresAt");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS intention_prayers_user_id_idx ON intention_prayers ("userId");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS intention_prayers_intention_id_idx ON intention_prayers ("intentionId");
+    `;
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS intention_prayers_intention_user_uq ON intention_prayers ("intentionId", "userId");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS intention_messages_intention_created_idx ON intention_messages ("intentionId", "createdAt");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS virtual_candles_expires_at_idx ON virtual_candles ("expiresAt");
+    `;
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS candle_prayers_candle_user_uq ON candle_prayers ("candleId", "userId");
     `;
 
     console.log("[Database] Bootstrap completed: all tables and types verified.");
@@ -694,13 +725,14 @@ export async function getPrayedIntentionsByUser(userId: number) {
 export async function recordIntentionPrayer(intentionId: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  const existing = await db
-    .select()
-    .from(intentionPrayers)
-    .where(and(eq(intentionPrayers.intentionId, intentionId), eq(intentionPrayers.userId, userId)))
-    .limit(1);
-  if (existing.length > 0) return { alreadyPrayed: true };
-  await db.insert(intentionPrayers).values({ intentionId, userId });
+  const inserted = await db
+    .insert(intentionPrayers)
+    .values({ intentionId, userId })
+    .onConflictDoNothing({ target: [intentionPrayers.intentionId, intentionPrayers.userId] })
+    .returning({ id: intentionPrayers.id });
+
+  if (inserted.length === 0) return { alreadyPrayed: true };
+
   await db
     .update(prayerIntentions)
     .set({ prayerCount: sql`${prayerIntentions.prayerCount} + 1` })
@@ -1087,15 +1119,14 @@ export async function recordCandlePrayer(candleId: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
-  const existing = await db
-    .select()
-    .from(candlePrayers)
-    .where(and(eq(candlePrayers.candleId, candleId), eq(candlePrayers.userId, userId)))
-    .limit(1);
+  const inserted = await db
+    .insert(candlePrayers)
+    .values({ candleId, userId })
+    .onConflictDoNothing({ target: [candlePrayers.candleId, candlePrayers.userId] })
+    .returning({ id: candlePrayers.id });
 
-  if (existing.length > 0) return { alreadyPrayed: true };
+  if (inserted.length === 0) return { alreadyPrayed: true };
 
-  await db.insert(candlePrayers).values({ candleId, userId });
   await db
     .update(virtualCandles)
     .set({ prayerCount: sql`${virtualCandles.prayerCount} + 1` })
@@ -1363,29 +1394,38 @@ export async function getDailyPlanStatus(userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
-  const DAILY_PLAN_HISTORY_LIMIT = 1000;
+  const DAILY_PLAN_HISTORY_LIMIT = 365;
+  const now = new Date();
+  const historyWindowStart = new Date(now);
+  historyWindowStart.setDate(historyWindowStart.getDate() - DAILY_PLAN_HISTORY_LIMIT);
 
-  // Fetch data
-  const logs = await db
-    .select()
-    .from(prayerLogs)
-    .where(eq(prayerLogs.userId, userId))
-    .orderBy(desc(prayerLogs.completedAt))
-    .limit(DAILY_PLAN_HISTORY_LIMIT);
-
-  const journals = await db
-    .select()
-    .from(lectioJournal)
-    .where(eq(lectioJournal.userId, userId))
-    .orderBy(desc(lectioJournal.journalDate))
-    .limit(DAILY_PLAN_HISTORY_LIMIT);
-
-  const intentions = await db
-    .select()
-    .from(intentionPrayers)
-    .where(eq(intentionPrayers.userId, userId))
-    .orderBy(desc(intentionPrayers.prayedAt))
-    .limit(DAILY_PLAN_HISTORY_LIMIT);
+  const [logs, journals, intentions] = await Promise.all([
+    db
+      .select({
+        prayerType: prayerLogs.prayerType,
+        completedAt: prayerLogs.completedAt,
+      })
+      .from(prayerLogs)
+      .where(and(eq(prayerLogs.userId, userId), gte(prayerLogs.completedAt, historyWindowStart)))
+      .orderBy(desc(prayerLogs.completedAt))
+      .limit(DAILY_PLAN_HISTORY_LIMIT),
+    db
+      .select({
+        journalDate: lectioJournal.journalDate,
+      })
+      .from(lectioJournal)
+      .where(eq(lectioJournal.userId, userId))
+      .orderBy(desc(lectioJournal.journalDate))
+      .limit(DAILY_PLAN_HISTORY_LIMIT),
+    db
+      .select({
+        prayedAt: intentionPrayers.prayedAt,
+      })
+      .from(intentionPrayers)
+      .where(and(eq(intentionPrayers.userId, userId), gte(intentionPrayers.prayedAt, historyWindowStart)))
+      .orderBy(desc(intentionPrayers.prayedAt))
+      .limit(DAILY_PLAN_HISTORY_LIMIT),
+  ]);
 
   return computeDailyPlanStatusFromData({ logs, journals, intentions });
 }

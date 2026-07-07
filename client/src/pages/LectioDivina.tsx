@@ -46,7 +46,7 @@ const getPassageImageUrl = (passageId: string) => {
     if (passageId === "daily-gospel") {
       return resolveMediaUrl(COVER_IMG);
     }
-    return resolveMediaUrl(`/assets/lectio/${passageId}.png`);
+    return resolveMediaUrl(`/assets/lectio/${passageId}.webp`);
   }
   return resolveMediaUrl(COVER_IMG);
 };

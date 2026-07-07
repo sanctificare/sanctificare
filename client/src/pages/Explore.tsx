@@ -17,18 +17,18 @@ type ExploreCard = {
 };
 
 const exploreCards: ExploreCard[] = [
-  { href: "/plano-diario", label: "Plano Diário", desc: "Suas metas espirituais", image: "/assets/dashboard/plano-diario.png", overlay: "oklch(0.25 0.09 75 / 0.60)", category: "Práticas" },
-  { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.png", overlay: "oklch(0.22 0.08 260 / 0.60)", category: "Devocional" },
-  { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.png", overlay: "oklch(0.28 0.08 145 / 0.60)", category: "Devocional" },
-  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/dashboard/lectio.png", overlay: "oklch(0.32 0.11 240 / 0.60)", category: "Estudo" },
-  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.png", overlay: "oklch(0.36 0.15 20 / 0.60)", category: "Devocional" },
-  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.png", overlay: "oklch(0.50 0.10 85 / 0.56)", category: "Práticas" },
-  { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.png", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
-  { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.png", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
-  { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.png", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
-  { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.png", overlay: "oklch(0.30 0.10 190 / 0.60)", category: "Comunidade" },
-  { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.png", overlay: "oklch(0.40 0.15 80 / 0.60)", category: "Estudo" },
-  { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.png", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
+  { href: "/plano-diario", label: "Plano Diário", desc: "Suas metas espirituais", image: "/assets/dashboard/plano-diario.webp", overlay: "oklch(0.25 0.09 75 / 0.60)", category: "Práticas" },
+  { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.webp", overlay: "oklch(0.22 0.08 260 / 0.60)", category: "Devocional" },
+  { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.webp", overlay: "oklch(0.28 0.08 145 / 0.60)", category: "Devocional" },
+  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.32 0.11 240 / 0.60)", category: "Estudo" },
+  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.webp", overlay: "oklch(0.36 0.15 20 / 0.60)", category: "Devocional" },
+  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.webp", overlay: "oklch(0.50 0.10 85 / 0.56)", category: "Práticas" },
+  { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.webp", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
+  { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
+  { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.webp", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
+  { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.webp", overlay: "oklch(0.30 0.10 190 / 0.60)", category: "Comunidade" },
+  { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.webp", overlay: "oklch(0.40 0.15 80 / 0.60)", category: "Estudo" },
+  { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
 ];
 
 export function filterExploreCards(cards: ExploreCard[], search: string, selectedCategory: string | null): ExploreCard[] {

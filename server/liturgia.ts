@@ -5,6 +5,7 @@ import type {
   LiturgyReading,
 } from "../drizzle/schema";
 import { loadBible } from "./bible";
+import axios from "axios";
 
 // Fonte pública da liturgia diária em PT-BR.
 const LITURGIA_API_BASE = "https://liturgia.up.railway.app";
@@ -182,8 +183,6 @@ function normalizeReading(raw: RawReading | string | undefined, isPsalm = false)
  * Busca a liturgia de uma data na API externa e devolve já no formato da tabela.
  * Lança em caso de erro de rede, timeout ou payload inválido.
  */
-import axios from "axios";
-import https from "https";
 
 export async function fetchLiturgyForDate(isoDate: string): Promise<InsertDailyLiturgy> {
   const { dia, mes, ano } = isoToParts(isoDate);
@@ -194,7 +193,6 @@ export async function fetchLiturgyForDate(isoDate: string): Promise<InsertDailyL
     const res = await axios.get<RawLiturgiaResponse>(url, {
       timeout: FETCH_TIMEOUT_MS,
       headers: { Accept: "application/json" },
-      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
     raw = res.data;
   } catch (error: any) {

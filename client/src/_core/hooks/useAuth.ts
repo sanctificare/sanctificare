@@ -7,6 +7,17 @@ type UseAuthOptions = {
   redirectPath?: string;
 };
 
+function readCachedRuntimeUser() {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const raw = localStorage.getItem("app-runtime-user-info");
+    if (!raw) return undefined;
+    return JSON.parse(raw);
+  } catch {
+    return undefined;
+  }
+}
+
 async function fetchMe() {
   const base = getApiBaseUrl();
   const res = await fetch(`${base}/api/auth/me`, { credentials: "include" });
@@ -35,6 +46,7 @@ export function useAuth(options?: UseAuthOptions) {
   const meQuery = useQuery({
     queryKey: ["auth", "me"],
     queryFn: fetchMe,
+    initialData: readCachedRuntimeUser,
     retry: false,
     refetchOnWindowFocus: false,
   });

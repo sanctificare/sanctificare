@@ -30,6 +30,7 @@ import {
   updateTemplatePreference,
   getTemplatePreference,
   getDailyLiturgy,
+  upsertDailyLiturgy,
   upsertLectioJournalEntry,
   getLectioJournalEntry,
   listRecentLectioJournalEntries,
@@ -55,6 +56,49 @@ const publicRateLimiter = createMemoryRateLimiter({
   windowMs: PUBLIC_RATE_WINDOW_MS,
   cleanupIntervalMs: 5 * 60 * 1000,
 });
+
+const stripeClient = ENV.stripeSecretKey
+  ? new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any })
+  : null;
+
+type CachedValue<T> = {
+  value: T;
+  expiresAt: number;
+};
+
+const liturgyByDateCache = new Map<string, CachedValue<Awaited<ReturnType<typeof getDailyLiturgy>>>>();
+const santoDoDiaCache = new Map<string, CachedValue<{ name: string; biography: string; quote: string | null } | null>>();
+
+function expiresAtNextSaoPauloMidnight(): number {
+  const now = new Date();
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const todayIso = formatter.format(now);
+  const [year, month, day] = todayIso.split("-").map(Number);
+  const nextSaoPauloMidnightUtc = Date.UTC(year, month - 1, day + 1, 3, 0, 0);
+  return nextSaoPauloMidnightUtc;
+}
+
+function getCachedValue<T>(cache: Map<string, CachedValue<T>>, key: string): T | undefined {
+  const hit = cache.get(key);
+  if (!hit) return undefined;
+  if (Date.now() > hit.expiresAt) {
+    cache.delete(key);
+    return undefined;
+  }
+  return hit.value;
+}
+
+function setCachedValue<T>(cache: Map<string, CachedValue<T>>, key: string, value: T) {
+  cache.set(key, {
+    value,
+    expiresAt: expiresAtNextSaoPauloMidnight(),
+  });
+}
 
 function getClientIp(ctx: { req: { ip?: string; socket?: { remoteAddress?: string | null } } }) {
   return ctx.req.ip || ctx.req.socket?.remoteAddress || "unknown";
@@ -212,7 +256,13 @@ export const appRouter = router({
       .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
       .mutation(async ({ ctx, input }) => {
         if (ENV.stripeSecretKey) {
-          const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+          const stripe = stripeClient;
+          if (!stripe) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Stripe não inicializado.",
+            });
+          }
           const priceId = input.plan === "annual" ? ENV.stripePriceAnnual : ENV.stripePriceMonthly;
           if (!priceId) {
             throw new TRPCError({
@@ -310,7 +360,13 @@ export const appRouter = router({
           });
         }
 
-        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const stripe = stripeClient;
+        if (!stripe) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Stripe não inicializado.",
+          });
+        }
         const session = await stripe.billingPortal.sessions.create({
           customer: activeSub.stripeCustomerId,
           return_url: `${ENV.appUrl}/premium`,
@@ -326,7 +382,8 @@ export const appRouter = router({
           return [];
         }
 
-        const stripe = new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any });
+        const stripe = stripeClient;
+        if (!stripe) return [];
         const invoices = await stripe.invoices.list({
           customer: activeSub.stripeCustomerId,
           limit: 10,
@@ -367,16 +424,27 @@ export const appRouter = router({
   }),
 
   liturgy: router({
-    // Liturgia do dia (ou de uma data "YYYY-MM-DD"). Lê do banco; se ainda não
-    // foi gravada pelo cron, busca da API como fallback e devolve sem persistir.
+    // Liturgia do dia (ou de uma data "YYYY-MM-DD"). Lê do banco/cache; se ainda
+    // não foi gravada pelo cron, busca da API como fallback e persiste.
     getByDate: publicProcedure
       .input(z.object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }).optional())
       .query(async ({ input }) => {
         const date = input?.date ?? todayIsoSaoPaulo();
+        const cached = getCachedValue(liturgyByDateCache, date);
+        if (cached !== undefined) return cached;
+
         const stored = await getDailyLiturgy(date);
-        if (stored) return stored;
+        if (stored) {
+          setCachedValue(liturgyByDateCache, date, stored);
+          return stored;
+        }
+
         try {
-          return await fetchLiturgyForDate(date);
+          const fetched = await fetchLiturgyForDate(date);
+          await upsertDailyLiturgy(fetched);
+          const persisted = await getDailyLiturgy(date);
+          setCachedValue(liturgyByDateCache, date, persisted);
+          return persisted;
         } catch (error) {
           console.error("[Liturgy] Fallback fetch failed:", error);
           return null;
@@ -388,12 +456,17 @@ export const appRouter = router({
         const ip = getClientIp(ctx);
         enforceTrpcRateLimit("santo", ip, 30);
 
+        const date = todayIsoSaoPaulo();
+        const cached = getCachedValue(santoDoDiaCache, date);
+        if (cached !== undefined) return cached;
+
         try {
           const response = await axios.get("https://api-liturgia-diaria.vercel.app/santo-do-dia", {
             timeout: 10000,
           });
 
           if (response.status !== 200 || !response.data?.today) {
+            setCachedValue(santoDoDiaCache, date, null);
             return null;
           }
 
@@ -434,13 +507,16 @@ export const appRouter = router({
             }
           }
 
-          return {
+          const result = {
             name,
             biography,
             quote,
           };
+          setCachedValue(santoDoDiaCache, date, result);
+          return result;
         } catch (error) {
           console.error("[Santo do Dia Fetch Error]", error);
+          setCachedValue(santoDoDiaCache, date, null);
           return null;
         }
       }),

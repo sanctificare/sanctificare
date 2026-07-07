@@ -30,6 +30,7 @@ const AUTHORIZE_PATH = `/webdev.v1.WebDevAuthPublicService/Authorize`;
 const EXCHANGE_TOKEN_PATH = `/webdev.v1.WebDevAuthPublicService/ExchangeToken`;
 const GET_USER_INFO_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserInfo`;
 const GET_USER_INFO_WITH_JWT_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserInfoWithJwt`;
+const LAST_SIGNED_IN_UPDATE_WINDOW_MS = 10 * 60 * 1000;
 
 class OAuthService {
   constructor(private client: ReturnType<typeof axios.create>) {
@@ -410,10 +411,16 @@ class SDKServer {
       throw ForbiddenError("User not found");
     }
 
-    await db.upsertUser({
-      openId: user.openId,
-      lastSignedIn: signedInAt,
-    });
+    const shouldUpdateLastSignedIn =
+      !user.lastSignedIn ||
+      signedInAt.getTime() - user.lastSignedIn.getTime() >= LAST_SIGNED_IN_UPDATE_WINDOW_MS;
+
+    if (shouldUpdateLastSignedIn) {
+      await db.upsertUser({
+        openId: user.openId,
+        lastSignedIn: signedInAt,
+      });
+    }
 
     return user;
   }

@@ -18,19 +18,25 @@ export const planEnum = pgEnum("plan", ["monthly", "annual"]);
 export const subscriptionStatusEnum = pgEnum("subscription_status", ["active", "cancelled", "expired", "past_due"]);
 export const intentionCategoryEnum = pgEnum("intention_category", ["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]);
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
-  name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
-  role: roleEnum("role").default("user").notNull(),
-  templatePreference: templatePreferenceEnum("templatePreference").default("classico").notNull(),
-  passwordHash: text("passwordHash"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
-});
+export const users = pgTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    openId: varchar("openId", { length: 64 }).notNull().unique(),
+    name: text("name"),
+    email: varchar("email", { length: 320 }),
+    loginMethod: varchar("loginMethod", { length: 64 }),
+    role: roleEnum("role").default("user").notNull(),
+    templatePreference: templatePreferenceEnum("templatePreference").default("classico").notNull(),
+    passwordHash: text("passwordHash"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+    lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
+  },
+  (table) => ({
+    emailIdx: index("users_email_idx").on(table.email),
+  })
+);
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
@@ -49,64 +55,91 @@ export const subscriptions = pgTable("subscriptions", {
   updatedAt: timestamp("updatedAt", { withTimezone: true }).defaultNow().notNull(),
 }, (table) => ({
   stripeSubscriptionIdIdx: uniqueIndex("subscriptions_stripe_sub_id_idx").on(table.stripeSubscriptionId),
+  userIdIdx: index("subscriptions_user_id_idx").on(table.userId),
 }));
 
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
 
 // Histórico de orações realizadas
-export const prayerLogs = pgTable("prayer_logs", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(),
-  prayerType: varchar("prayerType", { length: 64 }).notNull(), // rosario, terce, angelus, pai_nosso, etc.
-  prayerName: varchar("prayerName", { length: 128 }).notNull(),
-  completedAt: timestamp("completedAt").defaultNow().notNull(),
-});
+export const prayerLogs = pgTable(
+  "prayer_logs",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    prayerType: varchar("prayerType", { length: 64 }).notNull(), // rosario, terce, angelus, pai_nosso, etc.
+    prayerName: varchar("prayerName", { length: 128 }).notNull(),
+    completedAt: timestamp("completedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    userDateIdx: index("prayer_logs_user_completed_idx").on(table.userId, table.completedAt),
+  })
+);
 
 export type PrayerLog = typeof prayerLogs.$inferSelect;
 export type InsertPrayerLog = typeof prayerLogs.$inferInsert;
 
 // Intenções de oração da comunidade
-export const prayerIntentions = pgTable("prayer_intentions", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(),
-  authorName: varchar("authorName", { length: 128 }).notNull(),
-  title: varchar("title", { length: 200 }).notNull(),
-  description: text("description").notNull(),
-  category: intentionCategoryEnum("category"),
-  isAnonymous: boolean("isAnonymous").default(false).notNull(),
-  prayerCount: integer("prayerCount").default(0).notNull(),
-  isActive: boolean("isActive").default(true).notNull(),
-  graceObtained: boolean("graceObtained").default(false).notNull(),
-  expiresAt: timestamp("expiresAt"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
-});
+export const prayerIntentions = pgTable(
+  "prayer_intentions",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    authorName: varchar("authorName", { length: 128 }).notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    description: text("description").notNull(),
+    category: intentionCategoryEnum("category"),
+    isAnonymous: boolean("isAnonymous").default(false).notNull(),
+    prayerCount: integer("prayerCount").default(0).notNull(),
+    isActive: boolean("isActive").default(true).notNull(),
+    graceObtained: boolean("graceObtained").default(false).notNull(),
+    expiresAt: timestamp("expiresAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    activeExpiresIdx: index("prayer_intentions_active_expires_idx").on(table.isActive, table.expiresAt),
+  })
+);
 
 export type PrayerIntention = typeof prayerIntentions.$inferSelect;
 export type InsertPrayerIntention = typeof prayerIntentions.$inferInsert;
 
 // Registro de quem orou por qual intenção
-export const intentionPrayers = pgTable("intention_prayers", {
-  id: serial("id").primaryKey(),
-  intentionId: integer("intentionId").notNull(),
-  userId: integer("userId").notNull(),
-  prayedAt: timestamp("prayedAt").defaultNow().notNull(),
-});
+export const intentionPrayers = pgTable(
+  "intention_prayers",
+  {
+    id: serial("id").primaryKey(),
+    intentionId: integer("intentionId").notNull(),
+    userId: integer("userId").notNull(),
+    prayedAt: timestamp("prayedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    intentionUserUnique: uniqueIndex("intention_prayers_intention_user_uq").on(table.intentionId, table.userId),
+    userIdIdx: index("intention_prayers_user_id_idx").on(table.userId),
+    intentionIdIdx: index("intention_prayers_intention_id_idx").on(table.intentionId),
+  })
+);
 
 export type IntentionPrayer = typeof intentionPrayers.$inferSelect;
 export type InsertIntentionPrayer = typeof intentionPrayers.$inferInsert;
 
 // Mensagens de encorajamento em intenções de oração
-export const intentionMessages = pgTable("intention_messages", {
-  id: serial("id").primaryKey(),
-  intentionId: integer("intentionId").notNull(),
-  userId: integer("userId").notNull(),
-  authorName: varchar("authorName", { length: 128 }).notNull(),
-  isAnonymous: boolean("isAnonymous").default(false).notNull(),
-  message: varchar("message", { length: 300 }).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+export const intentionMessages = pgTable(
+  "intention_messages",
+  {
+    id: serial("id").primaryKey(),
+    intentionId: integer("intentionId").notNull(),
+    userId: integer("userId").notNull(),
+    authorName: varchar("authorName", { length: 128 }).notNull(),
+    isAnonymous: boolean("isAnonymous").default(false).notNull(),
+    message: varchar("message", { length: 300 }).notNull(),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    intentionCreatedIdx: index("intention_messages_intention_created_idx").on(table.intentionId, table.createdAt),
+  })
+);
 
 export type IntentionMessage = typeof intentionMessages.$inferSelect;
 export type InsertIntentionMessage = typeof intentionMessages.$inferInsert;
@@ -178,27 +211,39 @@ export type InsertLectioJournal = typeof lectioJournal.$inferInsert;
 
 export const candleTypeEnum = pgEnum("candle_type", ["intencao", "defuntos", "agradecimento", "adoracao"]);
 
-export const virtualCandles = pgTable("virtual_candles", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(),
-  authorName: varchar("authorName", { length: 128 }).notNull(),
-  intention: text("intention").notNull(),
-  type: candleTypeEnum("type").default("intencao").notNull(),
-  isAnonymous: boolean("isAnonymous").default(false).notNull(),
-  prayerCount: integer("prayerCount").default(0).notNull(),
-  litAt: timestamp("litAt").defaultNow().notNull(),
-  expiresAt: timestamp("expiresAt").notNull(),
-});
+export const virtualCandles = pgTable(
+  "virtual_candles",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    authorName: varchar("authorName", { length: 128 }).notNull(),
+    intention: text("intention").notNull(),
+    type: candleTypeEnum("type").default("intencao").notNull(),
+    isAnonymous: boolean("isAnonymous").default(false).notNull(),
+    prayerCount: integer("prayerCount").default(0).notNull(),
+    litAt: timestamp("litAt").defaultNow().notNull(),
+    expiresAt: timestamp("expiresAt").notNull(),
+  },
+  (table) => ({
+    expiresAtIdx: index("virtual_candles_expires_at_idx").on(table.expiresAt),
+  })
+);
 
 export type VirtualCandle = typeof virtualCandles.$inferSelect;
 export type InsertVirtualCandle = typeof virtualCandles.$inferInsert;
 
-export const candlePrayers = pgTable("candle_prayers", {
-  id: serial("id").primaryKey(),
-  candleId: integer("candleId").notNull(),
-  userId: integer("userId").notNull(),
-  prayedAt: timestamp("prayedAt").defaultNow().notNull(),
-});
+export const candlePrayers = pgTable(
+  "candle_prayers",
+  {
+    id: serial("id").primaryKey(),
+    candleId: integer("candleId").notNull(),
+    userId: integer("userId").notNull(),
+    prayedAt: timestamp("prayedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    candleUserUnique: uniqueIndex("candle_prayers_candle_user_uq").on(table.candleId, table.userId),
+  })
+);
 
 export type CandlePrayer = typeof candlePrayers.$inferSelect;
 export type InsertCandlePrayer = typeof candlePrayers.$inferInsert;

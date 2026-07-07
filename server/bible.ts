@@ -30,6 +30,18 @@ const BOOK_ID_TO_INDEX: Record<string, number> = {
 };
 
 let bibleData: Book[] | null = null;
+type SearchIndexEntry = {
+  bookId: string;
+  bookName: string;
+  chapter: number;
+  verse: number;
+  text: string;
+  normalizedText: string;
+};
+
+let bibleSearchIndex: SearchIndexEntry[] | null = null;
+const bibleSearchCache = new Map<string, SearchResult[]>();
+const BIBLE_SEARCH_CACHE_MAX_ENTRIES = 200;
 
 /**
  * Loads the biblia.json file from the server's data folder.
@@ -89,16 +101,11 @@ const BOOK_INDEX_TO_ID = [
   "3jo", "jd", "ap"
 ];
 
-/**
- * Searches the Bible text for a case-insensitive query string.
- * Limits results to 50 items for speed.
- */
-export function search(query: string): SearchResult[] {
-  const bible = loadBible();
-  const results: SearchResult[] = [];
-  const lowerQuery = query.toLowerCase().trim();
+function getSearchIndex(): SearchIndexEntry[] {
+  if (bibleSearchIndex) return bibleSearchIndex;
 
-  if (lowerQuery.length < 3) return results;
+  const bible = loadBible();
+  const index: SearchIndexEntry[] = [];
 
   for (let bIndex = 0; bIndex < bible.length; bIndex++) {
     const book = bible[bIndex];
@@ -107,21 +114,74 @@ export function search(query: string): SearchResult[] {
 
     for (const chapter of book.capitulos) {
       for (const verse of chapter.versiculos) {
-        if (verse.texto.toLowerCase().includes(lowerQuery)) {
-          results.push({
-            bookId,
-            bookName: book.livro,
-            chapter: chapter.capitulo,
-            verse: verse.numero,
-            text: verse.texto
-          });
-
-          if (results.length >= 50) {
-            return results;
-          }
-        }
+        index.push({
+          bookId,
+          bookName: book.livro,
+          chapter: chapter.capitulo,
+          verse: verse.numero,
+          text: verse.texto,
+          normalizedText: verse.texto.toLowerCase(),
+        });
       }
     }
   }
+
+  bibleSearchIndex = index;
+  return index;
+}
+
+function getCachedSearchResult(query: string): SearchResult[] | undefined {
+  const hit = bibleSearchCache.get(query);
+  if (!hit) return undefined;
+
+  // Promote to most recently used.
+  bibleSearchCache.delete(query);
+  bibleSearchCache.set(query, hit);
+  return hit;
+}
+
+function setCachedSearchResult(query: string, results: SearchResult[]) {
+  bibleSearchCache.set(query, results);
+  if (bibleSearchCache.size <= BIBLE_SEARCH_CACHE_MAX_ENTRIES) return;
+
+  const oldestKey = bibleSearchCache.keys().next().value;
+  if (oldestKey) {
+    bibleSearchCache.delete(oldestKey);
+  }
+}
+
+/**
+ * Searches the Bible text for a case-insensitive query string.
+ * Limits results to 50 items for speed.
+ */
+export function search(query: string): SearchResult[] {
+  const results: SearchResult[] = [];
+  const lowerQuery = query.toLowerCase().trim();
+
+  if (lowerQuery.length < 3) return results;
+
+  const cached = getCachedSearchResult(lowerQuery);
+  if (cached) return cached;
+
+  const index = getSearchIndex();
+
+  for (const entry of index) {
+    if (entry.normalizedText.includes(lowerQuery)) {
+      results.push({
+        bookId: entry.bookId,
+        bookName: entry.bookName,
+        chapter: entry.chapter,
+        verse: entry.verse,
+        text: entry.text,
+      });
+
+      if (results.length >= 50) {
+        setCachedSearchResult(lowerQuery, results);
+        return results;
+      }
+    }
+  }
+
+  setCachedSearchResult(lowerQuery, results);
   return results;
 }

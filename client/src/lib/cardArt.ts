@@ -27,10 +27,10 @@ const PRAYER_ART: Record<string, CardArt> = {
 };
 
 const NOVENA_ART: Record<string, CardArt> = {
-  "novena-sagrado-coracao-jesus": { image: "/assets/novenas/sagrado-coracao-jesus.png", overlay: "oklch(0.39 0.17 22 / 0.58)" },
-  "novena-divino-espirito-santo": { image: "/assets/novenas/divino-espirito-santo.png", overlay: "oklch(0.35 0.1 215 / 0.58)" },
-  "novena-nossa-senhora-perpetuo-socorro": { image: "/assets/novenas/nossa-senhora-perpetuo-socorro.png", overlay: "oklch(0.45 0.13 290 / 0.56)" },
-  "novena-sao-jose": { image: "/assets/novenas/sao-jose.png", overlay: "oklch(0.42 0.11 110 / 0.56)" },
+  "novena-sagrado-coracao-jesus": { image: "/assets/novenas/sagrado-coracao-jesus.webp", overlay: "oklch(0.39 0.17 22 / 0.58)" },
+  "novena-divino-espirito-santo": { image: "/assets/novenas/divino-espirito-santo.webp", overlay: "oklch(0.35 0.1 215 / 0.58)" },
+  "novena-nossa-senhora-perpetuo-socorro": { image: "/assets/novenas/nossa-senhora-perpetuo-socorro.webp", overlay: "oklch(0.45 0.13 290 / 0.56)" },
+  "novena-sao-jose": { image: "/assets/novenas/sao-jose.webp", overlay: "oklch(0.42 0.11 110 / 0.56)" },
 };
 
 const LECTIO_STEP_ART: Record<string, string> = {
@@ -44,22 +44,22 @@ const LECTIO_STEP_ART: Record<string, string> = {
 const AUDIO_COLLECTION_ART: Record<string, string> = {
   "meditacoes-contemplativas": "/assets/via-sacra/imagens/3estacao.webp",
   "historias-da-biblia": "/assets/via-sacra/imagens/1estacao.webp",
-  "canto-gregoriano": "/assets/composers/canto-gregoriano.png",
+  "canto-gregoriano": "/assets/composers/canto-gregoriano.webp",
   "polifonia-sacra": "/assets/via-sacra/imagens/2estacao.webp",
   "para-meditar": "/assets/via-sacra/imagens/3estacao.webp",
   "mariana": "/assets/sanctificare-rosary.webp",
   "tempos-liturgicos": "/assets/sanctificare-hero.webp",
   // Coleções por Artista/Compositor
-  "js-bach": "/assets/composers/js-bach.png",
-  "tomas-luis-de-victoria": "/assets/composers/tomas-luis-de-victoria.png",
-  "palestrina": "/assets/composers/palestrina.png",
-  "mozart": "/assets/composers/mozart.png",
-  "schubert": "/assets/composers/schubert.png",
-  "faure": "/assets/composers/faure.png",
-  "bruckner": "/assets/composers/bruckner.png",
-  "handel": "/assets/composers/handel.png",
-  "charles-gounod": "/assets/composers/charles-gounod.png",
-  "antonio-vivaldi": "/assets/composers/antonio-vivaldi.png",
+  "js-bach": "/assets/composers/js-bach.webp",
+  "tomas-luis-de-victoria": "/assets/composers/tomas-luis-de-victoria.webp",
+  "palestrina": "/assets/composers/palestrina.webp",
+  "mozart": "/assets/composers/mozart.webp",
+  "schubert": "/assets/composers/schubert.webp",
+  "faure": "/assets/composers/faure.webp",
+  "bruckner": "/assets/composers/bruckner.webp",
+  "handel": "/assets/composers/handel.webp",
+  "charles-gounod": "/assets/composers/charles-gounod.webp",
+  "antonio-vivaldi": "/assets/composers/antonio-vivaldi.webp",
 };
 
 export function getPrayerArt(prayerType: string): CardArt {

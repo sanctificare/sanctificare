@@ -110,3 +110,7 @@ temp/
 .webdev/
 
 .project-config.json
+
+# Scratch files
+scratch/
+
