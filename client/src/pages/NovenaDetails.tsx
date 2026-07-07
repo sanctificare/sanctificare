@@ -2,7 +2,6 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
-import ExpandedMeditationPlayer from "@/components/ExpandedMeditationPlayer";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
 import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
@@ -92,7 +91,6 @@ export default function NovenaDetails() {
 
   const isLocked = selectedNovena?.category === "premium" && !isPremium;
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
-  const [isExpandedPlayer, setIsExpandedPlayer] = useState(false);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
 
   // Audio states
@@ -331,7 +329,7 @@ export default function NovenaDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6 items-start">
           
           {/* Coluna Esquerda: Informações, Progresso e Intenção */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-2 lg:order-1">
             
             {/* Cartão de Informações da Novena */}
             <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-5 shadow-[0_12px_40px_oklch(0.22_0.07_260/0.08)]">
@@ -457,7 +455,7 @@ export default function NovenaDetails() {
           </div>
 
           {/* Coluna Direita: Conteúdo de Leitura do Dia */}
-          <div className={`rounded-2xl border transition-all duration-500 p-6 ${
+          <div className={`rounded-2xl border transition-all duration-500 p-6 order-1 lg:order-2 ${
             activeTab === "audio"
               ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
               : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
@@ -689,21 +687,6 @@ export default function NovenaDetails() {
 
                     {/* Botões de Ação */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
-                      {currentDayContent.audioUrl && (
-                        <Button
-                          onClick={() => {
-                            if (audioRef.current) {
-                              audioRef.current.pause();
-                              setIsPlaying(false);
-                            }
-                            setIsExpandedPlayer(true);
-                          }}
-                          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs"
-                        >
-                          <Headphones size={15} className="mr-2" />
-                          Rezar no Modo Meditação
-                        </Button>
-                      )}
                       <Button
                         onClick={toggleDayAsComplete}
                         className="w-full sm:w-auto bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-bold text-xs"
@@ -727,18 +710,6 @@ export default function NovenaDetails() {
       </main>
 
       {playingUrl && <audio ref={audioRef} src={playingUrl} />}
-
-      {isExpandedPlayer && currentDayContent?.audioUrl && (
-        <ExpandedMeditationPlayer
-          audioUrl={currentDayContent.audioUrl}
-          title={selectedNovena.name}
-          subtitle={`Dia ${safeDay}: ${currentDayContent.title}`}
-          artworkUrl={getNovenaArt(selectedNovena.id).image}
-          reflection={currentDayContent.reflection}
-          prayer={currentDayContent.prayer}
-          onClose={() => setIsExpandedPlayer(false)}
-        />
-      )}
     </div>
   );
 }
