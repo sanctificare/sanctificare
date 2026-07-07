@@ -2,10 +2,10 @@ import { useMemo, useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import NovenaAudioDock from "@/components/NovenaAudioDock";
+import AudioPlayer from "@/components/AudioPlayer";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, PlayCircle, ArrowLeft, Info } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
@@ -207,7 +207,7 @@ export default function NovenaDetails() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
       <div className="pointer-events-none absolute inset-0 bg-pattern-cross opacity-25" />
 
-      <main className={`container py-10 relative z-10 ${currentDayContent?.audioUrl && !isLocked ? "pb-36" : ""}`}>
+      <main className="container py-10 relative z-10">
         <div className="mb-5">
           <Link href="/novenas">
             <button className="inline-flex items-center gap-2 text-sm font-medium text-[oklch(0.30_0.07_260)] hover:text-[oklch(0.24_0.07_260)] transition-colors">
@@ -373,13 +373,17 @@ export default function NovenaDetails() {
                       <h2 className="font-serif text-2xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)] mt-1 leading-tight">
                         {currentDayContent.title}
                       </h2>
-                      {currentDayContent.audioUrl && (
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2 font-medium">
-                          <Info size={12} className="text-[oklch(0.75_0.12_75)]" />
-                          <span>Áudio guiado disponível no dock inferior ao reproduzir.</span>
-                        </div>
-                      )}
                     </div>
+
+                    {/* Player de Áudio igual ao da Liturgia */}
+                    {currentDayContent.audioUrl && (
+                      <AudioPlayer
+                        audioUrl={currentDayContent.audioUrl}
+                        title={selectedNovena.name}
+                        description={`Dia ${safeDay}: ${currentDayContent.title}`}
+                        artworkUrl={getNovenaArt(selectedNovena.id).image}
+                      />
+                    )}
 
                     {/* Exibição permanentemente destacada da Intenção do usuário durante a leitura */}
                     {intention && (
@@ -442,16 +446,6 @@ export default function NovenaDetails() {
 
                     {/* Botões de Ação */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
-                      {currentDayContent.audioUrl && (
-                        <Button
-                          onClick={() => setSelectedDay(safeDay)}
-                          className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold text-xs"
-                        >
-                          <PlayCircle size={15} className="mr-2" />
-                          Ouvir Áudio do Dia
-                        </Button>
-                      )}
-                      
                       <Button
                         onClick={toggleDayAsComplete}
                         className="w-full sm:w-auto bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-bold text-xs"
@@ -474,14 +468,6 @@ export default function NovenaDetails() {
         </div>
       </main>
 
-      {/* Dock de Áudio integrado se disponível */}
-      {currentDayContent?.audioUrl && !isLocked ? (
-        <NovenaAudioDock
-          audioUrl={currentDayContent.audioUrl}
-          title={selectedNovena.name}
-          subtitle={`Dia ${safeDay}: ${currentDayContent.title}`}
-        />
-      ) : null}
     </div>
   );
 }
