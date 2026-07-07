@@ -17,6 +17,7 @@ import {
   Share2,
   Bookmark,
   Image,
+  Download,
 } from "lucide-react";
 import { Cross } from "@/components/CrossIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
@@ -324,10 +325,19 @@ export default function Bible() {
     return selectedVerses.map(idx => verses[idx]).join(" ");
   };
 
+  const getCardFontSizeClass = () => {
+    const text = getSelectedTextForCard();
+    const len = text.length;
+    if (len < 80) return "text-lg sm:text-xl md:text-2xl font-medium leading-relaxed";
+    if (len < 160) return "text-base sm:text-lg md:text-xl font-medium leading-relaxed";
+    if (len < 300) return "text-sm sm:text-base md:text-lg leading-relaxed";
+    return "text-xs sm:text-sm md:text-base leading-normal";
+  };
+
   const handleCopySelected = () => {
     const text = getSelectedText();
     if (!text || !selectedBook || !selectedChapter) return;
-    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}`;
+    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}\n\nSanctificare.app`;
     navigator.clipboard.writeText(fullText);
     toast.success("Copiado para a área de transferência!");
     setSelectedVerses([]);
@@ -336,7 +346,7 @@ export default function Bible() {
   const handleShareSelected = async () => {
     const text = getSelectedText();
     if (!text || !selectedBook || !selectedChapter) return;
-    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}\n\nLido via Sanctificare`;
+    const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}\n\nLido via Sanctificare.app`;
 
     const result = await shareText({
       title: `Sanctificare - ${selectedBook.name} ${selectedChapter}`,
@@ -1876,37 +1886,68 @@ export default function Bible() {
                       ? "bg-gradient-to-br from-[#1e102f] via-[#2d1b4e] to-[#0a0512] border-[#442c70]/40 text-purple-100"
                       : cardBg === "dark"
                       ? "bg-gradient-to-br from-[#121824] via-[#1a2333] to-[#0b0f19] border-slate-800 text-slate-100"
-                      : "bg-gradient-to-br from-[#1a2c42] via-[#2c1d3f] to-[#422d1b] border-amber-900/30 text-amber-50"
+                      : "bg-gradient-to-br from-[#0c2340] via-[#2a1b3d] to-[#44001a] border-cyan-800/40 text-cyan-50"
                   } ${
                     cardRatio === "stories"
                       ? "aspect-[9/16] w-[260px] sm:w-[280px] h-[460px] sm:h-[490px]"
                       : "aspect-[1/1] w-[280px] sm:w-[300px] h-[280px] sm:h-[300px]"
                   }`}
                 >
-                  {/* Top decoration */}
-                  <div className="flex flex-col items-center text-center">
-                    <Cross size={16} className={`opacity-40 mb-2 ${cardBg === "classic" || cardBg === "gold" ? "text-amber-800" : "text-amber-300"}`} />
-                    <span className="text-[9px] font-bold tracking-widest uppercase opacity-60">
-                      {selectedBook?.name}
-                    </span>
+                  {/* Subtle background glow/decoration */}
+                  <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                    {cardBg === "purple" && (
+                      <>
+                        <div className="absolute -top-12 -left-12 w-32 h-32 bg-purple-500 rounded-full blur-2xl opacity-25" />
+                        <div className="absolute -bottom-16 -right-16 w-36 h-36 bg-blue-500 rounded-full blur-3xl opacity-20" />
+                      </>
+                    )}
+                    {cardBg === "gold" && (
+                      <>
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full blur-2xl opacity-30" />
+                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-400/20 rounded-full blur-3xl opacity-20" />
+                      </>
+                    )}
+                    {cardBg === "vitral" && (
+                      <>
+                        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-rose-500/20 rounded-full blur-2xl" />
+                        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-cyan-500/20 rounded-full blur-2xl" />
+                      </>
+                    )}
+                    {cardBg === "dark" && (
+                      <>
+                        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 bg-slate-700/25 rounded-full blur-3xl" />
+                      </>
+                    )}
                   </div>
 
-                  {/* Verses body */}
-                  <div className="flex-1 flex flex-col justify-center items-center text-center px-2 py-4">
-                    <p className={`text-sm sm:text-base leading-relaxed ${
-                      cardFont === "serif" ? "font-serif italic" : "font-sans font-medium"
-                    } line-clamp-[10]`}>
-                      "{getSelectedTextForCard()}"
-                    </p>
-                    <span className="mt-4 text-xs font-bold font-display tracking-wide uppercase opacity-85 block">
-                      {selectedBook?.name} {selectedChapter}:{selectedVerses.map(v => v + 1).join(", ")}
-                    </span>
-                  </div>
+                  <div className="flex-1 flex flex-col justify-between z-10 w-full h-full relative">
+                    {/* Top decoration */}
+                    <div className="flex flex-col items-center text-center">
+                      <Cross size={16} className={`opacity-40 mb-2 ${cardBg === "classic" || cardBg === "gold" ? "text-amber-800" : "text-amber-300"}`} />
+                      <span className="text-[9px] font-bold tracking-widest uppercase opacity-60">
+                        {selectedBook?.name}
+                      </span>
+                    </div>
 
-                  {/* Bottom branding */}
-                  <div className="flex items-center justify-center gap-1.5 opacity-40 text-[9px] font-semibold uppercase tracking-widest">
-                    <BookOpen size={10} />
-                    <span>Sanctificare</span>
+                    {/* Verses body */}
+                    <div className="flex-1 flex flex-col justify-center items-center text-center px-4 py-4 overflow-hidden w-full">
+                      <p className={`${getCardFontSizeClass()} ${
+                        cardFont === "serif" ? "font-serif italic" : "font-sans font-medium"
+                      } max-h-[75%] overflow-hidden text-ellipsis`}>
+                        "{getSelectedTextForCard()}"
+                      </p>
+                      <span className="mt-4 text-xs font-bold font-display tracking-wide uppercase opacity-85 block">
+                        {selectedBook?.name} {selectedChapter}:{selectedVerses.map(v => v + 1).join(", ")}
+                      </span>
+                    </div>
+
+                    {/* Bottom branding */}
+                    <div className={`flex items-center justify-center gap-1.5 opacity-60 text-[10px] font-bold uppercase tracking-widest mt-2 ${
+                      cardBg === "classic" || cardBg === "gold" ? "text-amber-950" : "text-amber-100"
+                    }`}>
+                      <BookOpen size={11} />
+                      <span>Sanctificare.app</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1924,6 +1965,10 @@ export default function Bible() {
                     </button>
                   </div>
                   
+                  <p className="text-xs text-muted-foreground">
+                    Crie um card personalizado e compartilhe diretamente nas redes sociais ou salve como imagem.
+                  </p>
+
                   <div className="divider-gold" />
 
                   {/* Aspect Ratio */}
@@ -2031,18 +2076,23 @@ export default function Bible() {
                 {/* Actions */}
                 <div className="space-y-2 mt-6">
                   <Button
-                    onClick={handleDownloadCard}
-                    className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white gap-2 font-semibold"
+                    onClick={handleShareCard}
+                    className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white gap-2 font-semibold shadow-md hover:shadow-lg transition-all"
                   >
-                    Baixar Card (Imagem)
+                    <Share2 size={16} />
+                    Compartilhar Card
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={handleShareCard}
-                    className="w-full gap-2"
+                    onClick={handleDownloadCard}
+                    className="w-full gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                   >
-                    Compartilhar Card
+                    <Download size={16} />
+                    Baixar Imagem
                   </Button>
+                  <p className="text-[10px] text-muted-foreground text-center mt-1">
+                    Dica: No celular, o compartilhamento envia o card diretamente para WhatsApp, Instagram ou Telegram!
+                  </p>
                 </div>
               </div>
 
