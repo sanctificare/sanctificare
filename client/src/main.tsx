@@ -12,6 +12,25 @@ import { App as CapApp } from '@capacitor/app';
 
 const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
 
+const parseVersionCore = (version: string | null | undefined) => {
+  if (!version) return [0, 0, 0];
+  const core = version.split("-")[0] ?? version;
+  const [major = "0", minor = "0", patch = "0"] = core.split(".");
+  return [major, minor, patch].map((part) => Number.parseInt(part, 10) || 0);
+};
+
+const compareVersionCore = (left: string | null | undefined, right: string | null | undefined) => {
+  const leftParts = parseVersionCore(left);
+  const rightParts = parseVersionCore(right);
+
+  for (let index = 0; index < 3; index += 1) {
+    if (leftParts[index] > rightParts[index]) return 1;
+    if (leftParts[index] < rightParts[index]) return -1;
+  }
+
+  return 0;
+};
+
 
 // Global error overlay para Capacitor — mostra erros JS na tela em vez de tela branca.
 if (typeof window !== 'undefined' && isMobileApp()) {
@@ -272,7 +291,15 @@ if (typeof window !== "undefined" && isMobileApp()) {
       // and never matches the server version, which previously caused an
       // infinite download → set() → reload loop (app "piscando").
       const currentVersion = current?.bundle?.version || current?.bundle?.id;
-      console.log(`[OTA] Local web bundle version: ${currentVersion} | Server version: ${updateData.version}`);
+      const nativeVersion = current?.native ?? currentVersion;
+      console.log(`[OTA] Local web bundle version: ${currentVersion} | Native version: ${nativeVersion} | Server version: ${updateData.version}`);
+
+      if (compareVersionCore(updateData.version, nativeVersion) < 0) {
+        console.warn(
+          `[OTA] Skipping downgrade. Server bundle ${updateData.version} is older than native ${nativeVersion}.`
+        );
+        return;
+      }
 
       if (updateData.version !== currentVersion) {
         // Reuse an already-downloaded bundle for this version, if any.

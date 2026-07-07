@@ -1,6 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
+import BrandSplash from "@/components/BrandSplash";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { BookOpen, Users, Crown, Star,
@@ -290,14 +291,16 @@ export default function Home() {
     };
   }, []);
 
-  // No app nativo, na abertura inicial (antes do redirect para /login), mostramos um splash.
-  // Após a abertura inicial, o flag no sessionStorage permite exibir a landing normalmente.
-  if (isMobileApp() && !isAuthenticated && !sessionStorage.getItem('__cap_app_started')) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain" />
-      </div>
-    );
+  // No app nativo, mantemos o splash escuro da marca durante toda a decisão de
+  // redirecionamento inicial (abertura -> /login, ou autenticado -> /dashboard),
+  // garantindo continuidade visual com o splash nativo e a tela de Login (sem
+  // flashes de tela clara). A landing só aparece quando o usuário volta para "/"
+  // depois da abertura inicial (flag __cap_app_started) e não está autenticado.
+  if (
+    isMobileApp() &&
+    (loading || isAuthenticated || !sessionStorage.getItem('__cap_app_started'))
+  ) {
+    return <BrandSplash />;
   }
 
   return (
