@@ -3,9 +3,10 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import AudioPlayer from "@/components/AudioPlayer";
+import ExpandedMeditationPlayer from "@/components/ExpandedMeditationPlayer";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, ArrowLeft, Info } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
@@ -92,6 +93,7 @@ export default function NovenaDetails() {
 
   const isLocked = selectedNovena?.category === "premium" && !isPremium;
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
+  const [isExpandedPlayer, setIsExpandedPlayer] = useState(false);
 
   // Intenção Particular da Novena
   const [intention, setIntention] = useState("");
@@ -446,6 +448,15 @@ export default function NovenaDetails() {
 
                     {/* Botões de Ação */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
+                      {currentDayContent.audioUrl && (
+                        <Button
+                          onClick={() => setIsExpandedPlayer(true)}
+                          className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs"
+                        >
+                          <Headphones size={15} className="mr-2" />
+                          Rezar no Modo Meditação
+                        </Button>
+                      )}
                       <Button
                         onClick={toggleDayAsComplete}
                         className="w-full sm:w-auto bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-bold text-xs"
@@ -468,6 +479,17 @@ export default function NovenaDetails() {
         </div>
       </main>
 
+      {isExpandedPlayer && currentDayContent?.audioUrl && (
+        <ExpandedMeditationPlayer
+          audioUrl={currentDayContent.audioUrl}
+          title={selectedNovena.name}
+          subtitle={`Dia ${safeDay}: ${currentDayContent.title}`}
+          artworkUrl={getNovenaArt(selectedNovena.id).image}
+          reflection={currentDayContent.reflection}
+          prayer={currentDayContent.prayer}
+          onClose={() => setIsExpandedPlayer(false)}
+        />
+      )}
     </div>
   );
 }
