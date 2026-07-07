@@ -5,8 +5,7 @@ import type { AppRouter } from "../../../server/routers";
 import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
 import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
-import { shareText } from "@/lib/share";
-import { toast } from "sonner";
+import ShareModal from "@/components/ShareModal";
 
 
 
@@ -164,6 +163,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -174,19 +174,8 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
     }
   };
 
-  const handleShare = async () => {
-    if (typeof window === "undefined") return;
-    const pageUrl = window.location.href;
-    const result = await shareText({
-      title: "Salmo Cantado",
-      text: `Ouça o Salmo Cantado da Liturgia de hoje no Sanctificare: ${pageUrl}`,
-    });
-
-    if (result.status === "copied") {
-      toast.success("Link copiado para compartilhar.");
-    } else if (result.status === "failed") {
-      toast.error("Não foi possível compartilhar agora.");
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   useEffect(() => {
@@ -320,6 +309,14 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
           {formatTime(duration)}
         </span>
       </div>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title="Salmo Cantado"
+        description="Ouça o Salmo Cantado da Liturgia de hoje."
+        url={typeof window !== "undefined" ? window.location.href : ""}
+      />
     </div>
   );
 }

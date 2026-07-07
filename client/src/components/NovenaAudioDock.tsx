@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, Share2, SlidersHorizontal, ListMusic, Volume2, VolumeX } from "lucide-react";
 import { resolveR2Redirect } from "@/const";
-import { shareText } from "@/lib/share";
-import { toast } from "sonner";
+import ShareModal from "@/components/ShareModal";
 
 interface NovenaAudioDockProps {
   audioUrl: string;
@@ -30,6 +29,7 @@ export default function NovenaAudioDock({
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const [playingUrl, setPlayingUrl] = useState("");
 
@@ -114,19 +114,8 @@ export default function NovenaAudioDock({
     setCurrentTime(next);
   };
 
-  const handleShare = async () => {
-    if (typeof window === "undefined") return;
-    const pageUrl = window.location.href;
-    const result = await shareText({
-      title,
-      text: `Estou ouvindo ${title} no Sanctificare. ${pageUrl}`,
-    });
-
-    if (result.status === "copied") {
-      toast.success("Link copiado para compartilhar.");
-    } else if (result.status === "failed") {
-      toast.error("Não foi possível compartilhar agora.");
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   return (
@@ -217,6 +206,15 @@ export default function NovenaAudioDock({
           </div>
         </div>
       </div>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title={title}
+        description={subtitle}
+        url={typeof window !== "undefined" ? window.location.href : ""}
+        artworkUrl={coverUrl}
+      />
     </div>
   );
 }

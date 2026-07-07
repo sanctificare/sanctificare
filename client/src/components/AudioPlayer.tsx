@@ -10,8 +10,7 @@ import {
 } from "lucide-react";
 import { formatTime } from "@/data/rosary-audio";
 import { resolveR2Redirect } from "@/const";
-import { shareText } from "@/lib/share";
-import { toast } from "sonner";
+import ShareModal from "@/components/ShareModal";
 import {
   Dialog,
   DialogContent,
@@ -179,6 +178,7 @@ export default function AudioPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isSupportOpen, setIsSupportOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const activeWordRef = useRef<HTMLSpanElement>(null);
 
   const [playingUrl, setPlayingUrl] = useState("");
@@ -325,20 +325,8 @@ export default function AudioPlayer({
     if (nextVolume > 0) setIsMuted(false);
   };
 
-  const handleShare = async () => {
-    if (typeof window === "undefined") return;
-
-    const pageUrl = window.location.href;
-    const result = await shareText({
-      title,
-      text: `${description || `Estou ouvindo ${title} no Sanctificare.`} ${pageUrl}`,
-    });
-
-    if (result.status === "copied") {
-      toast.success("Link copiado para compartilhar.");
-    } else if (result.status === "failed") {
-      toast.error("Não foi possível compartilhar agora.");
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   const toggleMute = () => {
@@ -614,6 +602,15 @@ export default function AudioPlayer({
             </div>
           </DialogContent>
         </Dialog>
+
+        <ShareModal
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          title={title}
+          description={description}
+          url={typeof window !== "undefined" ? window.location.href : ""}
+          artworkUrl={artworkUrl}
+        />
       </div>
     </div>
   );
