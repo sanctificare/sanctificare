@@ -6,6 +6,8 @@ import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
 import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
 import ShareModal from "@/components/ShareModal";
+import { isMobileApp } from "@/const";
+import { shareText } from "@/lib/share";
 
 
 
@@ -174,8 +176,21 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
     }
   };
 
-  const handleShare = () => {
-    setIsShareOpen(true);
+  const handleShare = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      const pageUrl = window.location.href;
+      await shareText({
+        title: "Salmo Cantado",
+        text: `Ouça o Salmo Cantado da Liturgia de hoje no Sanctificare: ${pageUrl}`,
+      });
+    } else {
+      setIsShareOpen(true);
+    }
   };
 
   useEffect(() => {

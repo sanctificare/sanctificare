@@ -9,7 +9,8 @@ import {
   VolumeX,
 } from "lucide-react";
 import { formatTime } from "@/data/rosary-audio";
-import { resolveR2Redirect } from "@/const";
+import { resolveR2Redirect, isMobileApp } from "@/const";
+import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 import {
   Dialog,
@@ -325,8 +326,21 @@ export default function AudioPlayer({
     if (nextVolume > 0) setIsMuted(false);
   };
 
-  const handleShare = () => {
-    setIsShareOpen(true);
+  const handleShare = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      const pageUrl = window.location.href;
+      await shareText({
+        title,
+        text: `${description || `Estou ouvindo "${title}" no Sanctificare.`} ${pageUrl}`,
+      });
+    } else {
+      setIsShareOpen(true);
+    }
   };
 
   const toggleMute = () => {

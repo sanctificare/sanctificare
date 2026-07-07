@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, Share2, SlidersHorizontal, ListMusic, Volume2, VolumeX } from "lucide-react";
-import { resolveR2Redirect } from "@/const";
+import { resolveR2Redirect, isMobileApp } from "@/const";
+import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 
 interface NovenaAudioDockProps {
@@ -114,8 +115,21 @@ export default function NovenaAudioDock({
     setCurrentTime(next);
   };
 
-  const handleShare = () => {
-    setIsShareOpen(true);
+  const handleShare = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      const pageUrl = window.location.href;
+      await shareText({
+        title,
+        text: `Estou ouvindo ${title} no Sanctificare. ${pageUrl}`,
+      });
+    } else {
+      setIsShareOpen(true);
+    }
   };
 
   return (
