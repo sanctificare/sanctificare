@@ -21,26 +21,70 @@ import Privacy from "./pages/Privacy";
 import AppNav from "@/components/AppNav";
 import BrandSplash from "@/components/BrandSplash";
 
-const GlobalSearch = lazy(() => import("@/components/GlobalSearch"));
-const Home = lazy(() => import("./pages/Home"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Explore = lazy(() => import("./pages/Explore"));
-const Prayers = lazy(() => import("./pages/Prayers"));
-const RosaryGuided = lazy(() => import("./pages/RosaryGuided"));
-const Liturgy = lazy(() => import("./pages/Liturgy"));
-const LectioDivina = lazy(() => import("./pages/LectioDivina"));
-const ViaSacra = lazy(() => import("./pages/ViaSacra"));
-const VelaVirtual = lazy(() => import("./pages/VelaVirtual"));
-const MusicaSacra = lazy(() => import("./pages/MusicaSacra"));
-const Bible = lazy(() => import("./pages/Bible"));
-const Novenas = lazy(() => import("./pages/Novenas"));
-const NovenaDetails = lazy(() => import("./pages/NovenaDetails"));
-const Intentions = lazy(() => import("./pages/Intentions"));
-const Profile = lazy(() => import("./pages/Profile"));
-const DangerZone = lazy(() => import("./pages/DangerZone"));
-const DailyPlan = lazy(() => import("./pages/DailyPlan"));
-const Premium = lazy(() => import("./pages/Premium"));
-const VideosBiblicos = lazy(() => import("./pages/VideosBiblicos"));
+type PreloadableComponent<T extends React.ComponentType<any>> =
+  React.LazyExoticComponent<T> & { preload: () => Promise<unknown> };
+
+// lazy() com capacidade de pré-carregar o chunk sob demanda. Assim conseguimos
+// buscar e avaliar todos os módulos de rota enquanto o app está ocioso, evitando
+// a tela "Carregando..." (fallback do Suspense) a cada navegação.
+function lazyWithPreload<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+): PreloadableComponent<T> {
+  const Component = lazy(factory) as PreloadableComponent<T>;
+  Component.preload = factory;
+  return Component;
+}
+
+const GlobalSearch = lazyWithPreload(() => import("@/components/GlobalSearch"));
+const Home = lazyWithPreload(() => import("./pages/Home"));
+const Dashboard = lazyWithPreload(() => import("./pages/Dashboard"));
+const Explore = lazyWithPreload(() => import("./pages/Explore"));
+const Prayers = lazyWithPreload(() => import("./pages/Prayers"));
+const RosaryGuided = lazyWithPreload(() => import("./pages/RosaryGuided"));
+const Liturgy = lazyWithPreload(() => import("./pages/Liturgy"));
+const LectioDivina = lazyWithPreload(() => import("./pages/LectioDivina"));
+const ViaSacra = lazyWithPreload(() => import("./pages/ViaSacra"));
+const VelaVirtual = lazyWithPreload(() => import("./pages/VelaVirtual"));
+const MusicaSacra = lazyWithPreload(() => import("./pages/MusicaSacra"));
+const Bible = lazyWithPreload(() => import("./pages/Bible"));
+const Novenas = lazyWithPreload(() => import("./pages/Novenas"));
+const NovenaDetails = lazyWithPreload(() => import("./pages/NovenaDetails"));
+const Intentions = lazyWithPreload(() => import("./pages/Intentions"));
+const Profile = lazyWithPreload(() => import("./pages/Profile"));
+const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
+const DailyPlan = lazyWithPreload(() => import("./pages/DailyPlan"));
+const Premium = lazyWithPreload(() => import("./pages/Premium"));
+const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
+
+// Todas as rotas com chunk próprio; pré-carregadas quando o app fica ocioso.
+const PRELOADABLE_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
+  GlobalSearch,
+  Home,
+  Dashboard,
+  Explore,
+  Prayers,
+  RosaryGuided,
+  Liturgy,
+  LectioDivina,
+  ViaSacra,
+  VelaVirtual,
+  MusicaSacra,
+  Bible,
+  Novenas,
+  NovenaDetails,
+  Intentions,
+  Profile,
+  DangerZone,
+  DailyPlan,
+  Premium,
+  VideosBiblicos,
+];
+
+function preloadAllRoutes() {
+  for (const route of PRELOADABLE_ROUTES) {
+    void route.preload();
+  }
+}
 
 
 function SuspenseLoader() {
@@ -130,6 +174,25 @@ function App() {
     return () => {
       document.body.classList.remove("theme-contemplative-a");
     };
+  }, []);
+
+  // Pré-carrega os chunks de todas as rotas assim que o app fica ocioso.
+  // Depois disso, navegar entre recursos é instantâneo (sem "Carregando...").
+  useEffect(() => {
+    const ric = (window as typeof window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    }).requestIdleCallback;
+
+    if (typeof ric === "function") {
+      const id = ric(() => preloadAllRoutes(), { timeout: 2000 });
+      return () => {
+        (window as typeof window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+      };
+    }
+
+    const timer = window.setTimeout(preloadAllRoutes, 1000);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
