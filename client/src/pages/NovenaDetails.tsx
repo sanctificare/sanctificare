@@ -1,12 +1,11 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { applyImageFallback, getLoginUrl } from "@/const";
+import { applyImageFallback, getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
-import AudioPlayer from "@/components/AudioPlayer";
 import ExpandedMeditationPlayer from "@/components/ExpandedMeditationPlayer";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
@@ -94,6 +93,115 @@ export default function NovenaDetails() {
   const isLocked = selectedNovena?.category === "premium" && !isPremium;
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
   const [isExpandedPlayer, setIsExpandedPlayer] = useState(false);
+  const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
+
+  // Audio states
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [playingUrl, setPlayingUrl] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Resolve audio URL
+  useEffect(() => {
+    let active = true;
+    if (currentDayContent?.audioUrl && !isLocked) {
+      resolveR2Redirect(currentDayContent.audioUrl).then((url) => {
+        if (active) setPlayingUrl(url);
+      });
+    } else {
+      setPlayingUrl("");
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+    }
+    return () => {
+      active = false;
+    };
+  }, [currentDayContent?.audioUrl, isLocked]);
+
+  // Audio event listeners
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => {
+      if (Number.isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [playingUrl]);
+
+  // Sync Volume
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  // Handle active tab fallback based on audio availability
+  useEffect(() => {
+    if (currentDayContent && !currentDayContent.audioUrl) {
+      setActiveTab("text");
+    } else if (isLocked) {
+      setActiveTab("text");
+    } else {
+      setActiveTab("audio");
+    }
+  }, [currentDayContent, isLocked]);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
+  };
+
+  const handleSeek = (value: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = value;
+    setCurrentTime(value);
+  };
+
+  const handleRestart = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    setCurrentTime(0);
+    audio.play().then(() => setIsPlaying(true));
+  };
+
+  // Helper to format track timings
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
   // Intenção Particular da Novena
   const [intention, setIntention] = useState("");
@@ -349,7 +457,11 @@ export default function NovenaDetails() {
           </div>
 
           {/* Coluna Direita: Conteúdo de Leitura do Dia */}
-          <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-6 shadow-[0_12px_40px_oklch(0.22_0.07_260/0.08)]">
+          <div className={`rounded-2xl border transition-all duration-500 p-6 ${
+            activeTab === "audio"
+              ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
+              : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+          }`}>
             {currentDayContent ? (
               <>
                 {isLocked ? (
@@ -369,88 +481,223 @@ export default function NovenaDetails() {
                 ) : (
                   <div className="space-y-6">
                     
-                    {/* Cabeçalho do Dia */}
-                    <div className="border-b border-border/50 pb-4">
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-[oklch(0.75_0.12_75)]">Dia {safeDay}</span>
-                      <h2 className="font-serif text-2xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)] mt-1 leading-tight">
-                        {currentDayContent.title}
-                      </h2>
-                    </div>
-
-                    {/* Player de Áudio igual ao da Liturgia */}
+                    {/* Seleção de Abas do Conceito B */}
                     {currentDayContent.audioUrl && (
-                      <AudioPlayer
-                        audioUrl={currentDayContent.audioUrl}
-                        title={selectedNovena.name}
-                        description={`Dia ${safeDay}: ${currentDayContent.title}`}
-                        artworkUrl={getNovenaArt(selectedNovena.id).image}
-                      />
-                    )}
-
-                    {/* Exibição permanentemente destacada da Intenção do usuário durante a leitura */}
-                    {intention && (
-                      <div className="rounded-xl border border-rose-100 bg-rose-50/20 p-3.5 flex gap-2.5 items-start">
-                        <Heart size={14} className="text-rose-500 fill-rose-500/20 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <span className="text-[10px] uppercase tracking-wider font-bold text-rose-700/80">Rezando por esta Intenção:</span>
-                          <p className="text-xs font-serif italic text-rose-900/90 leading-normal mt-0.5">"{intention}"</p>
-                        </div>
+                      <div className="flex border-b border-white/10 dark:border-white/10 mb-6">
+                        <button
+                          onClick={() => setActiveTab("audio")}
+                          className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 ${
+                            activeTab === "audio"
+                              ? "border-amber-500 text-amber-500"
+                              : "border-transparent text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          <span>Áudio</span>
+                          {isPlaying && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => setActiveTab("text")}
+                          className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
+                            activeTab === "text"
+                              ? "border-amber-500 text-amber-600 dark:text-amber-400"
+                              : "border-transparent text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          Texto
+                        </button>
                       </div>
                     )}
 
-                    {/* Reflexão do Dia */}
-                    <div className="space-y-2">
-                      <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Meditação</span>
-                      <p className="text-sm font-sans leading-relaxed text-foreground/90 bg-muted/20 p-4 rounded-xl border border-border/25">
-                        {currentDayContent.reflection}
-                      </p>
-                    </div>
+                    {activeTab === "audio" && currentDayContent.audioUrl ? (
+                      /* ==========================================
+                         ABA ÁUDIO: Visual Navy + Gold + Glassmorphism
+                         ========================================== */
+                      <div className="space-y-6 animate-fade-in">
+                        {/* Cabeçalho do Dia */}
+                        <div className="text-center">
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80">Dia {safeDay}</span>
+                          <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight">
+                            {currentDayContent.title}
+                          </h2>
+                        </div>
 
-                    {/* Oração do Dia */}
-                    <div className="space-y-2">
-                      <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Oração</span>
-                      
-                      {sagradoCoracaoPrayerSections ? (
-                        <div className="space-y-4 font-sans text-sm leading-relaxed text-foreground/90">
-                          <div className="p-4 rounded-xl border border-border/40 bg-muted/10">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[oklch(0.30_0.07_260)] mb-2">
-                              1. Oração Inicial para Todos os Dias
-                            </h4>
-                            <p className="whitespace-pre-line text-xs font-sans leading-relaxed text-muted-foreground">
-                              {sagradoCoracaoPrayerSections.initialBody}
-                            </p>
+                        {/* Visual de Capa e Frase Devocional */}
+                        <div className="flex flex-col items-center justify-center my-6">
+                          <div className="relative w-36 h-36 mb-6">
+                            <div
+                              className={`absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-300 blur-sm transition-opacity duration-1000 ${
+                                isPlaying ? "opacity-90 animate-pulse" : "opacity-40"
+                              }`}
+                            />
+                            {isPlaying && (
+                              <div className="absolute inset-0 rounded-3xl bg-amber-500/25 blur-md animate-ping" style={{ animationDuration: '3s' }} />
+                            )}
+                            <img
+                              src={getNovenaArt(selectedNovena.id).image}
+                              alt={selectedNovena.name}
+                              className={`relative w-36 h-36 rounded-3xl object-cover z-10 border border-white/10 shadow-2xl transition-transform duration-[6000ms] ${
+                                isPlaying ? "scale-[1.03]" : "scale-100"
+                              }`}
+                            />
+                          </div>
+                          
+                          {/* Frase Devocional de Destaque */}
+                          <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
+                            "{currentDayContent.reflection.split('.')[0]}."
+                          </p>
+                        </div>
+
+                        {/* Controles de Áudio (Navy + Gold + Glassmorphism) */}
+                        <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
+                          {/* Progress bar */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                              {formatTime(currentTime)}
+                            </span>
+                            <input
+                              type="range"
+                              min={0}
+                              max={duration || 100}
+                              step={0.1}
+                              value={currentTime}
+                              onChange={(e) => handleSeek(Number(e.target.value))}
+                              className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                              style={{
+                                background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                                  duration > 0 ? (currentTime / duration) * 100 : 0
+                                }%, rgba(255,255,255,0.2) ${
+                                  duration > 0 ? (currentTime / duration) * 100 : 0
+                                }%)`,
+                              }}
+                            />
+                            <span className="text-[10px] text-slate-300 w-8 font-sans">
+                              -{formatTime(Math.max(duration - currentTime, 0))}
+                            </span>
                           </div>
 
-                          <div className="p-4 rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.75_0.12_75/0.03)]">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[oklch(0.75_0.12_75)] mb-2">
-                              2. Súplica Diária (Dia {safeDay})
-                            </h4>
-                            <p className="whitespace-pre-line font-sans">
-                              {currentDayContent.reflection}
-                            </p>
-                          </div>
+                          {/* Controls Buttons */}
+                          <div className="flex items-center justify-between px-2">
+                            <button
+                              onClick={handleRestart}
+                              className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                              title="Reiniciar áudio"
+                            >
+                              <RotateCcw size={15} />
+                            </button>
 
-                          <div className="p-4 rounded-xl border border-border/40 bg-muted/10">
-                            <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[oklch(0.30_0.07_260)] mb-2">
-                              3. Oração Final para Todos os Dias
-                            </h4>
-                            <p className="whitespace-pre-line text-xs font-sans leading-relaxed text-muted-foreground">
-                              {sagradoCoracaoPrayerSections.finalBody}
-                            </p>
+                            <button
+                              onClick={togglePlay}
+                              className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                              title={isPlaying ? "Pausar" : "Reproduzir"}
+                            >
+                              {isPlaying ? (
+                                <Pause size={16} fill="currentColor" />
+                              ) : (
+                                <Play size={16} fill="currentColor" className="ml-0.5" />
+                              )}
+                            </button>
+
+                            <div className="flex items-center gap-1 group">
+                              <button
+                                onClick={() => setIsMuted(!isMuted)}
+                                className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                              >
+                                {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="prose-prayer whitespace-pre-line rounded-xl border border-border/40 bg-muted/10 p-5 font-sans text-sm leading-relaxed text-foreground/90">
-                          {currentDayContent.prayer}
+                      </div>
+                    ) : (
+                      /* ==========================================
+                         ABA TEXTO: Visual Book / Cream Paper
+                         ========================================== */
+                      <div className="space-y-6 animate-fade-in">
+                        {/* Cabeçalho do Dia */}
+                        <div className="border-b border-border/40 pb-4">
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-[#bf9926]">Dia {safeDay}</span>
+                          <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#2d251e] mt-1 leading-tight">
+                            {currentDayContent.title}
+                          </h2>
                         </div>
-                      )}
-                    </div>
+
+                        {/* Exibição permanentemente destacada da Intenção do usuário durante a leitura */}
+                        {intention && (
+                          <div className="rounded-xl border border-rose-100 bg-rose-50/20 p-3.5 flex gap-2.5 items-start">
+                            <Heart size={14} className="text-rose-500 fill-rose-500/20 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <span className="text-[10px] uppercase tracking-wider font-bold text-rose-700/80">Rezando por esta Intenção:</span>
+                              <p className="text-xs font-serif italic text-rose-900/90 leading-normal mt-0.5">"{intention}"</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Meditação do Dia */}
+                        <div className="space-y-2">
+                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]">Meditação</span>
+                          <p className="text-sm font-serif leading-relaxed text-[#4a3b32] text-justify bg-[#f5f1e6]/40 p-4 rounded-xl border border-[#e8dfc7]/20">
+                            <span className="float-left text-4xl font-serif font-bold text-[#bf9926] mr-2 mt-1 leading-none select-none">
+                              {currentDayContent.reflection.charAt(0)}
+                            </span>
+                            {currentDayContent.reflection.slice(1)}
+                          </p>
+                        </div>
+
+                        {/* Oração do Dia */}
+                        <div className="space-y-2">
+                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]">Oração</span>
+                          
+                          {sagradoCoracaoPrayerSections ? (
+                            <div className="space-y-4 font-serif text-sm leading-relaxed text-[#4a3b32] text-justify">
+                              <div className="p-4 rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-2">
+                                  1. Oração Inicial para Todos os Dias
+                                </h4>
+                                <p className="whitespace-pre-line text-xs font-serif leading-relaxed text-[#7a6a5e]">
+                                  {sagradoCoracaoPrayerSections.initialBody}
+                                </p>
+                              </div>
+
+                              <div className="p-4 rounded-xl border border-[#bf9926]/30 bg-[#bf9926]/5">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-2">
+                                  2. Súplica Diária (Dia {safeDay})
+                                </h4>
+                                <p className="whitespace-pre-line font-serif">
+                                  {currentDayContent.reflection}
+                                </p>
+                              </div>
+
+                              <div className="p-4 rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-2">
+                                  3. Oração Final para Todos os Dias
+                                </h4>
+                                <p className="whitespace-pre-line text-xs font-serif leading-relaxed text-[#7a6a5e]">
+                                  {sagradoCoracaoPrayerSections.finalBody}
+                                </p>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="prose-prayer whitespace-pre-line rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20 p-5 font-serif text-sm leading-relaxed text-[#4a3b32] text-justify">
+                              {currentDayContent.prayer}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Botões de Ação */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
                       {currentDayContent.audioUrl && (
                         <Button
-                          onClick={() => setIsExpandedPlayer(true)}
+                          onClick={() => {
+                            if (audioRef.current) {
+                              audioRef.current.pause();
+                              setIsPlaying(false);
+                            }
+                            setIsExpandedPlayer(true);
+                          }}
                           className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs"
                         >
                           <Headphones size={15} className="mr-2" />
@@ -478,6 +725,8 @@ export default function NovenaDetails() {
 
         </div>
       </main>
+
+      {playingUrl && <audio ref={audioRef} src={playingUrl} />}
 
       {isExpandedPlayer && currentDayContent?.audioUrl && (
         <ExpandedMeditationPlayer
