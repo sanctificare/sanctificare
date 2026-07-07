@@ -23,6 +23,7 @@ import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import html2canvas from "html2canvas-pro";
+import { shareText, shareImage } from "@/lib/share";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -337,21 +338,23 @@ export default function Bible() {
     if (!text || !selectedBook || !selectedChapter) return;
     const fullText = `*${selectedBook.name} ${selectedChapter}*\n${text}\n\nLido via Sanctificare`;
 
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Sanctificare - ${selectedBook.name} ${selectedChapter}`,
-          text: fullText,
-        });
-        toast.success("Compartilhado!");
-      } catch (err) {
-        // Ignored
-      }
-    } else {
-      navigator.clipboard.writeText(fullText);
-      toast.success("Copiado! (Compartilhamento não suportado)");
+    const result = await shareText({
+      title: `Sanctificare - ${selectedBook.name} ${selectedChapter}`,
+      text: fullText,
+    });
+
+    if (result.status === "shared") {
+      toast.success("Compartilhado!");
+    } else if (result.status === "copied") {
+      toast.success("Copiado para a área de transferência!");
+    } else if (result.status === "failed") {
+      toast.error("Não foi possível compartilhar. Tente novamente.");
     }
-    setSelectedVerses([]);
+    // status "cancelled": usuário fechou o compartilhamento, sem feedback.
+
+    if (result.status !== "cancelled") {
+      setSelectedVerses([]);
+    }
   };
 
   const handleFavoriteSelected = () => {
@@ -449,38 +452,32 @@ export default function Bible() {
         allowTaint: true,
         scale: 2
       });
+
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/png")
+      );
       toast.dismiss(toastId);
-      canvas.toBlob(async (blob) => {
-        if (!blob) {
-          toast.error("Erro ao criar imagem.");
-          return;
-        }
-        const file = new File([blob], "verse_card.png", { type: "image/png" });
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: "Card Bíblico",
-              text: "Lido no Sanctificare"
-            });
-            toast.success("Compartilhado!");
-          } catch (e) {
-            // Ignored share cancels
-          }
-        } else {
-          toast.error("O dispositivo/navegador não suporta compartilhamento de imagem. Tentando copiar para área de transferência...");
-          try {
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                [file.type]: file
-              })
-            ]);
-            toast.success("Copiado como imagem!");
-          } catch (err) {
-            toast.error("Falha ao copiar. Baixe o card em seu celular.");
-          }
-        }
-      }, "image/png");
+
+      if (!blob) {
+        toast.error("Erro ao criar imagem.");
+        return;
+      }
+
+      const fileName = `sanctificare_${selectedBook?.abbrev ?? "card"}_${selectedChapter ?? ""}.png`;
+      const result = await shareImage(blob, {
+        fileName,
+        title: "Card Bíblico",
+        text: "Lido no Sanctificare",
+      });
+
+      if (result.status === "shared") {
+        toast.success("Compartilhado!");
+      } else if (result.status === "downloaded") {
+        toast.success("Card baixado com sucesso!");
+      } else if (result.status === "failed") {
+        toast.error("Não foi possível compartilhar o card. Tente baixá-lo.");
+      }
+      // status "cancelled": usuário fechou o compartilhamento, sem feedback.
     } catch (err) {
       toast.dismiss(toastId);
       toast.error("Erro ao processar imagem.");
