@@ -1,4 +1,4 @@
-import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl } from "@/const";
+import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -10,9 +10,13 @@ type UseAuthOptions = {
 function readCachedRuntimeUser() {
   if (typeof window === "undefined") return undefined;
   try {
+    if (!getStoredSessionToken()) {
+      return undefined;
+    }
     const raw = localStorage.getItem("app-runtime-user-info");
     if (!raw) return undefined;
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return parsed || undefined;
   } catch {
     return undefined;
   }
@@ -49,6 +53,7 @@ export function useAuth(options?: UseAuthOptions) {
     initialData: readCachedRuntimeUser,
     retry: false,
     refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 
   const logoutMutation = useMutation({
