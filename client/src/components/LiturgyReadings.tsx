@@ -1,10 +1,12 @@
-import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, BookOpen, Share2 } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "../../../server/routers";
 import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
 import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
+import { shareText } from "@/lib/share";
+import { toast } from "sonner";
 
 
 
@@ -172,6 +174,21 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
     }
   };
 
+  const handleShare = async () => {
+    if (typeof window === "undefined") return;
+    const pageUrl = window.location.href;
+    const result = await shareText({
+      title: "Salmo Cantado",
+      text: `Ouça o Salmo Cantado da Liturgia de hoje no Sanctificare: ${pageUrl}`,
+    });
+
+    if (result.status === "copied") {
+      toast.success("Link copiado para compartilhar.");
+    } else if (result.status === "failed") {
+      toast.error("Não foi possível compartilhar agora.");
+    }
+  };
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -246,33 +263,45 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
             </p>
           </div>
         </div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={togglePlay}
-          className="h-9 w-9 rounded-full bg-amber-500 text-white hover:bg-amber-600 hover:text-white shrink-0 shadow-md transition-all duration-300 hover:scale-105 flex items-center justify-center"
-        >
-          {isPlaying ? (
-            <svg
-              className="w-4 h-4 fill-current"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10 9v6m4-6v6" />
-            </svg>
-          ) : (
-            <svg
-              className="w-4 h-4 fill-current ml-0.5"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-            </svg>
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleShare}
+            className="h-9 w-9 rounded-full border border-amber-500/20 text-amber-600 hover:bg-amber-500/10 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 shrink-0 transition-all duration-300 flex items-center justify-center"
+            aria-label="Compartilhar salmo cantado"
+          >
+            <Share2 className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={togglePlay}
+            className="h-9 w-9 rounded-full bg-amber-500 text-white hover:bg-amber-600 hover:text-white shrink-0 shadow-md transition-all duration-300 hover:scale-105 flex items-center justify-center"
+          >
+            {isPlaying ? (
+              <svg
+                className="w-4 h-4 fill-current"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 9v6m4-6v6" />
+              </svg>
+            ) : (
+              <svg
+                className="w-4 h-4 fill-current ml-0.5"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              </svg>
+            )}
+          </Button>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 min-w-0 bg-black/5 dark:bg-white/5 p-2 rounded-lg">
