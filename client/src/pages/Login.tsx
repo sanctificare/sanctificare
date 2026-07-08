@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
-import BrandSplash from "@/components/BrandSplash";
 import { Spinner } from "@/components/ui/spinner";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";

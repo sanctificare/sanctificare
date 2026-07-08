@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
-import BrandSplash from "@/components/BrandSplash";
+import LoadingOverlay from "@/components/ui/LoadingOverlay";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { BookOpen, Users, Crown, Star,
@@ -298,7 +298,7 @@ export default function Home() {
     isMobileApp() &&
     (loading || (!sessionStorage.getItem('__cap_app_started') && !isAuthenticated))
   ) {
-    return <BrandSplash />;
+    return <LoadingOverlay message="Inicializando o app..." />;
   }
 
   return (
