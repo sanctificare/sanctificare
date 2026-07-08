@@ -811,14 +811,17 @@ export default function Liturgy() {
             {!isZenMode && (
               <div className="pt-6 border-t border-border">
                 {readingsAudio?.singedPsalm && (
-                  <div className="w-full max-w-sm mx-auto mb-6 bg-white dark:bg-card border border-border/80 rounded-2xl p-4 shadow-sm flex flex-col gap-3 text-center animate-fade-in text-foreground">
+                  <div className="w-full max-w-sm mx-auto mb-6 bg-white dark:bg-card border-2 border-amber-500/30 rounded-2xl p-5 shadow-[0_8px_30px_rgba(191,155,38,0.1)] flex flex-col gap-3.5 text-center animate-fade-in text-foreground transition-all duration-300 hover:shadow-[0_12px_35px_rgba(191,155,38,0.18)] hover:border-amber-500/50">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex-shrink-0">
+                      <div className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 flex-shrink-0">
                         <Play size={16} className={isPsalmPlaying ? "animate-pulse" : ""} />
                       </div>
                       <div className="text-left flex-1 min-w-0">
-                        <p className="text-xs font-bold text-foreground">Salmo Responsorial Cantado</p>
-                        <p className="text-[10px] text-muted-foreground truncate">
+                        <span className="inline-block text-[9px] uppercase tracking-widest font-extrabold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300 mb-1 leading-none">
+                          Recomendado
+                        </span>
+                        <p className="text-xs font-bold text-foreground leading-snug">Salmo Responsorial Cantado</p>
+                        <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                           {liturgy.psalm?.referencia || "Salmo Responsorial"}
                         </p>
                       </div>
