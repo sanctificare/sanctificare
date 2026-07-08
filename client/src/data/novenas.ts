@@ -112,7 +112,7 @@ function buildSagradoCoracaoDays(): NovenaDay[] {
     title: item.title,
     reflection: item.reflection,
     prayer: `${SAGRADO_CORACAO_INITIAL_PRAYER}\n\n${SAGRADO_CORACAO_FINAL_PRAYER}`,
-    audioUrl: `${SAGRADO_CORACAO_AUDIO_BASE_PATH}/dia-${index + 1}.mp3`,
+    audioUrl: "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/Novena%20ao%20Sagrado%20Cora%C3%A7%C3%A3o%20de%20Jesus.mp3",
   }));
 }
 
