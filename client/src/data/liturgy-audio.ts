@@ -48,10 +48,10 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
   const [yearStr, monthStr, dayStr] = dateIso.split("-");
   if (yearStr === "2026" && monthStr === "07") {
     const dayNum = parseInt(dayStr, 10);
-    // Temos áudios individuais na pasta de julho26 de 05 a 12 de julho
-    if (dayNum >= 5 && dayNum <= 12) {
+    // Temos áudios individuais na pasta de julho26 de 05 a 13 de julho
+    if (dayNum >= 5 && dayNum <= 13) {
       const formattedDate = `${dayStr}${monthStr}26`; // ex: 050726
-      
+
       const audio: LiturgyReadingsAudio = {
         firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/1leitura${formattedDate}.mp3`,
         gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`,
