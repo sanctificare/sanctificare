@@ -1,4 +1,4 @@
-import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken } from "@/const";
+import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken, isMobileApp } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -12,7 +12,7 @@ type UseAuthOptions = {
 function readCachedRuntimeUser() {
   if (typeof window === "undefined") return undefined;
   try {
-    if (!getStoredSessionToken()) {
+    if (isMobileApp() && !getStoredSessionToken()) {
       return undefined;
     }
     const raw = localStorage.getItem("app-runtime-user-info");
@@ -51,6 +51,7 @@ export function useAuth(options?: UseAuthOptions) {
   const [_, setLocation] = useLocation();
 
   const hasToken = typeof window !== "undefined" && !!getStoredSessionToken();
+  const enabled = typeof window !== "undefined" && (!isMobileApp() || hasToken);
 
   const meQuery = useQuery({
     queryKey: ["auth", "me"],
@@ -59,7 +60,7 @@ export function useAuth(options?: UseAuthOptions) {
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: 0,
-    enabled: hasToken,
+    enabled,
   });
 
   const logoutMutation = useMutation({
