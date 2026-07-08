@@ -4,7 +4,8 @@ import { applyImageFallback, getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX, X, PartyPopper } from "lucide-react";
+import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
@@ -92,6 +93,7 @@ export default function NovenaDetails() {
   const isLocked = selectedNovena?.category === "premium" && !isPremium;
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
 
   // Audio states
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -239,6 +241,8 @@ export default function NovenaDetails() {
     const done = progress[selectedNovena.id] ?? [];
     const alreadyDone = done.includes(safeDay);
     const nextDays = alreadyDone ? done.filter((day) => day !== safeDay) : [...done, safeDay].sort((a, b) => a - b);
+    const totalDays = selectedNovena.days.length;
+    const justCompleted = !alreadyDone && nextDays.length >= totalDays;
 
     const nextProgress = {
       ...progress,
@@ -258,12 +262,20 @@ export default function NovenaDetails() {
         prayerType: "novena",
         prayerName: `${selectedNovena.name} - Dia ${safeDay}`
       });
-      toast.success(`Dia ${safeDay} concluído. Persevere com fé na sua novena.`);
+      if (justCompleted) {
+        setShowCompletionModal(true);
+      } else {
+        toast.success(`Dia ${safeDay} concluído. Persevere com fé na sua novena.`);
+      }
       await utils.prayers.getRecentLogs.invalidate();
       await utils.prayers.getAllLogs.invalidate();
     } catch (err) {
       console.error("[Novena log error]", err);
-      toast.success(`Dia ${safeDay} marcado localmente.`);
+      if (justCompleted) {
+        setShowCompletionModal(true);
+      } else {
+        toast.success(`Dia ${safeDay} marcado localmente.`);
+      }
     }
   };
 
@@ -710,6 +722,70 @@ export default function NovenaDetails() {
       </main>
 
       {playingUrl && <audio ref={audioRef} src={playingUrl} />}
+
+      {/* Modal de Celebração – Novena Concluída */}
+      {showCompletionModal && selectedNovena && (() => {
+        const otherNovenas = NOVENAS.filter((n) => n.id !== selectedNovena.id);
+        const suggestion = otherNovenas[0];
+        const art = suggestion ? getNovenaArt(suggestion.id) : null;
+        return (
+          <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.55)" }}>
+            <div className="w-full max-w-sm bg-white dark:bg-stone-900 rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
+              {/* Header */}
+              <div className="relative bg-gradient-to-br from-[oklch(0.88_0.12_75)] to-[oklch(0.78_0.14_70)] px-6 pt-8 pb-6 text-center">
+                <button
+                  onClick={() => setShowCompletionModal(false)}
+                  className="absolute right-4 top-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center"
+                >
+                  <X size={14} className="text-[oklch(0.22_0.07_260)]" />
+                </button>
+                <div className="w-16 h-16 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3 shadow-inner">
+                  <PartyPopper size={28} className="text-[oklch(0.55_0.14_70)]" />
+                </div>
+                <h2 className="font-display text-2xl font-black text-[oklch(0.18_0.07_260)] mb-1">Novena Concluída!</h2>
+                <p className="text-sm text-[oklch(0.30_0.05_260)] font-serif">
+                  Parabéns! Você completou 9 dias de oração com a <span className="font-bold">{selectedNovena.name}</span>.
+                </p>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5">
+                <p className="text-xs text-muted-foreground text-center mb-4 font-serif italic">
+                  "Perseverai na oração, vigilantes e agradecidos." — Cl 4,2
+                </p>
+
+                {suggestion && art && (
+                  <>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Continue sua jornada</p>
+                    <Link href={getNovenaPath(suggestion)} onClick={() => setShowCompletionModal(false)}>
+                      <div className="flex items-center gap-3 rounded-2xl border border-border p-3 hover:bg-muted/40 transition-colors cursor-pointer">
+                        <img
+                          src={art.image}
+                          alt={suggestion.name}
+                          className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
+                          onError={(event) => applyImageFallback(event.currentTarget)}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-foreground truncate">{suggestion.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{suggestion.subtitle}</p>
+                        </div>
+                        <ArrowLeft size={14} className="text-muted-foreground rotate-180 flex-shrink-0" />
+                      </div>
+                    </Link>
+                  </>
+                )}
+
+                <Button
+                  className="w-full mt-4 bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold"
+                  onClick={() => setShowCompletionModal(false)}
+                >
+                  Fechar
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
