@@ -363,14 +363,14 @@ export default function NovenaDetails() {
               </p>
               <div className="flex items-center justify-between border-t border-border pt-3">
                 <span className="text-xs font-semibold text-muted-foreground">Progresso</span>
-                <span className="text-xs font-bold text-[oklch(0.22_0.07_260)]">{currentCompleted.length}/9 dias concluídos</span>
+                <span className="text-xs font-bold text-[oklch(0.22_0.07_260)]">{currentCompleted.length}/{selectedNovena.days.length} dias concluídos</span>
               </div>
             </div>
 
-            {/* Barra de Progresso de 9 Dias (Estilo Hallow) */}
-            <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-5 shadow-[0_12px_40px_oklch(0.22_0.07_260/0.08)]">
+            {/* Barra de Progresso de 9 Dias – visível apenas em desktop (lg+) */}
+            <div className="hidden lg:block rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-5 shadow-[0_12px_40px_oklch(0.22_0.07_260/0.08)]">
               <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold mb-3">Progresso da Jornada</p>
-              <div className="grid grid-cols-5 gap-2 justify-items-center">
+              <div className="grid grid-cols-9 gap-1.5 justify-items-center">
                 {Array.from({ length: 9 }, (_, idx) => {
                   const dayNum = idx + 1;
                   const isDone = currentCompleted.includes(dayNum);
@@ -381,7 +381,7 @@ export default function NovenaDetails() {
                       key={dayNum}
                       onClick={() => setSelectedDay(dayNum)}
                       disabled={isLocked}
-                      className={`relative w-10 h-10 rounded-full flex items-center justify-center font-sans text-xs font-bold transition-all ${
+                      className={`relative w-8 h-8 rounded-full flex items-center justify-center font-sans text-[11px] font-bold transition-all ${
                         isActive
                           ? "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm"
                           : isDone
@@ -391,11 +391,10 @@ export default function NovenaDetails() {
                       title={`Ir para o Dia ${dayNum}`}
                     >
                       {isDone ? (
-                        <CheckCircle2 size={15} className="text-emerald-600 fill-emerald-600/10" />
+                        <CheckCircle2 size={13} className="text-emerald-600 fill-emerald-600/10" />
                       ) : (
                         dayNum
                       )}
-                      
                       {isActive && (
                         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[oklch(0.75_0.12_75)]" />
                       )}
@@ -490,8 +489,61 @@ export default function NovenaDetails() {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    
-                    {/* Seleção de Abas do Conceito B */}
+
+                    {/* Seletor de Dias – mobile (visível apenas abaixo de lg) */}
+                    <div className="lg:hidden">
+                      <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold mb-2">Progresso da Jornada</p>
+                      <div className="grid grid-cols-9 gap-1 justify-items-center">
+                        {Array.from({ length: 9 }, (_, idx) => {
+                          const dayNum = idx + 1;
+                          const isDone = currentCompleted.includes(dayNum);
+                          const isActive = dayNum === safeDay;
+                          return (
+                            <button
+                              key={dayNum}
+                              onClick={() => setSelectedDay(dayNum)}
+                              disabled={isLocked}
+                              className={`relative w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ${
+                                isActive
+                                  ? "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm"
+                                  : isDone
+                                  ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600"
+                                  : "bg-white/10 text-muted-foreground border border-transparent hover:bg-white/20"
+                              }`}
+                              title={`Ir para o Dia ${dayNum}`}
+                            >
+                              {isDone ? <CheckCircle2 size={13} className="text-emerald-600" /> : dayNum}
+                              {isActive && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[oklch(0.75_0.12_75)]" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Navegação Anterior / Próximo */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={() => setSelectedDay((d) => Math.max(1, d - 1))}
+                        disabled={safeDay <= 1}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-2 py-1.5 rounded-lg hover:bg-white/10"
+                      >
+                        <ArrowLeft size={13} />
+                        Dia {safeDay - 1}
+                      </button>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                        {safeDay}/{selectedNovena.days.length}
+                      </span>
+                      <button
+                        onClick={() => setSelectedDay((d) => Math.min(selectedNovena.days.length, d + 1))}
+                        disabled={safeDay >= selectedNovena.days.length}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-2 py-1.5 rounded-lg hover:bg-white/10"
+                      >
+                        Dia {safeDay + 1}
+                        <ArrowLeft size={13} className="rotate-180" />
+                      </button>
+                    </div>
+
+                    {/* Seleção de Abas Áudio / Texto */}
                     {currentDayContent.audioUrl && (
                       <div className="flex border-b border-white/10 dark:border-white/10 mb-6">
                         <button
@@ -533,6 +585,17 @@ export default function NovenaDetails() {
                           </h2>
                         </div>
 
+                        {/* Intenção particular – visível também no áudio */}
+                        {intention && (
+                          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 flex gap-2.5 items-start">
+                            <Heart size={13} className="text-rose-400 fill-rose-400/20 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <span className="text-[10px] uppercase tracking-wider font-bold text-rose-300/80">Rezando por:</span>
+                              <p className="text-xs font-serif italic text-rose-200/90 leading-normal mt-0.5">"{intention}"</p>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Visual de Capa e Frase Devocional */}
                         <div className="flex flex-col items-center justify-center my-6">
                           <div className="relative w-36 h-36 mb-6">
@@ -555,7 +618,7 @@ export default function NovenaDetails() {
                           
                           {/* Frase Devocional de Destaque */}
                           <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
-                            "{currentDayContent.reflection.split('.')[0]}."
+                            {`"${currentDayContent.reflection.split('.')[0]}."`}
                           </p>
                         </div>
 
@@ -701,10 +764,14 @@ export default function NovenaDetails() {
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
                       <Button
                         onClick={toggleDayAsComplete}
-                        className="w-full sm:w-auto bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-bold text-xs"
+                        className={`w-full sm:w-auto font-bold text-xs transition-colors ${
+                          currentCompleted.includes(safeDay)
+                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                            : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
+                        }`}
                       >
-                        <CheckCircle2 size={15} className="mr-2" />
-                        {currentCompleted.includes(safeDay) ? "Desmarcar Dia" : `Marcar Dia ${safeDay} como Rezado`}
+                        <CheckCircle2 size={15} className={`mr-2 ${ currentCompleted.includes(safeDay) ? "fill-white/20" : "" }`} />
+                        {currentCompleted.includes(safeDay) ? `✓ Dia ${safeDay} Rezado — Desmarcar` : `Marcar Dia ${safeDay} como Rezado`}
                       </Button>
                     </div>
 
