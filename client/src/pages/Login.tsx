@@ -12,6 +12,7 @@ import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } f
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
 import BrandSplash from "@/components/BrandSplash";
+import { Spinner } from "@/components/ui/spinner";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -224,7 +225,14 @@ export default function Login() {
   const isPending = loginMutation.isPending || registerMutation.isPending;
 
   if (loading) {
-    return <BrandSplash />;
+    return (
+      <div className="fixed inset-0 bg-[oklch(0.12_0.02_260/0.95)] flex items-center justify-center">
+        <div className="rounded-3xl border border-white/10 bg-white/10 p-8 text-center backdrop-blur-xl shadow-xl">
+          <Spinner className="h-12 w-12 text-amber-200 mx-auto mb-4" />
+          <p className="text-sm text-white/90">Verificando sua sessão...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
