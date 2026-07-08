@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { trpc } from "@/lib/trpc";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { toast } from "sonner";
 import LiturgyReadings from "@/components/LiturgyReadings";
-import AudioPlayer from "@/components/AudioPlayer";
+import { getPrayerArt } from "@/lib/cardArt";
 import { getLiturgyAudioByDate, getLiturgyReadingsAudioByDate, type LiturgyDailyAudioTrack } from "@/data/liturgy-audio";
 import { getDailyContent } from "@/data/daily";
 
@@ -271,6 +271,122 @@ export default function Liturgy() {
     setAudioUnavailable(true);
   }, [liturgy?.liturgyDate]);
 
+  const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+  const [playingUrl, setPlayingUrl] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    const currentTrack = playlist[currentTrackIndex];
+    if (currentTrack?.url) {
+      resolveR2Redirect(currentTrack.url).then((url) => {
+        if (active) setPlayingUrl(url);
+      });
+    } else {
+      setPlayingUrl("");
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+    }
+    return () => {
+      active = false;
+    };
+  }, [playlist, currentTrackIndex]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => {
+      if (Number.isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+      if (currentTrackIndex < playlist.length - 1) {
+        setCurrentTrackIndex((prev) => prev + 1);
+      }
+    };
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [playingUrl, currentTrackIndex, playlist.length]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !playingUrl) return;
+
+    if (currentTrackIndex > 0) {
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
+  }, [playingUrl, currentTrackIndex]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    if (playlist.length === 0) {
+      setActiveTab("text");
+    } else {
+      setActiveTab("audio");
+    }
+  }, [playlist]);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
+  };
+
+  const handleSeek = (value: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = value;
+    setCurrentTime(value);
+  };
+
+  const handleRestart = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    setCurrentTime(0);
+    audio.play().then(() => setIsPlaying(true));
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
   const formattedDate = selectedDate.toLocaleDateString("pt-BR", {
     weekday: "long",
     day: "numeric",
@@ -424,42 +540,170 @@ export default function Liturgy() {
         {/* Content */}
         {liturgy && (
           <>
+            <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
+            <div className={`rounded-2xl border transition-all duration-500 p-6 ${
+              activeTab === "audio" && playlist.length > 0
+                ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
+                : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+            }`}>
+              {/* Seleção de Abas do Conceito B (se houver playlist) */}
+              {playlist.length > 0 && (
+                <div className="flex border-b border-white/10 dark:border-white/10 mb-6">
+                  <button
+                    onClick={() => setActiveTab("audio")}
+                    className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 ${
+                      activeTab === "audio"
+                        ? "border-amber-500 text-amber-500"
+                        : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <span>Áudio</span>
+                    {isPlaying && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("text")}
+                    className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
+                      activeTab === "text"
+                        ? "border-amber-500 text-amber-600 dark:text-amber-400"
+                        : "border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Texto
+                  </button>
+                </div>
+              )}
 
-            {playlist.length > 0 && playlist[currentTrackIndex] && (
-              <AudioPlayer
-                key={`${playlist[currentTrackIndex].url}-${currentTrackIndex}`}
-                audioUrl={playlist[currentTrackIndex].url}
-                title={playlist[currentTrackIndex].title}
-                description={playlist[currentTrackIndex].description}
-                supportTitle="Texto da leitura"
-                supportDescription="Acompanhe o texto enquanto escuta"
-                supportText={playlist[currentTrackIndex].supportText}
-                autoPlay={currentTrackIndex > 0}
-                onTrackEnd={() => {
-                  if (currentTrackIndex < playlist.length - 1) {
-                    setCurrentTrackIndex((prev) => prev + 1);
-                  }
-                }}
-              />
-            )}
+              {activeTab === "audio" && playlist.length > 0 && playlist[currentTrackIndex] ? (
+                /* ==========================================
+                   ABA ÁUDIO: Visual Navy + Gold + Glassmorphism
+                   ========================================== */
+                <div className="space-y-6 animate-fade-in text-center">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80">
+                      {liturgy.color ? `Cor Litúrgica: ${liturgy.color}` : "LITURGIA DIÁRIA"}
+                    </span>
+                    <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight max-w-md mx-auto">
+                      {liturgy.celebration || "Leituras do Dia"}
+                    </h2>
+                  </div>
 
-            {playlist.length === 0 && audioUnavailable && !isZenMode && (
-              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-100">
-                <p className="font-semibold">Áudio indisponível para esta data</p>
-                <p className="mt-1 text-xs opacity-80">
-                  As leituras em texto seguem disponíveis abaixo para sua oração e acompanhamento da liturgia.
-                </p>
-              </div>
-            )}
+                  {/* Visual de Capa e Frase Devocional */}
+                  <div className="flex flex-col items-center justify-center my-6">
+                    <div className="relative w-36 h-36 mb-6">
+                      <div
+                        className={`absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-300 blur-sm transition-opacity duration-1000 ${
+                          isPlaying ? "opacity-90 animate-pulse" : "opacity-40"
+                        }`}
+                      />
+                      {isPlaying && (
+                        <div className="absolute inset-0 rounded-3xl bg-amber-500/25 blur-md animate-ping" style={{ animationDuration: '3s' }} />
+                      )}
+                      <img
+                        src={getPrayerArt("liturgia").image}
+                        alt="Liturgia Diária"
+                        className={`relative w-36 h-36 rounded-3xl object-cover z-10 border border-white/10 shadow-2xl transition-transform duration-[6000ms] ${
+                          isPlaying ? "scale-[1.03]" : "scale-100"
+                        }`}
+                      />
+                    </div>
 
-            <div className={fontFamily === "serif" ? "font-serif" : "font-sans"}>
-              <LiturgyReadings
-                liturgy={liturgy}
-                fontSize={fontSize}
-                isZenMode={isZenMode}
-                theme={theme}
-              />
+                    {/* Frase Devocional de Destaque */}
+                    <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
+                      "{dailyContent.verse.text}"
+                      <span className="block text-[10px] not-italic uppercase tracking-wider text-amber-500/60 mt-1 font-sans">
+                        — {dailyContent.verse.reference}
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Controles de Áudio (Navy + Gold + Glassmorphism) */}
+                  <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
+                    {/* Progress bar */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                        {formatTime(currentTime)}
+                      </span>
+                      <input
+                        type="range"
+                        min={0}
+                        max={duration || 100}
+                        step={0.1}
+                        value={currentTime}
+                        onChange={(e) => handleSeek(Number(e.target.value))}
+                        className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                        style={{
+                          background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                            duration > 0 ? (currentTime / duration) * 100 : 0
+                          }%, rgba(255,255,255,0.2) ${
+                            duration > 0 ? (currentTime / duration) * 100 : 0
+                          }%)`,
+                        }}
+                      />
+                      <span className="text-[10px] text-slate-300 w-8 font-sans">
+                        -{formatTime(Math.max(duration - currentTime, 0))}
+                      </span>
+                    </div>
+
+                    {/* Controls Buttons */}
+                    <div className="flex items-center justify-between px-2">
+                      <button
+                        onClick={handleRestart}
+                        className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                        title="Reiniciar áudio"
+                      >
+                        <RotateCcw size={15} />
+                      </button>
+
+                      <button
+                        onClick={togglePlay}
+                        className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                        title={isPlaying ? "Pausar" : "Reproduzir"}
+                      >
+                        {isPlaying ? (
+                          <Pause size={16} fill="currentColor" />
+                        ) : (
+                          <Play size={16} fill="currentColor" className="ml-0.5" />
+                        )}
+                      </button>
+
+                      <div className="flex items-center gap-1 group">
+                        <button
+                          onClick={() => setIsMuted(!isMuted)}
+                          className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                        >
+                          {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                /* ==========================================
+                   ABA TEXTO: Visual Book / Cream Paper
+                   ========================================== */
+                <div className="space-y-6 animate-fade-in text-[#2d251e]">
+                  {playlist.length === 0 && audioUnavailable && !isZenMode && (
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900">
+                      <p className="font-semibold">Áudio indisponível para esta data</p>
+                      <p className="mt-1 text-xs opacity-80">
+                        As leituras em texto seguem disponíveis abaixo para sua oração e acompanhamento da liturgia.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className={fontFamily === "serif" ? "font-serif" : "font-sans"}>
+                    <LiturgyReadings
+                      liturgy={liturgy}
+                      fontSize={fontSize}
+                      isZenMode={isZenMode}
+                      theme={theme}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Log button */}
