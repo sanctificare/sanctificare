@@ -688,10 +688,7 @@ export default function NovenaDetails() {
                         <div className="space-y-2">
                           <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]">Meditação</span>
                           <p className="text-sm font-serif leading-relaxed text-[#4a3b32] text-justify bg-[#f5f1e6]/40 p-4 rounded-xl border border-[#e8dfc7]/20">
-                            <span className="float-left text-4xl font-serif font-bold text-[#bf9926] mr-2 mt-1 leading-none select-none">
-                              {currentDayContent.reflection.charAt(0)}
-                            </span>
-                            {currentDayContent.reflection.slice(1)}
+                            {currentDayContent.reflection}
                           </p>
                         </div>
 
