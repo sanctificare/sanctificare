@@ -697,16 +697,6 @@ export default function NovenaDetails() {
                           </div>
                         )}
 
-                        {/* Meditação do Dia */}
-                        <div className="space-y-3">
-                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]/85">Meditação</span>
-                          <div className="bg-[#fdfbf7] dark:bg-stone-900 border border-[#e8dfc7]/50 dark:border-stone-800 p-5 sm:p-6 rounded-2xl shadow-sm">
-                            <p className={`font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
-                              {currentDayContent.reflection}
-                            </p>
-                          </div>
-                        </div>
-
                         {/* Divisor Decorativo Litúrgico */}
                         <div className="flex items-center justify-center gap-4 py-2 opacity-50 select-none">
                           <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#e8dfc7]" />
