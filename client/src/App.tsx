@@ -88,11 +88,12 @@ function SuspenseLoader() {
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Suspense fallback={<SuspenseLoader />}>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={isMobileApp() && !isAuthenticated ? Login : Home} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={() => <ProtectedRoute component={Dashboard} />} />
         <Route path="/explore" component={() => <ProtectedRoute component={Explore} />} />

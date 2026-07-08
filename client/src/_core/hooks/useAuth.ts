@@ -50,6 +50,8 @@ export function useAuth(options?: UseAuthOptions) {
   const queryClient = useQueryClient();
   const [_, setLocation] = useLocation();
 
+  const hasToken = typeof window !== "undefined" && !!getStoredSessionToken();
+
   const meQuery = useQuery({
     queryKey: ["auth", "me"],
     queryFn: fetchMe,
@@ -57,6 +59,7 @@ export function useAuth(options?: UseAuthOptions) {
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: 0,
+    enabled: hasToken,
   });
 
   const logoutMutation = useMutation({

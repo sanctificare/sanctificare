@@ -149,14 +149,70 @@ function calculateStreak(logs: any[] | undefined) {
 
 export default function Dashboard() {
   const { user, isAuthenticated, loading } = useAuth();
-  const { data: allLogs, isLoading: isLogsLoading } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: liturgy, isLoading: isLiturgyLoading } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
+
+  const formatDateStr = (dateInput: string | Date) => {
+    const d = new Date(dateInput);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const todayStr = formatDateStr(new Date());
+
+  const { data: allLogsFromServer, isLoading: isLogsLoading } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: liturgyFromServer, isLoading: isLiturgyLoading } = trpc.liturgy.getByDate.useQuery(undefined, { enabled: isAuthenticated });
   const { data: dailyPlanFromServer, isLoading: isDailyPlanLoading } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
 
+  const [allLogs, setAllLogs] = useState<any[]>([]);
+  const [liturgy, setLiturgy] = useState<any>(null);
   const [dailyPlan, setDailyPlan] = useState<any>(null);
   const [prayingId, setPrayingId] = useState<number | null>(null);
   const [isOffline, setIsOffline] = useState(typeof window !== "undefined" ? !navigator.onLine : false);
 
+  // Cache e carregamento offline dos logs/streak
+  useEffect(() => {
+    if (allLogsFromServer) {
+      setAllLogs(allLogsFromServer);
+      localStorage.setItem("sanctificare_offline_all_logs", JSON.stringify(allLogsFromServer));
+    }
+  }, [allLogsFromServer]);
+
+  useEffect(() => {
+    if (!allLogsFromServer) {
+      try {
+        const saved = localStorage.getItem("sanctificare_offline_all_logs");
+        if (saved) {
+          setAllLogs(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Erro ao ler logs offline no dashboard:", err);
+      }
+    }
+  }, [allLogsFromServer]);
+
+  // Cache e carregamento offline da liturgia diária
+  useEffect(() => {
+    if (liturgyFromServer) {
+      setLiturgy(liturgyFromServer);
+      localStorage.setItem(`sanctificare_liturgy_cache_${todayStr}`, JSON.stringify(liturgyFromServer));
+    }
+  }, [liturgyFromServer, todayStr]);
+
+  useEffect(() => {
+    if (!liturgyFromServer) {
+      try {
+        const saved = localStorage.getItem(`sanctificare_liturgy_cache_${todayStr}`);
+        if (saved) {
+          setLiturgy(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Erro ao ler liturgia offline no dashboard:", err);
+      }
+    }
+  }, [liturgyFromServer, todayStr]);
+
+  // Cache e carregamento offline do plano diário
   useEffect(() => {
     if (dailyPlanFromServer) {
       setDailyPlan(dailyPlanFromServer);
@@ -189,8 +245,31 @@ export default function Dashboard() {
   }, []);
 
   const utils = trpc.useUtils();
-  const { data: intentions, isLoading: isIntentionsLoading } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: intentionsFromServer, isLoading: isIntentionsLoading } = trpc.intentions.list.useQuery(undefined, { enabled: isAuthenticated });
   const { data: myPrayedIntentions } = trpc.intentions.myPrayed.useQuery(undefined, { enabled: isAuthenticated });
+
+  const [intentions, setIntentions] = useState<any[]>([]);
+
+  // Cache e carregamento offline de intenções
+  useEffect(() => {
+    if (intentionsFromServer) {
+      setIntentions(intentionsFromServer);
+      localStorage.setItem("sanctificare_offline_intentions", JSON.stringify(intentionsFromServer));
+    }
+  }, [intentionsFromServer]);
+
+  useEffect(() => {
+    if (!intentionsFromServer) {
+      try {
+        const saved = localStorage.getItem("sanctificare_offline_intentions");
+        if (saved) {
+          setIntentions(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Erro ao ler intenções offline no dashboard:", err);
+      }
+    }
+  }, [intentionsFromServer]);
 
   const prayMutation = trpc.intentions.pray.useMutation({
     onSuccess: async (res) => {
@@ -328,7 +407,7 @@ export default function Dashboard() {
                   <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
                     Bem-vindo, {firstName}
                   </h1>
-                  {isLogsLoading ? (
+                  {isLogsLoading && allLogs.length === 0 ? (
                     <Skeleton className="h-6 w-32 rounded-full" />
                   ) : streak.currentStreak > 0 ? (
                     <div className="bg-amber-500/20 text-amber-200 border border-amber-500/30 rounded-full px-3 py-1 flex items-center gap-1.5 text-xs font-semibold animate-pulse">
@@ -497,7 +576,7 @@ export default function Dashboard() {
                   </div>
                   <div className="relative z-10 mt-auto">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      {isLiturgyLoading ? (
+                      {isLiturgyLoading && !liturgy ? (
                         <>
                           <Skeleton className="h-5 w-28 rounded" />
                           <Skeleton className="h-4 w-44 rounded" />
@@ -514,7 +593,7 @@ export default function Dashboard() {
                       )}
                     </div>
                     <h3 className="font-display text-xl font-bold text-white mb-1">Liturgia Diária</h3>
-                    {isLiturgyLoading ? (
+                    {isLiturgyLoading && !liturgy ? (
                       <Skeleton className="h-4 w-4/5 rounded" />
                     ) : (
                       <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1 italic max-w-xl">
@@ -548,7 +627,7 @@ export default function Dashboard() {
                     </div>
                     
                     <div className="relative z-10 my-4 flex-1 flex flex-col justify-center">
-                      {isDailyPlanLoading ? (
+                      {isDailyPlanLoading && !dailyPlan ? (
                         <>
                           <div className="flex items-baseline justify-between mb-2">
                             <h3 className="font-display text-lg font-bold text-white">Plano Diário</h3>
@@ -574,7 +653,7 @@ export default function Dashboard() {
                     </div>
                     
                     <div className="relative z-10 mt-auto">
-                      {isDailyPlanLoading ? (
+                      {isDailyPlanLoading && !dailyPlan ? (
                         <Skeleton className="h-4 w-5/6 rounded bg-white/20" />
                       ) : (
                         <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-1">
@@ -784,7 +863,7 @@ export default function Dashboard() {
             <blockquote className="font-serif text-lg sm:text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
               "{dynamicVerse.text}"
             </blockquote>
-            {isLiturgyLoading ? (
+            {isLiturgyLoading && !liturgy ? (
               <Skeleton className="h-4 w-32 mx-auto rounded" />
             ) : (
               <p className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[oklch(0.45_0.12_70)] dark:text-[oklch(0.78_0.09_78)]">
@@ -808,7 +887,7 @@ export default function Dashboard() {
               <div className="divider-gold mb-4" />
               
               <div className="space-y-3">
-                {isIntentionsLoading ? (
+                 {isIntentionsLoading && intentions.length === 0 ? (
                   Array.from({ length: 3 }).map((_, idx) => (
                     <div key={`intentions-skeleton-${idx}`} className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/10 dark:bg-black/5">
                       <div className="flex-1 min-w-0 pr-4 space-y-2">
