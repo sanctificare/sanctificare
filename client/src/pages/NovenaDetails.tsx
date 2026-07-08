@@ -4,7 +4,7 @@ import { applyImageFallback, getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX, X, PartyPopper } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX, X, PartyPopper, Minus, Plus } from "lucide-react";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
@@ -94,6 +94,19 @@ export default function NovenaDetails() {
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("sanctificare_novenas_font_size") as any) || "md";
+    }
+    return "md";
+  });
+
+  const fontSizeClasses = {
+    sm: "text-xs md:text-sm leading-relaxed",
+    md: "text-sm md:text-base leading-relaxed",
+    lg: "text-base md:text-lg leading-loose",
+    xl: "text-lg md:text-xl leading-loose",
+  };
 
   // Audio states
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -664,9 +677,9 @@ export default function NovenaDetails() {
                       /* ==========================================
                          ABA TEXTO: Visual Book / Cream Paper
                          ========================================== */
-                      <div className="space-y-6 animate-fade-in">
+                      <div className="space-y-8 animate-fade-in">
                         {/* Cabeçalho do Dia */}
-                        <div className="border-b border-border/40 pb-4">
+                        <div className="border-b border-[#e8dfc7]/40 pb-4">
                           <span className="text-[10px] uppercase font-bold tracking-widest text-[#bf9926]">Dia {safeDay}</span>
                           <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#2d251e] mt-1 leading-tight">
                             {currentDayContent.title}
@@ -675,8 +688,8 @@ export default function NovenaDetails() {
 
                         {/* Exibição permanentemente destacada da Intenção do usuário durante a leitura */}
                         {intention && (
-                          <div className="rounded-xl border border-rose-100 bg-rose-50/20 p-3.5 flex gap-2.5 items-start">
-                            <Heart size={14} className="text-rose-500 fill-rose-500/20 mt-0.5 flex-shrink-0" />
+                          <div className="rounded-2xl border border-rose-200 bg-rose-50/30 p-4 flex gap-3 items-start shadow-sm">
+                            <Heart size={16} className="text-rose-500 fill-rose-500/20 mt-0.5 flex-shrink-0 animate-pulse" />
                             <div>
                               <span className="text-[10px] uppercase tracking-wider font-bold text-rose-700/80">Rezando por esta Intenção:</span>
                               <p className="text-xs font-serif italic text-rose-900/90 leading-normal mt-0.5">"{intention}"</p>
@@ -685,49 +698,62 @@ export default function NovenaDetails() {
                         )}
 
                         {/* Meditação do Dia */}
-                        <div className="space-y-2">
-                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]">Meditação</span>
-                          <p className="text-sm font-serif leading-relaxed text-[#4a3b32] text-justify bg-[#f5f1e6]/40 p-4 rounded-xl border border-[#e8dfc7]/20">
-                            {currentDayContent.reflection}
-                          </p>
+                        <div className="space-y-3">
+                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]/85">Meditação</span>
+                          <div className="bg-[#fdfbf7] dark:bg-stone-900 border border-[#e8dfc7]/50 dark:border-stone-800 p-5 sm:p-6 rounded-2xl shadow-sm">
+                            <p className={`font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
+                              {currentDayContent.reflection}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Divisor Decorativo Litúrgico */}
+                        <div className="flex items-center justify-center gap-4 py-2 opacity-50 select-none">
+                          <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#e8dfc7]" />
+                          <svg className="w-4 h-4 text-[#bf9926]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 2v20M2 12h20" strokeLinecap="round" />
+                          </svg>
+                          <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#e8dfc7]" />
                         </div>
 
                         {/* Oração do Dia */}
-                        <div className="space-y-2">
-                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]">Oração</span>
+                        <div className="space-y-3">
+                          <span className="text-[10px] uppercase tracking-widest font-bold text-[#8a7a6e]/85">Oração</span>
                           
                           {sagradoCoracaoPrayerSections ? (
-                            <div className="space-y-4 font-serif text-sm leading-relaxed text-[#4a3b32] text-justify">
-                              <div className="p-4 rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-2">
+                            <div className="space-y-6">
+                              <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
                                   1. Oração Inicial para Todos os Dias
                                 </h4>
-                                <p className="whitespace-pre-line text-xs font-serif leading-relaxed text-[#7a6a5e]">
+                                <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
                                   {sagradoCoracaoPrayerSections.initialBody}
                                 </p>
                               </div>
 
-                              <div className="p-4 rounded-xl border border-[#bf9926]/30 bg-[#bf9926]/5">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-2">
+                              <div className="p-5 sm:p-6 rounded-2xl border border-[#bf9926]/40 bg-[#bf9926]/5 shadow-sm">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-3">
                                   2. Súplica Diária (Dia {safeDay})
                                 </h4>
-                                <p className="whitespace-pre-line font-serif">
+                                <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
                                   {currentDayContent.reflection}
                                 </p>
                               </div>
 
-                              <div className="p-4 rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-2">
+                              <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
                                   3. Oração Final para Todos os Dias
                                 </h4>
-                                <p className="whitespace-pre-line text-xs font-serif leading-relaxed text-[#7a6a5e]">
+                                <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
                                   {sagradoCoracaoPrayerSections.finalBody}
                                 </p>
                               </div>
                             </div>
                           ) : (
-                            <div className="prose-prayer whitespace-pre-line rounded-xl border border-[#e8dfc7]/30 bg-[#f5f1e6]/20 p-5 font-serif text-sm leading-relaxed text-[#4a3b32] text-justify">
-                              {currentDayContent.prayer}
+                            <div className="bg-[#fdfbf7] dark:bg-stone-900 border border-[#e8dfc7]/50 dark:border-stone-800 p-5 sm:p-6 rounded-2xl shadow-sm">
+                              <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
+                                {currentDayContent.prayer}
+                              </p>
                             </div>
                           )}
                         </div>
@@ -827,6 +853,43 @@ export default function NovenaDetails() {
           </div>
         );
       })()}
+      {/* Barra flutuante de tamanho de fonte */}
+      {selectedNovena && activeTab === "text" && !isLocked && (
+        <div className="fixed bottom-[calc(var(--mobile-bottom-nav-height)+var(--safe-area-bottom)+0.5rem)] right-6 lg:bottom-6 lg:right-6 z-50 flex items-center gap-2 bg-background/90 dark:bg-stone-900/90 backdrop-blur-md border border-border shadow-lg rounded-full px-3 py-1.5 transition-all">
+          <span className="text-xs text-muted-foreground font-semibold px-2 border-r border-border">Leitura</span>
+          <button
+            onClick={() => {
+              let nextSize: "sm" | "md" | "lg" | "xl" = fontSize;
+              if (fontSize === "xl") nextSize = "lg";
+              else if (fontSize === "lg") nextSize = "md";
+              else if (fontSize === "md") nextSize = "sm";
+              setFontSize(nextSize);
+              localStorage.setItem("sanctificare_novenas_font_size", nextSize);
+            }}
+            disabled={fontSize === "sm"}
+            className="p-1.5 hover:bg-accent rounded-full text-muted-foreground disabled:opacity-30 transition-colors"
+            title="Diminuir fonte"
+          >
+            <Minus className="w-4 h-4" />
+          </button>
+          <span className="text-xs font-bold uppercase w-6 text-center select-none text-foreground">{fontSize}</span>
+          <button
+            onClick={() => {
+              let nextSize: "sm" | "md" | "lg" | "xl" = fontSize;
+              if (fontSize === "sm") nextSize = "md";
+              else if (fontSize === "md") nextSize = "lg";
+              else if (fontSize === "lg") nextSize = "xl";
+              setFontSize(nextSize);
+              localStorage.setItem("sanctificare_novenas_font_size", nextSize);
+            }}
+            disabled={fontSize === "xl"}
+            className="p-1.5 hover:bg-accent rounded-full text-muted-foreground disabled:opacity-30 transition-colors"
+            title="Aumentar fonte"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
