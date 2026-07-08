@@ -1,6 +1,8 @@
 import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "wouter";
+
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -46,6 +48,7 @@ export function useAuth(options?: UseAuthOptions) {
     options ?? {};
 
   const queryClient = useQueryClient();
+  const [_, setLocation] = useLocation();
 
   const meQuery = useQuery({
     queryKey: ["auth", "me"],
@@ -73,10 +76,10 @@ export function useAuth(options?: UseAuthOptions) {
       queryClient.setQueryData(["auth", "me"], null);
       await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       if (typeof window !== "undefined") {
-        window.location.href = "/";
+        setLocation("/");
       }
     }
-  }, [logoutMutation, queryClient]);
+  }, [logoutMutation, queryClient, setLocation]);
 
   const state = useMemo(() => {
     return {
@@ -110,13 +113,14 @@ export function useAuth(options?: UseAuthOptions) {
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
 
-    window.location.href = redirectPath;
+    setLocation(redirectPath);
   }, [
     redirectOnUnauthenticated,
     redirectPath,
     logoutMutation.isPending,
     meQuery.isLoading,
     state.user,
+    setLocation,
   ]);
 
   return {

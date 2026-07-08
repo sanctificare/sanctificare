@@ -175,19 +175,30 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
     error.data?.code === "UNAUTHORIZED" ||
     error.data?.httpStatus === 401;
 
-  if (!isUnauthorized) return;
-  if (authRedirectInFlight) return;
-
   const pathname = window.location.pathname;
   if (pathname === "/login" || pathname === "/redefinir-senha") {
+    authRedirectInFlight = false;
     return;
   }
+
+  if (!isUnauthorized) return;
+  if (authRedirectInFlight) return;
 
   authRedirectInFlight = true;
 
   const currentPath = `${window.location.pathname}${window.location.search || ""}`;
-  window.location.replace(getLoginUrl(currentPath));
+  window.history.pushState({}, "", getLoginUrl(currentPath));
+  window.dispatchEvent(new PopStateEvent("popstate"));
 };
+
+if (typeof window !== "undefined") {
+  window.addEventListener("popstate", () => {
+    const path = window.location.pathname;
+    if (path === "/login" || path === "/" || path === "/dashboard") {
+      authRedirectInFlight = false;
+    }
+  });
+}
 
 queryClient.getQueryCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {

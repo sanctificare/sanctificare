@@ -307,31 +307,7 @@ export default function Dashboard() {
     return fallbackVerses[day % fallbackVerses.length];
   })();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-          <p className="font-serif text-muted-foreground">Carregando...</p>
-        </div>
-      </div>
-    );
-  }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para retomar sua jornada de oração no app.</p>
-          <a href={getLoginUrl()}>
-            <Button className="bg-navy text-white">Entrar</Button>
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   const firstName = user?.name?.split(" ")[0] || "Fiel";
 

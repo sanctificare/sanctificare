@@ -426,18 +426,7 @@ export default function Bible() {
     sans: "font-sans leading-normal",
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para percorrer a Sagrada Escritura no app.</p>
-          <a href={getLoginUrl()}><Button>Entrar</Button></a>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]} ${activeTheme === "dark" ? "dark" : ""}`}>
@@ -690,7 +679,7 @@ export default function Bible() {
                 {/* Texto Bíblico Principal */}
                 <div className={`p-8 border rounded-2xl transition-all duration-300 shadow-sm ${themeClasses[activeTheme]}`}>
                   <div className="space-y-5">
-                    {isVersesLoading ? (
+                    {isVersesLoading && verses.length === 0 ? (
                       <div className="space-y-4 animate-pulse">
                         {Array.from({ length: 8 }).map((_, i) => (
                           <div key={i} className="flex gap-4">
@@ -1183,7 +1172,7 @@ export default function Bible() {
                 <div className="divider-gold mb-6" />
 
                 <div className="space-y-5">
-                  {isVersesLoading ? (
+                  {isVersesLoading && verses.length === 0 ? (
                     <div className="space-y-4 animate-pulse">
                       {Array.from({ length: 8 }).map((_, i) => (
                         <div key={i} className="flex gap-4">

@@ -312,28 +312,7 @@ export default function Liturgy() {
   const theme = getLiturgicalTheme(liturgy?.color);
   const dailyContent = getDailyContent(selectedDate);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-      </div>
-    );
-  }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para rezar a Liturgia do Dia.</p>
-          <a href={getLoginUrl()}>
-            <Button>Entrar</Button>
-          </a>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isZenMode ? "bg-stone-50 dark:bg-stone-950 py-10" : "bg-background"}`}>
@@ -434,7 +413,7 @@ export default function Liturgy() {
         )}
 
         {/* Loading state */}
-        {isFetchingLiturgy && (
+        {isFetchingLiturgy && !liturgy && (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="h-24 bg-muted rounded-lg animate-pulse" />
@@ -443,7 +422,7 @@ export default function Liturgy() {
         )}
 
         {/* Content */}
-        {liturgy && !isFetchingLiturgy && (
+        {liturgy && (
           <>
 
 
@@ -504,7 +483,7 @@ export default function Liturgy() {
       </div>
 
       {/* Floating Toolbar */}
-      {liturgy && !isFetchingLiturgy && (
+      {liturgy && (
         <div className="fixed bottom-[calc(var(--mobile-bottom-nav-height)+var(--safe-area-bottom)+0.5rem)] right-6 lg:bottom-6 lg:right-6 z-50 flex items-center gap-2 bg-background/80 dark:bg-stone-900/80 backdrop-blur-md border border-border shadow-lg rounded-full px-3 py-1.5 transition-all">
           <span className="text-xs text-muted-foreground font-semibold px-2 border-r border-border">Leitura</span>
 
