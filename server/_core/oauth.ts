@@ -186,17 +186,40 @@ export function registerOAuthRoutes(app: Express) {
         maxAge: ENV.sessionTtlMs,
       });
 
+      const dbUser = await db.getUserByOpenId(userInfo.openId);
+      const userPayload = dbUser ? {
+        id: dbUser.id,
+        openId: dbUser.openId,
+        name: dbUser.name,
+        email: dbUser.email,
+        loginMethod: dbUser.loginMethod,
+        role: dbUser.role,
+        templatePreference: dbUser.templatePreference,
+      } : null;
+      const userPayloadStr = userPayload ? JSON.stringify(userPayload) : "";
+
       if (decodedState.appPath.startsWith("sanctificare://")) {
-        // Para links profundos do mobile (deep links), enviamos os tokens na URL
+        // Para links profundos do mobile (deep links), enviamos os tokens e dados de usuário na URL
         const redirectUrl = new URL(decodedState.appPath.replace("sanctificare://callback", "http://localhost"));
         redirectUrl.searchParams.set("token", sessionToken);
         redirectUrl.searchParams.set("csrf", csrfToken);
+        if (userPayloadStr) {
+          redirectUrl.searchParams.set("u_info", userPayloadStr);
+        }
         
         // Reconstrói a URL com o esquema customizado sanctificare://callback
         const finalRedirect = redirectUrl.toString().replace("http://localhost", "sanctificare://callback");
         res.redirect(302, finalRedirect);
       } else {
-        res.redirect(302, decodedState.appPath);
+        // Para web, adicionamos o parâmetro u_info para pré-alimentar o localStorage do cliente
+        const redirectUrl = new URL(decodedState.appPath, "http://localhost");
+        if (userPayloadStr) {
+          redirectUrl.searchParams.set("u_info", userPayloadStr);
+        }
+        const finalRedirect = decodedState.appPath.startsWith("/")
+          ? `${redirectUrl.pathname}${redirectUrl.search}`
+          : redirectUrl.toString();
+        res.redirect(302, finalRedirect);
       }
     } catch (error) {
       console.error("[OAuth] Callback failed", error);

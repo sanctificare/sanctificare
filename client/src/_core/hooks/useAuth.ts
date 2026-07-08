@@ -12,6 +12,25 @@ type UseAuthOptions = {
 function readCachedRuntimeUser() {
   if (typeof window === "undefined") return undefined;
   try {
+    // Interceptar dados do usuário injetados pelo fluxo OAuth na URL
+    const params = new URLSearchParams(window.location.search);
+    const uInfoParam = params.get("u_info");
+    if (uInfoParam) {
+      localStorage.setItem("app-runtime-user-info", uInfoParam);
+      
+      // Limpa o parâmetro da URL de forma limpa sem recarregar a página
+      params.delete("u_info");
+      const newSearch = params.toString();
+      const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ""}`;
+      window.history.replaceState(null, "", newUrl);
+      
+      try {
+        return JSON.parse(uInfoParam) || undefined;
+      } catch {
+        // Fallback para leitura do cache caso o parse falhe
+      }
+    }
+
     if (isMobileApp() && !getStoredSessionToken()) {
       return undefined;
     }

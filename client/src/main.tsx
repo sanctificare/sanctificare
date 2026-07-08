@@ -348,6 +348,7 @@ if (typeof window !== "undefined" && isMobileApp()) {
         const url = new URL(event.url.replace("sanctificare://callback", "http://localhost"));
         const token = url.searchParams.get("token");
         const csrf = url.searchParams.get("csrf");
+        const uInfo = url.searchParams.get("u_info");
         
         if (token) {
           setStoredSessionToken(token);
@@ -357,6 +358,10 @@ if (typeof window !== "undefined" && isMobileApp()) {
             document.cookie = `csrf_token=${csrf}; path=/; max-age=2592000; SameSite=Lax`;
             setStoredCsrfToken(csrf);
             console.log("[DeepLink] Stored CSRF cookie and token");
+          }
+          if (uInfo) {
+            localStorage.setItem("app-runtime-user-info", uInfo);
+            console.log("[DeepLink] Pre-seeded app-runtime-user-info from OAuth parameters");
           }
           // Redirect WebView locally to the path
           window.location.replace(url.pathname || "/dashboard");

@@ -4,12 +4,22 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 const {
   upsertUserMock,
+  getUserByOpenIdMock,
   getAuthorizeUrlMock,
   exchangeCodeForTokenMock,
   getUserInfoMock,
   createSessionTokenMock,
 } = vi.hoisted(() => ({
   upsertUserMock: vi.fn(async () => undefined),
+  getUserByOpenIdMock: vi.fn(async (openId: string) => ({
+    id: 1,
+    openId,
+    name: "Fiel OAuth",
+    email: "fiel@example.com",
+    loginMethod: "google",
+    role: "user",
+    templatePreference: "classico",
+  })),
   getAuthorizeUrlMock: vi.fn(async (_callbackUrl: string, state: string) => {
     return `https://oauth.example/authorize?state=${encodeURIComponent(state)}`;
   }),
@@ -26,6 +36,7 @@ const {
 
 vi.mock("./db", () => ({
   upsertUser: upsertUserMock,
+  getUserByOpenId: getUserByOpenIdMock,
 }));
 
 vi.mock("./_core/sdk", () => ({
@@ -127,7 +138,13 @@ describe("oauth return path", () => {
     );
 
     expect(callbackRes.status).toBe(302);
-    expect(callbackRes.headers.get("location")).toBe(requestedPath);
+    const location = callbackRes.headers.get("location");
+    expect(location).toBeTruthy();
+    const parsedLocation = new URL(location!, "http://localhost");
+    const parsedRequested = new URL(requestedPath, "http://localhost");
+    expect(parsedLocation.pathname).toBe(parsedRequested.pathname);
+    expect(parsedLocation.searchParams.get("day")).toBe(parsedRequested.searchParams.get("day"));
+    expect(parsedLocation.searchParams.get("u_info")).toBeTruthy();
     expect(upsertUserMock).toHaveBeenCalledTimes(1);
     expect(exchangeCodeForTokenMock).toHaveBeenCalledWith("test-code", state);
     expect(createSessionTokenMock).toHaveBeenCalledTimes(1);
@@ -218,7 +235,11 @@ describe("oauth return path", () => {
     );
 
     expect(callbackRes.status).toBe(302);
-    expect(callbackRes.headers.get("location")).toBe("/dashboard");
+    const location = callbackRes.headers.get("location");
+    expect(location).toBeTruthy();
+    const parsedLocation = new URL(location!, "http://localhost");
+    expect(parsedLocation.pathname).toBe("/dashboard");
+    expect(parsedLocation.searchParams.get("u_info")).toBeTruthy();
   });
 
   it("normaliza retorno para páginas de auth e evita loop", async () => {
@@ -257,7 +278,11 @@ describe("oauth return path", () => {
       );
 
       expect(callbackRes.status).toBe(302);
-      expect(callbackRes.headers.get("location")).toBe("/dashboard");
+      const location = callbackRes.headers.get("location");
+      expect(location).toBeTruthy();
+      const parsedLocation = new URL(location!, "http://localhost");
+      expect(parsedLocation.pathname).toBe("/dashboard");
+      expect(parsedLocation.searchParams.get("u_info")).toBeTruthy();
     }
   });
 
