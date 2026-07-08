@@ -214,7 +214,7 @@ function AppShell() {
     if (isInitialLoading.current) {
       const timer = setTimeout(() => {
         setMinimumTimeElapsed(true);
-      }, 3000); // 3 segundos de exibição mínima do BrandSplash
+      }, 5000); // 5 segundos de exibição mínima do BrandSplash
       return () => clearTimeout(timer);
     } else {
       setMinimumTimeElapsed(true);

@@ -41,11 +41,8 @@ export default function BrandSplash() {
       <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[oklch(0.75_0.12_75/0.03)] rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[oklch(0.28_0.08_260/0.08)] rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Top Spacer / Decorative cross element */}
-      <div className="w-12 h-12 flex items-center justify-center opacity-30 mt-4">
-        <div className="w-[2px] h-8 bg-amber-400 absolute" />
-        <div className="w-8 h-[2px] bg-amber-400 absolute" />
-      </div>
+      {/* Top Spacer */}
+      <div className="w-12 h-12 mt-4" />
 
       {/* Center Logo & Name */}
       <div className="flex flex-col items-center gap-6 z-10 my-auto">

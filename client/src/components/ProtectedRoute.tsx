@@ -21,7 +21,7 @@ export default function ProtectedRoute({ component: Component, ...rest }: Protec
     if (isInitialLoading.current) {
       const timer = setTimeout(() => {
         setMinimumTimeElapsed(true);
-      }, 3000); // 3 segundos de exibição mínima do BrandSplash e versículo
+      }, 5000); // 5 segundos de exibição mínima do BrandSplash e versículo
       return () => clearTimeout(timer);
     } else {
       setMinimumTimeElapsed(true);
