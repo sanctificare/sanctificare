@@ -39,6 +39,34 @@ function writeProgress(progress: ProgressMap) {
   }
 }
 
+const START_DATE_KEY = "sanctificare.novenas.startDate.v1";
+type StartDateMap = Record<string, string>; // novenaId -> "YYYY-MM-DD"
+
+function readStartDates(): StartDateMap {
+  try {
+    const raw = localStorage.getItem(START_DATE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeStartDates(map: StartDateMap) {
+  try {
+    localStorage.setItem(START_DATE_KEY, JSON.stringify(map));
+  } catch {}
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function calendarDaysBetween(from: string, to: string): number {
+  return Math.floor((Date.parse(to) - Date.parse(from)) / 86400000);
+}
+
 function splitCommonPrayers(prayerText: string) {
   const initialIndex = prayerText.indexOf(INITIAL_PRAYER_MARKER);
   const finalIndex = prayerText.indexOf(FINAL_PRAYER_MARKER);
@@ -75,6 +103,7 @@ export default function NovenaDetails() {
   });
 
   const [progress, setProgress] = useState<ProgressMap>(() => readProgress());
+  const [startDates, setStartDates] = useState<StartDateMap>(() => readStartDates());
   const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
   
   const utils = trpc.useUtils();
@@ -92,6 +121,26 @@ export default function NovenaDetails() {
 
   const isLocked = selectedNovena?.category === "premium" && !isPremium;
   const currentCompleted = selectedNovena ? progress[selectedNovena.id] ?? [] : [];
+
+  // Quantos dias já foram desbloqueados pelo calendário
+  const maxUnlockedDay = useMemo(() => {
+    if (!selectedNovena) return 1;
+    const totalDays = selectedNovena.days.length;
+    const startDate = startDates[selectedNovena.id];
+    if (!startDate) return 1; // só o dia 1 disponível até completar o primeiro
+    const elapsed = calendarDaysBetween(startDate, todayIso());
+    return Math.min(Math.max(elapsed + 1, 1), totalDays);
+  }, [selectedNovena, startDates]);
+
+  const isDayUnlocked = (dayNum: number) => dayNum <= maxUnlockedDay;
+
+  const daysUntilUnlock = (dayNum: number): number => {
+    if (!selectedNovena) return 0;
+    const startDate = startDates[selectedNovena.id];
+    if (!startDate) return dayNum - 1; // sem início, calcula a partir de hoje
+    const elapsed = calendarDaysBetween(startDate, todayIso());
+    return Math.max((dayNum - 1) - elapsed, 0);
+  };
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">(() => {
@@ -234,6 +283,28 @@ export default function NovenaDetails() {
     }
   }, [selectedNovena]);
 
+  // Migração: usuários com progresso sem data de início recebem data retroativa
+  useEffect(() => {
+    if (!selectedNovena) return;
+    if (startDates[selectedNovena.id]) return;
+    const completed = progress[selectedNovena.id] ?? [];
+    if (completed.length === 0) return;
+    const maxDone = Math.max(...completed);
+    const start = new Date();
+    start.setDate(start.getDate() - (maxDone - 1));
+    const startDateStr = start.toISOString().slice(0, 10);
+    const updated = { ...startDates, [selectedNovena.id]: startDateStr };
+    setStartDates(updated);
+    writeStartDates(updated);
+  }, [selectedNovena?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Corrige selectedDay se estiver acima do máximo desbloqueado
+  useEffect(() => {
+    if (selectedDay > maxUnlockedDay) {
+      setSelectedDay(maxUnlockedDay);
+    }
+  }, [maxUnlockedDay]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const saveIntention = () => {
     if (!selectedNovena) return;
     try {
@@ -250,12 +321,20 @@ export default function NovenaDetails() {
   const toggleDayAsComplete = async () => {
     if (!selectedNovena) return;
     if (isLocked) return;
+    if (!isDayUnlocked(safeDay)) return;
 
     const done = progress[selectedNovena.id] ?? [];
     const alreadyDone = done.includes(safeDay);
     const nextDays = alreadyDone ? done.filter((day) => day !== safeDay) : [...done, safeDay].sort((a, b) => a - b);
     const totalDays = selectedNovena.days.length;
     const justCompleted = !alreadyDone && nextDays.length >= totalDays;
+
+    // Grava a data de início quando o dia 1 é completado pela primeira vez
+    if (!alreadyDone && safeDay === 1 && !startDates[selectedNovena.id]) {
+      const updated = { ...startDates, [selectedNovena.id]: todayIso() };
+      setStartDates(updated);
+      writeStartDates(updated);
+    }
 
     const nextProgress = {
       ...progress,
@@ -388,22 +467,28 @@ export default function NovenaDetails() {
                   const dayNum = idx + 1;
                   const isDone = currentCompleted.includes(dayNum);
                   const isActive = dayNum === safeDay;
+                  const unlocked = isDayUnlocked(dayNum);
+                  const waitDays = daysUntilUnlock(dayNum);
 
                   return (
                     <button
                       key={dayNum}
-                      onClick={() => setSelectedDay(dayNum)}
-                      disabled={isLocked}
+                      onClick={() => unlocked && setSelectedDay(dayNum)}
+                      disabled={isLocked || !unlocked}
                       className={`relative w-8 h-8 rounded-full flex items-center justify-center font-sans text-[11px] font-bold transition-all ${
                         isActive
                           ? "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm"
                           : isDone
                           ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+                          : !unlocked
+                          ? "bg-muted/20 text-muted-foreground/40 border border-transparent cursor-not-allowed"
                           : "bg-muted/40 hover:bg-muted text-muted-foreground border border-transparent"
                       }`}
-                      title={`Ir para o Dia ${dayNum}`}
+                      title={!unlocked ? (waitDays === 1 ? `Disponível amanhã` : `Disponível em ${waitDays} dias`) : `Ir para o Dia ${dayNum}`}
                     >
-                      {isDone ? (
+                      {!unlocked ? (
+                        <Lock size={10} className="text-muted-foreground/40" />
+                      ) : isDone ? (
                         <CheckCircle2 size={13} className="text-emerald-600 fill-emerald-600/10" />
                       ) : (
                         dayNum
@@ -511,21 +596,31 @@ export default function NovenaDetails() {
                           const dayNum = idx + 1;
                           const isDone = currentCompleted.includes(dayNum);
                           const isActive = dayNum === safeDay;
+                          const unlocked = isDayUnlocked(dayNum);
+                          const waitDays = daysUntilUnlock(dayNum);
                           return (
                             <button
                               key={dayNum}
-                              onClick={() => setSelectedDay(dayNum)}
-                              disabled={isLocked}
+                              onClick={() => unlocked && setSelectedDay(dayNum)}
+                              disabled={isLocked || !unlocked}
                               className={`relative w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ${
                                 isActive
                                   ? "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm"
                                   : isDone
                                   ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600"
+                                  : !unlocked
+                                  ? "bg-white/5 text-muted-foreground/30 border border-transparent cursor-not-allowed"
                                   : "bg-white/10 text-muted-foreground border border-transparent hover:bg-white/20"
                               }`}
-                              title={`Ir para o Dia ${dayNum}`}
+                              title={!unlocked ? (waitDays === 1 ? `Disponível amanhã` : `Disponível em ${waitDays} dias`) : `Ir para o Dia ${dayNum}`}
                             >
-                              {isDone ? <CheckCircle2 size={13} className="text-emerald-600" /> : dayNum}
+                              {!unlocked ? (
+                                <Lock size={10} className="text-muted-foreground/30" />
+                              ) : isDone ? (
+                                <CheckCircle2 size={13} className="text-emerald-600" />
+                              ) : (
+                                dayNum
+                              )}
                               {isActive && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[oklch(0.75_0.12_75)]" />}
                             </button>
                           );
@@ -752,17 +847,28 @@ export default function NovenaDetails() {
 
                     {/* Botões de Ação */}
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
-                      <Button
-                        onClick={toggleDayAsComplete}
-                        className={`w-full sm:w-auto font-bold text-xs transition-colors ${
-                          currentCompleted.includes(safeDay)
-                            ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                            : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
-                        }`}
-                      >
-                        <CheckCircle2 size={15} className={`mr-2 ${ currentCompleted.includes(safeDay) ? "fill-white/20" : "" }`} />
-                        {currentCompleted.includes(safeDay) ? `✓ Dia ${safeDay} Rezado — Desmarcar` : `Marcar Dia ${safeDay} como Rezado`}
-                      </Button>
+                      {!isDayUnlocked(safeDay) ? (
+                        <div className="w-full flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
+                          <Lock size={14} className="text-amber-600 flex-shrink-0" />
+                          <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold">
+                            {daysUntilUnlock(safeDay) === 1
+                              ? "Este dia estará disponível amanhã."
+                              : `Este dia estará disponível em ${daysUntilUnlock(safeDay)} dias.`}
+                          </p>
+                        </div>
+                      ) : (
+                        <Button
+                          onClick={toggleDayAsComplete}
+                          className={`w-full sm:w-auto font-bold text-xs transition-colors ${
+                            currentCompleted.includes(safeDay)
+                              ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                              : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
+                          }`}
+                        >
+                          <CheckCircle2 size={15} className={`mr-2 ${ currentCompleted.includes(safeDay) ? "fill-white/20" : "" }`} />
+                          {currentCompleted.includes(safeDay) ? `✓ Dia ${safeDay} Rezado — Desmarcar` : `Marcar Dia ${safeDay} como Rezado`}
+                        </Button>
+                      )}
                     </div>
 
                   </div>
