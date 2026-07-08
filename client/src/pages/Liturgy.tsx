@@ -779,82 +779,7 @@ export default function Liturgy() {
                     </div>
                   </div>
 
-                  {/* Salmo Cantado */}
-                  {readingsAudio?.singedPsalm && (
-                    <div className="w-full max-w-sm mx-auto mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3 text-center animate-fade-in">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex-shrink-0">
-                          <Play size={16} className={isPsalmPlaying ? "animate-pulse" : ""} />
-                        </div>
-                        <div className="text-left flex-1 min-w-0">
-                          <p className="text-xs font-bold text-slate-200">Salmo Responsorial Cantado</p>
-                          <p className="text-[10px] text-slate-400 truncate">
-                            {liturgy.psalm?.referencia || "Salmo Responsorial"}
-                          </p>
-                        </div>
-                      </div>
 
-                      <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
-
-                      {/* Progress bar */}
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
-                          {formatTime(psalmCurrentTime)}
-                        </span>
-                        <input
-                          type="range"
-                          min={0}
-                          max={psalmDuration || 100}
-                          step={0.1}
-                          value={psalmCurrentTime}
-                          onChange={(e) => handleSeekPsalm(Number(e.target.value))}
-                          className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
-                          style={{
-                            background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
-                              psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
-                            }%, rgba(255,255,255,0.2) ${
-                              psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
-                            }%)`,
-                          }}
-                        />
-                        <span className="text-[10px] text-slate-300 w-8 font-sans">
-                          -{formatTime(Math.max(psalmDuration - psalmCurrentTime, 0))}
-                        </span>
-                      </div>
-
-                      {/* Controls Buttons */}
-                      <div className="flex items-center justify-between px-2">
-                        <button
-                          onClick={handleRestartPsalm}
-                          className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
-                          title="Reiniciar salmo"
-                        >
-                          <RotateCcw size={15} />
-                        </button>
-
-                        <button
-                          onClick={togglePlayPsalm}
-                          className="w-10 h-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
-                          title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
-                        >
-                          {isPsalmPlaying ? (
-                            <Pause size={14} fill="currentColor" />
-                          ) : (
-                            <Play size={14} fill="currentColor" className="ml-0.5" />
-                          )}
-                        </button>
-
-                        <div className="flex items-center gap-1 group">
-                          <button
-                            onClick={() => setIsPsalmMuted(!isPsalmMuted)}
-                            className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
-                          >
-                            {isPsalmMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               ) : (
                 /* ==========================================
@@ -885,6 +810,81 @@ export default function Liturgy() {
             {/* Log button */}
             {!isZenMode && (
               <div className="pt-6 border-t border-border">
+                {readingsAudio?.singedPsalm && (
+                  <div className="w-full max-w-sm mx-auto mb-6 bg-[#0b1329] border border-amber-500/20 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3 text-center animate-fade-in text-slate-100">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex-shrink-0">
+                        <Play size={16} className={isPsalmPlaying ? "animate-pulse" : ""} />
+                      </div>
+                      <div className="text-left flex-1 min-w-0">
+                        <p className="text-xs font-bold text-slate-200">Salmo Responsorial Cantado</p>
+                        <p className="text-[10px] text-slate-400 truncate">
+                          {liturgy.psalm?.referencia || "Salmo Responsorial"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
+
+                    {/* Progress bar */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                        {formatTime(psalmCurrentTime)}
+                      </span>
+                      <input
+                        type="range"
+                        min={0}
+                        max={psalmDuration || 100}
+                        step={0.1}
+                        value={psalmCurrentTime}
+                        onChange={(e) => handleSeekPsalm(Number(e.target.value))}
+                        className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                        style={{
+                          background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                            psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
+                          }%, rgba(255,255,255,0.2) ${
+                            psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
+                          }%)`,
+                        }}
+                      />
+                      <span className="text-[10px] text-slate-300 w-8 font-sans">
+                        -{formatTime(Math.max(psalmDuration - psalmCurrentTime, 0))}
+                      </span>
+                    </div>
+
+                    {/* Controls Buttons */}
+                    <div className="flex items-center justify-between px-2">
+                      <button
+                        onClick={handleRestartPsalm}
+                        className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                        title="Reiniciar salmo"
+                      >
+                        <RotateCcw size={15} />
+                      </button>
+
+                      <button
+                        onClick={togglePlayPsalm}
+                        className="w-10 h-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                        title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
+                      >
+                        {isPsalmPlaying ? (
+                          <Pause size={14} fill="currentColor" />
+                        ) : (
+                          <Play size={14} fill="currentColor" className="ml-0.5" />
+                        )}
+                      </button>
+
+                      <div className="flex items-center gap-1 group">
+                        <button
+                          onClick={() => setIsPsalmMuted(!isPsalmMuted)}
+                          className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                        >
+                          {isPsalmMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <Button
                   onClick={handleLogLiturgy}
                   disabled={logPrayer.isPending}
