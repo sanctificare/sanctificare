@@ -520,29 +520,6 @@ export default function NovenaDetails() {
                       </div>
                     </div>
 
-                    {/* Navegação Anterior / Próximo */}
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={() => setSelectedDay((d) => Math.max(1, d - 1))}
-                        disabled={safeDay <= 1}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-2 py-1.5 rounded-lg hover:bg-white/10"
-                      >
-                        <ArrowLeft size={13} />
-                        Dia {safeDay - 1}
-                      </button>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                        {safeDay}/{selectedNovena.days.length}
-                      </span>
-                      <button
-                        onClick={() => setSelectedDay((d) => Math.min(selectedNovena.days.length, d + 1))}
-                        disabled={safeDay >= selectedNovena.days.length}
-                        className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-2 py-1.5 rounded-lg hover:bg-white/10"
-                      >
-                        Dia {safeDay + 1}
-                        <ArrowLeft size={13} className="rotate-180" />
-                      </button>
-                    </div>
-
                     {/* Seleção de Abas Áudio / Texto */}
                     {currentDayContent.audioUrl && (
                       <div className="flex border-b border-white/10 dark:border-white/10 mb-6">
