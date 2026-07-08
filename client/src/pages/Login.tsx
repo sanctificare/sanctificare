@@ -204,7 +204,9 @@ export default function Login() {
   const handleGoogleLogin = () => {
     const postAuthPath = getPostAuthPath();
     const path = isMobileApp()
-      ? "sanctificare://callback" + postAuthPath
+      ? postAuthPath.startsWith("sanctificare://callback")
+        ? postAuthPath
+        : `sanctificare://callback${postAuthPath}`
       : postAuthPath;
     window.location.href = `${getApiBaseUrl()}/api/oauth/login?path=${encodeURIComponent(path)}`;
   };

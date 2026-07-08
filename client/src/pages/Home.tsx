@@ -291,14 +291,12 @@ export default function Home() {
     };
   }, []);
 
-  // No app nativo, mantemos o splash escuro da marca durante toda a decisão de
-  // redirecionamento inicial (abertura -> /login, ou autenticado -> /dashboard),
-  // garantindo continuidade visual com o splash nativo e a tela de Login (sem
-  // flashes de tela clara). A landing só aparece quando o usuário volta para "/"
-  // depois da abertura inicial (flag __cap_app_started) e não está autenticado.
+  // No app nativo, usamos o splash apenas enquanto o estado de autenticação
+  // ainda está sendo carregado ou antes do primeiro redirecionamento inicial.
+  // Depois disso, deixamos a navegação acontecer mais rapidamente.
   if (
     isMobileApp() &&
-    (loading || isAuthenticated || !sessionStorage.getItem('__cap_app_started'))
+    (loading || (!sessionStorage.getItem('__cap_app_started') && !isAuthenticated))
   ) {
     return <BrandSplash />;
   }

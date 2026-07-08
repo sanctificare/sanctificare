@@ -202,23 +202,20 @@ function Router() {
 
 function AppShell() {
   const { loading } = useAuth();
-  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
   const [location] = useLocation();
-
   const hasToken = typeof window !== "undefined" && (!!getStoredSessionToken() || !!localStorage.getItem("app-runtime-user-info"));
-
-  // Só aplica o tempo de espera de 3 segundos se de fato estiver carregando com token ativo no primeiro render
   const isInitialLoading = useRef(loading && hasToken);
+  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(() => !isInitialLoading.current);
 
   useEffect(() => {
-    if (isInitialLoading.current) {
-      const timer = setTimeout(() => {
-        setMinimumTimeElapsed(true);
-      }, 5000); // 5 segundos de exibição mínima do BrandSplash
-      return () => clearTimeout(timer);
-    } else {
-      setMinimumTimeElapsed(true);
+    if (!isInitialLoading.current) {
+      return;
     }
+
+    const timer = setTimeout(() => {
+      setMinimumTimeElapsed(true);
+    }, 800); // exibe o BrandSplash no boot inicial, mas não trava o app por segundos
+    return () => clearTimeout(timer);
   }, []);
 
   // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)

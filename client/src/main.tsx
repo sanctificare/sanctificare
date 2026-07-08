@@ -363,8 +363,11 @@ if (typeof window !== "undefined" && isMobileApp()) {
             localStorage.setItem("app-runtime-user-info", uInfo);
             console.log("[DeepLink] Pre-seeded app-runtime-user-info from OAuth parameters");
           }
-          // Redirect WebView locally to the path
-          window.location.replace(url.pathname || "/dashboard");
+          if (isMobileApp()) {
+            sessionStorage.setItem('__cap_app_started', '1');
+          }
+          const destination = `${url.pathname || "/dashboard"}${url.search || ""}${url.hash || ""}`;
+          window.location.replace(destination);
         }
       }
     } catch (e) {

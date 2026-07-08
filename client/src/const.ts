@@ -13,6 +13,7 @@ export const sanitizeAppPath = (
   const isAllowedOrigin =
     value.startsWith("http://localhost/") ||
     value.startsWith("capacitor://localhost/") ||
+    value === "sanctificare://callback" ||
     value.startsWith("sanctificare://callback/");
   if (isAllowedOrigin) {
     if (value.includes("/login") || value.includes("/redefinir-senha")) {

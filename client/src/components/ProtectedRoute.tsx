@@ -11,22 +11,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ component: Component, ...rest }: ProtectedRouteProps) {
   const { isAuthenticated, loading } = useAuth();
-  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
   const [_, setLocation] = useLocation();
-
-  // Guarda se o primeiro render do componente ocorreu em estado de carregamento
-  const isInitialLoading = useRef(loading && !isAuthenticated);
-
-  useEffect(() => {
-    if (isInitialLoading.current) {
-      const timer = setTimeout(() => {
-        setMinimumTimeElapsed(true);
-      }, 5000); // 5 segundos de exibição mínima do BrandSplash e versículo
-      return () => clearTimeout(timer);
-    } else {
-      setMinimumTimeElapsed(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -35,10 +20,7 @@ export default function ProtectedRoute({ component: Component, ...rest }: Protec
     }
   }, [isAuthenticated, loading, setLocation]);
 
-  // Se estiver carregando inicialmente ou se o tempo mínimo ainda não expirou, exibe o splash
-  const showSplash = (loading && !isAuthenticated) || !minimumTimeElapsed;
-
-  if (showSplash) {
+  if (loading && !isAuthenticated) {
     return <BrandSplash />;
   }
 
