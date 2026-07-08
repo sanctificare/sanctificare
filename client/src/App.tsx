@@ -17,6 +17,15 @@ import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
 import Privacy from "./pages/Privacy";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Explore from "./pages/Explore";
+import Prayers from "./pages/Prayers";
+import RosaryGuided from "./pages/RosaryGuided";
+import Liturgy from "./pages/Liturgy";
+import Bible from "./pages/Bible";
+import DailyPlan from "./pages/DailyPlan";
+
 
 
 
@@ -38,35 +47,26 @@ function lazyWithPreload<T extends React.ComponentType<any>>(
 }
 
 const GlobalSearch = lazyWithPreload(() => import("@/components/GlobalSearch"));
-const Home = lazyWithPreload(() => import("./pages/Home"));
-const Dashboard = lazyWithPreload(() => import("./pages/Dashboard"));
-const Explore = lazyWithPreload(() => import("./pages/Explore"));
-const Prayers = lazyWithPreload(() => import("./pages/Prayers"));
-const RosaryGuided = lazyWithPreload(() => import("./pages/RosaryGuided"));
-const Liturgy = lazyWithPreload(() => import("./pages/Liturgy"));
 const LectioDivina = lazyWithPreload(() => import("./pages/LectioDivina"));
 const ViaSacra = lazyWithPreload(() => import("./pages/ViaSacra"));
 const VelaVirtual = lazyWithPreload(() => import("./pages/VelaVirtual"));
 const MusicaSacra = lazyWithPreload(() => import("./pages/MusicaSacra"));
-const Bible = lazyWithPreload(() => import("./pages/Bible"));
 const Novenas = lazyWithPreload(() => import("./pages/Novenas"));
 const NovenaDetails = lazyWithPreload(() => import("./pages/NovenaDetails"));
 const Intentions = lazyWithPreload(() => import("./pages/Intentions"));
 const Profile = lazyWithPreload(() => import("./pages/Profile"));
 const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
-const DailyPlan = lazyWithPreload(() => import("./pages/DailyPlan"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
 
-// Rotas críticas para navegação imediata após abrir o app.
+// Rotas secundárias pré-carregadas em background para evitar tempo de espera.
 const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   GlobalSearch,
-  Home,
-  Dashboard,
-  Explore,
-  Prayers,
-  RosaryGuided,
-  Liturgy,
+  LectioDivina,
+  ViaSacra,
+  VelaVirtual,
+  Novenas,
+  Intentions,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
