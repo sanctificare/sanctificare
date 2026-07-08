@@ -59,7 +59,7 @@ export function useAuth(options?: UseAuthOptions) {
     initialData: readCachedRuntimeUser,
     retry: false,
     refetchOnWindowFocus: false,
-    staleTime: 0,
+    staleTime: 1000 * 60 * 5, // 5 minutos de cache válido para evitar flashes de carregamento
     enabled,
   });
 

@@ -20,7 +20,8 @@ export default function ProtectedRoute({ component: Component, ...rest }: Protec
     }
   }, [isAuthenticated, loading, setLocation]);
 
-  if (loading) {
+  // Apenas exibe a tela de carregamento se estivermos carregando sem nenhuma informação de autenticação em cache
+  if (loading && !isAuthenticated) {
     return <BrandSplash />;
   }
 

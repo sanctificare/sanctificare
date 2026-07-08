@@ -8,7 +8,7 @@ import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
-import { isMobileApp } from "./const";
+import { isMobileApp, getStoredSessionToken } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
@@ -206,7 +206,9 @@ function AppShell() {
   // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
   const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
 
-  if (loading) {
+  const hasToken = typeof window !== "undefined" && (!!getStoredSessionToken() || !!localStorage.getItem("app-runtime-user-info"));
+
+  if (loading && hasToken) {
     return <BrandSplash />;
   }
 
