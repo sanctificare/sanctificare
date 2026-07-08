@@ -28,28 +28,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (!id.includes("node_modules")) return;
-
-          if (id.includes("lucide-react")) return "vendor-icons";
-          if (id.includes("recharts")) return "vendor-charts";
-          if (id.includes("@capacitor")) return "vendor-capacitor";
-
-          if (
-            id.includes("react") ||
-            id.includes("react-dom") ||
-            id.includes("scheduler")
-          ) {
-            return "vendor-react";
-          }
-
-          if (id.includes("@radix-ui")) return "vendor-radix";
-
-          if (
-            id.includes("@trpc") ||
-            id.includes("@tanstack/react-query") ||
-            id.includes("superjson")
-          ) {
-            return "vendor-data";
+          if (id.includes("node_modules")) {
+            return "vendor";
           }
         },
       },
