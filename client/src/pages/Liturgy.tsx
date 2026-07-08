@@ -352,14 +352,78 @@ export default function Liturgy() {
     }
   }, [playlist]);
 
+  const readingsAudio = getLiturgyReadingsAudioByDate(liturgy?.liturgyDate);
+
+  const psalmAudioRef = useRef<HTMLAudioElement>(null);
+  const [isPsalmPlaying, setIsPsalmPlaying] = useState(false);
+  const [psalmCurrentTime, setPsalmCurrentTime] = useState(0);
+  const [psalmDuration, setPsalmDuration] = useState(0);
+  const [isPsalmMuted, setIsPsalmMuted] = useState(false);
+  const [psalmPlayingUrl, setPsalmPlayingUrl] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    if (readingsAudio?.singedPsalm) {
+      resolveR2Redirect(readingsAudio.singedPsalm).then((url) => {
+        if (active) setPsalmPlayingUrl(url);
+      });
+    } else {
+      setPsalmPlayingUrl("");
+      setIsPsalmPlaying(false);
+      setPsalmCurrentTime(0);
+      setPsalmDuration(0);
+    }
+    return () => {
+      active = false;
+    };
+  }, [readingsAudio?.singedPsalm]);
+
+  useEffect(() => {
+    const audio = psalmAudioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setPsalmCurrentTime(audio.currentTime);
+    const updateDuration = () => {
+      if (Number.isFinite(audio.duration)) {
+        setPsalmDuration(audio.duration);
+      }
+    };
+    const handleEnded = () => {
+      setIsPsalmPlaying(false);
+      setPsalmCurrentTime(0);
+    };
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [psalmPlayingUrl]);
+
+  useEffect(() => {
+    if (psalmAudioRef.current) {
+      psalmAudioRef.current.volume = isPsalmMuted ? 0 : volume;
+    }
+  }, [volume, isPsalmMuted]);
+
   const togglePlay = () => {
     const audio = audioRef.current;
+    const psalmAudio = psalmAudioRef.current;
     if (!audio) return;
 
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
     } else {
+      // Pause psalm player first!
+      if (isPsalmPlaying && psalmAudio) {
+        psalmAudio.pause();
+        setIsPlaying(false);
+      }
       audio.play()
         .then(() => setIsPlaying(true))
         .catch(() => setIsPlaying(false));
@@ -378,6 +442,41 @@ export default function Liturgy() {
     if (!audio) return;
     audio.currentTime = 0;
     setCurrentTime(0);
+    audio.play().then(() => setIsPlaying(true));
+  };
+
+  const togglePlayPsalm = () => {
+    const psalmAudio = psalmAudioRef.current;
+    const mainAudio = audioRef.current;
+    if (!psalmAudio) return;
+
+    if (isPsalmPlaying) {
+      psalmAudio.pause();
+      setIsPsalmPlaying(false);
+    } else {
+      // Pause main player first!
+      if (isPlaying && mainAudio) {
+        mainAudio.pause();
+        setIsPlaying(false);
+      }
+      psalmAudio.play()
+        .then(() => setIsPsalmPlaying(true))
+        .catch(() => setIsPsalmPlaying(false));
+    }
+  };
+
+  const handleSeekPsalm = (value: number) => {
+    const audio = psalmAudioRef.current;
+    if (!audio) return;
+    audio.currentTime = value;
+    setPsalmCurrentTime(value);
+  };
+
+  const handleRestartPsalm = () => {
+    const audio = psalmAudioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    setPsalmCurrentTime(0);
     audio.play().then(() => setIsPlaying(true));
   };
 
@@ -679,6 +778,83 @@ export default function Liturgy() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Salmo Cantado */}
+                  {readingsAudio?.singedPsalm && (
+                    <div className="w-full max-w-sm mx-auto mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3 text-center animate-fade-in">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex-shrink-0">
+                          <Play size={16} className={isPsalmPlaying ? "animate-pulse" : ""} />
+                        </div>
+                        <div className="text-left flex-1 min-w-0">
+                          <p className="text-xs font-bold text-slate-200">Salmo Responsorial Cantado</p>
+                          <p className="text-[10px] text-slate-400 truncate">
+                            {liturgy.psalm?.referencia || "Salmo Responsorial"}
+                          </p>
+                        </div>
+                      </div>
+
+                      <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
+
+                      {/* Progress bar */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                          {formatTime(psalmCurrentTime)}
+                        </span>
+                        <input
+                          type="range"
+                          min={0}
+                          max={psalmDuration || 100}
+                          step={0.1}
+                          value={psalmCurrentTime}
+                          onChange={(e) => handleSeekPsalm(Number(e.target.value))}
+                          className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                          style={{
+                            background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                              psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
+                            }%, rgba(255,255,255,0.2) ${
+                              psalmDuration > 0 ? (psalmCurrentTime / psalmDuration) * 100 : 0
+                            }%)`,
+                          }}
+                        />
+                        <span className="text-[10px] text-slate-300 w-8 font-sans">
+                          -{formatTime(Math.max(psalmDuration - psalmCurrentTime, 0))}
+                        </span>
+                      </div>
+
+                      {/* Controls Buttons */}
+                      <div className="flex items-center justify-between px-2">
+                        <button
+                          onClick={handleRestartPsalm}
+                          className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                          title="Reiniciar salmo"
+                        >
+                          <RotateCcw size={15} />
+                        </button>
+
+                        <button
+                          onClick={togglePlayPsalm}
+                          className="w-10 h-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                          title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
+                        >
+                          {isPsalmPlaying ? (
+                            <Pause size={14} fill="currentColor" />
+                          ) : (
+                            <Play size={14} fill="currentColor" className="ml-0.5" />
+                          )}
+                        </button>
+
+                        <div className="flex items-center gap-1 group">
+                          <button
+                            onClick={() => setIsPsalmMuted(!isPsalmMuted)}
+                            className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                          >
+                            {isPsalmMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 /* ==========================================
