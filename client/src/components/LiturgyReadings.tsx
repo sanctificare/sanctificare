@@ -446,9 +446,7 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
                       {reading.titulo && ` — ${reading.titulo}`}
                     </p>
 
-                    {section.audioUrl && section.id === "psalm" && (
-                      <SingedPsalmPlayer audioUrl={section.audioUrl} />
-                    )}
+
                     
                     {renderTextWithDropCap(
                       reading.texto,
