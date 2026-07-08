@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileTopMenu from "@/components/MobileTopMenu";
 import { Route, Switch, useLocation } from "wouter";
@@ -202,13 +202,29 @@ function Router() {
 
 function AppShell() {
   const { loading } = useAuth();
+  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
   const [location] = useLocation();
-  // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
-  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
 
   const hasToken = typeof window !== "undefined" && (!!getStoredSessionToken() || !!localStorage.getItem("app-runtime-user-info"));
 
-  if (loading && hasToken) {
+  // Só aplica o tempo de espera de 3 segundos se de fato estiver carregando com token ativo no primeiro render
+  const isInitialLoading = useRef(loading && hasToken);
+
+  useEffect(() => {
+    if (isInitialLoading.current) {
+      const timer = setTimeout(() => {
+        setMinimumTimeElapsed(true);
+      }, 3000); // 3 segundos de exibição mínima do BrandSplash
+      return () => clearTimeout(timer);
+    } else {
+      setMinimumTimeElapsed(true);
+    }
+  }, []);
+
+  // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
+  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
+
+  if (hasToken && (loading || !minimumTimeElapsed)) {
     return <BrandSplash />;
   }
 

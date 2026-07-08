@@ -1,7 +1,39 @@
-// Tela de carregamento/splash unificada da marca.
-// Fundo escuro (#050B1E) idêntico ao splash nativo do Android e à tela de Login,
-// garantindo continuidade visual (sem flashes) durante todo o fluxo de abertura.
+// Lista de versículos determinísticos diários
+const verses = [
+  { text: "Santificai-vos, porque amanhã o Senhor fará maravilhas no meio de vós.", ref: "Josué 3:5" },
+  { text: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
+  { text: "O Senhor é o meu pastor, nada me faltará.", ref: "Salmo 23:1" },
+  { text: "Buscai primeiro o Reino de Deus e a sua justiça, e tudo o mais vos será acrescentado.", ref: "Mateus 6:33" },
+  { text: "O Senhor é minha luz e minha salvação, a quem temerei?", ref: "Salmo 27:1" },
+  { text: "Confia no Senhor de todo o teu coração e não te apoies no teu próprio entendimento.", ref: "Provérbios 3:5" },
+  { text: "Eu sou o caminho, a verdade e a vida; ninguém vem ao Pai senão por mim.", ref: "João 14:6" },
+  { text: "Não andeis ansiosos por coisa alguma; antes em tudo apresentai as vossas petições a Deus.", ref: "Filipenses 4:6" },
+  { text: "O amor é paciente, o amor é bondoso. Tudo desculpa, tudo crê, tudo espera, tudo suporta.", ref: "1 Coríntios 13:4,7" },
+  { text: "A minha alma engrandece ao Senhor, e o meu espírito se alegra em Deus, meu Salvador.", ref: "Lucas 1:46-47" },
+  { text: "Eis que estou convosco todos os dias, até o fim dos tempos.", ref: "Mateus 28:20" },
+  { text: "Se Deus é por nós, quem será contra nós?", ref: "Romanos 8:31" },
+  { text: "Criai em mim um coração puro, ó Deus, e renovai em meu peito um espírito firme.", ref: "Salmo 50:12" },
+  { text: "Vinde a mim, todos vós que estais cansados e carregados de fardos, e eu vos darei descanso.", ref: "Mateus 11:28" },
+  { text: "O verbo se fez carne e habitou entre nós.", ref: "João 1:14" }
+];
+
 export default function BrandSplash() {
+  const getDailyVerse = () => {
+    try {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now.getTime() - start.getTime();
+      const oneDay = 1000 * 60 * 60 * 24;
+      const day = Math.floor(diff / oneDay);
+      const index = day % verses.length;
+      return verses[index];
+    } catch {
+      return verses[0];
+    }
+  };
+
+  const dailyVerse = getDailyVerse();
+
   return (
     <div className="fixed inset-0 bg-[#050B1E] flex flex-col items-center justify-between py-12 px-6 text-white z-[9999] overflow-hidden">
       {/* Background elegant pattern */}
@@ -42,10 +74,10 @@ export default function BrandSplash() {
       {/* Bottom Verse */}
       <div className="w-full max-w-sm flex flex-col items-center gap-3 z-10 mb-6 bg-gradient-to-b from-[#0d162d]/80 to-[#080f21]/80 border border-amber-500/15 rounded-xl p-5 text-center shadow-lg backdrop-blur-sm">
         <p className="font-serif italic text-amber-100/80 text-base leading-relaxed tracking-wide" style={{ fontFamily: "'Cormorant Garamond', serif" }}>
-          "Santificai-vos, porque amanhã o Senhor fará maravilhas no meio de vós."
+          "{dailyVerse.text}"
         </p>
         <span className="font-serif text-xs uppercase tracking-[0.2em] text-amber-400/70 font-semibold" style={{ fontFamily: "'Cinzel', serif" }}>
-          Josué 3:5
+          {dailyVerse.ref}
         </span>
       </div>
     </div>
