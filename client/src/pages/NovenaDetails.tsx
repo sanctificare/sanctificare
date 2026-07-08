@@ -198,6 +198,7 @@ export default function NovenaDetails() {
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
+      autoMarkRef.current();
     };
 
     audio.addEventListener("timeupdate", updateTime);
@@ -370,6 +371,16 @@ export default function NovenaDetails() {
       }
     }
   };
+
+  // Ref que sempre aponta para a função de marcar o dia com estado atual
+  const autoMarkRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    autoMarkRef.current = () => {
+      if (!isLocked && isDayUnlocked(safeDay) && !currentCompleted.includes(safeDay)) {
+        toggleDayAsComplete();
+      }
+    };
+  });
 
   const sagradoCoracaoPrayerSections = useMemo(() => {
     if (!currentDayContent) return null;
