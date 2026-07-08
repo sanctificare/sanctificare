@@ -85,6 +85,82 @@ function SuspenseLoader() {
   );
 }
 
+function ProtectedDashboardRoute(props: any) {
+  return <ProtectedRoute component={Dashboard} {...props} />;
+}
+
+function ProtectedExploreRoute(props: any) {
+  return <ProtectedRoute component={Explore} {...props} />;
+}
+
+function ProtectedPrayersRoute(props: any) {
+  return <ProtectedRoute component={Prayers} {...props} />;
+}
+
+function ProtectedRosaryRoute(props: any) {
+  return <ProtectedRoute component={RosaryGuided} {...props} />;
+}
+
+function ProtectedLiturgyRoute(props: any) {
+  return <ProtectedRoute component={Liturgy} {...props} />;
+}
+
+function ProtectedLectioRoute(props: any) {
+  return <ProtectedRoute component={LectioDivina} {...props} />;
+}
+
+function ProtectedViaSacraRoute(props: any) {
+  return <ProtectedRoute component={ViaSacra} {...props} />;
+}
+
+function ProtectedVelaVirtualRoute(props: any) {
+  return <ProtectedRoute component={VelaVirtual} {...props} />;
+}
+
+function ProtectedMusicaSacraRoute(props: any) {
+  return <ProtectedRoute component={MusicaSacra} {...props} />;
+}
+
+function ProtectedBibleRoute(props: any) {
+  return <ProtectedRoute component={Bible} {...props} />;
+}
+
+function ProtectedNovenasRoute(props: any) {
+  return <ProtectedRoute component={Novenas} {...props} />;
+}
+
+function ProtectedNovenaDetailsRoute(props: any) {
+  return <ProtectedRoute component={NovenaDetails} {...props} />;
+}
+
+function ProtectedIntentionsRoute(props: any) {
+  return <ProtectedRoute component={Intentions} {...props} />;
+}
+
+function ProtectedProfileRoute(props: any) {
+  return <ProtectedRoute component={Profile} {...props} />;
+}
+
+function ProtectedDangerZoneRoute(props: any) {
+  return <ProtectedRoute component={DangerZone} {...props} />;
+}
+
+function ProtectedDailyPlanRoute(props: any) {
+  return <ProtectedRoute component={DailyPlan} {...props} />;
+}
+
+function ProtectedPremiumRoute(props: any) {
+  return <ProtectedRoute component={Premium} {...props} />;
+}
+
+function ProtectedVideosRoute(props: any) {
+  return <ProtectedRoute component={VideosBiblicos} {...props} />;
+}
+
+function ProtectedPrayerDetailRoute(props: any) {
+  return <ProtectedRoute component={PrayerDetail} {...props} />;
+}
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
@@ -95,26 +171,26 @@ function Router() {
       <Switch>
         <Route path="/" component={isMobileApp() && !isAuthenticated ? Login : Home} />
         <Route path="/login" component={Login} />
-        <Route path="/dashboard" component={() => <ProtectedRoute component={Dashboard} />} />
-        <Route path="/explore" component={() => <ProtectedRoute component={Explore} />} />
-        <Route path="/oracoes" component={() => <ProtectedRoute component={Prayers} />} />
-        <Route path="/rosario" component={() => <ProtectedRoute component={RosaryGuided} />} />
-        <Route path="/liturgia" component={() => <ProtectedRoute component={Liturgy} />} />
-        <Route path="/lectio" component={() => <ProtectedRoute component={LectioDivina} />} />
-        <Route path="/via-sacra" component={() => <ProtectedRoute component={ViaSacra} />} />
-        <Route path="/vela-virtual" component={() => <ProtectedRoute component={VelaVirtual} />} />
-        <Route path="/musica-sacra" component={() => <ProtectedRoute component={MusicaSacra} />} />
-        <Route path="/biblia" component={() => <ProtectedRoute component={Bible} />} />
-        <Route path="/novenas" component={() => <ProtectedRoute component={Novenas} />} />
-        <Route path="/novenas/:slug" component={(props: any) => <ProtectedRoute component={NovenaDetails} {...props} />} />
-        <Route path="/intencoes" component={() => <ProtectedRoute component={Intentions} />} />
-        <Route path="/perfil" component={() => <ProtectedRoute component={Profile} />} />
-        <Route path="/profile" component={() => <ProtectedRoute component={Profile} />} />
-        <Route path="/perfil/zona-de-perigo" component={() => <ProtectedRoute component={DangerZone} />} />
-        <Route path="/plano-diario" component={() => <ProtectedRoute component={DailyPlan} />} />
-        <Route path="/premium" component={() => <ProtectedRoute component={Premium} />} />
-        <Route path="/videos" component={() => <ProtectedRoute component={VideosBiblicos} />} />
-        <Route path="/oracao/:id" component={(props: any) => <ProtectedRoute component={PrayerDetail} {...props} />} />
+        <Route path="/dashboard" component={ProtectedDashboardRoute} />
+        <Route path="/explore" component={ProtectedExploreRoute} />
+        <Route path="/oracoes" component={ProtectedPrayersRoute} />
+        <Route path="/rosario" component={ProtectedRosaryRoute} />
+        <Route path="/liturgia" component={ProtectedLiturgyRoute} />
+        <Route path="/lectio" component={ProtectedLectioRoute} />
+        <Route path="/via-sacra" component={ProtectedViaSacraRoute} />
+        <Route path="/vela-virtual" component={ProtectedVelaVirtualRoute} />
+        <Route path="/musica-sacra" component={ProtectedMusicaSacraRoute} />
+        <Route path="/biblia" component={ProtectedBibleRoute} />
+        <Route path="/novenas" component={ProtectedNovenasRoute} />
+        <Route path="/novenas/:slug" component={ProtectedNovenaDetailsRoute} />
+        <Route path="/intencoes" component={ProtectedIntentionsRoute} />
+        <Route path="/perfil" component={ProtectedProfileRoute} />
+        <Route path="/profile" component={ProtectedProfileRoute} />
+        <Route path="/perfil/zona-de-perigo" component={ProtectedDangerZoneRoute} />
+        <Route path="/plano-diario" component={ProtectedDailyPlanRoute} />
+        <Route path="/premium" component={ProtectedPremiumRoute} />
+        <Route path="/videos" component={ProtectedVideosRoute} />
+        <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
         <Route path="/redefinir-senha" component={ResetPassword} />
         <Route path="/privacidade" component={Privacy} />
         <Route path="/404" component={NotFound} />

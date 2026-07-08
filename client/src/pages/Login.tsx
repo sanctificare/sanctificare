@@ -104,13 +104,12 @@ export default function Login() {
   // Mutations
   const loginMutation = useMutation({
     mutationFn: performLogin,
-    onSuccess: async (data: any) => {
+    onSuccess: (data: any) => {
       setStoredSessionToken(data?.sessionToken);
       setStoredCsrfToken(data?.csrfToken);
       queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Bem-vindo ao Sanctificare!");
-      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
-      setLocation(getPostAuthPath());
+      void queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
     onError: (err: any) => {
       toast.error(err.message || "Erro ao realizar login. Verifique suas credenciais.");
@@ -119,13 +118,12 @@ export default function Login() {
 
   const registerMutation = useMutation({
     mutationFn: performRegister,
-    onSuccess: async (data: any) => {
+    onSuccess: (data: any) => {
       setStoredSessionToken(data?.sessionToken);
       setStoredCsrfToken(data?.csrfToken);
       queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Conta criada com sucesso! Bem-vindo.");
-      await queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
-      setLocation(getPostAuthPath());
+      void queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
     onError: (err: any) => {
       toast.error(err.message || "Erro ao realizar cadastro.");
