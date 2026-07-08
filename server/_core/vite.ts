@@ -72,7 +72,7 @@ export function serveStatic(app: Express) {
 
   // fall through to index.html if the file doesn't exist
   app.use("*", (req, res) => {
-    if (req.originalUrl.startsWith("/assets/") || req.originalUrl.includes(".")) {
+    if (req.path.startsWith("/assets/") || req.path.includes(".")) {
       res.status(404).send("Not Found");
       return;
     }
