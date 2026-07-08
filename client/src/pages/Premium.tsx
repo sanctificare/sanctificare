@@ -255,14 +255,16 @@ export default function Premium() {
         {activeTab === "plans" && (
           <>
 
-            {/* Planos (somente para não-assinantes) */}
-            {!subscription && (
-              <div className="max-w-3xl mx-auto animate-fade-in">
-                <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] text-center mb-6">
-                  Escolha sua forma de acesso
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {plans.map((plan) => (
+            <div className="max-w-3xl mx-auto animate-fade-in">
+              <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] text-center mb-6">
+                {subscription ? "Seu Plano de Acesso" : "Escolha sua forma de acesso"}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {plans.map((plan) => {
+                  const isActive = subscription?.plan === plan.key;
+                  const isSubscribed = !!subscription;
+
+                  return (
                     <div
                       key={plan.key}
                       className={`relative rounded-2xl p-7 border transition-all ${
@@ -308,53 +310,74 @@ export default function Premium() {
                         ))}
                       </ul>
 
-                      <Button
-                        className={`w-full font-semibold ${
-                          plan.highlight
-                            ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
-                            : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
-                        }`}
-                        onClick={() => handleSubscribe(plan.key)}
-                        disabled={subscribeMutation.isPending}
-                      >
-                        {subscribeMutation.isPending && selectedPlan === plan.key ? "Processando..." : `Assinar ${plan.name}`}
-                      </Button>
+                      {isActive ? (
+                        <Button
+                          disabled
+                          className={`w-full font-bold cursor-default ${
+                            plan.highlight
+                              ? "bg-emerald-600 hover:bg-emerald-600 text-white opacity-100"
+                              : "bg-emerald-50 border-2 border-emerald-500 text-emerald-700 hover:bg-emerald-50 opacity-100"
+                          }`}
+                        >
+                          <Check size={16} className="mr-1.5" />
+                          Plano Atual
+                        </Button>
+                      ) : isSubscribed ? (
+                        plan.key === "annual" ? (
+                          <Button
+                            className={`w-full font-semibold ${
+                              plan.highlight
+                                ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+                                : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
+                            }`}
+                            onClick={() => subscribeMutation.mutate({ plan: "annual" })}
+                            disabled={subscribeMutation.isPending}
+                          >
+                            <Crown size={14} className="mr-1.5" />
+                            {subscribeMutation.isPending ? "Processando..." : "Migrar para Anual"}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            className="w-full font-semibold border-slate-200 text-slate-500 hover:bg-slate-50"
+                            onClick={() => {
+                              if (subscription?.stripeSubscriptionId) {
+                                portalMutation.mutate();
+                              } else {
+                                setActiveTab("billing");
+                              }
+                            }}
+                            disabled={portalMutation.isPending}
+                          >
+                            {portalMutation.isPending ? "Carregando..." : "Gerenciar Assinatura"}
+                          </Button>
+                        )
+                      ) : (
+                        <Button
+                          className={`w-full font-semibold ${
+                            plan.highlight
+                              ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+                              : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
+                          }`}
+                          onClick={() => handleSubscribe(plan.key)}
+                          disabled={subscribeMutation.isPending}
+                        >
+                          {subscribeMutation.isPending && selectedPlan === plan.key ? "Processando..." : `Assinar ${plan.name}`}
+                        </Button>
+                      )}
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
+              </div>
 
-                {/* Garantia */}
-                <div className="mt-8 text-center">
-                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                    <Shield size={14} className="text-[oklch(0.40_0.12_150)]" />
-                    <span>Cancele quando desejar, sem fidelidade obrigatória.</span>
-                  </div>
+              {/* Garantia */}
+              <div className="mt-8 text-center">
+                <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                  <Shield size={14} className="text-[oklch(0.40_0.12_150)]" />
+                  <span>Cancele quando desejar, sem fidelidade obrigatória.</span>
                 </div>
               </div>
-            )}
-
-            {/* Já tem premium mensal — upgrade */}
-            {subscription && subscription.plan === "monthly" && (
-              <div className="max-w-2xl mx-auto mt-6">
-                <div className="prayer-card p-6 text-center">
-                  <Crown size={24} className="text-[oklch(0.65_0.12_70)] mx-auto mb-3" />
-                  <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-2">
-                    Migre para o Plano Anual
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Economize 16% e mantenha por mais tempo seu acesso aos conteúdos de oração do app.
-                  </p>
-                  <Button
-                    className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold"
-                    onClick={() => subscribeMutation.mutate({ plan: "annual" })}
-                    disabled={subscribeMutation.isPending}
-                  >
-                    <Crown size={14} className="mr-2" />
-                    {subscribeMutation.isPending ? "Processando..." : "Migrar para Anual — R$ 149,00/ano"}
-                  </Button>
-                </div>
-              </div>
-            )}
+            </div>
           </>
         )}
 
