@@ -62,6 +62,17 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         status: "planned",
         audioUrl: sacredMusicUrl("kyrie-orbis-factor.mp3"),
       },
+      {
+        id: "miserere-no-1",
+        title: "Miserere No.1",
+        description:
+          "Uma interpretação contemplativa do Miserere, para meditação e penitência profunda.",
+        reference: "Miserere",
+        durationSec: 330,
+        narrator: "Coro Sacro",
+        status: "ready",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3",
+      },
     ],
   },
   {

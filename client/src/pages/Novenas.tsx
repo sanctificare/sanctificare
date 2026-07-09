@@ -236,29 +236,6 @@ export default function Novenas() {
           </div>
         )}
 
-        {/* Fe e Entrega ao Senhor */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Fé e Entrega ao Senhor</h2>
-            <p className="text-sm text-muted-foreground">Caminhos de intimidade com Jesus e docilidade ao Espírito Santo.</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-            {faithNovenas.map(renderNovenaCard)}
-          </div>
-        </section>
-
-        {/* Intercessao e Devocao */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Intercessão e Devoção</h2>
-            <p className="text-sm text-muted-foreground">Una-se à oração da Mãe de Deus e de São José em suas necessidades.</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-            {intercessionNovenas.map(renderNovenaCard)}
-          </div>
-        </section>
-
-
         {!isPremium ? (
           <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.08)] p-4 max-w-xl mx-auto">
             <div className="flex items-center gap-2 mb-2">
