@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { User, Crown, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle } from "lucide-react";
+import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle } from "lucide-react";
 import { Link } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { getPrayerArt } from "@/lib/cardArt";
@@ -56,7 +56,7 @@ function safeStorageSet(key: string, value: string): boolean {
 export default function Profile() {
   const { user, isAuthenticated, loading, logout } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+
 
 
   const [remindersEnabled, setRemindersEnabled] = useState<boolean>(() => {
@@ -157,26 +157,7 @@ export default function Profile() {
                   {user?.name || "Fiel Católico"}
                 </h1>
                 <p className="text-sm text-muted-foreground truncate">{user?.email || ""}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  {subscription ? (
-                    <span className="badge-premium flex items-center gap-1">
-                      <Crown size={9} className="sm:w-[10px] sm:h-[10px]" /> Premium {subscription.plan === "annual" ? "Anual" : "Mensal"}
-                    </span>
-                  ) : (
-                    <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full font-medium">
-                      Caminho gratuito
-                    </span>
-                  )}
-                </div>
               </div>
-              {!subscription && (
-                <Link href="/premium" className="w-full sm:w-auto rounded-md focus-gold-ring">
-                  <Button size="sm" className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-[11px] sm:text-xs">
-                    <Crown size={11} className="sm:w-3 sm:h-3 mr-1" />
-                    Conhecer Premium
-                  </Button>
-                </Link>
-              )}
             </div>
           </div>
 
@@ -327,33 +308,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Assinatura */}
-          {subscription && (
-            <div className="section-block prayer-card p-4 sm:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Crown size={16} className="text-[oklch(0.65_0.12_70)]" />
-                <h2 className="section-title-sm">
-                  Minha assinatura
-                </h2>
-              </div>
-              <div className="divider-gold mb-4" />
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-sm text-foreground">
-                    Premium {subscription.plan === "annual" ? "Anual" : "Mensal"}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Válido até {new Date(subscription.expiresAt).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}
-                  </p>
-                </div>
-                <Link href="/premium" className="rounded-md focus-gold-ring">
-                  <Button variant="outline" size="sm" className="text-xs">
-                    Gerenciar
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          )}
+
 
           {/* Segurança e Privacidade */}
           <div className="section-block prayer-card p-4 sm:p-6">

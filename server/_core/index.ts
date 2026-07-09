@@ -33,7 +33,6 @@ import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
 import { upsertDailyLiturgy, getDb } from "../db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "../liturgia";
-import { handleStripeWebhook } from "../stripe-webhook";
 import crypto from "crypto";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -158,9 +157,6 @@ async function startServer() {
   const app = express();
   app.set("trust proxy", true);
 
-  // Register Stripe webhook before global json parser to parse raw body
-  app.post("/api/stripe-webhook", express.raw({ type: "application/json" }), handleStripeWebhook);
-
   const server = createServer(app);
   const allowedOrigins = getAllowedOrigins();
 
@@ -195,8 +191,7 @@ async function startServer() {
     const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
     const isCsrfExemptPath =
       req.path === "/api/scheduled/fetchLiturgia" ||
-      req.path === "/api/auth/logout" ||
-      req.path === "/api/stripe-webhook";
+      req.path === "/api/auth/logout";
 
     if (!isUnsafeMethod || !hasSessionCookie || isCsrfExemptPath) {
       return next();

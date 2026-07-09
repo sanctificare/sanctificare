@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { BookOpen, Crown, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2 } from "lucide-react";
+import { BookOpen, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2 } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
@@ -985,24 +985,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Banner Premium */}
-        <div className="mt-6 rounded-2xl bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.30_0.09_255)] p-5 sm:p-6 flex flex-col md:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 rounded-full bg-[oklch(0.75_0.12_75/0.2)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
-              <Crown size={22} className="text-[oklch(0.82_0.10_80)]" />
-            </div>
-            <div>
-              <h3 className="font-display text-base font-bold text-white">Aprofunde sua vida de oração</h3>
-              <p className="text-sm text-[oklch(0.75_0.03_260)] lead-copy">Novenas, meditações e áudios para acompanhar com mais constância a sua caminhada espiritual</p>
-            </div>
-          </div>
-          <Link href="/premium" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
-              Conhecer planos
-              <ChevronRight size={15} className="ml-1" />
-            </Button>
-          </Link>
-        </div>
       </main>
     </div>
   );

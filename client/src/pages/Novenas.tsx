@@ -2,9 +2,8 @@ import { useState, useMemo } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
-import { Crown, Lock } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { getNovenaArt } from "@/lib/cardArt";
 import { NOVENA_PROGRESS_STORAGE_KEY, ProgressMap, buildNovenasInProgressItems, parseNovenaProgress } from "@/lib/novenaProgress";
@@ -54,9 +53,7 @@ function ProgressRing({ done, total }: { done: number; total: number }) {
 export default function Novenas() {
   const { isAuthenticated, loading } = useAuth();
   const [progress] = useState<ProgressMap>(() => readProgress());
-  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
-
-  const isPremium = Boolean(subscription);
+  const isPremium = true;
   const activeNovenas = buildNovenasInProgressItems(progress, NOVENAS);
 
   const stats = useMemo(() => {
@@ -79,7 +76,6 @@ export default function Novenas() {
   const intercessionNovenas: typeof NOVENAS = [];
 
   const renderNovenaCard = (novena: typeof NOVENAS[number]) => {
-    const locked = novena.category === "premium" && !isPremium;
     const done = progress[novena.id]?.length ?? 0;
     const total = novena.days.length;
     const isComplete = done >= total && done > 0;
@@ -104,11 +100,7 @@ export default function Novenas() {
             }}
           />
           <ProgressRing done={done} total={total} />
-          {locked && (
-            <div className="absolute right-2 top-2 w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.24)] border border-[oklch(0.75_0.12_75/0.45)] flex items-center justify-center z-20">
-              <Lock size={13} className="text-[oklch(0.90_0.05_84)]" />
-            </div>
-          )}
+
           <div className="cover-card-content flex flex-col items-start gap-1">
             {isComplete ? (
               <span className="font-bold rounded-full px-1.5 py-0.5 bg-emerald-500/85 text-white text-[9px] tracking-wide uppercase">Concluída</span>
@@ -245,20 +237,8 @@ export default function Novenas() {
           </div>
         )}
 
-        {!isPremium ? (
-          <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.08)] p-4 max-w-xl mx-auto">
-            <div className="flex items-center gap-2 mb-2">
-              <Crown size={15} className="text-[oklch(0.65_0.12_70)]" />
-              <span className="font-semibold text-sm text-[oklch(0.22_0.07_260)]">Desbloqueie mais novenas</span>
-            </div>
-            <p className="text-xs text-muted-foreground mb-3">A assinatura libera novas novenas e outros itinerários de oração para acompanhar sua vida espiritual.</p>
-            <Link href="/premium">
-              <Button className="w-full bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold text-xs">
-                Ver planos
-              </Button>
-            </Link>
-          </div>
-        ) : null}
+
+
 
       </main>
     </div>
