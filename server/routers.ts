@@ -275,15 +275,15 @@ export const appRouter = router({
           }
 
           const activeSub = await getActiveSubscription(ctx.user.id);
-          const hasRealStripeSub = activeSub?.stripeSubscriptionId?.startsWith("sub_");
-          if (hasRealStripeSub && activeSub.plan === input.plan) {
+          const hasRealStripeSub = !!activeSub?.stripeSubscriptionId?.startsWith("sub_");
+          if (activeSub && hasRealStripeSub && activeSub.plan === input.plan) {
             throw new TRPCError({
               code: "BAD_REQUEST",
               message: "Você já possui uma assinatura ativa para este plano.",
             });
           }
 
-          if (hasRealStripeSub && activeSub?.stripeSubscriptionId) {
+          if (activeSub && hasRealStripeSub && activeSub.stripeSubscriptionId) {
             const stripeSubscription = await stripe.subscriptions.retrieve(activeSub.stripeSubscriptionId);
             const item = stripeSubscription.items.data[0];
 
