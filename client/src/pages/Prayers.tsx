@@ -157,7 +157,7 @@ export default function Prayers() {
   const [location] = useLocation();
   const [selectedPrayer, setSelectedPrayer] = useState<Prayer | null>(null);
   const [praying, setPraying] = useState(false);
-  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
   useEffect(() => {
@@ -172,7 +172,7 @@ export default function Prayers() {
     }
   }, [location]);
 
-  const isPremium = Boolean(subscription);
+  const isPremium = true;
 
   const getPrayerCardTheme = (prayerType: string) => PRAYER_CARD_THEMES[prayerType] ?? DEFAULT_PRAYER_CARD_THEME;
 
@@ -339,18 +339,9 @@ export default function Prayers() {
                   <button
                     key={prayer.id}
                     onClick={() => handleOpenPrayer(prayer)}
-                    className={`group relative rounded-2xl border p-3 sm:p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus-gold-ring ${theme.surface} ${theme.ring} ${!isPremium ? "opacity-90" : ""}`}
+                    className={`group relative rounded-2xl border p-3 sm:p-4 text-left transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus-gold-ring ${theme.surface} ${theme.ring}`}
                   >
-                {!isPremium && (
-                  <div className="absolute inset-0 rounded-2xl bg-[oklch(0.97_0.01_85/0.48)] backdrop-blur-[2px] flex items-center justify-center z-20">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center">
-                        <Lock size={14} className="sm:w-4 sm:h-4 text-[oklch(0.65_0.12_70)]" />
-                      </div>
-                      <span className="text-xs font-semibold text-[oklch(0.40_0.08_260)]">Premium</span>
-                    </div>
-                  </div>
-                )}
+
                 <div className="absolute inset-x-0 top-0 h-1.5 rounded-t-2xl" style={{ backgroundColor: theme.accent }} />
                 <div className="mb-3 flex items-start justify-between gap-2 pt-1 relative z-10">
                   <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center ${theme.iconBg}`}>
@@ -367,10 +358,7 @@ export default function Prayers() {
                           <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
                         </span>
                       )}
-                      <span className="rounded-full bg-[oklch(0.82_0.10_80/0.88)] text-[oklch(0.17_0.02_260)] px-1.5 sm:px-2 py-0.5 sm:py-1 flex items-center gap-1">
-                        <Crown size={10} className="sm:w-[11px] sm:h-[11px]" />
-                        <span className="text-[10px] font-semibold tracking-[0.03em]">Premium</span>
-                      </span>
+
                     </div>
                   </div>
                 </div>
@@ -388,22 +376,7 @@ export default function Prayers() {
             ))}
           </div>
 
-          {!isPremium && (
-            <div className="mt-4 sm:mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.05)] p-5 flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <Crown size={20} className="text-[oklch(0.65_0.12_70)]" />
-                <div>
-                  <p className="font-semibold text-sm text-navy">Desbloqueie todo o conteúdo</p>
-                  <p className="text-xs text-muted-foreground">Novenas, meditações e áudios para aprofundar sua vida de oração.</p>
-                </div>
-              </div>
-              <Link href="/premium" className="w-full sm:w-auto rounded-md focus-gold-ring">
-                <Button className="w-full sm:w-auto bg-navy hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold text-sm">
-                  Ver Planos Premium
-                </Button>
-              </Link>
-            </div>
-          )}
+
         </div>
       </main>
 
