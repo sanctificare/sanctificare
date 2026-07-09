@@ -12,6 +12,12 @@ import { isMobileApp, getStoredSessionToken } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
+import {
+  applyRemoteState,
+  collectSyncableLocalSnapshot,
+  diffSnapshots,
+  splitIntoChunks,
+} from "./lib/userStateSync";
 import Login from "./pages/Login";
 import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
@@ -255,6 +261,93 @@ function AppShell() {
 function App() {
   const { isAuthenticated } = useAuth();
   const registerDeviceMutation = trpc.push.registerDevice.useMutation();
+  const stateSyncQuery = trpc.stateSync.getAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+    refetchInterval: 30000,
+    refetchOnWindowFocus: true,
+  });
+  const upsertStateMutation = trpc.stateSync.upsertMany.useMutation();
+  const deleteStateMutation = trpc.stateSync.deleteMany.useMutation();
+  const lastLocalSnapshotRef = useRef<Record<string, string>>({});
+  const localVersionByKeyRef = useRef<Map<string, number>>(new Map());
+  const syncInFlightRef = useRef(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      lastLocalSnapshotRef.current = {};
+      localVersionByKeyRef.current = new Map();
+      return;
+    }
+
+    // Snapshot inicial para diffs periódicos sem custo alto de escrita.
+    lastLocalSnapshotRef.current = collectSyncableLocalSnapshot();
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    if (!stateSyncQuery.data) return;
+
+    applyRemoteState({
+      entries: stateSyncQuery.data,
+      localVersionByKey: localVersionByKeyRef.current,
+    });
+    lastLocalSnapshotRef.current = collectSyncableLocalSnapshot();
+  }, [isAuthenticated, stateSyncQuery.data]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let cancelled = false;
+
+    const syncOnce = async () => {
+      if (cancelled || syncInFlightRef.current) return;
+      syncInFlightRef.current = true;
+
+      try {
+        const nextSnapshot = collectSyncableLocalSnapshot();
+        const { upserts, deletions } = diffSnapshots(lastLocalSnapshotRef.current, nextSnapshot);
+
+        for (const chunk of splitIntoChunks(upserts, 200)) {
+          if (chunk.length === 0) continue;
+          const result = await upsertStateMutation.mutateAsync({ entries: chunk });
+          for (const row of result.saved) {
+            localVersionByKeyRef.current.set(
+              row.key,
+              row.updatedAt instanceof Date ? row.updatedAt.getTime() : Date.parse(row.updatedAt)
+            );
+          }
+        }
+
+        for (const chunk of splitIntoChunks(deletions, 200)) {
+          if (chunk.length === 0) continue;
+          const result = await deleteStateMutation.mutateAsync({ keys: chunk });
+          for (const row of result.deleted) {
+            localVersionByKeyRef.current.set(
+              row.key,
+              row.updatedAt instanceof Date ? row.updatedAt.getTime() : Date.parse(row.updatedAt)
+            );
+          }
+        }
+
+        lastLocalSnapshotRef.current = nextSnapshot;
+      } catch (err) {
+        console.warn("[StateSync] sync tick failed:", err);
+      } finally {
+        syncInFlightRef.current = false;
+      }
+    };
+
+    // Executa logo após login e depois em intervalos curtos para propagar entre devices.
+    void syncOnce();
+    const interval = window.setInterval(() => {
+      void syncOnce();
+    }, 8000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [isAuthenticated, upsertStateMutation, deleteStateMutation]);
 
   useEffect(() => {
     document.body.classList.add("theme-contemplative-a");

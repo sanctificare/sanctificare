@@ -288,3 +288,24 @@ export const pushDevices = pgTable(
 
 export type PushDevice = typeof pushDevices.$inferSelect;
 export type InsertPushDevice = typeof pushDevices.$inferInsert;
+
+// Estado local sincronizado entre dispositivos por usuário (chave/valor).
+// deletedAt funciona como tombstone para propagar remoções entre devices.
+export const userState = pgTable(
+  "user_state",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    key: varchar("key", { length: 191 }).notNull(),
+    value: text("value"),
+    deletedAt: timestamp("deletedAt"),
+    updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  },
+  (table) => ({
+    userKeyUnique: uniqueIndex("user_state_user_key_uq").on(table.userId, table.key),
+    userUpdatedIdx: index("user_state_user_updated_idx").on(table.userId, table.updatedAt),
+  })
+);
+
+export type UserState = typeof userState.$inferSelect;
+export type InsertUserState = typeof userState.$inferInsert;

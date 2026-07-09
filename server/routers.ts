@@ -44,6 +44,9 @@ import {
   registerPushDevice,
   unregisterPushDeviceByToken,
   getEnabledPushTokensByUser,
+  getUserStateEntries,
+  upsertUserStateEntries,
+  markUserStateKeysDeleted,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
@@ -412,6 +415,43 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         await updateTemplatePreference(ctx.user.id, input.template);
         return { success: true };
+      }),
+  }),
+
+  stateSync: router({
+    getAll: protectedProcedure
+      .query(async ({ ctx }) => {
+        return getUserStateEntries(ctx.user.id);
+      }),
+
+    upsertMany: protectedProcedure
+      .input(
+        z.object({
+          entries: z
+            .array(
+              z.object({
+                key: z.string().min(1).max(191),
+                value: z.string().max(200_000),
+              })
+            )
+            .min(1)
+            .max(500),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const saved = await upsertUserStateEntries(ctx.user.id, input.entries);
+        return { success: true, saved } as const;
+      }),
+
+    deleteMany: protectedProcedure
+      .input(
+        z.object({
+          keys: z.array(z.string().min(1).max(191)).min(1).max(500),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        const deleted = await markUserStateKeysDeleted(ctx.user.id, input.keys);
+        return { success: true, deleted } as const;
       }),
   }),
 

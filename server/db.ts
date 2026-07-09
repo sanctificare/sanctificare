@@ -4,6 +4,7 @@ import postgres from "postgres";
 import {
   InsertUser,
   InsertLectioJournal,
+  InsertUserState,
   users,
   prayerLogs,
   prayerIntentions,
@@ -18,6 +19,7 @@ import {
   InsertVirtualCandle,
   passwordResetTokens,
   pushDevices,
+  userState,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -262,10 +264,37 @@ async function bootstrapDb(sql: any) {
       );
     `;
     await sql`
+      CREATE TABLE IF NOT EXISTS user_state (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL,
+        "key" varchar(191) NOT NULL,
+        value text,
+        "deletedAt" timestamp,
+        "updatedAt" timestamp DEFAULT now() NOT NULL
+      );
+    `;
+    await sql`
       CREATE UNIQUE INDEX IF NOT EXISTS push_devices_token_uq ON push_devices (token);
     `;
     await sql`
       CREATE INDEX IF NOT EXISTS push_devices_user_idx ON push_devices ("userId");
+    `;
+    await sql`
+      CREATE UNIQUE INDEX IF NOT EXISTS user_state_user_key_uq ON user_state ("userId", "key");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS user_state_user_updated_idx ON user_state ("userId", "updatedAt");
+    `;
+
+    // Compatibilidade para bancos que criaram user_state numa versão anterior.
+    await sql`
+      ALTER TABLE user_state ADD COLUMN IF NOT EXISTS value text;
+    `;
+    await sql`
+      ALTER TABLE user_state ADD COLUMN IF NOT EXISTS "deletedAt" timestamp;
+    `;
+    await sql`
+      ALTER TABLE user_state ADD COLUMN IF NOT EXISTS "updatedAt" timestamp DEFAULT now() NOT NULL;
     `;
 
     await sql`
@@ -638,6 +667,7 @@ export async function deleteUserAccount(userId: number): Promise<{ deleted: bool
     await tx.delete(subscriptions).where(eq(subscriptions.userId, userId));
     await tx.delete(passwordResetTokens).where(eq(passwordResetTokens.userId, userId));
     await tx.delete(pushDevices).where(eq(pushDevices.userId, userId));
+    await tx.delete(userState).where(eq(userState.userId, userId));
     await tx.delete(users).where(eq(users.id, userId));
   });
 
@@ -1277,6 +1307,95 @@ export async function disablePushTokens(tokens: string[]) {
     .update(pushDevices)
     .set({ enabled: false, updatedAt: new Date() })
     .where(inArray(pushDevices.token, tokens));
+}
+
+// ─── Cross-device User State Sync ────────────────────────────────────────────
+
+type UpsertUserStateEntryInput = {
+  key: string;
+  value: string;
+};
+
+export async function getUserStateEntries(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  return db
+    .select({
+      key: userState.key,
+      value: userState.value,
+      deletedAt: userState.deletedAt,
+      updatedAt: userState.updatedAt,
+    })
+    .from(userState)
+    .where(eq(userState.userId, userId))
+    .orderBy(desc(userState.updatedAt));
+}
+
+export async function upsertUserStateEntries(userId: number, entries: UpsertUserStateEntryInput[]) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  if (entries.length === 0) return [];
+
+  const now = new Date();
+  const rows: InsertUserState[] = entries.map((entry) => ({
+    userId,
+    key: entry.key,
+    value: entry.value,
+    deletedAt: null,
+    updatedAt: now,
+  }));
+
+  return db
+    .insert(userState)
+    .values(rows)
+    .onConflictDoUpdate({
+      target: [userState.userId, userState.key],
+      set: {
+        value: sql`excluded.value`,
+        deletedAt: null,
+        updatedAt: now,
+      },
+    })
+    .returning({
+      key: userState.key,
+      value: userState.value,
+      deletedAt: userState.deletedAt,
+      updatedAt: userState.updatedAt,
+    });
+}
+
+export async function markUserStateKeysDeleted(userId: number, keys: string[]) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  if (keys.length === 0) return [];
+
+  const now = new Date();
+  const rows: InsertUserState[] = keys.map((key) => ({
+    userId,
+    key,
+    value: null,
+    deletedAt: now,
+    updatedAt: now,
+  }));
+
+  return db
+    .insert(userState)
+    .values(rows)
+    .onConflictDoUpdate({
+      target: [userState.userId, userState.key],
+      set: {
+        value: null,
+        deletedAt: now,
+        updatedAt: now,
+      },
+    })
+    .returning({
+      key: userState.key,
+      value: userState.value,
+      deletedAt: userState.deletedAt,
+      updatedAt: userState.updatedAt,
+    });
 }
 
 const SAO_PAULO_DATE_FORMATTER = new Intl.DateTimeFormat("en-CA", {
