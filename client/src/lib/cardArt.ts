@@ -21,7 +21,7 @@ const PRAYER_ART: Record<string, CardArt> = {
   anjo_da_guarda: { image: "/assets/sanctificare-hero.webp", overlay: "oklch(0.45 0.12 40 / 0.56)" },
   novena: { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.27 0.09 260 / 0.64)" },
   meditacao: { image: "/assets/via-sacra/imagens/2estacao.webp", overlay: "oklch(0.38 0.17 20 / 0.58)" },
-  liturgia: { image: "/assets/via-sacra/imagens/1estacao.webp", overlay: "oklch(0.3 0.12 225 / 0.6)" },
+  liturgia: { image: "/assets/dashboard/liturgia.webp", overlay: "oklch(0.3 0.12 225 / 0.6)" },
   rosario: { image: "/assets/sanctificare-rosary.webp", overlay: "oklch(0.22 0.08 260 / 0.6)" },
   lectio_divina: { image: "/assets/via-sacra/imagens/3estacao.webp", overlay: "oklch(0.35 0.11 225 / 0.58)" },
 };
