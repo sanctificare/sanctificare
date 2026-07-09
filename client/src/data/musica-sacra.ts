@@ -264,40 +264,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
     ],
   },
   {
-    id: "handel",
-    kind: "sacred-music",
-    title: "George Frideric Handel",
-    subtitle: "Majestade e Triunfo",
-    description:
-      "A glória e o esplendor do oratório barroco britânico, celebrando a realeza e o triunfo de Cristo.",
-    icon: "👑",
-    tracks: [
-      {
-        id: "lit-hallelujah",
-        title: "Hallelujah (Messias)",
-        description:
-          "O coro triunfante e inconfundível que celebra o reinado eterno de Cristo. Júbilo e louvor de Ressurreição.",
-        reference: "Oratório O Messias, HWV 56",
-        durationSec: 240,
-        narrator: "European Archive",
-        status: "planned",
-        audioUrl: sacredMusicUrl("hallelujah.mp3"),
-        premium: true,
-      },
-      {
-        id: "vivaldi-laudate-dominum-rv606",
-        title: "Laudate Dominum, RV 606",
-        description:
-          "Louvor solene ao Senhor de Vivaldi, interpretado com vivacidade e devoção barrocas.",
-        reference: "RV 606",
-        durationSec: 300,
-        narrator: "Orchestra Gli Armonici",
-        status: "ready",
-        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Orchestra%20Gli%20Armonici%2C%20100908%20Concerto%20della%20Madonna%20dei%20fiori%2C%2007%20A.Vivaldi%2C%20RV606%2C%20Laudate%20Dominum.mp3",
-      },
-    ],
-  },
-  {
     id: "charles-gounod",
     kind: "sacred-music",
     title: "Charles Gounod",
