@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
-import BrandSplash from "@/components/BrandSplash";
 
 interface ProtectedRouteProps {
   component: React.ComponentType<any>;
@@ -21,7 +20,7 @@ export default function ProtectedRoute({ component: Component, ...rest }: Protec
   }, [isAuthenticated, loading, setLocation]);
 
   if (loading && !isAuthenticated) {
-    return <BrandSplash />;
+    return null;
   }
 
   if (!isAuthenticated) {

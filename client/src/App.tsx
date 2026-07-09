@@ -1,14 +1,14 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileTopMenu from "@/components/MobileTopMenu";
 import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
-import { isMobileApp, getStoredSessionToken } from "./const";
+import { isMobileApp } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
@@ -36,7 +36,6 @@ import DailyPlan from "./pages/DailyPlan";
 
 
 import AppNav from "@/components/AppNav";
-import BrandSplash from "@/components/BrandSplash";
 
 type PreloadableComponent<T extends React.ComponentType<any>> =
   React.LazyExoticComponent<T> & { preload: () => Promise<unknown> };
@@ -180,7 +179,7 @@ function Router() {
   const { isAuthenticated, loading } = useAuth();
 
   return (
-    <Suspense fallback={<BrandSplash />}>
+    <Suspense fallback={<SuspenseLoader />}>
       <Switch>
         <Route path="/" component={isMobileApp() && !loading && !isAuthenticated ? Login : Home} />
         <Route path="/login" component={Login} />
@@ -214,29 +213,10 @@ function Router() {
 }
 
 function AppShell() {
-  const { loading } = useAuth();
   const [location] = useLocation();
-  const hasToken = typeof window !== "undefined" && (!!getStoredSessionToken() || !!localStorage.getItem("app-runtime-user-info"));
-  const isInitialLoading = useRef(loading && hasToken);
-  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(() => !isInitialLoading.current);
-
-  useEffect(() => {
-    if (!isInitialLoading.current) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setMinimumTimeElapsed(true);
-    }, 800); // exibe o BrandSplash no boot inicial, mas não trava o app por segundos
-    return () => clearTimeout(timer);
-  }, []);
 
   // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
   const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
-
-  if (hasToken && (loading || !minimumTimeElapsed)) {
-    return <BrandSplash />;
-  }
 
   return (
     <>

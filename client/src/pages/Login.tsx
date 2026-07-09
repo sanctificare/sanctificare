@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
-import BrandSplash from "@/components/BrandSplash";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -224,7 +223,7 @@ export default function Login() {
   const isPending = loginMutation.isPending || registerMutation.isPending;
 
   if (loading) {
-    return <BrandSplash />;
+    return null;
   }
 
   return (
