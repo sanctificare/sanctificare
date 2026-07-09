@@ -72,7 +72,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 938,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/bach-kyrie-eleison.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/bach-kyrie-eleison.mp3",
       },
       {
         id: "bach-christe-eleison-mass-b-minor",
@@ -83,7 +83,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 300,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%202.%20Christe%20eleison.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%202.%20Christe%20eleison.mp3",
       },
       {
         id: "bach-gloria-mass-b-minor",
@@ -94,7 +94,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 441,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%204.%20Gloria.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%204.%20Gloria.mp3",
       },
       {
         id: "bach-laudamus-te-mass-b-minor",
@@ -105,7 +105,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 258,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%205.%20Laudamus.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%205.%20Laudamus.mp3",
       },
       {
         id: "bach-sanctus-bwv237",
@@ -116,7 +116,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 94,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/Sanctus%20in%20C%20major%2C%20BWV%20237%20-%20Chorus.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Sanctus%20in%20C%20major%2C%20BWV%20237%20-%20Chorus.mp3",
       },
       {
         id: "bach-sanctus-bwv240",
@@ -127,7 +127,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 87,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/Sanctus%20in%20G%20major%2C%20BWV%20240%20-%20Chorus.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Sanctus%20in%20G%20major%2C%20BWV%20240%20-%20Chorus.mp3",
       },
       {
         id: "bach-magnificat-gloria-patri",
@@ -138,7 +138,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 158,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Magnificat%20in%20D%20-%20Chorus%20Gloria%20Patri.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Magnificat%20in%20D%20-%20Chorus%20Gloria%20Patri.mp3",
       },
       {
         id: "bach-magnificat-anima-mea",
@@ -149,7 +149,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 212,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/J.S%20Bach%20-%20Magnificat%20in%20D%20-%20Chorus%20Magnificat%20anima%20mea.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Magnificat%20in%20D%20-%20Chorus%20Magnificat%20anima%20mea.mp3",
       },
     ],
   },
@@ -171,95 +171,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 197,
         narrator: "Coro e Orquestra Domine Maris",
         status: "ready",
-        audioUrl: "/r2-storage/Sicut%20cervus.mp3",
-      },
-    ],
-  },
-  {
-    id: "mozart",
-    kind: "sacred-music",
-    title: "Wolfgang Amadeus Mozart",
-    subtitle: "A beleza do classicismo",
-    description:
-      "A genialidade clássica expressa na música sacra, unindo a grandiosidade coral ao drama humano e divino.",
-    icon: "🎻",
-    tracks: [
-      {
-        id: "lit-lacrimosa",
-        title: "Lacrimosa (Requiem)",
-        description:
-          "A última e comovente página escrita por Mozart em seu leito de morte. Lágrimas e esperança ante a eternidade.",
-        reference: "Requiem em Ré menor, K. 626",
-        durationSec: 210,
-        narrator: "European Archive (Coro e Orquestra)",
-        status: "planned",
-        audioUrl: sacredMusicUrl("lacrimosa.mp3"),
-      },
-    ],
-  },
-  {
-    id: "schubert",
-    kind: "sacred-music",
-    title: "Franz Schubert",
-    subtitle: "Melodia e Devoção",
-    description:
-      "A sensibilidade do Romantismo aplicada à oração mariana mais célebre do repertório clássico.",
-    icon: "🌹",
-    tracks: [
-      {
-        id: "mar-ave-maria-schubert",
-        title: "Ave Maria",
-        description:
-          "A melodia mariana mais famosa do mundo. Uma terna e confiante súplica à Mãe de Deus.",
-        reference: "Franz Schubert",
-        durationSec: 270,
-        narrator: "Bradley Chapman (Canto e Piano)",
-        status: "planned",
-        audioUrl: sacredMusicUrl("ave-maria-schubert.mp3"),
-      },
-    ],
-  },
-  {
-    id: "faure",
-    kind: "sacred-music",
-    title: "Gabriel Fauré",
-    subtitle: "Esperança e Consolo",
-    description:
-      "A serenidade da música francesa no final do século XIX, trazendo paz e uma visão luminosa da eternidade.",
-    icon: "🕊️",
-    tracks: [
-      {
-        id: "med-in-paradisum",
-        title: "In Paradisum (Requiem)",
-        description:
-          "\"Que os anjos te conduzam ao paraíso.\" Canto de despedida cheio de serenidade, paz e repouso eterno.",
-        reference: "Requiem, Op. 48",
-        durationSec: 210,
-        narrator: "European Archive",
-        status: "planned",
-        audioUrl: sacredMusicUrl("in-paradisum.mp3"),
-      },
-    ],
-  },
-  {
-    id: "bruckner",
-    kind: "sacred-music",
-    title: "Anton Bruckner",
-    subtitle: "Fé e Monumentalidade",
-    description:
-      "Compositor profundamente católico, cujos motetos corais trazem a grandiosidade das catedrais para a música a cappella.",
-    icon: "🕯️",
-    tracks: [
-      {
-        id: "mar-ave-maria-bruckner",
-        title: "Ave Maria",
-        description:
-          "Uma sublime e grandiosa composição a cappella dedicada à Virgem Maria, repleta de contraste e devoção.",
-        reference: "Anton Bruckner",
-        durationSec: 240,
-        narrator: "The Tudor Consort",
-        status: "planned",
-        audioUrl: sacredMusicUrl("ave-maria-bruckner.mp3"),
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Sicut%20cervus.mp3",
       },
     ],
   },
@@ -314,7 +226,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 311,
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/Gloria%20in%20D%20major%2C%20RV%20589.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Gloria%20in%20D%20major%2C%20RV%20589.mp3",
       },
       {
         id: "vivaldi-laudate-dominum-rv606",
@@ -325,7 +237,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 221,
         narrator: "Orchestra Gli Armonici (Coro e Orquestra)",
         status: "ready",
-        audioUrl: "/r2-storage/Orchestra%20Gli%20Armonici%2C%20100908%20Concerto%20della%20Madonna%20dei%20fiori%2C%2007%20A.Vivaldi%2C%20RV606%2C%20Laudate%20Dominum.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Orchestra%20Gli%20Armonici%2C%20100908%20Concerto%20della%20Madonna%20dei%20fiori%2C%2007%20A.Vivaldi%2C%20RV606%2C%20Laudate%20Dominum.mp3",
       },
     ],
   },
