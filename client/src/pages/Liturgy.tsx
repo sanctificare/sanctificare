@@ -841,17 +841,17 @@ export default function Liturgy() {
                     <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400 pl-1 uppercase tracking-wide">
                       {liturgy.psalm?.referencia || "Salmo Responsorial"}
                     </p>
-                    <div className="w-full mt-2 bg-[#fdf8f0] dark:bg-[#1b1712] border border-amber-500/25 rounded-2xl p-4 shadow-sm flex flex-col gap-3 transition-all duration-300">
+                    <div className="w-full mt-2 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/30 border-2 border-amber-400/60 dark:border-amber-500/50 rounded-2xl p-4 shadow-md flex flex-col gap-3 transition-all duration-300">
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex-shrink-0 flex items-center justify-center w-10 h-10">
+                          <div className="p-2.5 rounded-xl bg-amber-500/25 border border-amber-500/50 text-amber-600 dark:text-amber-300 flex-shrink-0 flex items-center justify-center w-10 h-10">
                             <Music className="w-5 h-5" />
                           </div>
                           <div className="text-left">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
                               Salmo Cantado
                             </h4>
-                            <p className="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">
+                            <p className="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-0.5">
                               Ouça a versão cantada deste salmo
                             </p>
                           </div>
@@ -861,7 +861,7 @@ export default function Liturgy() {
                           <button
                             type="button"
                             onClick={handleSharePsalm}
-                            className="w-9 h-9 rounded-full border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 bg-white dark:bg-[#2c221a] hover:bg-amber-50 dark:hover:bg-amber-950/20 transition-all cursor-pointer shadow-sm hover:scale-105 shrink-0"
+                            className="w-9 h-9 rounded-full border border-amber-400/50 flex items-center justify-center text-amber-600 dark:text-amber-400 bg-white dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-all cursor-pointer shadow-sm hover:scale-105 shrink-0"
                             title="Compartilhar salmo"
                           >
                             <Share2 className="w-4 h-4" />
@@ -870,7 +870,7 @@ export default function Liturgy() {
                           <button
                             type="button"
                             onClick={togglePlayPsalm}
-                            className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-md transition-transform hover:scale-105 cursor-pointer shrink-0"
+                            className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-white flex items-center justify-center shadow-lg shadow-amber-500/40 transition-transform hover:scale-105 cursor-pointer shrink-0"
                             title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
                           >
                             {isPsalmPlaying ? (
@@ -885,8 +885,8 @@ export default function Liturgy() {
                       <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
 
                       {/* Timeline/Progress Bar Row */}
-                      <div className="flex items-center gap-3 bg-stone-100/80 dark:bg-stone-900/50 p-2 rounded-xl">
-                        <span className="text-[10px] font-mono text-stone-500 dark:text-stone-400 w-8 shrink-0 text-center select-none">
+                      <div className="flex items-center gap-3 bg-amber-100/60 dark:bg-amber-950/40 border border-amber-300/40 dark:border-amber-700/30 p-2 rounded-xl">
+                        <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
                           {formatTime(psalmCurrentTime)}
                         </span>
                         <input
@@ -896,9 +896,9 @@ export default function Liturgy() {
                           step={0.1}
                           value={psalmCurrentTime}
                           onChange={(e) => handleSeekPsalm(Number(e.target.value))}
-                          className="flex-1 h-1 bg-stone-200 dark:bg-stone-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                          className="flex-1 h-1 bg-amber-200 dark:bg-amber-900 rounded-lg appearance-none cursor-pointer accent-amber-500"
                         />
-                        <span className="text-[10px] font-mono text-stone-500 dark:text-stone-400 w-8 shrink-0 text-center select-none">
+                        <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
                           {formatTime(psalmDuration)}
                         </span>
                       </div>
