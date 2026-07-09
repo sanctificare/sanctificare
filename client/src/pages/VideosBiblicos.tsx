@@ -365,6 +365,8 @@ export default function VideosBiblicos() {
   const { isAuthenticated, loading } = useAuth();
   const [filter, setFilter] = useState<"all" | "short" | "long">("all");
   const [selectedVideo, setSelectedVideo] = useState<BibleVideo | null>(null);
+  const [showPremiumLock, setShowPremiumLock] = useState(false);
+  const [lockedVideoTitle, setLockedVideoTitle] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
 
@@ -377,9 +379,12 @@ export default function VideosBiblicos() {
   const videoPlayerRef = useRef<HTMLVideoElement>(null);
   const lastSavedTimeRef = useRef<Record<string, number>>({});
 
+  const { data: subscription, isLoading: subLoading } = trpc.subscriptions.getActive.useQuery(
+    undefined, { enabled: isAuthenticated }
+  );
+  
   const logPrayer = trpc.prayers.logPrayer.useMutation();
-  const isPremium = true;
-  const subLoading = false;
+  const isPremium = Boolean(subscription);
 
   // Extract categories dynamically and add Favorites pill
   const categories = useMemo(() => {
@@ -569,6 +574,12 @@ export default function VideosBiblicos() {
   }, [loading, subLoading]);
 
   const handlePlayVideo = async (video: BibleVideo) => {
+    if (video.premium && !isPremium) {
+      setLockedVideoTitle(video.title);
+      setShowPremiumLock(true);
+      return;
+    }
+    
     setSelectedVideo(video);
 
     // Registrar no histórico de oração/meditação como uma atividade realizada
@@ -983,7 +994,42 @@ export default function VideosBiblicos() {
         )}
       </Dialog>
 
+      {/* Modal de Bloqueio Premium */}
+      <Dialog open={showPremiumLock} onOpenChange={setShowPremiumLock}>
+        <DialogContent className="max-w-md bg-white border border-border shadow-xl rounded-2xl p-6">
+          <DialogHeader className="items-center text-center">
+            <div className="w-14 h-14 rounded-full bg-[oklch(0.75_0.12_75/0.15)] border border-[oklch(0.75_0.12_75/0.4)] flex items-center justify-center mb-4">
+              <Crown size={28} className="text-[oklch(0.65_0.12_70)]" />
+            </div>
+            <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)] font-bold">
+              Conteúdo Premium Exclusivo
+            </DialogTitle>
+            <DialogDescription className="font-serif text-sm text-muted-foreground mt-2">
+              O vídeo <strong>"{lockedVideoTitle}"</strong> e outras recriações cinematográficas bíblicas estão disponíveis somente para assinantes Premium.
+            </DialogDescription>
+          </DialogHeader>
 
+          <div className="space-y-4 my-6">
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-[oklch(0.97_0.01_85)] border border-border">
+              <Crown size={18} className="text-[oklch(0.65_0.12_70)] flex-shrink-0 mt-0.5" />
+              <div className="text-xs text-[oklch(0.22_0.07_260)] font-serif leading-relaxed">
+                Acesse todos os vídeos curtos e longos gerados por IA, terços completos, novenas exclusivas e meditações diárias guiadas.
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Link href="/premium">
+              <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-bold shadow-md">
+                Ver Planos Premium
+              </Button>
+            </Link>
+            <Button variant="outline" className="w-full" onClick={() => setShowPremiumLock(false)}>
+              Voltar depois
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

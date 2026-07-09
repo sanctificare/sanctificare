@@ -54,7 +54,9 @@ function ProgressRing({ done, total }: { done: number; total: number }) {
 export default function Novenas() {
   const { isAuthenticated, loading } = useAuth();
   const [progress] = useState<ProgressMap>(() => readProgress());
-  const isPremium = true;
+  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+
+  const isPremium = Boolean(subscription);
   const activeNovenas = buildNovenasInProgressItems(progress, NOVENAS);
 
   const stats = useMemo(() => {
@@ -110,6 +112,8 @@ export default function Novenas() {
           <div className="cover-card-content flex flex-col items-start gap-1">
             {isComplete ? (
               <span className="font-bold rounded-full px-1.5 py-0.5 bg-emerald-500/85 text-white text-[9px] tracking-wide uppercase">Concluída</span>
+            ) : novena.category === "premium" ? (
+              <span className="badge-premium text-[10px] scale-90 origin-left">Premium</span>
             ) : (
               <span className="font-semibold rounded-full px-1.5 py-0.5 bg-[oklch(0.40_0.10_150/0.80)] text-white text-[9px] tracking-wide uppercase">Disponível</span>
             )}
@@ -241,7 +245,20 @@ export default function Novenas() {
           </div>
         )}
 
-
+        {!isPremium ? (
+          <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.08)] p-4 max-w-xl mx-auto">
+            <div className="flex items-center gap-2 mb-2">
+              <Crown size={15} className="text-[oklch(0.65_0.12_70)]" />
+              <span className="font-semibold text-sm text-[oklch(0.22_0.07_260)]">Desbloqueie mais novenas</span>
+            </div>
+            <p className="text-xs text-muted-foreground mb-3">A assinatura libera novas novenas e outros itinerários de oração para acompanhar sua vida espiritual.</p>
+            <Link href="/premium">
+              <Button className="w-full bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold text-xs">
+                Ver planos
+              </Button>
+            </Link>
+          </div>
+        ) : null}
 
       </main>
     </div>

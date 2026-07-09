@@ -104,9 +104,12 @@ export default function NovenaDetails() {
 
   const [progress, setProgress] = useState<ProgressMap>(() => readProgress());
   const [startDates, setStartDates] = useState<StartDateMap>(() => readStartDates());
-  const isPremium = true;
+  const { data: subscription } = trpc.subscriptions.getActive.useQuery(undefined, { enabled: isAuthenticated });
+  
   const utils = trpc.useUtils();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
+
+  const isPremium = Boolean(subscription);
   
   const selectedNovena = useMemo(() => {
     if (!matched || !params?.slug) return undefined;

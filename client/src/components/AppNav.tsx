@@ -140,7 +140,15 @@ export default function AppNav() {
                 >
                   <Search size={16} />
                 </Button>
-
+                <Link href="/premium">
+                  <Button
+                    size="sm"
+                    className="hidden lg:flex items-center gap-2 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold text-xs tracking-wide"
+                  >
+                    <Crown size={13} />
+                    Premium
+                  </Button>
+                </Link>
                 {dailyPlan && (
                   <Link href="/plano-diario">
                     <div className="hidden lg:flex items-center gap-1 cursor-pointer px-3 py-1.5 rounded-full bg-[oklch(0.75_0.12_75/0.1)] border border-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.2)] transition-all duration-200 text-xs font-bold font-sans">
@@ -170,7 +178,11 @@ export default function AppNav() {
                         <User size={14} className="mr-2" /> Meu Perfil
                       </Link>
                     </DropdownMenuItem>
-
+                    <DropdownMenuItem asChild>
+                      <Link href="/premium">
+                        <Crown size={14} className="mr-2 text-[oklch(0.70_0.12_75)]" /> Planos Premium
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"

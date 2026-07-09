@@ -196,7 +196,11 @@ export default function AudioLibraryPage({
                               >
                                 {track.title}
                               </p>
-
+                              {track.premium && (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.55_0.12_70)]">
+                                  <Crown size={10} /> Premium
+                                </span>
+                              )}
                             </div>
                             {track.reference && (
                               <p
@@ -251,7 +255,25 @@ export default function AudioLibraryPage({
             ))}
           </div>
 
-
+          {/* Rodapé / CTA premium */}
+          <div className="mt-10 rounded-2xl bg-[oklch(0.22_0.07_260)] p-6 relative overflow-hidden">
+            <div className="absolute inset-0 bg-pattern-cross opacity-20" />
+            <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-display text-lg font-bold text-white mb-1">
+                  Mais áudios no Premium
+                </h3>
+                <p className="text-sm text-[oklch(0.88_0.06_82)]">
+                  Desbloqueie meditações exclusivas e narrações para sono e descanso.
+                </p>
+              </div>
+              <Link href="/premium">
+                <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
+                  <Crown size={14} className="mr-2" /> Conhecer Premium
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </main>
 

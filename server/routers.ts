@@ -3,6 +3,7 @@ import { getCsrfCookieOptions, getSessionCookieOptions } from "./_core/cookies";
 import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./_core/security";
 import { ENV } from "./_core/env";
 import { systemRouter } from "./_core/systemRouter";
+import Stripe from "stripe";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod/v4";
 import { TRPCError } from "@trpc/server";
@@ -22,6 +23,10 @@ import {
   markGraceObtained,
   deleteIntention,
   updateIntention,
+  getActiveSubscription,
+  createSubscription,
+  cancelSubscription,
+  createOrUpdateStripeSubscription,
   updateTemplatePreference,
   getTemplatePreference,
   getDailyLiturgy,
@@ -55,7 +60,9 @@ const publicRateLimiter = createMemoryRateLimiter({
   cleanupIntervalMs: 5 * 60 * 1000,
 });
 
-
+const stripeClient = ENV.stripeSecretKey
+  ? new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any })
+  : null;
 
 type CachedValue<T> = {
   value: T;
@@ -242,7 +249,170 @@ export const appRouter = router({
       }),
   }),
 
+  subscriptions: router({
+    getActive: protectedProcedure
+      .query(async ({ ctx }) => {
+        return getActiveSubscription(ctx.user.id);
+      }),
 
+    subscribe: protectedProcedure
+      .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
+      .mutation(async ({ ctx, input }) => {
+        if (ENV.stripeSecretKey && ENV.isProduction) {
+          const stripe = stripeClient;
+          if (!stripe) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Stripe não inicializado.",
+            });
+          }
+          const priceId = input.plan === "annual" ? ENV.stripePriceAnnual : ENV.stripePriceMonthly;
+          if (!priceId) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: `ID de preço não configurado para o plano: ${input.plan}`,
+            });
+          }
+
+          const activeSub = await getActiveSubscription(ctx.user.id);
+          const hasRealStripeSub = activeSub?.stripeSubscriptionId?.startsWith("sub_");
+          if (hasRealStripeSub && activeSub.plan === input.plan) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: "Você já possui uma assinatura ativa para este plano.",
+            });
+          }
+
+          if (hasRealStripeSub && activeSub?.stripeSubscriptionId) {
+            const stripeSubscription = await stripe.subscriptions.retrieve(activeSub.stripeSubscriptionId);
+            const item = stripeSubscription.items.data[0];
+
+            if (!item) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: "Assinatura do Stripe sem item de plano.",
+              });
+            }
+
+            const updated = await stripe.subscriptions.update(activeSub.stripeSubscriptionId, {
+              cancel_at_period_end: false,
+              items: [{ id: item.id, price: priceId }],
+              proration_behavior: "create_prorations",
+            });
+
+            const stripeCustomerId = typeof updated.customer === "string"
+              ? updated.customer
+              : updated.customer.id;
+            const expiresAt = new Date((updated as any).current_period_end * 1000);
+
+            await createOrUpdateStripeSubscription(
+              ctx.user.id,
+              stripeCustomerId,
+              updated.id,
+              input.plan,
+              "active",
+              expiresAt
+            );
+
+            return { success: true };
+          }
+
+          // Reutiliza cliente Stripe existente para evitar duplicatas
+          const existingCustomerId = activeSub?.stripeCustomerId?.startsWith("cus_")
+            ? activeSub.stripeCustomerId
+            : undefined;
+
+          const session = await stripe.checkout.sessions.create({
+            ...(existingCustomerId
+              ? { customer: existingCustomerId }
+              : { customer_email: ctx.user.email ?? undefined }),
+            line_items: [{ price: priceId, quantity: 1 }],
+            mode: "subscription",
+            success_url: `${ENV.appUrl}/premium?success=true`,
+            cancel_url: `${ENV.appUrl}/premium?cancelled=true`,
+            metadata: { userId: String(ctx.user.id) },
+          });
+
+          return { success: true, url: session.url ?? undefined };
+        }
+
+        // Fallback to mock
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (activeSub && activeSub.plan === input.plan) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Você já possui uma assinatura ativa para este plano.",
+          });
+        }
+        await createSubscription(ctx.user.id, input.plan);
+        return { success: true };
+      }),
+
+    cancel: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        if (activeSub?.stripeSubscriptionId?.startsWith("sub_")) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Assinaturas do Stripe devem ser canceladas através do portal de faturamento.",
+          });
+        }
+        await cancelSubscription(ctx.user.id);
+        return { success: true };
+      }),
+
+    createPortalSession: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        const isRealStripeCustomer = activeSub?.stripeCustomerId?.startsWith("cus_");
+        if (!activeSub || !isRealStripeCustomer || !ENV.stripeSecretKey) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Nenhuma assinatura do Stripe ativa foi encontrada para este usuário.",
+          });
+        }
+
+        const stripe = stripeClient;
+        if (!stripe) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Stripe não inicializado.",
+          });
+        }
+        const session = await stripe.billingPortal.sessions.create({
+          customer: activeSub.stripeCustomerId,
+          return_url: `${ENV.appUrl}/premium`,
+        });
+
+        return { url: session.url };
+      }),
+
+    getInvoices: protectedProcedure
+      .query(async ({ ctx }) => {
+        const activeSub = await getActiveSubscription(ctx.user.id);
+        const isRealStripeCustomer = activeSub?.stripeCustomerId?.startsWith("cus_");
+        if (!activeSub || !isRealStripeCustomer || !ENV.stripeSecretKey) {
+          return [];
+        }
+
+        const stripe = stripeClient;
+        if (!stripe) return [];
+        const invoices = await stripe.invoices.list({
+          customer: activeSub.stripeCustomerId,
+          limit: 10,
+        });
+
+        return invoices.data.map((inv) => ({
+          id: inv.id,
+          amountPaid: inv.amount_paid,
+          currency: inv.currency,
+          status: inv.status,
+          created: inv.created,
+          pdfUrl: inv.invoice_pdf,
+          hostedUrl: inv.hosted_invoice_url,
+        }));
+      }),
+  }),
 
   templates: router({
     getPreference: protectedProcedure
