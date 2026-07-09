@@ -35,17 +35,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3",
       },
-      {
-        id: "te-deum-prelude",
-        title: "Te Deum Prelude",
-        description:
-          "Prelúdio de Te Deum para contemplação e louvor solene.",
-        reference: "Te Deum",
-        durationSec: 180,
-        narrator: "Coro Sacro",
-        status: "ready",
-        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Te%20Deum%20Prelude.mp3",
-      },
     ],
   },
   {
