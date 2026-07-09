@@ -81,11 +81,9 @@ export default function Novenas() {
   }, [progress]);
 
   const faithNovenas = NOVENAS.filter((n) =>
-    ["novena-sagrado-coracao-jesus", "novena-divino-espirito-santo"].includes(n.id)
+    ["novena-sagrado-coracao-jesus"].includes(n.id)
   );
-  const intercessionNovenas = NOVENAS.filter((n) =>
-    ["novena-nossa-senhora-perpetuo-socorro", "novena-sao-jose"].includes(n.id)
-  );
+  const intercessionNovenas: typeof NOVENAS = [];
 
   const renderNovenaCard = (novena: typeof NOVENAS[number]) => {
     const locked = novena.category === "premium" && !isPremium;

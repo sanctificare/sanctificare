@@ -671,14 +671,8 @@ export default function Dashboard() {
                   <div className="relative overflow-hidden rounded-2xl min-h-[150px] sm:min-h-[160px] group cursor-pointer border border-border/30 card-interactive hover:border-[oklch(0.75_0.12_75/0.4)] flex flex-col justify-between p-5 sm:p-6 h-full">
                     <img
                       src={resolveMediaUrl(activeNovena
-                        ? (activeNovena.novena.slug === 'novena-do-sagrado-coracao-de-jesus'
-                          ? '/assets/novenas/sagrado-coracao-jesus.png'
-                          : activeNovena.novena.slug === 'novena-do-divino-espirito-santo'
-                          ? '/assets/novenas/divino-espirito-santo.png'
-                          : activeNovena.novena.slug === 'novena-nossa-senhora-do-perpetuo-socorro'
-                          ? '/assets/novenas/nossa-senhora-perpetuo-socorro.png'
-                          : '/assets/novenas/sao-jose.png')
-                        : '/assets/novenas/sao-jose.png'
+                        ? '/assets/novenas/sagrado-coracao-jesus.png'
+                        : '/assets/novenas/sagrado-coracao-jesus.png'
                       )}
                       alt="Novena"
                       loading="lazy"

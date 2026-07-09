@@ -20,15 +20,6 @@ export interface Novena {
   days: NovenaDay[];
 }
 
-function buildSimpleDays(theme: string, prayerText: string): NovenaDay[] {
-  return Array.from({ length: 9 }, (_, i) => ({
-    day: i + 1,
-    title: `Dia ${i + 1}`,
-    reflection: `${theme} - medite neste dia com espírito de entrega, confiança e perseverança diante da graça de Deus.`,
-    prayer: prayerText,
-  }));
-}
-
 const SAGRADO_CORACAO_AUDIO_BASE_PATH = "/audio/novenas/sagrado-coracao-jesus";
 
 const SAGRADO_CORACAO_INITIAL_PRAYER = `ORAÇÃO INICIAL PARA TODOS OS DIAS
@@ -128,95 +119,6 @@ export const NOVENAS: Novena[] = [
     category: "basic",
     duration: "9 dias",
     days: buildSagradoCoracaoDays(),
-  },
-  {
-    id: "novena-divino-espirito-santo",
-    slug: "novena-do-divino-espirito-santo",
-    name: "Novena do Divino Espírito Santo",
-    subtitle: "Vinde, Espírito Santo",
-    description: "Nove dias suplicando luz, fortaleza e discernimento para as escolhas da vida cotidiana.",
-    icon: "🕊️",
-    category: "basic",
-    duration: "9 dias",
-    days: buildSimpleDays(
-      "Pequena invocação ao Espírito Santo",
-      `Vinde, Espírito Santo,
-    enchei os corações dos vossos fiéis
-e acendei neles o fogo do vosso amor.
-
-    Enviai o vosso Espírito e tudo será criado,
-e renovareis a face da terra.
-
-Oremos:
-    Ó Deus, que instruístes os corações dos vossos fiéis
-    com a luz do Espírito Santo,
-fazei que apreciemos retamente todas as coisas
-    segundo o mesmo Espírito
-    e gozemos sempre de sua consolação.
-    Por Cristo, Senhor nosso. Amém.`
-    ),
-  },
-  {
-    id: "novena-nossa-senhora-perpetuo-socorro",
-    slug: "novena-nossa-senhora-do-perpetuo-socorro",
-    name: "Novena de Nossa Senhora do Perpétuo Socorro",
-    subtitle: "Refúgio e auxílio dos cristãos",
-    description: "Nove dias de súplica filial e confiança na intercessão da Mãe do Perpétuo Socorro.",
-    icon: "🌟",
-    category: "premium",
-    duration: "9 dias",
-    days: buildSimpleDays(
-      "Entrega filial a Nossa Senhora",
-      `Ó Mãe do Perpétuo Socorro,
-concedei-me a graça de invocar sempre o vosso poderosíssimo nome,
-que é o socorro dos vivos e a salvação dos moribundos.
-
-Ó Mãe puríssima,
-fazei que o vosso nome seja, daqui por diante,
-a minha respiração contínua.
-Não tardeis, Virgem Santíssima, em socorrer-me,
-todas as vezes que vos invocar,
-porque, em todas as tentações,
-em todas as necessidades,
-nunca cessarei de vos chamar,
-repetindo sempre o vosso santo nome: Maria, Maria!
-
-Que consolação, que doçura,
-que confiança, que ternura inunda a minha alma,
-ao pronunciar o vosso santo nome
-e somente ao pensar em vós!
-
-Dou graças ao Senhor Deus
-por ter-vos dado, para meu bem,
-um nome tão doce, tão amável, tão poderoso.
-Mas não me basta, ó Mãe querida,
-pronunciar este nome.
-Quero invocar-vos com o amor que vos consagro,
-para que esse amor me mova a chamar-vos sempre:
-Maria, Mãe do Perpétuo Socorro! Amém.`
-    ),
-  },
-  {
-    id: "novena-sao-jose",
-    slug: "novena-de-sao-jose",
-    name: "Novena de São José",
-    subtitle: "Patrono da Igreja e das famílias",
-    description: "Nove dias pedindo a intercessão de São José pelo trabalho, pela família e pela proteção do lar.",
-    icon: "🛠️",
-    category: "premium",
-    duration: "9 dias",
-    days: buildSimpleDays(
-      "Confiança no silêncio e obediência de São José",
-      `Glorioso São José,
-    escolhido por Deus para ser guardião da Sagrada Família,
-protegei nossas casas,
-abençoai nosso trabalho
-e sustentai-nos na vontade de Deus.
-
-    São José,
-    modelo de justiça e fidelidade,
-    rogai por nós. Amém.`
-    ),
   },
 ];
 
