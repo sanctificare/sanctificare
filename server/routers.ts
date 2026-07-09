@@ -275,14 +275,15 @@ export const appRouter = router({
           }
 
           const activeSub = await getActiveSubscription(ctx.user.id);
-          if (activeSub?.stripeSubscriptionId && activeSub.plan === input.plan) {
+          const hasRealStripeSub = activeSub?.stripeSubscriptionId?.startsWith("sub_");
+          if (hasRealStripeSub && activeSub.plan === input.plan) {
             throw new TRPCError({
               code: "BAD_REQUEST",
               message: "Você já possui uma assinatura ativa para este plano.",
             });
           }
 
-          if (activeSub?.stripeSubscriptionId) {
+          if (hasRealStripeSub && activeSub?.stripeSubscriptionId) {
             const stripeSubscription = await stripe.subscriptions.retrieve(activeSub.stripeSubscriptionId);
             const item = stripeSubscription.items.data[0];
 
@@ -356,7 +357,8 @@ export const appRouter = router({
     createPortalSession: protectedProcedure
       .mutation(async ({ ctx }) => {
         const activeSub = await getActiveSubscription(ctx.user.id);
-        if (!activeSub || !activeSub.stripeCustomerId || !ENV.stripeSecretKey) {
+        const isRealStripeCustomer = activeSub?.stripeCustomerId?.startsWith("cus_");
+        if (!activeSub || !isRealStripeCustomer || !ENV.stripeSecretKey) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Nenhuma assinatura do Stripe ativa foi encontrada para este usuário.",
@@ -381,7 +383,8 @@ export const appRouter = router({
     getInvoices: protectedProcedure
       .query(async ({ ctx }) => {
         const activeSub = await getActiveSubscription(ctx.user.id);
-        if (!activeSub || !activeSub.stripeCustomerId || !ENV.stripeSecretKey) {
+        const isRealStripeCustomer = activeSub?.stripeCustomerId?.startsWith("cus_");
+        if (!activeSub || !isRealStripeCustomer || !ENV.stripeSecretKey) {
           return [];
         }
 
