@@ -318,7 +318,6 @@ export const appRouter = router({
           }
 
           const session = await stripe.checkout.sessions.create({
-            automatic_payment_methods: { enabled: true },
             line_items: [{ price: priceId, quantity: 1 }],
             mode: "subscription",
             success_url: `${ENV.appUrl}/premium?success=true`,
