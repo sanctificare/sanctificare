@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { BookHeart, Check, ChevronRight, CircleHelp, Quote, Sparkles } from "lucide-react";
+import { BookHeart, Check, CircleHelp, Clock3, FileText, Quote, Sparkles } from "lucide-react";
 import { WISDOM_PILLS } from "@/data/wisdom-pills";
+
+const CARD_CATEGORIES = ["Vida interior", "Virtudes", "Vida de oração"] as const;
 
 export default function Pilulas() {
   const [selectedId, setSelectedId] = useState(WISDOM_PILLS[0].id);
@@ -23,34 +25,50 @@ export default function Pilulas() {
             </p>
           </header>
 
-          <div className="grid gap-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
-            <nav aria-label="Dias do retiro" className="lg:sticky lg:top-24 lg:self-start">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 lg:grid-cols-1">
-                {WISDOM_PILLS.map((pill, index) => {
-                  const active = pill.id === selectedPill.id;
-                  return (
-                    <button
-                      key={pill.id}
-                      type="button"
-                      onClick={() => setSelectedId(pill.id)}
-                      className={`flex min-h-14 items-center gap-3 rounded-lg border px-3 py-2 text-left transition-colors ${
-                        active
-                          ? "border-[oklch(0.22_0.07_260)] bg-[oklch(0.22_0.07_260)] text-white shadow-sm"
-                          : "border-[oklch(0.22_0.07_260/0.12)] bg-white text-[oklch(0.22_0.07_260)] hover:border-[oklch(0.65_0.12_70/0.6)]"
-                      }`}
-                    >
-                      <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${active ? "bg-[oklch(0.75_0.12_75)] text-[oklch(0.22_0.07_260)]" : "bg-[oklch(0.22_0.07_260/0.08)]"}`}>
-                        {index + 1}
-                      </span>
-                      <span className="min-w-0 flex-1 text-sm font-semibold leading-tight line-clamp-2">{pill.title.replace(/^Dia \d+: /, "")}</span>
-                      <ChevronRight size={15} className={active ? "text-[oklch(0.88_0.08_80)]" : "text-muted-foreground"} />
-                    </button>
-                  );
-                })}
-              </div>
-            </nav>
+          <section aria-label="Dias do retiro" className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {WISDOM_PILLS.map((pill, index) => {
+              const active = pill.id === selectedPill.id;
+              const category = CARD_CATEGORIES[index % CARD_CATEGORIES.length];
+              return (
+                <button
+                  key={pill.id}
+                  type="button"
+                  onClick={() => setSelectedId(pill.id)}
+                  className={`h-full rounded-2xl border bg-white p-5 text-left transition-all ${
+                    active
+                      ? "border-[oklch(0.65_0.12_70)] shadow-[0_8px_28px_oklch(0.65_0.12_70/0.18)]"
+                      : "border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.65_0.12_70/0.45)] hover:shadow-sm"
+                  }`}
+                >
+                  <span className="inline-flex rounded-md border border-[oklch(0.65_0.12_70/0.35)] bg-[oklch(0.97_0.03_85)] px-2 py-1 text-xs font-bold uppercase tracking-wide text-[oklch(0.65_0.12_70)]">
+                    {category}
+                  </span>
 
-            <article className="border border-[oklch(0.22_0.07_260/0.12)] bg-white p-5 shadow-sm sm:p-8">
+                  <h3 className="mt-4 font-display text-3xl leading-tight text-[oklch(0.22_0.07_260)]">
+                    {pill.title.replace(/^Dia \d+:\s*/, "")}
+                  </h3>
+                  <p className="mt-1 text-xl font-medium text-[oklch(0.30_0.06_260)]">Por {pill.narrator}</p>
+
+                  <p className="mt-4 min-h-20 text-lg leading-relaxed text-muted-foreground">{pill.description}</p>
+
+                  <div className="mt-5 border-t border-[oklch(0.22_0.07_260/0.12)] pt-3 text-[oklch(0.65_0.12_70)]">
+                    <div className="flex items-center justify-between gap-3 text-base font-semibold">
+                      <span className="inline-flex items-center gap-2">
+                        <FileText size={16} />
+                        {active ? "Lendo agora" : "Ler meditação"}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 text-[oklch(0.30_0.05_260)]">
+                        <Clock3 size={15} />
+                        5 min
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </section>
+
+          <article className="border border-[oklch(0.22_0.07_260/0.12)] bg-white p-5 shadow-sm sm:p-8">
               <div className="mb-5 flex items-center gap-2 text-sm text-[oklch(0.65_0.12_70)]">
                 <BookHeart size={18} />
                 <span>{selectedPill.narrator}</span>
@@ -86,7 +104,6 @@ export default function Pilulas() {
                 </div>
               </div>
             </article>
-          </div>
         </div>
       </main>
     </div>
