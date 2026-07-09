@@ -59,14 +59,21 @@ const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
 
-// Rotas secundárias pré-carregadas em background para evitar tempo de espera.
+// Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
+// ("Carregando...") na primeira navegação a cada página.
 const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   GlobalSearch,
   LectioDivina,
   ViaSacra,
   VelaVirtual,
+  MusicaSacra,
   Novenas,
+  NovenaDetails,
   Intentions,
+  Profile,
+  DangerZone,
+  Premium,
+  VideosBiblicos,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
@@ -164,12 +171,12 @@ function ProtectedPrayerDetailRoute(props: any) {
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
   return (
-    <Suspense fallback={<SuspenseLoader />}>
+    <Suspense fallback={<BrandSplash />}>
       <Switch>
-        <Route path="/" component={isMobileApp() && !isAuthenticated ? Login : Home} />
+        <Route path="/" component={isMobileApp() && !loading && !isAuthenticated ? Login : Home} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={ProtectedDashboardRoute} />
         <Route path="/explore" component={ProtectedExploreRoute} />

@@ -291,6 +291,12 @@ export default function Home() {
     };
   }, []);
 
+  // Evita flash da landing page enquanto o estado de auth ainda não resolveu (desktop)
+  // ou quando o usuário já está autenticado (o useEffect redireciona para /dashboard).
+  if (isAuthenticated || (!isMobileApp() && loading)) {
+    return null;
+  }
+
   // No app nativo, usamos o splash apenas enquanto o estado de autenticação
   // ainda está sendo carregado ou antes do primeiro redirecionamento inicial.
   // Depois disso, deixamos a navegação acontecer mais rapidamente.

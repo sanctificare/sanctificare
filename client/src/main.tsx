@@ -192,11 +192,10 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 };
 
 if (typeof window !== "undefined") {
+  // Reseta a flag em qualquer navegação: indica que o redirect anterior já pousou
+  // e novos erros 401 devem poder disparar novos redirects.
   window.addEventListener("popstate", () => {
-    const path = window.location.pathname;
-    if (path === "/login" || path === "/" || path === "/dashboard") {
-      authRedirectInFlight = false;
-    }
+    authRedirectInFlight = false;
   });
 }
 
