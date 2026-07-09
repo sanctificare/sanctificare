@@ -48,13 +48,7 @@ const AUDIO_COLLECTION_ART: Record<string, string> = {
   "tempos-liturgicos": "/assets/sanctificare-hero.webp",
   // Coleções por Artista/Compositor
   "js-bach": "/assets/composers/js-bach.webp",
-  "tomas-luis-de-victoria": "/assets/composers/tomas-luis-de-victoria.webp",
   "palestrina": "/assets/composers/palestrina.webp",
-  "mozart": "/assets/composers/mozart.webp",
-  "schubert": "/assets/composers/schubert.webp",
-  "faure": "/assets/composers/faure.webp",
-  "bruckner": "/assets/composers/bruckner.webp",
-  "handel": "/assets/composers/handel.webp",
   "charles-gounod": "/assets/composers/charles-gounod.webp",
   "antonio-vivaldi": "/assets/composers/antonio-vivaldi.webp",
 };

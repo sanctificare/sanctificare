@@ -13,12 +13,6 @@
 
 import type { AudioCollection } from "@/data/audio-meditations";
 
-const SACRED_MUSIC_BASE_PATH = "/audio/musica-sacra";
-
-function sacredMusicUrl(fileName: string): string {
-  return `${SACRED_MUSIC_BASE_PATH}/${fileName}`;
-}
-
 export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
   {
     id: "canto-gregoriano",
