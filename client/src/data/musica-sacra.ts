@@ -284,6 +284,17 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         audioUrl: sacredMusicUrl("hallelujah.mp3"),
         premium: true,
       },
+      {
+        id: "vivaldi-laudate-dominum-rv606",
+        title: "Laudate Dominum, RV 606",
+        description:
+          "Louvor solene ao Senhor de Vivaldi, interpretado com vivacidade e devoção barrocas.",
+        reference: "RV 606",
+        durationSec: 300,
+        narrator: "Orchestra Gli Armonici",
+        status: "ready",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Orchestra%20Gli%20Armonici%2C%20100908%20Concerto%20della%20Madonna%20dei%20fiori%2C%2007%20A.Vivaldi%2C%20RV606%2C%20Laudate%20Dominum.mp3",
+      },
     ],
   },
   {
@@ -304,7 +315,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 140,
         narrator: "Violão Solo",
         status: "ready",
-        audioUrl: "/r2-storage/Ave%20Maria%20(for%20Guitar).mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Ave%20Maria%20(for%20Guitar).mp3",
       },
     ],
   },
@@ -326,7 +337,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         durationSec: 695,
         narrator: "European Archive",
         status: "ready",
-        audioUrl: "/r2-storage/Concerto%20for%20two%20flutes%2C%20two%20shawms%2C%20two%20violins%2C%20two%20mandolins%2C%20two%20theorbos%20and%20cello%20in%20C%2C%20RV588.mp3",
+        audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Concerto%20for%20two%20flutes%2C%20two%20shawms%2C%20two%20violins%2C%20two%20mandolins%2C%20two%20theorbos%20and%20cello%20in%20C%2C%20RV588.mp3",
       },
       {
         id: "vivaldi-gloria-rv589",
