@@ -30,17 +30,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
     icon: "🎼",
     tracks: [
       {
-        id: "greg-salve-regina",
-        title: "Salve Regina",
-        description:
-          "A antífona mariana mais cantada da tradição, súplica confiante à Mãe de Misericórdia.",
-        reference: "Antífona Mariana",
-        durationSec: 300,
-        narrator: "Schola Gregoriana",
-        status: "planned",
-        audioUrl: sacredMusicUrl("salve-regina.mp3"),
-      },
-      {
         id: "greg-lux-aeterna",
         title: "Lux Aeterna",
         description:
@@ -163,29 +152,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         audioUrl: "/r2-storage/Sanctus%20in%20G%20major%2C%20BWV%20240%20-%20Chorus.mp3",
       },
       {
-        id: "med-erbarme-dich",
-        title: "Erbarme dich",
-        description:
-          "A emocionante ária do arrependimento de Pedro: \"Tem piedade, meu Deus, por amor das minhas lágrimas.\"",
-        reference: "Paixão segundo Mateus, BWV 244",
-        durationSec: 420,
-        narrator: "Mitglieder des Rundfunkchores Berlin",
-        status: "planned",
-        audioUrl: sacredMusicUrl("erbarme-dich.mp3"),
-      },
-      {
-        id: "med-ich-habe-genug",
-        title: "Ich habe genug",
-        description:
-          "\"Tenho o suficiente\" — o doce repouso da alma que encontrou tudo o que precisa na presença do Salvador.",
-        reference: "Cantata BWV 82",
-        durationSec: 480,
-        narrator: "European Archive",
-        status: "planned",
-        audioUrl: sacredMusicUrl("ich-habe-genug.mp3"),
-        premium: true,
-      },
-      {
         id: "bach-magnificat-gloria-patri",
         title: "Gloria Patri (Magnificat em Ré maior)",
         description:
@@ -206,40 +172,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
         audioUrl: "/r2-storage/J.S%20Bach%20-%20Magnificat%20in%20D%20-%20Chorus%20Magnificat%20anima%20mea.mp3",
-      },
-    ],
-  },
-  {
-    id: "tomas-luis-de-victoria",
-    kind: "sacred-music",
-    title: "Tomás Luis de Victoria",
-    subtitle: "Mística e Polifonia Espanhola",
-    description:
-      "O maior compositor do Renascimento espanhol. Suas obras expressam um misticismo ardente e uma profunda interioridade.",
-    icon: "✝️",
-    tracks: [
-      {
-        id: "poli-o-magnum-mysterium",
-        title: "O Magnum Mysterium",
-        description:
-          "A contemplação do grande mistério do Natal: Deus que se faz humilde e nasce entre os animais.",
-        reference: "Moteto Natalino",
-        durationSec: 270,
-        narrator: "The Tudor Consort",
-        status: "planned",
-        audioUrl: sacredMusicUrl("o-magnum-mysterium.mp3"),
-      },
-      {
-        id: "poli-tenebrae-responsories",
-        title: "Tenebrae Responsories",
-        description:
-          "Cantos solenes das trevas da Semana Santa, meditativos e profundos, para acompanhar a Paixão do Senhor.",
-        reference: "Responsórios de Trevas",
-        durationSec: 360,
-        narrator: "The Tudor Consort",
-        status: "planned",
-        audioUrl: sacredMusicUrl("tenebrae-responsories.mp3"),
-        premium: true,
       },
     ],
   },
