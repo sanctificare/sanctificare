@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, Sparkles } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -32,7 +32,6 @@ const moreLinks = [
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
   { href: "/vela-virtual", label: "Vela Virtual", icon: Flame },
   { href: "/musica-sacra", label: "Música Sacra", icon: Music },
-  { href: "/pilulas", label: "Pílulas de Sabedoria", icon: Sparkles },
   { href: "/videos", label: "Vídeos", icon: Film },
   { href: "/intencoes", label: "Intenções", icon: Users },
 ];
