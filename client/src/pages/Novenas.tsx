@@ -236,6 +236,15 @@ export default function Novenas() {
           </div>
         )}
 
+        {faithNovenas.length > 0 && (
+          <div className="mb-10 animate-fade-in">
+            <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-4">Novenas</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {faithNovenas.map(renderNovenaCard)}
+            </div>
+          </div>
+        )}
+
         {!isPremium ? (
           <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.08)] p-4 max-w-xl mx-auto">
             <div className="flex items-center gap-2 mb-2">
