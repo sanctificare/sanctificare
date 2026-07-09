@@ -30,28 +30,6 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
     icon: "🎼",
     tracks: [
       {
-        id: "greg-lux-aeterna",
-        title: "Lux Aeterna",
-        description:
-          "Luz eterna que brilha sobre os fiéis. Canto luminoso de esperança e descanso na vida eterna.",
-        reference: "Missa de Réquiem",
-        durationSec: 240,
-        narrator: "Schola Gregoriana",
-        status: "planned",
-        audioUrl: sacredMusicUrl("lux-aeterna.mp3"),
-      },
-      {
-        id: "greg-kyrie-orbis-factor",
-        title: "Kyrie (Orbis Factor)",
-        description:
-          "Súplica pura de misericórdia: Senhor, tende piedade. Início do recolhimento orante.",
-        reference: "Ordinário da Missa",
-        durationSec: 210,
-        narrator: "Schola Gregoriana",
-        status: "planned",
-        audioUrl: sacredMusicUrl("kyrie-orbis-factor.mp3"),
-      },
-      {
         id: "miserere-no-1",
         title: "Miserere No.1",
         description:
