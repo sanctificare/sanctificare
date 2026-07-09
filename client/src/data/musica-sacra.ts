@@ -68,6 +68,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         description:
           "Uma interpretação contemplativa do Miserere, para meditação e penitência profunda.",
         reference: "Miserere",
+        composer: "Anonymous / Musopen",
         durationSec: 330,
         narrator: "Coro Sacro",
         status: "ready",

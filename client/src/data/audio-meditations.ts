@@ -19,6 +19,8 @@ export interface AudioMeditationTrack {
   description: string;
   /** Referência bíblica ou tema, exibido como subtítulo. */
   reference?: string;
+  /** Compositor ou atribuição da obra musical. */
+  composer?: string;
   /** Duração estimada em segundos (usada apenas para exibição). */
   durationSec: number;
   narrator: string;

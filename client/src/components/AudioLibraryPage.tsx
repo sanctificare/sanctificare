@@ -224,18 +224,26 @@ export default function AudioLibraryPage({
                             >
                               {track.description}
                             </p>
-                            <div
-                              className={
-                                "flex items-center gap-1.5 mt-2 text-xs " +
-                                (active
-                                  ? "text-[oklch(0.80_0.04_82)]"
-                                  : "text-muted-foreground")
-                              }
-                            >
-                              <Clock size={12} />
-                              <span>{formatTrackDuration(track.durationSec)}</span>
-                              <span aria-hidden>•</span>
-                              <span>{track.narrator}</span>
+                            <div className="mt-2 text-xs text-muted-foreground space-y-1">
+                              {track.composer ? (
+                                <p className="flex items-center gap-1 text-[oklch(0.65_0.12_70)]">
+                                  <span className="font-semibold">Compositor:</span>
+                                  <span>{track.composer}</span>
+                                </p>
+                              ) : null}
+                              <div
+                                className={
+                                  "flex items-center gap-1.5 " +
+                                  (active
+                                    ? "text-[oklch(0.80_0.04_82)]"
+                                    : "text-muted-foreground")
+                                }
+                              >
+                                <Clock size={12} />
+                                <span>{formatTrackDuration(track.durationSec)}</span>
+                                <span aria-hidden>•</span>
+                                <span>{track.narrator}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
