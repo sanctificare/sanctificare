@@ -258,7 +258,7 @@ export const appRouter = router({
     subscribe: protectedProcedure
       .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
       .mutation(async ({ ctx, input }) => {
-        if (ENV.stripeSecretKey) {
+        if (ENV.stripeSecretKey && ENV.isProduction) {
           const stripe = stripeClient;
           if (!stripe) {
             throw new TRPCError({
@@ -317,7 +317,15 @@ export const appRouter = router({
             return { success: true };
           }
 
+          // Reutiliza cliente Stripe existente para evitar duplicatas
+          const existingCustomerId = activeSub?.stripeCustomerId?.startsWith("cus_")
+            ? activeSub.stripeCustomerId
+            : undefined;
+
           const session = await stripe.checkout.sessions.create({
+            ...(existingCustomerId
+              ? { customer: existingCustomerId }
+              : { customer_email: ctx.user.email ?? undefined }),
             line_items: [{ price: priceId, quantity: 1 }],
             mode: "subscription",
             success_url: `${ENV.appUrl}/premium?success=true`,
@@ -343,7 +351,7 @@ export const appRouter = router({
     cancel: protectedProcedure
       .mutation(async ({ ctx }) => {
         const activeSub = await getActiveSubscription(ctx.user.id);
-        if (activeSub?.stripeSubscriptionId) {
+        if (activeSub?.stripeSubscriptionId?.startsWith("sub_")) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Assinaturas do Stripe devem ser canceladas através do portal de faturamento.",

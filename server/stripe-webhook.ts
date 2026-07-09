@@ -7,6 +7,10 @@ import {
   getSubscriptionByStripeId,
 } from "./db";
 
+const stripeClient = ENV.stripeSecretKey
+  ? new Stripe(ENV.stripeSecretKey, { apiVersion: "2023-10-16" as any })
+  : null;
+
 export async function handleStripeWebhook(req: express.Request, res: express.Response) {
   const sig = req.headers["stripe-signature"];
   if (!sig || !ENV.stripeSecretKey || !ENV.stripeWebhookSecret) {
@@ -14,9 +18,10 @@ export async function handleStripeWebhook(req: express.Request, res: express.Res
     return res.status(400).send("Webhook missing signature or Stripe configuration error.");
   }
 
-  const stripe = new Stripe(ENV.stripeSecretKey, {
-    apiVersion: "2023-10-16" as any,
-  });
+  const stripe = stripeClient;
+  if (!stripe) {
+    return res.status(500).send("Stripe not initialized.");
+  }
 
   let event: Stripe.Event;
 
