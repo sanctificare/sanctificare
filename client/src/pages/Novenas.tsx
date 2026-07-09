@@ -4,19 +4,12 @@ import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
-import { Crown, Lock, Clock } from "lucide-react";
+import { Crown, Lock } from "lucide-react";
 import { Link } from "wouter";
 import { getNovenaArt } from "@/lib/cardArt";
 import { NOVENA_PROGRESS_STORAGE_KEY, ProgressMap, buildNovenasInProgressItems, parseNovenaProgress } from "@/lib/novenaProgress";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
-
-// Novenas futuras (em breve)
-const COMING_SOON_NOVENAS = [
-  { id: "cs-santo-antonio", name: "Novena de Santo Antônio", icon: "✝️" },
-  { id: "cs-fatima", name: "Novena de N. Sra. de Fátima", icon: "🌹" },
-  { id: "cs-natal", name: "Novena de Natal", icon: "⭐" },
-];
 
 function readProgress(): ProgressMap {
   if (typeof window === "undefined") return {};
@@ -131,19 +124,6 @@ export default function Novenas() {
     );
   };
 
-  const renderComingSoonCard = (item: typeof COMING_SOON_NOVENAS[number]) => (
-    <div key={item.id} className="relative aspect-square rounded-xl overflow-hidden select-none cursor-default">
-      <div className="absolute inset-0 bg-gradient-to-br from-stone-200 to-stone-300 dark:from-stone-700 dark:to-stone-800" />
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-2">
-        <span className="text-3xl opacity-50">{item.icon}</span>
-        <p className="text-[11px] font-semibold text-stone-500 dark:text-stone-400 text-center leading-tight px-1 opacity-70">{item.name}</p>
-      </div>
-      <div className="absolute left-2 top-2 flex items-center gap-1 bg-stone-600/75 text-stone-200 rounded-full px-2 py-0.5 z-10">
-        <Clock size={9} />
-        <span className="text-[9px] font-bold tracking-wide">Em breve</span>
-      </div>
-    </div>
-  );
 
   if (loading) {
     return (
@@ -278,16 +258,6 @@ export default function Novenas() {
           </div>
         </section>
 
-        {/* Em breve */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Em Breve</h2>
-            <p className="text-sm text-muted-foreground">Novas novenas sendo preparadas com carinho para você.</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
-            {COMING_SOON_NOVENAS.map(renderComingSoonCard)}
-          </div>
-        </section>
 
         {!isPremium ? (
           <div className="mt-6 rounded-xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.75_0.12_75/0.08)] p-4 max-w-xl mx-auto">
