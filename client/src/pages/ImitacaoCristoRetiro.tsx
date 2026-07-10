@@ -42,7 +42,8 @@ export default function ImitacaoCristoRetiro() {
   }, [selectedId]);
 
   const togglePlay = () => {
-    if (!audioRef.current || !selected.audioUrl) return;
+    const audioUrl = selected.audioUrl || "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3";
+    if (!audioRef.current || !audioUrl) return;
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
@@ -212,7 +213,10 @@ export default function ImitacaoCristoRetiro() {
 
                   <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{selected.id.toUpperCase()}</span>
                   <h2 className="mt-3 font-display text-2xl font-bold text-slate-100 leading-tight max-w-md">{selected.title}</h2>
-                  <p className="text-xs text-slate-400 mt-1.5 font-sans">Narrado por {selected.narrator} • {selected.durationLabel}</p>
+                  <p className="text-xs text-slate-400 mt-1.5 font-sans">
+                    Narrado por {selected.narrator} • {selected.durationLabel}
+                    {!selected.audioUrl && <span className="text-[10px] text-amber-500/80 block mt-0.5 font-semibold">(Áudio de Demonstração)</span>}
+                  </p>
 
                   {/* Audio Cover Art */}
                   <div className="flex flex-col items-center justify-center my-6">
@@ -234,16 +238,18 @@ export default function ImitacaoCristoRetiro() {
                     </div>
                   </div>
 
-                  {selected.audioUrl ? (
-                    <>
-                      <audio
-                        ref={audioRef}
-                        src={selected.audioUrl}
-                        onTimeUpdate={handleTimeUpdate}
-                        onLoadedMetadata={handleLoadedMetadata}
-                        onEnded={handleAudioEnd}
-                        preload="metadata"
-                      />
+                  {(() => {
+                    const audioUrl = selected.audioUrl || "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3";
+                    return (
+                      <>
+                        <audio
+                          ref={audioRef}
+                          src={audioUrl}
+                          onTimeUpdate={handleTimeUpdate}
+                          onLoadedMetadata={handleLoadedMetadata}
+                          onEnded={handleAudioEnd}
+                          preload="metadata"
+                        />
 
                       {/* Custom Premium Controls (Navy + Gold + Glassmorphism) */}
                       <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-4">
@@ -326,16 +332,8 @@ export default function ImitacaoCristoRetiro() {
                         </div>
                       </div>
                     </>
-                  ) : (
-                    /* Disabled/Locked premium interface when audio is missing */
-                    <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-md shadow-lg flex flex-col gap-3 items-center text-center">
-                      <Lock className="w-6 h-6 text-amber-500/60 animate-pulse mb-1" />
-                      <p className="text-sm font-semibold text-slate-200">Áudio em Gravação</p>
-                      <p className="text-xs text-slate-400 px-4 leading-relaxed">
-                        Nossas pílulas de sabedoria estão sendo gravadas. Utilize a aba **Leitura em Texto** para acompanhar o roteiro de meditação completo deste dia.
-                      </p>
-                    </div>
-                  )}
+                    );
+                  })()}
                 </div>
 
                 <blockquote className="rounded-lg border-l-4 border-amber-500 bg-white/5 px-4 py-3 font-serif italic text-slate-300 text-sm">
