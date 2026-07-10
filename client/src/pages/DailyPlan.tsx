@@ -18,6 +18,7 @@ import { Heart } from "@/components/HeartIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { NOVENAS } from "@/data/novenas";
 import {
   DashboardActiveNovena,
@@ -111,9 +112,31 @@ function getWeeklyChartData(logs: any[] | undefined) {
 }
 
 export default function DailyPlan() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
-  const { data: dailyPlan } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: dailyPlanFromServer } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+  const [dailyPlan, setDailyPlan] = useState<any>(null);
+
+  useEffect(() => {
+    if (dailyPlanFromServer) {
+      setDailyPlan(dailyPlanFromServer);
+      localStorage.setItem("sanctificare_offline_daily_plan", JSON.stringify(dailyPlanFromServer));
+    }
+  }, [dailyPlanFromServer]);
+
+  useEffect(() => {
+    if (!dailyPlanFromServer) {
+      try {
+        const saved = localStorage.getItem("sanctificare_offline_daily_plan");
+        if (saved) {
+          setDailyPlan(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error("Erro ao ler plano diário offline:", err);
+      }
+    }
+  }, [dailyPlanFromServer]);
 
   const utils = trpc.useUtils();
   const [activeNovena, setActiveNovena] = useState<DashboardActiveNovena | null>(null);
@@ -173,6 +196,16 @@ export default function DailyPlan() {
   const handleToggleLiturgia = () => {
     if (liturgiaLida) {
       toast.info("Você já concluiu a Liturgia de hoje!");
+      return;
+    }
+
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      queueOfflinePrayerLog("liturgia", "Liturgia Diária");
+      if (dailyPlan) {
+        const updated = { ...dailyPlan, liturgyCompleted: true };
+        setDailyPlan(updated);
+        localStorage.setItem("sanctificare_offline_daily_plan", JSON.stringify(updated));
+      }
       return;
     }
 

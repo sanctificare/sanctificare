@@ -4,6 +4,7 @@ import { applyImageFallback, getLoginUrl, resolveMediaUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 import {
   Award,
   PlayCircle,
@@ -52,6 +53,7 @@ const getPassageImageUrl = (passageId: string) => {
 };
 
 export default function LectioDivina() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
@@ -307,17 +309,25 @@ export default function LectioDivina() {
 
   const handleComplete = async () => {
     if (!isAuthenticated) return;
+    const prayerName = `Lectio Divina — ${passage.reference}`;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog("lectio_divina", prayerName);
+        setCompleted(true);
+        return;
+      }
       await logPrayer.mutateAsync({
         prayerType: "lectio_divina",
-        prayerName: `Lectio Divina — ${passage.reference}`,
+        prayerName: prayerName,
       });
       setCompleted(true);
       toast.success("Lectio Divina registrada!", {
         description: "Que a Palavra permaneça no seu coração e dê fruto ao longo do dia.",
       });
     } catch {
-      toast.error("Não foi possível registrar sua lectio agora.");
+      console.error("Erro ao registrar Lectio Divina:");
+      queueOfflinePrayerLog("lectio_divina", prayerName);
+      setCompleted(true);
     }
   };
 

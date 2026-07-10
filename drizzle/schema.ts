@@ -44,7 +44,9 @@ export type InsertUser = typeof users.$inferInsert;
 // Assinaturas premium
 export const subscriptions = pgTable("subscriptions", {
   id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(),
+  userId: integer("userId")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
   plan: planEnum("plan").notNull(),
   status: subscriptionStatusEnum("status").default("active").notNull(),
   startedAt: timestamp("startedAt", { withTimezone: true }).defaultNow().notNull(),
@@ -66,7 +68,9 @@ export const prayerLogs = pgTable(
   "prayer_logs",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     prayerType: varchar("prayerType", { length: 64 }).notNull(), // rosario, terce, angelus, pai_nosso, etc.
     prayerName: varchar("prayerName", { length: 128 }).notNull(),
     completedAt: timestamp("completedAt").defaultNow().notNull(),
@@ -84,7 +88,9 @@ export const prayerIntentions = pgTable(
   "prayer_intentions",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     authorName: varchar("authorName", { length: 128 }).notNull(),
     title: varchar("title", { length: 200 }).notNull(),
     description: text("description").notNull(),
@@ -110,8 +116,12 @@ export const intentionPrayers = pgTable(
   "intention_prayers",
   {
     id: serial("id").primaryKey(),
-    intentionId: integer("intentionId").notNull(),
-    userId: integer("userId").notNull(),
+    intentionId: integer("intentionId")
+      .references(() => prayerIntentions.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     prayedAt: timestamp("prayedAt").defaultNow().notNull(),
   },
   (table) => ({
@@ -129,8 +139,12 @@ export const intentionMessages = pgTable(
   "intention_messages",
   {
     id: serial("id").primaryKey(),
-    intentionId: integer("intentionId").notNull(),
-    userId: integer("userId").notNull(),
+    intentionId: integer("intentionId")
+      .references(() => prayerIntentions.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     authorName: varchar("authorName", { length: 128 }).notNull(),
     isAnonymous: boolean("isAnonymous").default(false).notNull(),
     message: varchar("message", { length: 300 }).notNull(),
@@ -187,7 +201,9 @@ export const lectioJournal = pgTable(
   "lectio_journal",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     journalDate: varchar("journalDate", { length: 10 }).notNull(), // YYYY-MM-DD
     passageId: varchar("passageId", { length: 80 }).notNull(),
     passageReference: varchar("passageReference", { length: 120 }),
@@ -215,7 +231,9 @@ export const virtualCandles = pgTable(
   "virtual_candles",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     authorName: varchar("authorName", { length: 128 }).notNull(),
     intention: text("intention").notNull(),
     type: candleTypeEnum("type").default("intencao").notNull(),
@@ -236,8 +254,12 @@ export const candlePrayers = pgTable(
   "candle_prayers",
   {
     id: serial("id").primaryKey(),
-    candleId: integer("candleId").notNull(),
-    userId: integer("userId").notNull(),
+    candleId: integer("candleId")
+      .references(() => virtualCandles.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     prayedAt: timestamp("prayedAt").defaultNow().notNull(),
   },
   (table) => ({
@@ -253,7 +275,9 @@ export const passwordResetTokens = pgTable(
   "password_reset_tokens",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     token: varchar("token", { length: 128 }).notNull().unique(),
     expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
     usedAt: timestamp("usedAt", { withTimezone: true }),
@@ -272,7 +296,9 @@ export const pushDevices = pgTable(
   "push_devices",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     token: text("token").notNull(),
     platform: varchar("platform", { length: 16 }).notNull(),
     deviceId: varchar("deviceId", { length: 128 }),
@@ -295,7 +321,9 @@ export const userState = pgTable(
   "user_state",
   {
     id: serial("id").primaryKey(),
-    userId: integer("userId").notNull(),
+    userId: integer("userId")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
     key: varchar("key", { length: 191 }).notNull(),
     value: text("value"),
     deletedAt: timestamp("deletedAt"),

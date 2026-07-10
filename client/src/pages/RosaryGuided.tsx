@@ -17,6 +17,7 @@ import {
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
@@ -129,6 +130,7 @@ export default function RosaryGuided() {
   const [currentAudioTrack, setCurrentAudioTrack] = useState(0);
   const [autoRosaryActive, setAutoRosaryActive] = useState(false);
   const [intention, setIntention] = useState("");
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
   const rosaryAudioTracks = useMemo(() => {
@@ -331,14 +333,20 @@ export default function RosaryGuided() {
   };
 
   const handleComplete = async () => {
+    const prayerName = `Rosário — ${mysteries.name}`;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog("rosario", prayerName);
+        return;
+      }
       await logPrayer.mutateAsync({
         prayerType: "rosario",
-        prayerName: `Rosário — ${mysteries.name}`,
+        prayerName: prayerName,
       });
       toast.success("Rosário concluído!", { description: "Que Nossa Senhora interceda por você!" });
     } catch {
-      toast.error("Não foi possível registrar sua oração agora.");
+      console.error("Erro ao registrar rosário:");
+      queueOfflinePrayerLog("rosario", prayerName);
     }
   };
 

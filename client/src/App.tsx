@@ -36,6 +36,7 @@ import DailyPlan from "./pages/DailyPlan";
 
 
 import AppNav from "@/components/AppNav";
+import { useOfflineSync } from "./hooks/useOfflineSync";
 
 type PreloadableComponent<T extends React.ComponentType<any>> =
   React.LazyExoticComponent<T> & { preload: () => Promise<unknown> };
@@ -249,6 +250,7 @@ function AppShell() {
 }
 
 function App() {
+  useOfflineSync();
   const { isAuthenticated } = useAuth();
   const registerDeviceMutation = trpc.push.registerDevice.useMutation();
   const stateSyncQuery = trpc.stateSync.getAll.useQuery(undefined, {

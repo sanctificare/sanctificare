@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -97,6 +98,7 @@ const RECOLLECTION_PHRASES = [
 ];
 
 export default function VelaVirtual() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const [newIntention, setNewIntention] = useState("");
   const logPrayer = trpc.prayers.logPrayer.useMutation();
@@ -527,12 +529,17 @@ export default function VelaVirtual() {
 
                           // Registrar oração no histórico
                           try {
-                            await logPrayer.mutateAsync({
-                              prayerType: "vela_virtual",
-                              prayerName: "Vela Virtual"
-                            });
+                            if (typeof navigator !== "undefined" && !navigator.onLine) {
+                              queueOfflinePrayerLog("vela_virtual", "Vela Virtual");
+                            } else {
+                              await logPrayer.mutateAsync({
+                                prayerType: "vela_virtual",
+                                prayerName: "Vela Virtual"
+                              });
+                            }
                           } catch (err) {
                             console.error("[VelaVirtual] Erro ao registrar log:", err);
+                            queueOfflinePrayerLog("vela_virtual", "Vela Virtual");
                           }
                         }}
                         className="w-full bg-[oklch(0.82_0.10_80)] hover:bg-[oklch(0.77_0.10_80)] text-[oklch(0.15_0.02_260)] font-semibold"

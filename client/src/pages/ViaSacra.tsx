@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 import {
   ChevronLeft,
   ChevronRight,
@@ -20,6 +21,7 @@ import { VIA_SACRA_STATIONS } from "@/data/via-sacra";
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
 export default function ViaSacra() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
@@ -136,6 +138,11 @@ export default function ViaSacra() {
     if (!isAuthenticated) return;
 
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog("via_sacra", "Via-Sacra Completa");
+        setCompleted(true);
+        return;
+      }
       await logPrayer.mutateAsync({
         prayerType: "via_sacra",
         prayerName: "Via-Sacra Completa",
@@ -145,7 +152,9 @@ export default function ViaSacra() {
         description: "Que Cristo fortaleça sua caminhada diária.",
       });
     } catch {
-      toast.error("Não foi possível registrar sua oração agora.");
+      console.error("Erro ao registrar Via-Sacra:");
+      queueOfflinePrayerLog("via_sacra", "Via-Sacra Completa");
+      setCompleted(true);
     }
   };
 

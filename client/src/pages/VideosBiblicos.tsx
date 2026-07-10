@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { shareText } from "@/lib/share";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
@@ -377,6 +378,7 @@ export default function VideosBiblicos() {
   const videoPlayerRef = useRef<HTMLVideoElement>(null);
   const lastSavedTimeRef = useRef<Record<string, number>>({});
 
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
   const isPremium = true;
   const subLoading = false;
@@ -573,13 +575,19 @@ export default function VideosBiblicos() {
 
     // Registrar no histórico de oração/meditação como uma atividade realizada
     if (isAuthenticated) {
+      const prayerName = `Assistiu: ${video.title} (${video.type === "short" ? "Curto" : "Longo"})`;
       try {
+        if (typeof navigator !== "undefined" && !navigator.onLine) {
+          queueOfflinePrayerLog("video_biblico", prayerName);
+          return;
+        }
         await logPrayer.mutateAsync({
           prayerType: "video_biblico",
-          prayerName: `Assistiu: ${video.title} (${video.type === "short" ? "Curto" : "Longo"})`,
+          prayerName: prayerName,
         });
       } catch (err) {
         console.error("Erro ao registrar atividade:", err);
+        queueOfflinePrayerLog("video_biblico", prayerName);
       }
     }
   };

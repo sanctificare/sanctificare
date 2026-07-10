@@ -10,6 +10,7 @@ import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { getNovenaArt } from "@/lib/cardArt";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const PROGRESS_KEY = "sanctificare.novenas.progress.v1";
@@ -106,6 +107,7 @@ export default function NovenaDetails() {
   const [startDates, setStartDates] = useState<StartDateMap>(() => readStartDates());
 
   
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const utils = trpc.useUtils();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
 
@@ -350,10 +352,20 @@ export default function NovenaDetails() {
       return;
     }
 
+    const prayerName = `${selectedNovena.name} - Dia ${safeDay}`;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog("novena", prayerName);
+        if (justCompleted) {
+          setShowCompletionModal(true);
+        } else {
+          toast.success(`Dia ${safeDay} marcado localmente.`);
+        }
+        return;
+      }
       await logPrayer.mutateAsync({
         prayerType: "novena",
-        prayerName: `${selectedNovena.name} - Dia ${safeDay}`
+        prayerName: prayerName
       });
       if (justCompleted) {
         setShowCompletionModal(true);
@@ -364,6 +376,7 @@ export default function NovenaDetails() {
       await utils.prayers.getAllLogs.invalidate();
     } catch (err) {
       console.error("[Novena log error]", err);
+      queueOfflinePrayerLog("novena", prayerName);
       if (justCompleted) {
         setShowCompletionModal(true);
       } else {

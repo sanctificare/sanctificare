@@ -11,6 +11,7 @@ import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -152,6 +153,7 @@ const DEFAULT_PRAYER_CARD_THEME: PrayerCardTheme = {
 };
 
 export default function Prayers() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const [location] = useLocation();
   const [selectedPrayer, setSelectedPrayer] = useState<Prayer | null>(null);
@@ -177,10 +179,15 @@ export default function Prayers() {
   const handleCompletePrayerSilent = async (prayer: Prayer) => {
     if (!isAuthenticated) return;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog(prayer.type, prayer.name);
+        return;
+      }
       await logPrayer.mutateAsync({ prayerType: prayer.type, prayerName: prayer.name });
       toast.success("Oração registrada!", { description: `${prayer.name} adicionada ao seu histórico.` });
     } catch (err) {
       console.error("Erro ao registrar oração:", err);
+      queueOfflinePrayerLog(prayer.type, prayer.name);
     }
   };
 
@@ -198,12 +205,18 @@ export default function Prayers() {
   const handleCompletePrayer = async (prayer: Prayer) => {
     if (!isAuthenticated) return;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog(prayer.type, prayer.name);
+        setSelectedPrayer(null);
+        return;
+      }
       await logPrayer.mutateAsync({ prayerType: prayer.type, prayerName: prayer.name });
       toast.success("Oração registrada!", { description: `${prayer.name} adicionada ao seu histórico.` });
       setSelectedPrayer(null);
     } catch (err) {
       console.error("Erro ao registrar oração:", err);
-      toast.error("Não foi possível registrar sua oração agora.");
+      queueOfflinePrayerLog(prayer.type, prayer.name);
+      setSelectedPrayer(null);
     }
   };
 

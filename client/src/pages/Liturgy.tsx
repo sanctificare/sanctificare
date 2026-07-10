@@ -14,6 +14,7 @@ import { getDailyContent } from "@/data/daily";
 import { isMobileApp } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
+import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
@@ -97,8 +98,25 @@ export function getLiturgicalTheme(color?: string | null): LiturgicalTheme {
 }
 
 export default function Liturgy() {
+  const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
   const logPrayer = trpc.prayers.logPrayer.useMutation();
+
+  const [isOffline, setIsOffline] = useState<boolean>(
+    typeof navigator !== "undefined" ? !navigator.onLine : false
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const dateInputRef = useRef<HTMLInputElement>(null);
@@ -537,16 +555,22 @@ export default function Liturgy() {
 
   const handleLogLiturgy = async () => {
     if (!isAuthenticated) return;
+    const prayerName = `Liturgia do Dia — ${liturgy?.celebration || "—"}`;
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflinePrayerLog("liturgia", prayerName);
+        return;
+      }
       await logPrayer.mutateAsync({
         prayerType: "liturgia",
-        prayerName: `Liturgia do Dia — ${liturgy?.celebration || "—"}`,
+        prayerName: prayerName,
       });
       toast.success("Liturgia registrada!", {
         description: "Você rezou hoje em comunhão com a Igreja.",
       });
     } catch {
-      toast.error("Não foi possível registrar sua leitura agora.");
+      console.error("Erro ao registrar liturgia:");
+      queueOfflinePrayerLog("liturgia", prayerName);
     }
   };
 
@@ -646,7 +670,7 @@ export default function Liturgy() {
         </div>
 
         {/* Error state */}
-        {error && (
+        {error && !liturgy && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
             <p className="font-semibold">Erro ao carregar a liturgia</p>
             <p className="text-xs mt-1">{error.message}</p>
@@ -665,6 +689,13 @@ export default function Liturgy() {
         {/* Content */}
         {liturgy && (
           <>
+            {isOffline && (
+              <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-center">
+                <span className="font-serif text-xs text-amber-700 dark:text-amber-300">
+                  ⚡ Visualização Offline: Exibindo leituras salvas no cache do seu dispositivo.
+                </span>
+              </div>
+            )}
             <audio ref={audioRef} src={playingUrl} preload="metadata" />
 
             <div className={`rounded-2xl border transition-all duration-500 p-6 ${
