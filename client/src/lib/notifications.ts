@@ -1,7 +1,10 @@
 import { isMobileApp } from "@/const";
 
-// Fixed id so scheduling/cancelling always targets the same reminder.
+// Fixed ids so scheduling/cancelling always targets the same reminders.
 const DAILY_REMINDER_ID = 1001;
+const ANGELUS_12_ID = 1002;
+const ANGELUS_18_ID = 1003;
+const NOVENA_REMINDER_ID = 1004;
 
 function parseTime(time: string): { hour: number; minute: number } {
   const [hoursStr, minutesStr] = (time || "18:00").split(":");
@@ -83,3 +86,95 @@ export async function cancelDailyReminder(): Promise<void> {
     console.warn("[notifications] cancel error:", err);
   }
 }
+
+/** Schedules Angelus daily repeating reminders (12h and 18h). */
+export async function scheduleAngelusReminders(): Promise<void> {
+  if (!isMobileApp()) return;
+  try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await LocalNotifications.cancel({
+      notifications: [{ id: ANGELUS_12_ID }, { id: ANGELUS_18_ID }],
+    });
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: ANGELUS_12_ID,
+          title: "Ângelus — Sanctificare",
+          body: "Hora do Ângelus. 'O Anjo do Senhor anunciou a Maria...' Una-se em oração com a encarnação de nosso Salvador.",
+          schedule: {
+            on: { hour: 12, minute: 0 },
+            allowWhileIdle: true,
+            repeats: true,
+          },
+        },
+        {
+          id: ANGELUS_18_ID,
+          title: "Ângelus — Sanctificare",
+          body: "Hora do Ângelus do entardecer. 'E o Verbo se fez carne e habitou entre nós...' Eleve seu coração a Nossa Senhora.",
+          schedule: {
+            on: { hour: 18, minute: 0 },
+            allowWhileIdle: true,
+            repeats: true,
+          },
+        },
+      ],
+    });
+  } catch (err) {
+    console.warn("[notifications] scheduleAngelus error:", err);
+  }
+}
+
+/** Cancels Angelus daily reminders (12h and 18h). */
+export async function cancelAngelusReminders(): Promise<void> {
+  if (!isMobileApp()) return;
+  try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await LocalNotifications.cancel({
+      notifications: [{ id: ANGELUS_12_ID }, { id: ANGELUS_18_ID }],
+    });
+  } catch (err) {
+    console.warn("[notifications] cancelAngelus error:", err);
+  }
+}
+
+/** Schedules active Novena reminder at 20:00. */
+export async function scheduleNovenaReminder(time: string = "20:00"): Promise<void> {
+  if (!isMobileApp()) return;
+  const { hour, minute } = parseTime(time);
+  try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await LocalNotifications.cancel({
+      notifications: [{ id: NOVENA_REMINDER_ID }],
+    });
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: NOVENA_REMINDER_ID,
+          title: "Novena Ativa — Sanctificare",
+          body: "Não se esqueça de rezar o dia de hoje da sua novena ativa! Mantenha a sua perseverança.",
+          schedule: {
+            on: { hour, minute },
+            allowWhileIdle: true,
+            repeats: true,
+          },
+        },
+      ],
+    });
+  } catch (err) {
+    console.warn("[notifications] scheduleNovena error:", err);
+  }
+}
+
+/** Cancels active Novena reminder. */
+export async function cancelNovenaReminder(): Promise<void> {
+  if (!isMobileApp()) return;
+  try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await LocalNotifications.cancel({
+      notifications: [{ id: NOVENA_REMINDER_ID }],
+    });
+  } catch (err) {
+    console.warn("[notifications] cancelNovena error:", err);
+  }
+}
+

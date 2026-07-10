@@ -18,7 +18,15 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { ensureNotificationPermission, scheduleDailyReminder, cancelDailyReminder } from "@/lib/notifications";
+import {
+  ensureNotificationPermission,
+  scheduleDailyReminder,
+  cancelDailyReminder,
+  scheduleAngelusReminders,
+  cancelAngelusReminders,
+  scheduleNovenaReminder,
+  cancelNovenaReminder,
+} from "@/lib/notifications";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -67,6 +75,64 @@ export default function Profile() {
     if (typeof window === "undefined") return "18:00";
     return safeStorageGet("sanctificare.reminders.time") || "18:00";
   });
+  const [angelusEnabled, setAngelusEnabled] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return safeStorageGet("sanctificare.reminders.angelus") === "true";
+  });
+  const [novenaEnabled, setNovenaEnabled] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return safeStorageGet("sanctificare.reminders.novena") === "true";
+  });
+
+  const handleToggleAngelus = async () => {
+    if (!angelusEnabled) {
+      const granted = await ensureNotificationPermission();
+      if (granted) {
+        safeStorageSet("sanctificare.reminders.angelus", "true");
+        setAngelusEnabled(true);
+        await scheduleAngelusReminders();
+        toast.success("Lembretes do Ângelus (12h e 18h) ativados!");
+        if (!isMobileApp() && "Notification" in window) {
+          new Notification("Sanctificare", {
+            body: "Lembretes do Ângelus diários ativados para as 12:00 e 18:00.",
+            icon: LOGO_IMG,
+          });
+        }
+      } else {
+        toast.warning("Permissão de notificação negada.");
+      }
+    } else {
+      safeStorageSet("sanctificare.reminders.angelus", "false");
+      setAngelusEnabled(false);
+      await cancelAngelusReminders();
+      toast.info("Lembretes do Ângelus desativados.");
+    }
+  };
+
+  const handleToggleNovena = async () => {
+    if (!novenaEnabled) {
+      const granted = await ensureNotificationPermission();
+      if (granted) {
+        safeStorageSet("sanctificare.reminders.novena", "true");
+        setNovenaEnabled(true);
+        await scheduleNovenaReminder();
+        toast.success("Lembrete de Novena Ativa ativado!");
+        if (!isMobileApp() && "Notification" in window) {
+          new Notification("Sanctificare", {
+            body: "Lembrete de Novena Ativa ativado para as 20:00 diariamente.",
+            icon: LOGO_IMG,
+          });
+        }
+      } else {
+        toast.warning("Permissão de notificação negada.");
+      }
+    } else {
+      safeStorageSet("sanctificare.reminders.novena", "false");
+      setNovenaEnabled(false);
+      await cancelNovenaReminder();
+      toast.info("Lembrete de Novena Ativa desativado.");
+    }
+  };
 
   const handleToggleReminders = async () => {
     if (!remindersEnabled) {
@@ -305,6 +371,30 @@ export default function Profile() {
                   </select>
                 </div>
               )}
+
+              {/* Lembretes do Ângelus */}
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/20 dark:bg-stone-900/5">
+                <div className="flex flex-col pr-4">
+                  <span className="text-sm font-semibold text-foreground">Lembretes do Ângelus</span>
+                  <span className="text-xs text-muted-foreground mt-0.5">Alertas diários para rezar o Ângelus (12:00 e 18:00)</span>
+                </div>
+                <Switch 
+                  checked={angelusEnabled}
+                  onCheckedChange={handleToggleAngelus}
+                />
+              </div>
+
+              {/* Lembretes de Novena */}
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border/40 bg-white/20 dark:bg-stone-900/5">
+                <div className="flex flex-col pr-4">
+                  <span className="text-sm font-semibold text-foreground">Lembrete de Novena Ativa</span>
+                  <span className="text-xs text-muted-foreground mt-0.5">Notificar às 20:00 para manter a constância na novena</span>
+                </div>
+                <Switch 
+                  checked={novenaEnabled}
+                  onCheckedChange={handleToggleNovena}
+                />
+              </div>
             </div>
           </div>
 
