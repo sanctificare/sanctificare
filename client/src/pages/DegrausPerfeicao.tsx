@@ -130,7 +130,7 @@ export default function DegrausPerfeicao() {
                     {isImitacao ? (
                       <Button className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white font-semibold transition-all duration-200 shadow-sm flex items-center justify-center gap-2 group/btn">
                         <BookOpen size={16} />
-                        Começar Leitura
+                        Iniciar Caminhada
                         <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     ) : (
