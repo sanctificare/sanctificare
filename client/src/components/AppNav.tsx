@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -25,6 +25,7 @@ const mainLinks = [
   { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
+  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", icon: BookMarked },
 ];
 
 const moreLinks = [
