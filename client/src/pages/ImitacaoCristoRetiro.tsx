@@ -119,36 +119,24 @@ export default function ImitacaoCristoRetiro() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 pb-24 lg:pb-12 ${
-      activeTab === "audio" ? "bg-[#070b19]" : "bg-[oklch(0.97_0.01_85)]"
-    }`}>
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] pb-24 lg:pb-12 relative overflow-hidden">
       {/* Pattern background */}
-      <div className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${
-        activeTab === "audio" ? "bg-pattern-cross opacity-[0.01]" : "bg-pattern-cross opacity-[0.015]"
-      }`} />
+      <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
 
       <main className="container py-7 relative z-10">
         <div className="mb-5">
           <Link href="/degraus-de-perfeicao">
-            <button className={`mb-3 text-sm font-medium hover:underline transition-colors cursor-pointer ${
-              activeTab === "audio" ? "text-amber-500/80 hover:text-amber-400" : "text-[oklch(0.65_0.12_70)]"
-            }`}>
+            <button className="mb-3 text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)]">
               ← Voltar aos Degraus de Perfeição
             </button>
           </Link>
-          <p className={`text-xs font-semibold uppercase tracking-wide transition-colors ${
-            activeTab === "audio" ? "text-amber-500/60" : "text-[oklch(0.65_0.12_70)]"
-          }`}>
+          <p className="text-xs font-semibold uppercase tracking-wide text-[oklch(0.65_0.12_70)]">
             Vida interior
           </p>
-          <h1 className={`font-display text-3xl font-bold sm:text-4xl transition-colors ${
-            activeTab === "audio" ? "text-slate-100" : "text-[oklch(0.22_0.07_260)]"
-          }`}>
+          <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)]">
             A Imitação de Cristo
           </h1>
-          <p className={`font-serif transition-colors text-sm ${
-            activeTab === "audio" ? "text-slate-400" : "text-muted-foreground"
-          }`}>
+          <p className="font-serif text-sm text-muted-foreground">
             Por Tomás de Kempis • Formato Áudio/Pílulas de 5 min
           </p>
         </div>
@@ -388,14 +376,8 @@ export default function ImitacaoCristoRetiro() {
             </Tabs>
           </section>
 
-          <aside className={`rounded-2xl border transition-all duration-500 p-3 h-fit ${
-            activeTab === "audio"
-              ? "bg-[#0b1329] border-amber-500/10 text-slate-100"
-              : "bg-white border-[oklch(0.22_0.07_260/0.08)] text-[#2d251e]"
-          }`}>
-            <h3 className={`mb-3 px-2 text-xs font-bold uppercase tracking-widest transition-colors ${
-              activeTab === "audio" ? "text-amber-500/80" : "text-[oklch(0.65_0.12_70)]"
-            }`}>
+          <aside className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white p-3 h-fit text-[#2d251e]">
+            <h3 className="mb-3 px-2 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)]">
               Meditações
             </h3>
             <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
@@ -407,23 +389,17 @@ export default function ImitacaoCristoRetiro() {
                     onClick={() => setSelectedId(pill.id)}
                     className={`w-full rounded-xl border px-3 py-2.5 text-left transition-all cursor-pointer ${
                       active
-                        ? activeTab === "audio"
-                          ? "border-amber-500 bg-amber-500/10"
-                          : "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] shadow-sm"
-                        : activeTab === "audio"
-                          ? "border-white/5 bg-white/5 hover:border-amber-500/40 hover:bg-white/10"
-                          : "border-[oklch(0.22_0.07_260/0.08)] bg-white hover:border-[oklch(0.65_0.12_70/0.4)]"
+                        ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] shadow-sm"
+                        : "border-[oklch(0.22_0.07_260/0.08)] bg-white hover:border-[oklch(0.65_0.12_70/0.4)]"
                     }`}
                   >
-                    <div className="mb-1 flex items-center justify-between gap-2">
-                      <span className={`text-[9px] font-bold uppercase tracking-wider transition-colors ${
-                        active ? (activeTab === "audio" ? "text-amber-400" : "text-[oklch(0.65_0.12_70)]") : "text-muted-foreground"
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                        active ? "text-[oklch(0.65_0.12_70)]" : "text-muted-foreground"
                       }`}>{pill.id.toUpperCase()}</span>
                       <span className="text-[9px] text-muted-foreground">{pill.durationLabel}</span>
                     </div>
-                    <p className={`line-clamp-2 text-xs font-bold transition-colors ${
-                      activeTab === "audio" ? "text-slate-100" : "text-[oklch(0.22_0.07_260)]"
-                    }`}>{pill.title}</p>
+                    <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">{pill.title}</p>
                   </button>
                 );
               })}
