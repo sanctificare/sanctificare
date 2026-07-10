@@ -199,7 +199,7 @@ export default function ImitacaoCristoRetiro() {
                   {/* Decorative gold circle behind the cover */}
                   <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 pointer-events-none" />
 
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{selected.id.toUpperCase().replace("PILL", "DIA ")}</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{selected.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}</span>
                   <h2 className="mt-3 font-display text-2xl font-bold text-slate-100 leading-tight max-w-md">{selected.title}</h2>
 
 
@@ -337,7 +337,7 @@ export default function ImitacaoCristoRetiro() {
 
               <TabsContent value="text" className="space-y-6 animate-fade-in text-[#2d251e] outline-none">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">{selected.id.toUpperCase().replace("PILL", "DIA ")}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">{selected.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}</span>
                   <h2 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{selected.title}</h2>
                   <p className="text-xs text-muted-foreground mt-1">{selected.description}</p>
                 </div>
@@ -393,7 +393,7 @@ export default function ImitacaoCristoRetiro() {
                     <div className="flex items-center justify-between gap-2 mb-1">
                       <span className={`text-[9px] font-bold uppercase tracking-wider ${
                         active ? "text-[oklch(0.65_0.12_70)]" : "text-muted-foreground"
-                      }`}>{pill.id.toUpperCase().replace("PILL", "DIA ")}</span>
+                      }`}>{pill.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}</span>
                       <span className="text-[9px] text-muted-foreground">{pill.durationLabel}</span>
                     </div>
                     <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">{pill.title}</p>
