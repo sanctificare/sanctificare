@@ -201,10 +201,7 @@ export default function ImitacaoCristoRetiro() {
 
                   <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{selected.id.toUpperCase()}</span>
                   <h2 className="mt-3 font-display text-2xl font-bold text-slate-100 leading-tight max-w-md">{selected.title}</h2>
-                  <p className="text-xs text-slate-400 mt-1.5 font-sans">
-                    Narrado por {selected.narrator} • {selected.durationLabel}
-                    {!selected.audioUrl && <span className="text-[10px] text-amber-500/80 block mt-0.5 font-semibold">(Áudio de Demonstração)</span>}
-                  </p>
+
 
                   {/* Audio Cover Art */}
                   <div className="flex flex-col items-center justify-center my-6">
