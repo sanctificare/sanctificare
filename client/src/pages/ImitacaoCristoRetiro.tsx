@@ -137,7 +137,7 @@ export default function ImitacaoCristoRetiro() {
             A Imitação de Cristo
           </h1>
           <p className="font-serif text-sm text-muted-foreground">
-            Por Tomás de Kempis • Formato Áudio/Pílulas de 5 min
+            Por Tomás de Kempis • Formato Áudio/Meditações de 5 min
           </p>
         </div>
 
@@ -160,7 +160,7 @@ export default function ImitacaoCristoRetiro() {
                       : "data-[state=active]:bg-[oklch(0.75_0.12_75)] data-[state=active]:text-white text-muted-foreground"
                   }`}>
                     <Headphones size={14} />
-                    Pílulas de Sabedoria
+                    Meditações em Áudio
                   </TabsTrigger>
                   <TabsTrigger value="text" className={`gap-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
                     activeTab === "text"
