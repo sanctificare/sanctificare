@@ -24,6 +24,7 @@ const exploreCards: ExploreCard[] = [
   { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.webp", overlay: "oklch(0.36 0.15 20 / 0.60)", category: "Devocional" },
   { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.webp", overlay: "oklch(0.50 0.10 85 / 0.56)", category: "Práticas" },
   { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.webp", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
+  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
   { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
   { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.webp", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
   { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.webp", overlay: "oklch(0.30 0.10 190 / 0.60)", category: "Comunidade" },

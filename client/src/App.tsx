@@ -62,6 +62,8 @@ const Intentions = lazyWithPreload(() => import("./pages/Intentions"));
 const Profile = lazyWithPreload(() => import("./pages/Profile"));
 const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
+const DegrausPerfeicao = lazyWithPreload(() => import("./pages/DegrausPerfeicao"));
+const ImitacaoCristoRetiro = lazyWithPreload(() => import("./pages/ImitacaoCristoRetiro"));
 
 // Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
 // ("Carregando...") na primeira navegação a cada página.
@@ -77,6 +79,8 @@ const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] 
   Profile,
   DangerZone,
   VideosBiblicos,
+  DegrausPerfeicao,
+  ImitacaoCristoRetiro,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
@@ -165,6 +169,14 @@ function ProtectedVideosRoute(props: any) {
   return <ProtectedRoute component={VideosBiblicos} {...props} />;
 }
 
+function ProtectedDegrausRoute(props: any) {
+  return <ProtectedRoute component={DegrausPerfeicao} {...props} />;
+}
+
+function ProtectedImitacaoCristoRoute(props: any) {
+  return <ProtectedRoute component={ImitacaoCristoRetiro} {...props} />;
+}
+
 function ProtectedPrayerDetailRoute(props: any) {
   return <ProtectedRoute component={PrayerDetail} {...props} />;
 }
@@ -198,6 +210,8 @@ function Router() {
         <Route path="/plano-diario" component={ProtectedDailyPlanRoute} />
 
         <Route path="/videos" component={ProtectedVideosRoute} />
+  <Route path="/degraus-de-perfeicao" component={ProtectedDegrausRoute} />
+  <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ProtectedImitacaoCristoRoute} />
         <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
         <Route path="/redefinir-senha" component={ResetPassword} />
         <Route path="/privacidade" component={Privacy} />
