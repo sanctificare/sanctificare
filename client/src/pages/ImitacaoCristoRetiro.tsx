@@ -118,7 +118,7 @@ export default function ImitacaoCristoRetiro() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 pb-10 ${
+    <div className={`min-h-screen transition-colors duration-500 pb-24 lg:pb-12 ${
       activeTab === "audio" ? "bg-[#070b19]" : "bg-[oklch(0.97_0.01_85)]"
     }`}>
       {/* Pattern background */}
@@ -259,7 +259,7 @@ export default function ImitacaoCristoRetiro() {
                             step={0.1}
                             value={currentTime}
                             onChange={(e) => handleSeek(Number(e.target.value))}
-                            className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none transition-all duration-300 hover:h-1.5"
+                            className="flex-1 h-2 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none transition-all duration-300"
                             style={{
                               background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
                                 duration > 0 ? (currentTime / duration) * 100 : 0
