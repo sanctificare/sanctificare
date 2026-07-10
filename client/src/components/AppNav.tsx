@@ -25,10 +25,10 @@ const mainLinks = [
   { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
   { href: "/biblia", label: "Bíblia", icon: BookOpen },
   { href: "/novenas", label: "Novenas", icon: CalendarCheck2 },
-  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", icon: BookMarked },
 ];
 
 const moreLinks = [
+  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", icon: BookMarked },
   { href: "/lectio", label: "Lectio Divina", icon: ScrollText },
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
   { href: "/vela-virtual", label: "Vela Virtual", icon: Flame },
