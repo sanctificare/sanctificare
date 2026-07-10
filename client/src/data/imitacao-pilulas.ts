@@ -66,6 +66,7 @@ Exame de Consciência e Retrospectiva: recolha-se em oração e olhe para as int
     exam:
       "Fugi do silêncio por medo de encontrar a verdade sobre mim mesmo? Dei ao Senhor uma atenção recolhida e sem pressa?",
     durationLabel: "06:00",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia3.mp3",
     scriptText: `Salve Maria. O recolhimento interior é a arte espiritual de voltar para casa: não a uma casa física, mas ao centro profundo da alma, onde o próprio Deus habita. Em nossa vida moderna, somos continuamente bombardeados e arrastados por correntes incessantes de estímulos visuais, ruídos e distrações que nos impedem de escutar a melodia suave da graça. Tomás de Kempis insiste em uma verdade esquecida: o homem só encontra dentro de si a paz que ele cultiva ao afastar-se das agitações externas.
 
 O coração que não é guardado assemelha-se a uma praça pública, onde qualquer pensamento, imagem ou distração entra e sai sem controle, dissipando a energia espiritual. A guarda do coração exige de nós pequenos e constantes retornos durante o dia: um segundo de silêncio antes de responder a uma mensagem, uma respiração atenta e calma antes de iniciar uma conversa, ou um instante de recolhimento antes de sair de casa. Esses pequenos gestos agem como as muralhas de um jardim, mantendo a chama da presença divina acesa e protegida contra os ventos da dissipação.
@@ -86,6 +87,7 @@ Exame de Consciência e Retrospectiva: reserve um momento de quietude e avalie o
     exam:
       "Revoltei-me contra a cruz que Deus permitiu ou procurei carregá-la com Jesus? Ofereci minhas dores por amor, sem transformar o sofrimento em queixa?",
     durationLabel: "06:30",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia4.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Hoje somos convidados a caminhar pela Estrada Real da Santa Cruz que, embora pareça aos olhos do mundo um caminho de fracasso e dor, é na verdade a única estrada segura de salvação e esperança. A cruz não é um absurdo a ser evitado a qualquer custo, mas sim o altar onde o nosso amor é provado e nossa alma é purificada. Carregar a cruz sem Cristo é um peso insuportável; carregá-la com Ele transforma o sofrimento em redenção.
 
 Cada pequena contrariedade do nosso cotidiano — a espera impaciente no trânsito, a dor de uma incompreensão familiar, uma limitação física ou o cansaço do trabalho — é uma pequena lasca da verdadeira Cruz que o Senhor nos apresenta. Se a recebemos com revolta e murmuração, ela se torna pesada e amarga. Se, porém, a acolhemos com silêncio e amor, ela se torna leve e fecunda. Tomás de Kempis nos ensina que a nossa santidade não se mede pelas consolações que recebemos, mas pela paciência com que abraçamos as cruzes que o Senhor nos confia.
@@ -106,6 +108,7 @@ Exame de Consciência e Retrospectiva: pare diante do Crucificado e reflita sobr
     exam:
       "Deixei a contrariedade dominar meu tom de voz ou minhas atitudes? Agradeci a Deus pela ocasião concreta de exercitar a paciência?",
     durationLabel: "06:05",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia5.mp3",
     scriptText: `Salve Maria. A paciência é uma virtude oculta e silenciosa que se forja no fogo das contrariedades diárias: na fila que não anda, na resposta ríspida que recebemos, na tarefa que dá errado. A verdadeira paciência cristã não consiste em uma apatia fria ou na negação da dor; ela é, acima de tudo, a força de uma alma que decide continuar amando e permanecendo boa mesmo quando tudo ao redor convida à irritação e à revolta.
 
 Tomás de Kempis recorda-nos de que este mundo é um laboratório de provação. Se não formos provados, como saberemos se o nosso amor a Deus é autêntico ou se depende apenas das circunstâncias favoráveis? Quando exercitamos a paciência, não estamos apenas tolerando uma situação desagradável; estamos permitindo que o Espírito Santo realize uma cirurgia profunda em nosso caráter, desfazendo o nosso egoísmo e moldando em nós o rosto manso de Cristo Jesus.
