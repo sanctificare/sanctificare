@@ -24,7 +24,7 @@ export const IMITACAO_PILULAS: ImitacaoPill[] = [
     exam:
       "Busco sempre justificar meus pequenos erros diante dos outros? Consigo tolerar que pensem menos de mim para imitar o silêncio de Jesus?",
     durationLabel: "06:00",
-    audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/imitacaodia1.mp3",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia1.mp3",
     scriptText: `Salve Maria, meu amado irmão, minha amada irmã. Iniciamos hoje esta breve e profunda travessia pela sabedoria prática de Tomás de Kempis, tomando como nosso primeiro e fundamental passo o silêncio e a humildade. O silêncio que propomos aqui não é a mera ausência de sons ou de palavras vazias, mas sim uma postura de escuta interior ativa, um recolhimento da alma que ordena as paixões desordenadas e nos permite redescobrir a doce presença de Deus no mais íntimo do nosso ser.
 
 Ao longo de nossa jornada diária, seremos constantemente provados por pequenas e grandes contrariedades: uma crítica imerecida de quem estimamos, uma recordação que nos envergonha, uma falha exposta publicamente ou um julgamento precipitado. A reação natural e orgulhosa do nosso coração ferido é sempre a de se defender, explicar e afirmar-se perante os homens. O convite de Cristo, no entanto, é radicalmente outro: aceitar a pequenez com humildade sincera, recolher-se sob o olhar do Pai e confiar plenamente. Quando Nosso Senhor Jesus Cristo foi caluniado e injustamente acusado antes de sua crucificação, Ele permaneceu em silêncio majestoso e sereno; essa força extraordinária nasceu da memória viva do amor do Pai e de sua segurança inabalável em Deus.
@@ -45,7 +45,7 @@ Exame de Consciência e Retrospectiva: pare por alguns instantes em seu momento 
     exam:
       "Usei o que sei para parecer superior ou para servir? Procurei a verdade com coração dócil e disposto a obedecer?",
     durationLabel: "06:20",
-    audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/imitacaodia2.mp3",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia2.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Hoje refletimos sobre o uso verdadeiramente cristão do saber e da inteligência. O conhecimento humano é um dom excelente quando ordena o coração para a caridade e nos aproxima do Criador; no entanto, torna-se um perigo mortal para a alma quando serve apenas para alimentar a nossa vaidade e buscar a aprovação do mundo. Tomás de Kempis recorda-nos com firmeza que a sabedoria que não gera humildade é apenas um espelho estéril que glorifica o "eu".
 
 Existe em nossos dias um culto sutil e perigoso ao intelecto, que transforma a erudição em um palco de orgulho e disputa. Pergunte-se com toda a simplicidade da sua alma: aquilo que estudo, leio ou consumo hoje está me tornando uma pessoa mais paciente com os defeitos alheios, mais caridosa com os necessitados e mais presente na oração? Se a resposta for negativa, é hora de reorientar o seu esforço intelectual. Nossa Senhora, Sede da Sabedoria, nos ofereceu o maior exemplo: ela não buscava dar lições ou brilhar diante dos homens, mas guardava todas as palavras divinas no silêncio do seu coração, deixando que elas se encarnassem em sua vida antes de se tornarem ensinamento.
