@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type } from "lucide-react";
+import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IMITACAO_PILULAS } from "@/data/imitacao-pilulas";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,14 @@ export default function ImitacaoCristoRetiro() {
   const [selectedId, setSelectedId] = useState(IMITACAO_PILULAS[0].id);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
+
+  // Audio player states
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const selected = useMemo(
     () => IMITACAO_PILULAS.find((pill) => pill.id === selectedId) ?? IMITACAO_PILULAS[0],
@@ -20,6 +28,93 @@ export default function ImitacaoCristoRetiro() {
     md: "text-sm md:text-base leading-7",
     lg: "text-base md:text-lg leading-8",
     xl: "text-lg md:text-xl leading-9",
+  };
+
+  useEffect(() => {
+    // Reset player when selection changes
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load();
+    }
+  }, [selectedId]);
+
+  const togglePlay = () => {
+    if (!audioRef.current || !selected.audioUrl) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch((err) => console.error(err));
+      setIsPlaying(true);
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleAudioEnd = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+  };
+
+  const handleSeek = (value: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = value;
+      setCurrentTime(value);
+    }
+  };
+
+  const skipForward = () => {
+    if (audioRef.current) {
+      const newTime = Math.min(audioRef.current.currentTime + 10, duration);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  const skipBackward = () => {
+    if (audioRef.current) {
+      const newTime = Math.max(audioRef.current.currentTime - 10, 0);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const changeSpeed = () => {
+    const speeds = [1, 1.25, 1.5, 2];
+    const currentIndex = speeds.indexOf(playbackRate);
+    const nextIndex = (currentIndex + 1) % speeds.length;
+    const nextSpeed = speeds[nextIndex];
+    if (audioRef.current) {
+      audioRef.current.playbackRate = nextSpeed;
+    }
+    setPlaybackRate(nextSpeed);
+  };
+
+  const formatTime = (secs: number) => {
+    if (isNaN(secs) || secs === 0) return "00:00";
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.floor(secs % 60);
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -34,7 +129,7 @@ export default function ImitacaoCristoRetiro() {
       <main className="container py-7 relative z-10">
         <div className="mb-5">
           <Link href="/degraus-de-perfeicao">
-            <button className={`mb-3 text-sm font-medium hover:underline transition-colors ${
+            <button className={`mb-3 text-sm font-medium hover:underline transition-colors cursor-pointer ${
               activeTab === "audio" ? "text-amber-500/80 hover:text-amber-400" : "text-[oklch(0.65_0.12_70)]"
             }`}>
               ← Voltar aos Degraus de Perfeição
@@ -88,7 +183,6 @@ export default function ImitacaoCristoRetiro() {
                   </TabsTrigger>
                 </TabsList>
 
-                {/* Font Size controls (only visible in Text Tab) */}
                 {activeTab === "text" && (
                   <div className="flex items-center gap-1.5 bg-[oklch(0.22_0.07_260/0.04)] p-1 rounded-lg border border-border/30">
                     <span className="text-[10px] font-bold text-[#6e5e52] px-2 flex items-center gap-1">
@@ -112,28 +206,134 @@ export default function ImitacaoCristoRetiro() {
               </div>
 
               <TabsContent value="audio" className="space-y-6 animate-fade-in outline-none">
-                <div className="rounded-xl border border-amber-500/10 bg-white/5 p-5 backdrop-blur-md relative overflow-hidden flex flex-col items-center text-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500/80">{selected.id.toUpperCase()}</span>
-                  <h2 className="mt-1 font-display text-2xl font-bold text-slate-100 leading-tight">{selected.title}</h2>
-                  <p className="text-xs text-slate-400 mt-1">Narrado por {selected.narrator} • {selected.durationLabel}</p>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden flex flex-col items-center text-center shadow-2xl">
+                  {/* Decorative gold circle behind the cover */}
+                  <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 pointer-events-none" />
 
-                  {/* Visual de Capa e Frase Devocional */}
-                  <div className="flex flex-col items-center justify-center my-5">
-                    <div className="relative w-36 h-36">
-                      <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-300 blur-sm opacity-60" />
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{selected.id.toUpperCase()}</span>
+                  <h2 className="mt-3 font-display text-2xl font-bold text-slate-100 leading-tight max-w-md">{selected.title}</h2>
+                  <p className="text-xs text-slate-400 mt-1.5 font-sans">Narrado por {selected.narrator} • {selected.durationLabel}</p>
+
+                  {/* Audio Cover Art */}
+                  <div className="flex flex-col items-center justify-center my-6">
+                    <div className="relative w-40 h-40">
+                      {/* Aura/glow when playing */}
+                      <div className={`absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-300 blur-md transition-opacity duration-1000 ${
+                        isPlaying ? "opacity-70 animate-pulse" : "opacity-30"
+                      }`} />
+                      {isPlaying && (
+                        <div className="absolute inset-0 rounded-3xl bg-amber-500/25 blur-lg animate-ping" style={{ animationDuration: '3s' }} />
+                      )}
                       <img
                         src="/assets/degraus/imitacao_cristo_essence.jpg"
                         alt="Essência de A Imitação de Cristo"
-                        className="relative w-36 h-36 rounded-3xl object-cover z-10 border border-white/10 shadow-2xl"
+                        className={`relative w-40 h-40 rounded-3xl object-cover z-10 border border-white/10 shadow-2xl transition-transform duration-[6000ms] ${
+                          isPlaying ? "scale-[1.03]" : "scale-100"
+                        }`}
                       />
                     </div>
                   </div>
 
                   {selected.audioUrl ? (
-                    <audio className="mt-2 w-full max-w-sm rounded-lg accent-amber-500" controls src={selected.audioUrl} preload="none" />
+                    <>
+                      <audio
+                        ref={audioRef}
+                        src={selected.audioUrl}
+                        onTimeUpdate={handleTimeUpdate}
+                        onLoadedMetadata={handleLoadedMetadata}
+                        onEnded={handleAudioEnd}
+                        preload="metadata"
+                      />
+
+                      {/* Custom Premium Controls (Navy + Gold + Glassmorphism) */}
+                      <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-4">
+                        {/* Progress Bar with times */}
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                            {formatTime(currentTime)}
+                          </span>
+                          <input
+                            type="range"
+                            min={0}
+                            max={duration || 100}
+                            step={0.1}
+                            value={currentTime}
+                            onChange={(e) => handleSeek(Number(e.target.value))}
+                            className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none transition-all duration-300 hover:h-1.5"
+                            style={{
+                              background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                                duration > 0 ? (currentTime / duration) * 100 : 0
+                              }%, rgba(255,255,255,0.2) ${
+                                duration > 0 ? (currentTime / duration) * 100 : 0
+                              }%)`,
+                            }}
+                          />
+                          <span className="text-[10px] text-slate-300 w-8 text-left font-sans">
+                            {formatTime(duration)}
+                          </span>
+                        </div>
+
+                        {/* Control Buttons */}
+                        <div className="flex items-center justify-between px-2">
+                          {/* Speed Control Button */}
+                          <button
+                            onClick={changeSpeed}
+                            className="text-slate-300 hover:text-white text-xs font-bold font-sans w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center transition-colors cursor-pointer"
+                            title="Velocidade de reprodução"
+                          >
+                            {playbackRate}x
+                          </button>
+
+                          {/* Skip Backward 10s */}
+                          <button
+                            onClick={skipBackward}
+                            className="text-slate-300 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                            title="Voltar 10 segundos"
+                          >
+                            <RotateCcw size={16} />
+                          </button>
+
+                          {/* Play/Pause Button */}
+                          <button
+                            onClick={togglePlay}
+                            className="w-12 h-12 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                            title={isPlaying ? "Pausar" : "Reproduzir"}
+                          >
+                            {isPlaying ? (
+                              <Pause size={18} fill="currentColor" />
+                            ) : (
+                              <Play size={18} fill="currentColor" className="ml-0.5" />
+                            )}
+                          </button>
+
+                          {/* Skip Forward 10s */}
+                          <button
+                            onClick={skipForward}
+                            className="text-slate-300 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                            title="Avançar 10 segundos"
+                          >
+                            <RotateCw size={16} />
+                          </button>
+
+                          {/* Volume Mute/Unmute */}
+                          <button
+                            onClick={toggleMute}
+                            className="text-slate-300 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                            title={isMuted ? "Ativar som" : "Desativar som"}
+                          >
+                            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    </>
                   ) : (
-                    <div className="mt-2 rounded-md border border-dashed border-amber-500/20 bg-white/5 px-3 py-2 text-sm text-slate-400 max-w-sm">
-                      Áudio em gravação. Enquanto isso, use a aba de texto para acompanhar toda a meditação.
+                    /* Disabled/Locked premium interface when audio is missing */
+                    <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-md shadow-lg flex flex-col gap-3 items-center text-center">
+                      <Lock className="w-6 h-6 text-amber-500/60 animate-pulse mb-1" />
+                      <p className="text-sm font-semibold text-slate-200">Áudio em Gravação</p>
+                      <p className="text-xs text-slate-400 px-4 leading-relaxed">
+                        Nossas pílulas de sabedoria estão sendo gravadas. Utilize a aba **Leitura em Texto** para acompanhar o roteiro de meditação completo deste dia.
+                      </p>
                     </div>
                   )}
                 </div>
