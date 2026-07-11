@@ -129,6 +129,7 @@ Exame de Consciência e Retrospectiva: afaste-se das atividades do dia por algun
     exam:
       "Fiz o bem esperando reconhecimento, gratidão ou vantagem? Aceitei com paz que uma boa obra permanecesse escondida?",
     durationLabel: "06:10",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia6.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. A pureza de intenção é o olho da alma que a mantém fixada unicamente em Deus. Sem ela, as nossas melhores obras e maiores sacrifícios tornam-se inúteis e perdem todo o valor diante do céu. Duas pessoas podem realizar exteriormente a mesma ação generosa, mas o valor eterno desse ato é determinado pelo coração: uma busca a vanglória e o aplauso dos homens, enquanto a outra procura agradar somente a Deus no segredo do seu recolhimento.
 
 Tudo o que fazemos para sermos vistos, elogiados ou recompensados na terra já recebeu a sua recompensa efêmera. Tomás de Kempis exorta-nos a purificar as nossas motivações mais profundas, fazendo o bem pela beleza do bem e por amor puro a Deus. Quando trabalhamos com pureza de intenção, a nossa paz não depende do sucesso mundano ou do reconhecimento alheio; se somos elogiados, permanecemos humildes; se somos esquecidos ou criticados, permanecemos em paz, pois sabemos que o Pai vê o que está oculto.
@@ -149,6 +150,7 @@ Exame de Consciência e Retrospectiva: examine o seu coração em oração. Hoje
     exam:
       "Resisti interiormente aos meus deveres e orientações legítimas? Em que situação quis impor minha vontade invez de buscar a vontade de Deus?",
     durationLabel: "06:00",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia7.mp3",
     scriptText: `Salve Maria. A obediência reta e humilde é a grande libertadora da nossa alma, pois quebra a pior de todas as tiranias: a tirania da nossa própria vontade e do nosso egoísmo. O pecado entrou no mundo pela desobediência e pela soberba de querer ser como Deus; a salvação entrou no mundo pela obediência perfeita de Cristo e pelo "Fiat" humilde da Virgem Maria. Quando nos submetemos aos nossos deveres e às autoridades legítimas por amor a Deus, esmagamos o orgulho que tenta nos governar.
 
 Tomás de Kempis recorda que viver segundo o próprio arbítrio e capricho é o caminho mais rápido para a perturbação e a aridez espiritual. A obediência cotidiana não anula a nossa liberdade; ao contrário, ela a aperfeiçoa, alinhando as nossas escolhas com a perfeita e santificadora vontade de Deus, que se manifesta nas obrigações simples do nosso estado de vida.
@@ -169,6 +171,7 @@ Exame de Consciência e Retrospectiva: silencie o seu coração e olhe para as a
     exam:
       "Abandonei a oração ou o bem quando não senti consolação? Procurei a Deus por Ele mesmo ou apenas pelos sentimentos agradáveis que recebo?",
     durationLabel: "06:05",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia8.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. A consolação espiritual é um dom gratuito de Deus que nos ajuda a caminhar, mas a aridez da alma é a escola onde o amor verdadeiro é testado e fortalecido. É muito fácil ser devoto, fervoroso e generoso quando o nosso coração está cheio de sentimentos doces e consolações sensíveis. No entanto, é no tempo da secura, do cansaço espiritual e do silêncio de Deus que provamos se amamos realmente ao Deus das consolações, ou se amamos apenas as consolações de Deus.
 
 Tomás de Kempis ensina que a fidelidade na aridez é o ouro purificado no crisol. Quando você persevera na oração e no cumprimento do dever mesmo sem sentir nenhuma alegria ou consolo, a sua alma realiza um acto de amor puro e desinteressado. Não abandone a oração quando ela parecer sem gosto ou difícil; é justamente aí que ela é mais agradável aos olhos de Nosso Senhor.
@@ -189,6 +192,7 @@ Exame de Consciência e Retrospectiva: analise a retidão da sua vida de oraçã
     exam:
       "Julguei intenções que só Deus conhece? Minha presença levou paz, ou aumentou a tensão e a divisão?",
     durationLabel: "06:10",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia9.mp3",
     scriptText: `Salve Maria. A caridade fraterna é a prova definitiva da nossa união com Cristo. É extremamente fácil enxergar e apontar os menores defeitos nas atitudes do nosso próximo, enquanto somos incrivelmente cegos e condescendentes com as nossas próprias misérias. Tomás de Kempis nos ensina que a paz que desejamos ver ao nosso redor deve começar primeiro no íntimo de nós mesmos. Quem não está em paz consigo e com Deus torna-se uma fonte constante de suspeitas e juízos severos sobre os outros.
 
 O juízo misericordioso não ignora o erro, mas escolhe cobrir a nudez e a fraqueza do irmão com a capa da oração e do silêncio caridoso. Em vez de espalhar a crítica ou regozijar-se com a falha alheia, o verdadeiro discípulo de Jesus reza pela conversão do irmão e examina o próprio coração, sabendo que ele mesmo é capaz de cair nos mesmos erros se a graça de Deus lhe faltar por um instante.
@@ -209,6 +213,7 @@ Exame de Consciência e Retrospectiva: olhe com sinceridade para o seu comportam
     exam:
       "O que ocupou hoje o lugar que pertence somente a Cristo? Entreguei ao Senhor meus apegos, medos e projetos com confiança?",
     durationLabel: "06:30",
+    audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia10.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Ao encerrarmos este santo itinerário espiritual, somos conduzidos ao topo de toda a vida interior: o amor a Jesus Cristo acima de absolutamente todas as coisas deste mundo. O desprendimento evangélico não consiste em odiar as criaturas ou as belezas da criação, mas in ordená-las corretamente, amando-as em Deus e por Deus, sem permitir que elas ocupem no nosso coração o trono que pertence unicamente ao nosso Salvador e Senhor.
 
 Qualquer apego desordenado — seja a bens materiais, a planos pessoais, a amizades ou à própria reputação — atua como uma âncora que impede a alma de voar em direção à união com o Amor Divino. Tomás de Kempis nos recorda que aquele que busca a Jesus pelo que Ele pode dar, e não por Ele mesmo, ainda não aprendeu a amar. Quando entregamos tudo com confiança cega, descobrimos a verdadeira e inabalável liberdade dos filhos de Deus.
