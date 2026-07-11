@@ -23,7 +23,7 @@ export const IMITACAO_PILULAS: ImitacaoPill[] = [
       "Se receber qualquer crítica ou correção hoje, não responderei em minha defesa imediata; guardarei um silêncio humilde.",
     exam:
       "Busco sempre justificar meus pequenos erros diante dos outros? Consigo tolerar que pensem menos de mim para imitar o silêncio de Jesus?",
-    durationLabel: "06:00",
+    durationLabel: "04:18",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia1.mp3",
     scriptText: `Salve Maria, meu amado irmão, minha amada irmã. Iniciamos hoje esta breve e profunda travessia pela sabedoria prática de Tomás de Kempis, tomando como nosso primeiro e fundamental passo o silêncio e a humildade. O silêncio que propomos aqui não é a mera ausência de sons ou de palavras vazias, mas sim uma postura de escuta interior ativa, um recolhimento da alma que ordena as paixões desordenadas e nos permite redescobrir a doce presença de Deus no mais íntimo do nosso ser.
 
@@ -44,7 +44,7 @@ Exame de Consciência e Retrospectiva: pare por alguns instantes em seu momento 
       "Antes de ler ou pesquisar algo hoje, direi: 'Senhor, dai-me conhecer-Vos para melhor Vos amar e servir.'",
     exam:
       "Usei o que sei para parecer superior ou para servir? Procurei a verdade com coração dócil e disposto a obedecer?",
-    durationLabel: "06:20",
+    durationLabel: "03:46",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia2.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Hoje refletimos sobre o uso verdadeiramente cristão do saber e da inteligência. O conhecimento humano é um dom excelente quando ordena o coração para a caridade e nos aproxima do Criador; no entanto, torna-se um perigo mortal para a alma quando serve apenas para alimentar a nossa vaidade e buscar a aprovação do mundo. Tomás de Kempis recorda-nos com firmeza que a sabedoria que não gera humildade é apenas um espelho estéril que glorifica o "eu".
 
@@ -65,7 +65,7 @@ Exame de Consciência e Retrospectiva: recolha-se em oração e olhe para as int
       "Reservarei dez minutos sem telas e sem conversas inúteis para permanecer diante de Deus em silêncio.",
     exam:
       "Fugi do silêncio por medo de encontrar a verdade sobre mim mesmo? Dei ao Senhor uma atenção recolhida e sem pressa?",
-    durationLabel: "06:00",
+    durationLabel: "03:09",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia3.mp3",
     scriptText: `Salve Maria. O recolhimento interior é a arte espiritual de voltar para casa: não a uma casa física, mas ao centro profundo da alma, onde o próprio Deus habita. Em nossa vida moderna, somos continuamente bombardeados e arrastados por correntes incessantes de estímulos visuais, ruídos e distrações que nos impedem de escutar a melodia suave da graça. Tomás de Kempis insiste em uma verdade esquecida: o homem só encontra dentro de si a paz que ele cultiva ao afastar-se das agitações externas.
 
@@ -86,7 +86,7 @@ Exame de Consciência e Retrospectiva: reserve um momento de quietude e avalie o
       "Escolherei uma contrariedade inevitável de hoje e a oferecerei conscientemente pela conversão de alguém.",
     exam:
       "Revoltei-me contra a cruz que Deus permitiu ou procurei carregá-la com Jesus? Ofereci minhas dores por amor, sem transformar o sofrimento em queixa?",
-    durationLabel: "06:30",
+    durationLabel: "03:04",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia4.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Hoje somos convidados a caminhar pela Estrada Real da Santa Cruz que, embora pareça aos olhos do mundo um caminho de fracasso e dor, é na verdade a única estrada segura de salvação e esperança. A cruz não é um absurdo a ser evitado a qualquer custo, mas sim o altar onde o nosso amor é provado e nossa alma é purificada. Carregar a cruz sem Cristo é um peso insuportável; carregá-la com Ele transforma o sofrimento em redenção.
 
@@ -107,7 +107,7 @@ Exame de Consciência e Retrospectiva: pare diante do Crucificado e reflita sobr
       "Quando sentir impaciência, farei uma pausa, respirarei lentamente e rezarei três vezes: 'Jesus, eu confio em Vós.'",
     exam:
       "Deixei a contrariedade dominar meu tom de voz ou minhas atitudes? Agradeci a Deus pela ocasião concreta de exercitar a paciência?",
-    durationLabel: "06:05",
+    durationLabel: "03:25",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia5.mp3",
     scriptText: `Salve Maria. A paciência é uma virtude oculta e silenciosa que se forja no fogo das contrariedades diárias: na fila que não anda, na resposta ríspida que recebemos, na tarefa que dá errado. A verdadeira paciência cristã não consiste em uma apatia fria ou na negação da dor; ela é, acima de tudo, a força de uma alma que decide continuar amando e permanecendo boa mesmo quando tudo ao redor convida à irritação e à revolta.
 
@@ -128,7 +128,7 @@ Exame de Consciência e Retrospectiva: afaste-se das atividades do dia por algun
       "Antes de uma tarefa importante, oferecerei seu início, meio e fim a Deus, sem buscar ser notado.",
     exam:
       "Fiz o bem esperando reconhecimento, gratidão ou vantagem? Aceitei com paz que uma boa obra permanecesse escondida?",
-    durationLabel: "06:10",
+    durationLabel: "03:24",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia6.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. A pureza de intenção é o olho da alma que a mantém fixada unicamente em Deus. Sem ela, as nossas melhores obras e maiores sacrifícios tornam-se inúteis e perdem todo o valor diante do céu. Duas pessoas podem realizar exteriormente a mesma ação generosa, mas o valor eterno desse ato é determinado pelo coração: uma busca a vanglória e o aplauso dos homens, enquanto a outra procura agradar somente a Deus no segredo do seu recolhimento.
 
@@ -149,7 +149,7 @@ Exame de Consciência e Retrospectiva: examine o seu coração em oração. Hoje
       "Cumprirei com prontidão uma obrigação simples que eu normalmente adio ou realizo reclamando.",
     exam:
       "Resisti interiormente aos meus deveres e orientações legítimas? Em que situação quis impor minha vontade invez de buscar a vontade de Deus?",
-    durationLabel: "06:00",
+    durationLabel: "03:07",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia7.mp3",
     scriptText: `Salve Maria. A obediência reta e humilde é a grande libertadora da nossa alma, pois quebra a pior de todas as tiranias: a tirania da nossa própria vontade e do nosso egoísmo. O pecado entrou no mundo pela desobediência e pela soberba de querer ser como Deus; a salvação entrou no mundo pela obediência perfeita de Cristo e pelo "Fiat" humilde da Virgem Maria. Quando nos submetemos aos nossos deveres e às autoridades legítimas por amor a Deus, esmagamos o orgulho que tenta nos governar.
 
@@ -170,7 +170,7 @@ Exame de Consciência e Retrospectiva: silencie o seu coração e olhe para as a
       "Farei minha oração no horário previsto, mesmo que esteja sem gosto, cansado ou distraído.",
     exam:
       "Abandonei a oração ou o bem quando não senti consolação? Procurei a Deus por Ele mesmo ou apenas pelos sentimentos agradáveis que recebo?",
-    durationLabel: "06:05",
+    durationLabel: "03:11",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia8.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. A consolação espiritual é um dom gratuito de Deus que nos ajuda a caminhar, mas a aridez da alma é a escola onde o amor verdadeiro é testado e fortalecido. É muito fácil ser devoto, fervoroso e generoso quando o nosso coração está cheio de sentimentos doces e consolações sensíveis. No entanto, é no tempo da secura, do cansaço espiritual e do silêncio de Deus que provamos se amamos realmente ao Deus das consolações, ou se amamos apenas as consolações de Deus.
 
@@ -191,7 +191,7 @@ Exame de Consciência e Retrospectiva: analise a retidão da sua vida de oraçã
       "Evitarei comentar um defeito alheio e farei uma oração concreta pela pessoa que mais me custa amar.",
     exam:
       "Julguei intenções que só Deus conhece? Minha presença levou paz, ou aumentou a tensão e a divisão?",
-    durationLabel: "06:10",
+    durationLabel: "02:57",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia9.mp3",
     scriptText: `Salve Maria. A caridade fraterna é a prova definitiva da nossa união com Cristo. É extremamente fácil enxergar e apontar os menores defeitos nas atitudes do nosso próximo, enquanto somos incrivelmente cegos e condescendentes com as nossas próprias misérias. Tomás de Kempis nos ensina que a paz que desejamos ver ao nosso redor deve começar primeiro no íntimo de nós mesmos. Quem não está em paz consigo e com Deus torna-se uma fonte constante de suspeitas e juízos severos sobre os outros.
 
@@ -212,7 +212,7 @@ Exame de Consciência e Retrospectiva: olhe com sinceridade para o seu comportam
       "Farei uma visita ao Sacrário ou um momento de adoração em casa, entregando a Jesus aquilo a que mais me apego.",
     exam:
       "O que ocupou hoje o lugar que pertence somente a Cristo? Entreguei ao Senhor meus apegos, medos e projetos com confiança?",
-    durationLabel: "06:30",
+    durationLabel: "03:39",
     audioUrl: "https://pub-c82b8ea317fd44cab335d4ce15a28b3e.r2.dev/imitacaodia10.mp3",
     scriptText: `Louvado seja Nosso Senhor Jesus Cristo. Ao encerrarmos este santo itinerário espiritual, somos conduzidos ao topo de toda a vida interior: o amor a Jesus Cristo acima de absolutamente todas as coisas deste mundo. O desprendimento evangélico não consiste em odiar as criaturas ou as belezas da criação, mas in ordená-las corretamente, amando-as em Deus e por Deus, sem permitir que elas ocupem no nosso coração o trono que pertence unicamente ao nosso Salvador e Senhor.
 
