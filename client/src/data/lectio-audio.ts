@@ -178,7 +178,7 @@ export function getGuidedLectioAudioTracks(passageId: string, dateIso: string): 
 
     if (month === 7 && yearTwoDigits === "26") {
       const dayNum = day;
-      if (dayNum >= 5 && dayNum <= 12) {
+      if (dayNum >= 5 && dayNum <= 19) {
         audioUrl = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${dayStr}${monthStr}${yearTwoDigits}.mp3`;
         duration = 180; // Default estimate, actual is loaded by AudioPlayer
       }

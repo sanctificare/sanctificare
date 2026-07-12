@@ -54,6 +54,20 @@ export function registerStorageProxy(app: Express) {
           cleanKey = key;
           foundInR2 = true;
         }
+      } else if (key.startsWith("salmos-cantados/")) {
+        const sKey = key.replace(/^salmos-cantados\//, "");
+        if (await storageExists(sKey, "salmos-cantados")) {
+          bucket = "salmos-cantados";
+          cleanKey = sKey;
+          foundInR2 = true;
+        }
+      } else if (key.startsWith("liturgia-diaria/")) {
+        const lKey = key.replace(/^liturgia-diaria\//, "");
+        if (await storageExists(lKey, "liturgia-diaria")) {
+          bucket = "liturgia-diaria";
+          cleanKey = lKey;
+          foundInR2 = true;
+        }
       } else {
         // Standard keys: check default bucket
         if (await storageExists(key, ENV.r2BucketName)) {
@@ -122,6 +136,20 @@ export function registerStorageProxy(app: Express) {
         } else if (await storageExists(key, ENV.r2BucketName)) {
           bucket = ENV.r2BucketName;
           cleanKey = key;
+          foundInR2 = true;
+        }
+      } else if (key.startsWith("salmos-cantados/")) {
+        const sKey = key.replace(/^salmos-cantados\//, "");
+        if (await storageExists(sKey, "salmos-cantados")) {
+          bucket = "salmos-cantados";
+          cleanKey = sKey;
+          foundInR2 = true;
+        }
+      } else if (key.startsWith("liturgia-diaria/")) {
+        const lKey = key.replace(/^liturgia-diaria\//, "");
+        if (await storageExists(lKey, "liturgia-diaria")) {
+          bucket = "liturgia-diaria";
+          cleanKey = lKey;
           foundInR2 = true;
         }
       } else {
