@@ -6,99 +6,15 @@ import { Link, useLocation } from "wouter";
 import {
   Crown,
   Check,
-  X,
-  Sparkles,
-  Music,
-  BookOpen,
-  Heart,
-  Bell,
-  ChevronRight,
   ArrowLeft,
   Loader2,
   ExternalLink,
-  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 const HERO_BG = "/assets/premium-hero-bg.jpg";
-
-interface FeatureRow {
-  label: string;
-  free: boolean | string;
-  premium: boolean | string;
-  icon: React.ReactNode;
-}
-
-const FEATURES: FeatureRow[] = [
-  {
-    label: "Orações diárias (Pai-Nosso, Ave-Maria, etc.)",
-    free: true,
-    premium: true,
-    icon: <Heart size={14} className="text-rose-400" />,
-  },
-  {
-    label: "Liturgia do Dia",
-    free: true,
-    premium: true,
-    icon: <BookOpen size={14} className="text-blue-400" />,
-  },
-  {
-    label: "Rosário guiado",
-    free: true,
-    premium: true,
-    icon: <Sparkles size={14} className="text-violet-400" />,
-  },
-  {
-    label: "Bíblia completa",
-    free: true,
-    premium: true,
-    icon: <BookOpen size={14} className="text-amber-400" />,
-  },
-  {
-    label: "Novenas (1º dia gratuito)",
-    free: "Apenas 1º dia",
-    premium: "Todas as novenas",
-    icon: <Bell size={14} className="text-emerald-400" />,
-  },
-  {
-    label: "Música Sacra – Bach, Vivaldi & Gounod",
-    free: "8 faixas",
-    premium: "13 faixas",
-    icon: <Music size={14} className="text-pink-400" />,
-  },
-  {
-    label: "A Imitação de Cristo – Retiro completo",
-    free: "Dia 1 gratuito",
-    premium: "9 dias completos",
-    icon: <Star size={14} className="text-amber-400" />,
-  },
-  {
-    label: "Plano de oração personalizado",
-    free: false,
-    premium: true,
-    icon: <Crown size={14} className="text-amber-400" />,
-  },
-  {
-    label: "Meditações guiadas exclusivas",
-    free: false,
-    premium: true,
-    icon: <Sparkles size={14} className="text-violet-400" />,
-  },
-];
-
-function CheckCell({ value }: { value: boolean | string }) {
-  if (value === true)
-    return <Check size={17} className="text-emerald-400 mx-auto" />;
-  if (value === false)
-    return <X size={17} className="text-slate-500 mx-auto" />;
-  return (
-    <span className="text-[11px] font-medium text-amber-400 leading-tight">
-      {value}
-    </span>
-  );
-}
 
 export default function Premium() {
   const { isAuthenticated, user, loading, refresh } = useAuth();
@@ -346,119 +262,6 @@ export default function Premium() {
                 <span className="text-slate-400 font-semibold">Stripe</span>.
                 Cancele a qualquer momento.
               </p>
-            </div>
-          </div>
-        )}
-
-        {/* ── Feature Comparison Table ──────────────────────────────────── */}
-        <div className="mb-10">
-          <h2 className="font-display text-2xl font-bold text-white text-center mb-6">
-            Gratuito vs Premium
-          </h2>
-
-          <div className="rounded-2xl border border-white/10 overflow-hidden">
-            {/* Header */}
-            <div className="grid grid-cols-[1fr_auto_auto] bg-white/5 border-b border-white/10">
-              <div className="px-4 py-3 text-xs font-bold uppercase tracking-widest text-slate-400">
-                Recurso
-              </div>
-              <div className="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest text-slate-400 w-24">
-                Gratuito
-              </div>
-              <div className="px-4 py-3 text-center text-xs font-bold uppercase tracking-widest text-amber-400 w-24 flex items-center justify-center gap-1">
-                <Crown size={11} />
-                Premium
-              </div>
-            </div>
-
-            {/* Rows */}
-            {FEATURES.map((f, i) => (
-              <div
-                key={i}
-                className={`grid grid-cols-[1fr_auto_auto] border-b border-white/5 last:border-0 ${
-                  i % 2 === 0 ? "bg-white/[0.02]" : ""
-                }`}
-              >
-                <div className="px-4 py-3.5 flex items-center gap-2">
-                  {f.icon}
-                  <span className="text-sm text-slate-200 leading-tight">{f.label}</span>
-                </div>
-                <div className="w-24 flex items-center justify-center py-3.5">
-                  <CheckCell value={f.free} />
-                </div>
-                <div className="w-24 flex items-center justify-center py-3.5 bg-amber-500/5">
-                  <CheckCell value={f.premium} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Testimonials / Social Proof ───────────────────────────────── */}
-        <div className="mb-10">
-          <h2 className="font-display text-xl font-bold text-white text-center mb-6">
-            O que dizem nossos assinantes
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                name: "Maria C.",
-                text: "O retiro da Imitação de Cristo transformou minha vida de oração. Recomendo demais!",
-                stars: 5,
-              },
-              {
-                name: "João P.",
-                text: "As músicas sacras de Bach e Vivaldi me acompanham na oração diária. Qualidade incrível.",
-                stars: 5,
-              },
-              {
-                name: "Ana L.",
-                text: "Valeu cada centavo. As novenas completas e meditações guiadas são simplesmente maravilhosas.",
-                stars: 5,
-              },
-            ].map((t) => (
-              <div
-                key={t.name}
-                className="rounded-xl border border-white/10 bg-white/5 p-5"
-              >
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: t.stars }).map((_, i) => (
-                    <Star key={i} size={12} fill="currentColor" className="text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed italic mb-3">
-                  "{t.text}"
-                </p>
-                <p className="text-slate-500 text-xs font-semibold">{t.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Bottom CTA ────────────────────────────────────────────────── */}
-        {!isPremium && (
-          <div className="relative rounded-2xl overflow-hidden border border-amber-500/20 bg-gradient-to-br from-amber-950/50 to-[oklch(0.08_0.04_260)] p-8 text-center">
-            <div className="absolute w-64 h-64 rounded-full bg-amber-500/5 blur-3xl -top-16 left-1/2 -translate-x-1/2 pointer-events-none" />
-            <div className="relative z-10">
-              <Crown size={32} className="text-amber-500 mx-auto mb-4" />
-              <h3 className="font-display text-2xl font-black text-white mb-2">
-                Pronto para crescer espiritualmente?
-              </h3>
-              <p className="text-slate-400 text-sm mb-6">
-                Junte-se a milhares de fiéis que aprofundaram sua vida de oração com o Sanctificare Premium.
-              </p>
-              <Button
-                onClick={handleSubscribe}
-                disabled={subscribing}
-                className="h-12 px-8 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black tracking-wide shadow-[0_0_40px_oklch(0.75_0.18_75/0.3)] cursor-pointer"
-              >
-                {subscribing ? (
-                  <Loader2 size={18} className="animate-spin mr-2" />
-                ) : (
-                  <ChevronRight size={18} className="mr-1" />
-                )}
-                Começar agora
-              </Button>
             </div>
           </div>
         )}
