@@ -78,6 +78,7 @@ pelos séculos dos séculos. Amém.`,
     icon: "✝️",
     duration: "2 min",
     category: "basic",
+    audioUrl: "/audio/rosary/intro-terco.mp3",
     content: `Creio em Deus Pai todo-poderoso,
 criador do céu e da terra.
 
