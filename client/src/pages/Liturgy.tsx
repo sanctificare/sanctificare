@@ -189,37 +189,7 @@ export default function Liturgy() {
     localStorage.setItem("sanctificare_liturgy_font_family", next);
   };
 
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
-  const [touchEnd, setTouchEnd] = useState<{ x: number; y: number } | null>(null);
 
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distanceX = touchStart.x - touchEnd.x;
-    const distanceY = touchStart.y - touchEnd.y;
-
-    // Só dispara swipe horizontal se o movimento X for dominante
-    if (Math.abs(distanceX) <= Math.abs(distanceY)) return;
-
-    const isLeftSwipe = distanceX > minSwipeDistance;
-    const isRightSwipe = distanceX < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      handleNextDay();
-    } else if (isRightSwipe) {
-      handlePrevDay();
-    }
-  };
 
   useEffect(() => {
     if (!liturgy) {
@@ -596,9 +566,6 @@ export default function Liturgy() {
       )}
 
       <div 
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
         className={`mx-auto px-4 py-6 space-y-6 transition-all duration-500 ${isZenMode ? "max-w-2xl" : "max-w-3xl"}`}
       >
         {/* Header */}
