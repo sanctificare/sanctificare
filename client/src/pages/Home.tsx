@@ -102,13 +102,13 @@ const plans = [
   },
   {
     name: "Premium Anual",
-    price: "R$ 12,41",
+    price: "R$ 9,91",
     period: "por mês*",
-    badge: "Economize 16%",
-    note: "*Cobrado anualmente (R$ 149,00/ano)",
+    badge: "Economize 33%",
+    note: "*Cobrado anualmente (R$ 119,00/ano)",
     features: [
       "Tudo do acesso mensal",
-      "Equivalente a 2 meses sem custo adicional",
+      "Equivalente a 4 meses sem custo adicional",
       "Acesso antecipado a novos áudios",
       "Meditações exclusivas para tempos fortes (Quaresma/Advento)",
       "Histórico espiritual completo vitalício",
