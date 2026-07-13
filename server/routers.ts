@@ -175,7 +175,6 @@ export const appRouter = router({
             mode: "subscription",
             payment_method_types: ["card"],
             customer: stripeCustomerId || undefined,
-            customer_creation: stripeCustomerId ? undefined : "always",
             line_items: [{ price: priceId, quantity: 1 }],
             success_url: successUrl,
             cancel_url: cancelUrl,
