@@ -132,12 +132,67 @@ export const appRouter = router({
       .query(async ({ ctx }) => {
         return getActiveSubscription(ctx.user.id);
       }),
+
+    // Cria uma Stripe Checkout Session e retorna a URL de redirecionamento.
+    // Em desenvolvimento (DEV_AUTH_BYPASS), simula a assinatura localmente.
     subscribe: protectedProcedure
       .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
       .mutation(async ({ ctx, input }) => {
+        if (ENV.stripeSecretKey && !isDevAuthBypassEnabled(ctx.req)) {
+          const Stripe = (await import("stripe")).default;
+          const stripe = new Stripe(ENV.stripeSecretKey);
+
+          const priceId = input.plan === "monthly"
+            ? ENV.stripePriceMonthly
+            : ENV.stripePriceAnnual;
+
+          const successUrl = `${ENV.appUrl}/premium/sucesso?session_id={CHECKOUT_SESSION_ID}`;
+          const cancelUrl = `${ENV.appUrl}/premium`;
+
+          const session = await stripe.checkout.sessions.create({
+            mode: "subscription",
+            payment_method_types: ["card"],
+            line_items: [{ price: priceId, quantity: 1 }],
+            success_url: successUrl,
+            cancel_url: cancelUrl,
+            metadata: {
+              userId: String(ctx.user.id),
+              plan: input.plan,
+            },
+            subscription_data: {
+              metadata: {
+                userId: String(ctx.user.id),
+                plan: input.plan,
+              },
+            },
+          });
+
+          return { checkoutUrl: session.url, success: true };
+        }
+        // Fallback dev: simula assinatura sem Stripe
         await createSubscription(ctx.user.id, input.plan);
-        return { success: true };
+        return { checkoutUrl: null, success: true };
       }),
+
+    // Cria uma sessão do Stripe Customer Portal para o assinante gerenciar/cancelar.
+    createPortalSession: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        if (!ENV.stripeSecretKey || isDevAuthBypassEnabled(ctx.req)) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Stripe não configurado em dev." });
+        }
+        const Stripe = (await import("stripe")).default;
+        const stripe = new Stripe(ENV.stripeSecretKey);
+        const sub = await getActiveSubscription(ctx.user.id);
+        if (!sub?.stripeCustomerId) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Assinatura Stripe não encontrada." });
+        }
+        const session = await stripe.billingPortal.sessions.create({
+          customer: sub.stripeCustomerId,
+          return_url: `${ENV.appUrl}/premium`,
+        });
+        return { portalUrl: session.url };
+      }),
+
     cancel: protectedProcedure
       .mutation(async ({ ctx }) => {
         await cancelSubscription(ctx.user.id);

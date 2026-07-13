@@ -13,7 +13,6 @@ import {
 } from "@/data/audio-meditations";
 import { getAudioCollectionArt } from "@/lib/cardArt";
 import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -41,26 +40,17 @@ export default function AudioLibraryPage({
   collections,
   authPrompt,
 }: AudioLibraryPageProps) {
-  const { isAuthenticated, loading, user, refresh } = useAuth();
-  const subscribeMutation = trpc.subscriptions.subscribe.useMutation();
+  const { isAuthenticated, loading, user } = useAuth();
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
 
   const isPremium = useMemo(() => {
-    return !!user?.activeSubscription;
-  }, [user]);
+    return !!subscription &&
+      (subscription.status === "active" ||
+       subscription.status === "cancelled" ||
+       subscription.status === "past_due");
+  }, [subscription]);
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
-
-  const handleSubscribe = async (plan: "monthly" | "annual") => {
-    try {
-      await subscribeMutation.mutateAsync({ plan });
-      toast.success("Assinatura Premium simulada com sucesso!");
-      await refresh();
-      setIsUpgradeModalOpen(false);
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao simular assinatura.");
-    }
-  };
 
   const firstTrackId = useMemo(
     () => collections[0]?.tracks[0]?.id ?? "",
@@ -343,22 +333,16 @@ export default function AudioLibraryPage({
           </div>
 
           <div className="mt-5 space-y-3 relative z-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Link href="/premium" onClick={() => setIsUpgradeModalOpen(false)}>
               <Button
-                onClick={() => handleSubscribe("monthly")}
-                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider h-10 transition-all rounded-xl cursor-pointer"
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm uppercase tracking-wider h-11 transition-all rounded-xl cursor-pointer"
               >
-                Mensal • R$ 14,90
+                <Crown size={14} className="mr-2" />
+                Ver Planos Premium
               </Button>
-              <Button
-                onClick={() => handleSubscribe("annual")}
-                className="bg-transparent border border-amber-500/50 hover:bg-amber-500/10 text-amber-400 font-bold text-xs uppercase tracking-wider h-10 transition-all rounded-xl cursor-pointer"
-              >
-                Anual • R$ 149,00
-              </Button>
-            </div>
+            </Link>
             <p className="text-[10px] text-center text-slate-400 mt-2">
-              Cancele a qualquer momento nas configurações do seu perfil.
+              A partir de R$ 14,90/mês · Cancele a qualquer momento
             </p>
           </div>
         </DialogContent>

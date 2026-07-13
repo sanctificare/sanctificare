@@ -65,6 +65,8 @@ const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
 const DegrausPerfeicao = lazyWithPreload(() => import("./pages/DegrausPerfeicao"));
 const ImitacaoCristoRetiro = lazyWithPreload(() => import("./pages/ImitacaoCristoRetiro"));
+const Premium = lazyWithPreload(() => import("./pages/Premium"));
+const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
 
 // Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
 // ("Carregando...") na primeira navegação a cada página.
@@ -82,6 +84,8 @@ const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] 
   VideosBiblicos,
   DegrausPerfeicao,
   ImitacaoCristoRetiro,
+  Premium,
+  PremiumSucesso,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
@@ -182,6 +186,14 @@ function ProtectedPrayerDetailRoute(props: any) {
   return <ProtectedRoute component={PrayerDetail} {...props} />;
 }
 
+function PremiumRoute(props: any) {
+  return <Premium {...props} />;
+}
+
+function PremiumSucessoRoute(props: any) {
+  return <PremiumSucesso {...props} />;
+}
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
@@ -214,6 +226,8 @@ function Router() {
   <Route path="/degraus-de-perfeicao" component={ProtectedDegrausRoute} />
   <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ProtectedImitacaoCristoRoute} />
         <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
+        <Route path="/premium" component={PremiumRoute} />
+        <Route path="/premium/sucesso" component={PremiumSucessoRoute} />
         <Route path="/redefinir-senha" component={ResetPassword} />
         <Route path="/privacidade" component={Privacy} />
         <Route path="/404" component={NotFound} />
@@ -227,7 +241,7 @@ function AppShell() {
   const [location] = useLocation();
 
   // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
-  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade";
+  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade" || location === "/premium" || location === "/premium/sucesso";
 
   return (
     <>

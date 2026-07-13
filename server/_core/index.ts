@@ -191,7 +191,8 @@ async function startServer() {
     const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
     const isCsrfExemptPath =
       req.path === "/api/scheduled/fetchLiturgia" ||
-      req.path === "/api/auth/logout";
+      req.path === "/api/auth/logout" ||
+      req.path === "/api/stripe/webhook";
 
     if (!isUnsafeMethod || !hasSessionCookie || isCsrfExemptPath) {
       return next();
@@ -259,6 +260,106 @@ async function startServer() {
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   app.use("/api/auth", authRouter);
+
+  // ── Stripe Webhook ──────────────────────────────────────────────────────────
+  // IMPORTANTE: precisa vir ANTES do express.json() para receber o raw body.
+  // O Stripe verifica a assinatura usando o corpo bruto da requisição.
+  app.post(
+    "/api/stripe/webhook",
+    express.raw({ type: "application/json" }),
+    async (req, res) => {
+      const sig = req.headers["stripe-signature"] as string | undefined;
+      const webhookSecret = ENV.stripeWebhookSecret;
+
+      if (!ENV.stripeSecretKey || !webhookSecret) {
+        console.warn("[Stripe Webhook] Stripe não configurado, ignorando evento.");
+        return res.sendStatus(200);
+      }
+
+      let event: any;
+      try {
+        const Stripe = (await import("stripe")).default;
+        const stripe = new Stripe(ENV.stripeSecretKey);
+        event = stripe.webhooks.constructEvent(req.body as Buffer, sig ?? "", webhookSecret);
+      } catch (err: any) {
+        console.error("[Stripe Webhook] Assinatura inválida:", err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+
+      try {
+        const {
+          createOrUpdateStripeSubscription,
+          cancelStripeSubscription,
+        } = await import("../db");
+
+        const { type, data } = event;
+        console.log(`[Stripe Webhook] Evento recebido: ${type}`);
+
+        if (type === "checkout.session.completed") {
+          const session = data.object as any;
+          if (session.mode !== "subscription") {
+            return res.sendStatus(200);
+          }
+          const userId = Number(session.metadata?.userId);
+          const plan = (session.metadata?.plan ?? "monthly") as "monthly" | "annual";
+          const stripeCustomerId = session.customer as string;
+          const stripeSubscriptionId = session.subscription as string;
+
+          // Buscar detalhes da subscription para obter datas
+          const Stripe2 = (await import("stripe")).default;
+          const stripe2 = new Stripe2(ENV.stripeSecretKey);
+          const stripeSub = await stripe2.subscriptions.retrieve(stripeSubscriptionId);
+          const expiresAt = new Date((stripeSub as any).current_period_end * 1000);
+          const startedAt = new Date((stripeSub as any).current_period_start * 1000);
+
+          await createOrUpdateStripeSubscription(
+            userId, stripeCustomerId, stripeSubscriptionId, plan, "active", expiresAt, startedAt
+          );
+          console.log(`[Stripe Webhook] checkout.session.completed: userId=${userId}, plan=${plan}`);
+        } else if (type === "customer.subscription.updated") {
+          const stripeSub = data.object as any;
+          const stripeSubscriptionId = stripeSub.id;
+          const stripeCustomerId = stripeSub.customer as string;
+
+          // Derivar plano a partir do price ID
+          const priceId = stripeSub.items?.data?.[0]?.price?.id ?? "";
+          const plan: "monthly" | "annual" = priceId === ENV.stripePriceAnnual ? "annual" : "monthly";
+
+          const stripeStatus = stripeSub.status as string;
+          const dbStatus: "active" | "cancelled" | "expired" | "past_due" =
+            stripeStatus === "active" ? "active"
+            : stripeStatus === "canceled" ? "cancelled"
+            : stripeStatus === "past_due" ? "past_due"
+            : "expired";
+
+          const expiresAt = new Date(stripeSub.current_period_end * 1000);
+          const startedAt = new Date(stripeSub.current_period_start * 1000);
+
+          // Determinar userId — pode estar nos metadata da subscription
+          const userId = Number(stripeSub.metadata?.userId ?? 0);
+          if (!userId) {
+            console.warn("[Stripe Webhook] customer.subscription.updated sem userId nos metadata");
+            return res.sendStatus(200);
+          }
+
+          await createOrUpdateStripeSubscription(
+            userId, stripeCustomerId, stripeSubscriptionId, plan, dbStatus, expiresAt, startedAt
+          );
+          console.log(`[Stripe Webhook] subscription.updated: status=${dbStatus}, plan=${plan}`);
+        } else if (type === "customer.subscription.deleted") {
+          const stripeSub = data.object as any;
+          await cancelStripeSubscription(stripeSub.id);
+          console.log(`[Stripe Webhook] subscription.deleted: id=${stripeSub.id}`);
+        }
+      } catch (err: any) {
+        console.error("[Stripe Webhook] Erro ao processar evento:", err);
+        return res.status(500).send("Webhook processing error");
+      }
+
+      return res.sendStatus(200);
+    }
+  );
+
   // tRPC API
   app.use(
     "/api/trpc",
