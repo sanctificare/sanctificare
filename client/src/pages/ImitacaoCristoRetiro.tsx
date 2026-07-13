@@ -149,7 +149,7 @@ export default function ImitacaoCristoRetiro() {
           }`}>
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "audio" | "text")}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-border/20 pb-4 mb-4 gap-4">
-                <TabsList className={`p-1 rounded-xl transition-all w-fit ${
+                <TabsList className={`p-1 rounded-xl transition-all w-full sm:w-fit grid grid-cols-2 sm:flex ${
                   activeTab === "audio"
                     ? "bg-white/5 border border-white/10"
                     : "bg-[oklch(0.22_0.07_260/0.06)]"
@@ -160,7 +160,7 @@ export default function ImitacaoCristoRetiro() {
                       : "data-[state=active]:bg-[oklch(0.75_0.12_75)] data-[state=active]:text-white text-muted-foreground"
                   }`}>
                     <Headphones size={14} />
-                    Meditações em Áudio
+                    <span className="hidden min-[380px]:inline">Meditações em </span>Áudio
                   </TabsTrigger>
                   <TabsTrigger value="text" className={`gap-2 rounded-lg font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
                     activeTab === "text"
@@ -168,7 +168,7 @@ export default function ImitacaoCristoRetiro() {
                       : "data-[state=active]:bg-amber-500 data-[state=active]:text-slate-950 text-slate-400"
                   }`}>
                     <BookOpenText size={14} />
-                    Leitura em Texto
+                    <span className="hidden min-[380px]:inline">Leitura em </span>Texto
                   </TabsTrigger>
                 </TabsList>
 
