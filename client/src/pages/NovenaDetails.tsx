@@ -628,7 +628,9 @@ export default function NovenaDetails() {
 
                     {/* Seletor de Dias – mobile (visível apenas abaixo de lg) */}
                     <div className="lg:hidden">
-                      <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold mb-2">Progresso da Jornada</p>
+                      <p className={`text-[11px] uppercase tracking-wider font-bold mb-2 ${
+                        activeTab === "audio" ? "text-slate-300" : "text-muted-foreground"
+                      }`}>Progresso da Jornada</p>
                       <div className="grid grid-cols-9 gap-1 justify-items-center">
                         {Array.from({ length: 9 }, (_, idx) => {
                           const dayNum = idx + 1;
@@ -636,30 +638,51 @@ export default function NovenaDetails() {
                           const isActive = dayNum === safeDay;
                           const unlocked = isDayUnlocked(dayNum);
                           const waitDays = daysUntilUnlock(dayNum);
+                          const isDark = activeTab === "audio";
+
+                          let buttonStyles = "relative w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ";
+                          let iconClass = "";
+
+                          if (isActive) {
+                            buttonStyles += isDark
+                              ? "bg-amber-500 text-slate-950 ring-2 ring-amber-400 scale-110 shadow-sm"
+                              : "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm";
+                          } else if (isDone) {
+                            buttonStyles += isDark
+                              ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                              : "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/20";
+                            iconClass = isDark ? "text-emerald-400" : "text-emerald-600";
+                          } else if (!unlocked) {
+                            buttonStyles += isDark
+                              ? "bg-white/5 text-white/20 border border-white/10 cursor-not-allowed"
+                              : "bg-black/5 text-black/20 border border-black/10 cursor-not-allowed";
+                            iconClass = isDark ? "text-white/20" : "text-black/20";
+                          } else {
+                            buttonStyles += isDark
+                              ? "bg-white/10 text-white/80 border border-white/20 hover:bg-white/20"
+                              : "bg-black/5 text-[#2d251e] border border-black/10 hover:bg-black/10";
+                          }
+
                           return (
                             <button
                               key={dayNum}
                               onClick={() => unlocked && setSelectedDay(dayNum)}
                               disabled={isLocked || !unlocked}
-                              className={`relative w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold transition-all ${
-                                isActive
-                                  ? "bg-[oklch(0.22_0.07_260)] text-white ring-2 ring-[oklch(0.75_0.12_75)] scale-110 shadow-sm"
-                                  : isDone
-                                  ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600"
-                                  : !unlocked
-                                  ? "bg-white/5 text-muted-foreground/30 border border-transparent cursor-not-allowed"
-                                  : "bg-white/10 text-muted-foreground border border-transparent hover:bg-white/20"
-                              }`}
+                              className={buttonStyles}
                               title={!unlocked ? (waitDays === 1 ? `Disponível amanhã` : `Disponível em ${waitDays} dias`) : `Ir para o Dia ${dayNum}`}
                             >
                               {!unlocked ? (
-                                <Lock size={10} className="text-muted-foreground/30" />
+                                <Lock size={10} className={iconClass} />
                               ) : isDone ? (
-                                <CheckCircle2 size={13} className="text-emerald-600" />
+                                <CheckCircle2 size={13} className={iconClass} />
                               ) : (
                                 dayNum
                               )}
-                              {isActive && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[oklch(0.75_0.12_75)]" />}
+                              {isActive && (
+                                <span className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${
+                                  isDark ? "bg-amber-400" : "bg-[oklch(0.75_0.12_75)]"
+                                }`} />
+                              )}
                             </button>
                           );
                         })}
