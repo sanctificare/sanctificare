@@ -1,7 +1,7 @@
 import { useState, useEffect, ComponentType } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { PRAYERS, Prayer } from "@/data/prayers";
 import { Crown, Clock, Lock, ChevronRight, X, Flame, Shield, Bell, Volume2 } from "lucide-react";
@@ -172,7 +172,13 @@ export default function Prayers() {
     }
   }, [location]);
 
-  const isPremium = true;
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
+  const isPremium = !!subscription &&
+    (subscription.status === "active" ||
+     subscription.status === "cancelled" ||
+     subscription.status === "past_due");
+
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const getPrayerCardTheme = (prayerType: string) => PRAYER_CARD_THEMES[prayerType] ?? DEFAULT_PRAYER_CARD_THEME;
 
@@ -192,7 +198,10 @@ export default function Prayers() {
   };
 
   const handleOpenPrayer = (prayer: Prayer) => {
-    if (prayer.category === "premium" && !isPremium) return;
+    if (prayer.category === "premium" && !isPremium) {
+      setIsUpgradeModalOpen(true);
+      return;
+    }
     setSelectedPrayer(prayer);
     setPraying(false);
 
@@ -362,6 +371,12 @@ export default function Prayers() {
                       {theme.badgeLabel}
                     </span>
                     <div className="flex gap-1 flex-wrap justify-end">
+                      {!isPremium && (
+                        <span className="rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1.5 py-0.5 flex items-center gap-0.5">
+                          <Lock size={9} className="sm:w-[10px] sm:h-[10px]" />
+                          <span className="text-[9px] font-semibold tracking-[0.03em]">Bloqueado</span>
+                        </span>
+                      )}
                       {prayer.audioUrl && (
                         <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
                           <Volume2 size={9} className="sm:w-[10px] sm:h-[10px]" />
@@ -424,6 +439,54 @@ export default function Prayers() {
               )}
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Upgrade Premium */}
+      <Dialog open={isUpgradeModalOpen} onOpenChange={setIsUpgradeModalOpen}>
+        <DialogContent className="sm:max-w-md bg-[#0b1329] text-slate-100 border-amber-500/20 rounded-3xl overflow-hidden p-6 sm:p-8">
+          <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 -left-10 pointer-events-none" />
+          
+          <DialogHeader className="text-center relative z-10 flex flex-col items-center">
+            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-3">
+              <Crown size={22} className="text-amber-500" />
+            </div>
+            <DialogTitle className="font-display text-2xl font-black text-white">
+              Acesso Premium
+            </DialogTitle>
+            <DialogDescription className="font-serif text-slate-300 text-sm mt-2 text-center">
+              Esta oração e outros devocionais exclusivos estão disponíveis apenas para assinantes Premium.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="border-t border-white/10 my-4 pt-4 space-y-3 text-xs text-slate-300 relative z-10">
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Músicas sacras selecionadas para oração e contemplação</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Retiro completo "A Imitação de Cristo" e Novenas exclusivas</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Áudios guiados do Rosário e Terço Mariano</p>
+            </div>
+          </div>
+
+          <div className="mt-5 space-y-3 relative z-10">
+            <Link href="/premium" onClick={() => setIsUpgradeModalOpen(false)}>
+              <Button
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm uppercase tracking-wider h-11 transition-all rounded-xl cursor-pointer"
+              >
+                <Crown size={14} className="mr-2" />
+                Ver Planos Premium
+              </Button>
+            </Link>
+            <p className="text-[10px] text-center text-slate-400 mt-2">
+              A partir de R$ 14,90/mês · Cancele a qualquer momento
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

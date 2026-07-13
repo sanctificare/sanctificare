@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle } from "lucide-react";
+import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle, Crown } from "lucide-react";
 import { Link } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { getPrayerArt } from "@/lib/cardArt";
@@ -64,6 +64,9 @@ function safeStorageSet(key: string, value: string): boolean {
 export default function Profile() {
   const { user, isAuthenticated, loading, logout } = useAuth();
   const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
+  const portalMutation = trpc.subscriptions.createPortalSession.useMutation();
+  const [openingPortal, setOpeningPortal] = useState(false);
 
 
 
@@ -168,6 +171,18 @@ export default function Profile() {
     if (remindersEnabled) {
       void scheduleDailyReminder(newTime);
       toast.success(`Horário do lembrete atualizado para as ${newTime}!`);
+    }
+  };
+
+  const handleManage = async () => {
+    setOpeningPortal(true);
+    try {
+      const { portalUrl } = await portalMutation.mutateAsync();
+      window.location.href = portalUrl;
+    } catch {
+      toast.error("Não foi possível abrir o portal de gerenciamento.");
+    } finally {
+      setOpeningPortal(false);
     }
   };
 
@@ -319,6 +334,63 @@ export default function Profile() {
                   <Button size="sm" className="bg-navy text-white">
                     Começar a rezar
                     <ChevronRight size={14} className="ml-1" />
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Assinatura Premium */}
+          <div className="section-block prayer-card p-4 sm:p-6 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Crown size={16} className="text-amber-500" />
+              <h2 className="section-title-sm">
+                Assinatura Sanctificare Premium
+              </h2>
+            </div>
+            <div className="divider-gold mb-4" />
+
+            {subscription && (subscription.status === "active" || subscription.status === "cancelled" || subscription.status === "past_due") ? (
+              <div className="bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-foreground">Status do Plano:</span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                      Ativo
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Plano {subscription.plan === "annual" ? "Anual" : "Mensal"} · Válido até {new Date(subscription.expiresAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
+                  </p>
+                </div>
+                {subscription.stripeSubscriptionId ? (
+                  <Button
+                    onClick={handleManage}
+                    disabled={openingPortal}
+                    size="sm"
+                    className="bg-navy text-white hover:bg-navy/90 flex items-center justify-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                  >
+                    {openingPortal ? "Carregando..." : "Gerenciar Assinatura"}
+                  </Button>
+                ) : (
+                  <span className="text-xs text-muted-foreground font-serif italic">Assinatura Local / Dev</span>
+                )}
+              </div>
+            ) : (
+              <div className="bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-sm font-semibold text-foreground">Plano Gratuito</span>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Tenha acesso a mais conteúdos de música sacra, novenas completas e ao retiro espiritual "A Imitação de Cristo" assinando o Premium.
+                  </p>
+                </div>
+                <Link href="/premium" className="self-start sm:self-auto">
+                  <Button
+                    size="sm"
+                    className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Crown size={14} />
+                    Ver Planos
                   </Button>
                 </Link>
               </div>

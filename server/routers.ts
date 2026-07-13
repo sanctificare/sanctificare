@@ -169,7 +169,13 @@ export const appRouter = router({
 
           return { checkoutUrl: session.url, success: true };
         }
-        // Fallback dev: simula assinatura sem Stripe
+        // Fallback dev: simula assinatura localmente (NUNCA roda em produção)
+        if (ENV.isProduction) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Stripe não configurado. Configure STRIPE_SECRET_KEY em produção.",
+          });
+        }
         await createSubscription(ctx.user.id, input.plan);
         return { checkoutUrl: null, success: true };
       }),

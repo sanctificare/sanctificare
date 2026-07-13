@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
+import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { ChevronRight } from "lucide-react";
 import { Link } from "wouter";
@@ -53,7 +54,11 @@ function ProgressRing({ done, total }: { done: number; total: number }) {
 export default function Novenas() {
   const { isAuthenticated, loading } = useAuth();
   const [progress] = useState<ProgressMap>(() => readProgress());
-  const isPremium = true;
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
+  const isPremium = !!subscription &&
+    (subscription.status === "active" ||
+     subscription.status === "cancelled" ||
+     subscription.status === "past_due");
   const activeNovenas = buildNovenasInProgressItems(progress, NOVENAS);
 
   const stats = useMemo(() => {

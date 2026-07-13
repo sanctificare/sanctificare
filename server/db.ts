@@ -862,23 +862,6 @@ export async function markGraceObtained(intentionId: number, userId: number) {
 // ─── Subscriptions ────────────────────────────────────────────────────────────
 
 export async function getActiveSubscription(userId: number) {
-  // Em desenvolvimento com DEV_AUTH_BYPASS, retorna mock para desbloquear o app localmente
-  if (process.env.NODE_ENV === "development" && process.env.DEV_AUTH_BYPASS) {
-    const farFuture = new Date();
-    farFuture.setFullYear(farFuture.getFullYear() + 50);
-    return {
-      id: 999999,
-      userId,
-      plan: "annual" as any,
-      status: "active" as any,
-      startedAt: new Date(),
-      expiresAt: farFuture,
-      stripeCustomerId: null as any,
-      stripeSubscriptionId: null as any,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  }
 
   const db = await getDb();
   if (!db) return null;

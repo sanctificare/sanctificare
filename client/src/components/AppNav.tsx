@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -49,6 +49,8 @@ export default function AppNav() {
   const [location] = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   const { data: dailyPlan } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
+  const isPremium = !!subscription && (subscription.status === "active" || subscription.status === "cancelled" || subscription.status === "past_due");
 
   const initials = user?.name
     ? user.name.split(" ").map((n: string) => n[0]).slice(0, 2).join("").toUpperCase()
@@ -116,6 +118,16 @@ export default function AppNav() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {/* Badge Premium (desktop) */}
+              {!isPremium && (
+                <Link href="/premium">
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 hover:bg-amber-500/25 transition-all duration-200 text-xs font-bold cursor-pointer">
+                    <Crown size={12} />
+                    Premium
+                  </button>
+                </Link>
+              )}
             </div>
           )}
 
@@ -165,6 +177,15 @@ export default function AppNav() {
                       <p className="text-sm font-semibold truncate">{user?.name || "Usuário"}</p>
                       <p className="text-xs text-muted-foreground truncate">{user?.email || ""}</p>
                     </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/premium" className="flex items-center gap-2">
+                        <Crown size={14} className="text-amber-500" />
+                        <span className={isPremium ? "text-amber-400 font-semibold" : ""}>
+                          {isPremium ? "Plano Premium ✓" : "Assinar Premium"}
+                        </span>
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link href="/perfil">

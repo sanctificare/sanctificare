@@ -9,23 +9,14 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 export default function ImitacaoCristoRetiro() {
-  const { user, refresh } = useAuth();
-  const subscribeMutation = trpc.subscriptions.subscribe.useMutation();
-
+  const { user } = useAuth();
+  const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: !!user });
   const isPremium = useMemo(() => {
-    return !!user?.activeSubscription;
-  }, [user]);
-
-  const handleSubscribe = async (plan: "monthly" | "annual") => {
-    try {
-      await subscribeMutation.mutateAsync({ plan });
-      toast.success("Assinatura Premium simulada com sucesso!");
-      await refresh();
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao simular assinatura.");
-    }
-  };
+    return !!subscription &&
+      (subscription.status === "active" ||
+       subscription.status === "cancelled" ||
+       subscription.status === "past_due");
+  }, [subscription]);
 
   const [selectedId, setSelectedId] = useState(IMITACAO_PILULAS[0].id);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
@@ -202,22 +193,16 @@ export default function ImitacaoCristoRetiro() {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Link href="/premium">
                     <Button 
-                      onClick={() => handleSubscribe("monthly")}
-                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider h-11 transition-all shadow-md rounded-xl cursor-pointer"
+                      className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm uppercase tracking-wider h-11 transition-all shadow-md rounded-xl cursor-pointer"
                     >
-                      Mensal • R$ 14,90
+                      <Crown size={14} className="mr-2" />
+                      Ver Planos Premium
                     </Button>
-                    <Button 
-                      onClick={() => handleSubscribe("annual")}
-                      className="bg-transparent border border-amber-500/50 hover:bg-amber-500/10 text-amber-400 font-bold text-xs uppercase tracking-wider h-11 transition-all rounded-xl cursor-pointer"
-                    >
-                      Anual • R$ 149,00
-                    </Button>
-                  </div>
+                  </Link>
                   <p className="text-[10px] text-slate-400">
-                    Assinatura 100% segura. Cancele quando quiser nas configurações do perfil.
+                    A partir de R$ 14,90/mês · Assinatura 100% segura. Cancele quando quiser.
                   </p>
                 </div>
               </div>
