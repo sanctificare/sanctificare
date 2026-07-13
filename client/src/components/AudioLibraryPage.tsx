@@ -3,7 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Headphones, Clock, Play, type LucideIcon } from "lucide-react";
+import { Headphones, Clock, Play, Lock, Crown, type LucideIcon } from "lucide-react";
 import AudioPlayer from "@/components/AudioPlayer";
 import {
   formatTrackDuration,
@@ -12,6 +12,15 @@ import {
   type AudioMeditationTrack,
 } from "@/data/audio-meditations";
 import { getAudioCollectionArt } from "@/lib/cardArt";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -32,7 +41,26 @@ export default function AudioLibraryPage({
   collections,
   authPrompt,
 }: AudioLibraryPageProps) {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user, refresh } = useAuth();
+  const subscribeMutation = trpc.subscriptions.subscribe.useMutation();
+
+  const isPremium = useMemo(() => {
+    return !!user?.activeSubscription;
+  }, [user]);
+
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+
+  const handleSubscribe = async (plan: "monthly" | "annual") => {
+    try {
+      await subscribeMutation.mutateAsync({ plan });
+      toast.success("Assinatura Premium simulada com sucesso!");
+      await refresh();
+      setIsUpgradeModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao simular assinatura.");
+    }
+  };
 
   const firstTrackId = useMemo(
     () => collections[0]?.tracks[0]?.id ?? "",
@@ -159,10 +187,15 @@ export default function AudioLibraryPage({
                 <div className="space-y-3">
                   {collection.tracks.map((track) => {
                     const active = track.id === selectedTrackId;
+                    const isLocked = track.premium && !isPremium;
                     return (
                       <button
                         key={track.id}
                         onClick={() => {
+                          if (isLocked) {
+                            setIsUpgradeModalOpen(true);
+                            return;
+                          }
                           setSelectedTrackId(track.id);
                           setShouldAutoPlay(true);
                         }}
@@ -177,12 +210,14 @@ export default function AudioLibraryPage({
                           <div
                             className={
                               "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center " +
-                              (active
+                              (isLocked
+                                ? "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                                : active
                                 ? "bg-[oklch(0.75_0.12_75)] text-[oklch(0.15_0.02_260)]"
                                 : "bg-[oklch(0.22_0.07_260/0.08)] text-[oklch(0.22_0.07_260)]")
                             }
                           >
-                            <Play size={16} fill="currentColor" />
+                            {isLocked ? <Lock size={15} /> : <Play size={16} fill="currentColor" />}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
@@ -196,8 +231,15 @@ export default function AudioLibraryPage({
                               >
                                 {track.title}
                               </p>
-
-
+                              {track.premium && (
+                                <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                                  active 
+                                    ? "bg-white/20 text-white" 
+                                    : "badge-premium text-amber-600 bg-amber-500/10 border border-amber-500/20"
+                                }`}>
+                                  Premium
+                                </span>
+                              )}
                             </div>
                             {track.reference && (
                               <p
@@ -255,7 +297,7 @@ export default function AudioLibraryPage({
       </main>
 
       {/* Player flutuante fixado na parte inferior da tela */}
-      {selectedTrack && trackReady && (
+      {selectedTrack && trackReady && (!selectedTrack.premium || isPremium) && (
         <div className="fixed bottom-4 left-4 right-4 md:left-8 md:right-8 z-50 flex justify-center pointer-events-none animate-fade-in">
           <div className="w-full max-w-4xl pointer-events-auto">
             <AudioPlayer
@@ -267,6 +309,60 @@ export default function AudioLibraryPage({
           </div>
         </div>
       )}
+
+      {/* Upgrade Dialog para Áudio Premium */}
+      <Dialog open={isUpgradeModalOpen} onOpenChange={setIsUpgradeModalOpen}>
+        <DialogContent className="sm:max-w-md bg-[#0b1329] text-slate-100 border-amber-500/20 rounded-3xl overflow-hidden p-6 sm:p-8">
+          <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 -left-10 pointer-events-none" />
+          
+          <DialogHeader className="text-center relative z-10 flex flex-col items-center">
+            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-3">
+              <Crown size={22} className="text-amber-500" />
+            </div>
+            <DialogTitle className="font-display text-2xl font-black text-white">
+              Acesso Premium
+            </DialogTitle>
+            <DialogDescription className="font-serif text-slate-300 text-sm mt-2 text-center">
+              Esta faixa de áudio e outras meditações guiadas exclusivas estão disponíveis apenas para assinantes Premium.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="border-t border-white/10 my-4 pt-4 space-y-3 text-xs text-slate-300 relative z-10">
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Músicas sacras selecionadas para oração e contemplação</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Retiro completo "A Imitação de Cristo" e Novenas exclusivas</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-amber-400 font-bold">✓</span>
+              <p>Áudios guiados do Rosário e Terço Mariano</p>
+            </div>
+          </div>
+
+          <div className="mt-5 space-y-3 relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button
+                onClick={() => handleSubscribe("monthly")}
+                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider h-10 transition-all rounded-xl cursor-pointer"
+              >
+                Mensal • R$ 14,90
+              </Button>
+              <Button
+                onClick={() => handleSubscribe("annual")}
+                className="bg-transparent border border-amber-500/50 hover:bg-amber-500/10 text-amber-400 font-bold text-xs uppercase tracking-wider h-10 transition-all rounded-xl cursor-pointer"
+              >
+                Anual • R$ 149,00
+              </Button>
+            </div>
+            <p className="text-[10px] text-center text-slate-400 mt-2">
+              Cancele a qualquer momento nas configurações do seu perfil.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -56,6 +56,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/bach-kyrie-eleison.mp3",
+        premium: true,
       },
       {
         id: "bach-christe-eleison-mass-b-minor",
@@ -67,6 +68,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%202.%20Christe%20eleison.mp3",
+        premium: true,
       },
       {
         id: "bach-gloria-mass-b-minor",
@@ -78,6 +80,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/J.S%20Bach%20-%20Mass%20in%20B%20minor%20-%204.%20Gloria.mp3",
+        premium: true,
       },
       {
         id: "bach-laudamus-te-mass-b-minor",
@@ -177,6 +180,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "Violão Solo",
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Ave%20Maria%20(for%20Guitar).mp3",
+        premium: true,
       },
     ],
   },
@@ -210,6 +214,7 @@ export const SACRED_MUSIC_COLLECTIONS: AudioCollection[] = [
         narrator: "European Archive (Coro e Orquestra)",
         status: "ready",
         audioUrl: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Gloria%20in%20D%20major%2C%20RV%20589.mp3",
+        premium: true,
       },
       {
         id: "vivaldi-laudate-dominum-rv606",
