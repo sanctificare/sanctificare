@@ -227,16 +227,16 @@ export default function Premium() {
                     Anual
                   </p>
                   <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                    Economize 33%
+                    Economize 27%
                   </span>
                 </div>
                 <div className="flex items-baseline gap-1 mb-1">
-                  <span className="text-3xl font-black text-white">R$&nbsp;119</span>
+                  <span className="text-3xl font-black text-white">R$&nbsp;129</span>
                   <span className="text-xl font-black text-white">,00</span>
                   <span className="text-slate-400 text-sm">/ano</span>
                 </div>
                 <p className="text-slate-400 text-xs">
-                  Equivale a R$&nbsp;9,91/mês
+                  Equivale a R$&nbsp;10,75/mês
                 </p>
               </button>
             </div>
@@ -258,7 +258,7 @@ export default function Premium() {
                   : "Entrar para Iniciar Teste Grátis"}
               </Button>
               <p className="text-center text-xs text-slate-500 mt-3">
-                14 dias grátis, depois {selectedPlan === "annual" ? "R$ 119,00/ano" : "R$ 14,90/mês"}. Pagamento seguro via{" "}
+                14 dias grátis, depois {selectedPlan === "annual" ? "R$ 129,00/ano" : "R$ 14,90/mês"}. Pagamento seguro via{" "}
                 <span className="text-slate-400 font-semibold">Stripe</span>.
                 Cancele a qualquer momento sem cobranças.
               </p>
