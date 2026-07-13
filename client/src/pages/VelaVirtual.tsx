@@ -60,8 +60,8 @@ const AUDIO_TRACKS: AudioTrack[] = [
   {
     id: "gregoriano",
     label: "Canto gregoriano",
-    description: "Opcional: adicione o arquivo para habilitar.",
-    src: "/r2-storage/vela-virtual/musica-gregoriano.mp3",
+    description: "Miserere No.1 — meditação em cantochão.",
+    src: "https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3",
   },
 ];
 
