@@ -160,6 +160,7 @@ export const appRouter = router({
               plan: input.plan,
             },
             subscription_data: {
+              trial_period_days: 14,
               metadata: {
                 userId: String(ctx.user.id),
                 plan: input.plan,

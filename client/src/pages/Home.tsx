@@ -96,7 +96,7 @@ const plans = [
       "Sem anúncios ou interrupções",
       "Suporte prioritário",
     ],
-    cta: "Experimentar 7 Dias Grátis",
+    cta: "Experimentar 14 Dias Grátis",
     highlight: false,
     url: "/login?tab=cadastrar&plan=monthly",
   },
@@ -166,8 +166,8 @@ const faqs = [
     a: "Com certeza. Todo o material do Sanctificare — incluindo orações tradicionais, leituras bíblicas, homilias e meditações — é revisado e está em estrita fidelidade com a doutrina, a Sagrada Escritura e o Magistério da Igreja Católica Apostólica Romana."
   },
   {
-    q: "Como funciona o teste gratuito de 7 dias do Premium?",
-    a: "Ao escolher experimentar o plano Premium, você ganha 7 dias de acesso total gratuito e sem restrições a todos os áudios, meditações e novenas. Você pode cancelar a qualquer momento nas configurações do seu perfil antes do fim do período de testes, e nenhuma cobrança será efetuada."
+    q: "Como funciona o teste gratuito de 14 dias do Premium?",
+    a: "Ao escolher experimentar o plano Premium, você ganha 14 dias de acesso total gratuito e sem restrições a todos os áudios, meditações e novenas. Você pode cancelar a qualquer momento nas configurações do seu perfil antes do fim do período de testes, e nenhuma cobrança será efetuada."
   },
   {
     q: "Posso acessar pelo celular e pelo computador?",

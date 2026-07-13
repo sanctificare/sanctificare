@@ -328,6 +328,7 @@ async function startServer() {
           const stripeStatus = stripeSub.status as string;
           const dbStatus: "active" | "cancelled" | "expired" | "past_due" =
             stripeStatus === "active" ? "active"
+            : stripeStatus === "trialing" ? "active"
             : stripeStatus === "canceled" ? "cancelled"
             : stripeStatus === "past_due" ? "past_due"
             : "expired";

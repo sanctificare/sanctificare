@@ -254,13 +254,13 @@ export default function Premium() {
                   <Crown size={18} className="mr-2" />
                 )}
                 {isAuthenticated
-                  ? `Assinar – ${selectedPlan === "annual" ? "R$ 119,00/ano" : "R$ 14,90/mês"}`
-                  : "Entrar para assinar"}
+                  ? "Iniciar Teste Grátis de 14 Dias"
+                  : "Entrar para Iniciar Teste Grátis"}
               </Button>
               <p className="text-center text-xs text-slate-500 mt-3">
-                Pagamento seguro via{" "}
+                14 dias grátis, depois {selectedPlan === "annual" ? "R$ 119,00/ano" : "R$ 14,90/mês"}. Pagamento seguro via{" "}
                 <span className="text-slate-400 font-semibold">Stripe</span>.
-                Cancele a qualquer momento.
+                Cancele a qualquer momento sem cobranças.
               </p>
             </div>
           </div>
