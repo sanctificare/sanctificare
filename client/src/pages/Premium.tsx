@@ -212,7 +212,7 @@ export default function Premium() {
       </div>
 
       {/* ── Main Content ─────────────────────────────────────────────────── */}
-      <div className="max-w-4xl mx-auto px-4 pb-24 -mt-4">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pb-24 mt-6">
 
         {/* ── Premium Active State ─────────────────────────────────────── */}
         {isPremium && (
