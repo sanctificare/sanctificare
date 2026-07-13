@@ -862,9 +862,33 @@ export async function markGraceObtained(intentionId: number, userId: number) {
 // ─── Subscriptions ────────────────────────────────────────────────────────────
 
 export async function getActiveSubscription(userId: number) {
-
   const db = await getDb();
   if (!db) return null;
+
+  // Conceder Premium automaticamente se o usuário for o administrador contato@sanctificare.app
+  const user = await db
+    .select({ email: users.email })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (user[0]?.email === "contato@sanctificare.app") {
+    const farFuture = new Date();
+    farFuture.setFullYear(farFuture.getFullYear() + 50);
+    return {
+      id: 999999,
+      userId,
+      plan: "annual" as any,
+      status: "active" as any,
+      startedAt: new Date(),
+      expiresAt: farFuture,
+      stripeCustomerId: null as any,
+      stripeSubscriptionId: null as any,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  }
+
   const now = new Date();
   const result = await db
     .select()
