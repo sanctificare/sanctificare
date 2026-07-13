@@ -15,6 +15,7 @@ import {
   createPasswordResetToken,
   validatePasswordResetToken,
   consumePasswordResetToken,
+  getActiveSubscription,
 } from "../db";
 
 const router = Router();
@@ -76,8 +77,16 @@ export async function injectUserMiddleware(req: any, res: any, next: any) {
   next();
 }
 
-router.get("/me", injectUserMiddleware, (req: any, res) => {
-  res.json(req.user || null);
+router.get("/me", injectUserMiddleware, async (req: any, res) => {
+  if (req.user) {
+    const activeSub = await getActiveSubscription(req.user.id);
+    res.json({
+      ...req.user,
+      activeSubscription: activeSub || null,
+    });
+  } else {
+    res.json(null);
+  }
 });
 
 // Exposes the CSRF token in the response body so native (Capacitor) clients,

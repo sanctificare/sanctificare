@@ -44,6 +44,9 @@ import {
   getUserStateEntries,
   upsertUserStateEntries,
   markUserStateKeysDeleted,
+  createSubscription,
+  cancelSubscription,
+  getActiveSubscription,
 } from "./db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
@@ -124,7 +127,23 @@ function getPublicTrpcErrorMessage(error: unknown, fallback: string): string {
 export const appRouter = router({
   system: systemRouter,
 
-
+  subscriptions: router({
+    get: protectedProcedure
+      .query(async ({ ctx }) => {
+        return getActiveSubscription(ctx.user.id);
+      }),
+    subscribe: protectedProcedure
+      .input(z.object({ plan: z.enum(["monthly", "annual"]) }))
+      .mutation(async ({ ctx, input }) => {
+        await createSubscription(ctx.user.id, input.plan);
+        return { success: true };
+      }),
+    cancel: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        await cancelSubscription(ctx.user.id);
+        return { success: true };
+      }),
+  }),
 
   prayers: router({
     logPrayer: protectedProcedure

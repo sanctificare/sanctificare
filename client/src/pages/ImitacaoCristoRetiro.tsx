@@ -1,11 +1,32 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock } from "lucide-react";
+import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IMITACAO_PILULAS } from "@/data/imitacao-pilulas";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { trpc } from "@/lib/trpc";
+import { toast } from "sonner";
 
 export default function ImitacaoCristoRetiro() {
+  const { user, refresh } = useAuth();
+  const subscribeMutation = trpc.subscriptions.subscribe.useMutation();
+
+  const isPremium = useMemo(() => {
+    return !!user?.activeSubscription;
+  }, [user]);
+
+  const handleSubscribe = async (plan: "monthly" | "annual") => {
+    try {
+      await subscribeMutation.mutateAsync({ plan });
+      toast.success("Assinatura Premium simulada com sucesso!");
+      await refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao simular assinatura.");
+    }
+  };
+
   const [selectedId, setSelectedId] = useState(IMITACAO_PILULAS[0].id);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
@@ -142,12 +163,72 @@ export default function ImitacaoCristoRetiro() {
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-          <section className={`rounded-2xl border transition-all duration-500 p-4 sm:p-6 ${
-            activeTab === "audio"
-              ? "bg-[#0b1329] border-amber-500/10 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
-              : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
-          }`}>
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "audio" | "text")}>
+          {selectedId !== "pill1" && !isPremium ? (
+            <section className="rounded-2xl border border-amber-500/20 bg-[#0b1329] text-slate-100 p-6 sm:p-10 shadow-[0_12px_40px_rgba(11,19,41,0.35)] flex flex-col items-center justify-center text-center relative overflow-hidden">
+              {/* Glow effect */}
+              <div className="absolute w-72 h-72 rounded-full bg-amber-500/10 blur-3xl -top-20 -left-10 pointer-events-none" />
+              <div className="absolute w-72 h-72 rounded-full bg-amber-500/5 blur-3xl -bottom-20 -right-10 pointer-events-none" />
+
+              <div className="relative z-10 max-w-md w-full space-y-6">
+                <div className="w-16 h-16 rounded-full bg-amber-500/15 border border-amber-500/35 flex items-center justify-center mx-auto mb-2 animate-pulse">
+                  <Lock size={28} className="text-amber-500" />
+                </div>
+                
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                    Conteúdo Premium
+                  </span>
+                  <h2 className="font-display text-2xl sm:text-3xl font-black text-white leading-tight">
+                    Desbloqueie o Retiro
+                  </h2>
+                  <p className="font-serif text-sm text-slate-300">
+                    O Dia 1 é gratuito para todos. Para continuar sua caminhada diária com A Imitação de Cristo e acessar as demais meditações, assine o Sanctificare Premium.
+                  </p>
+                </div>
+
+                <div className="border-y border-white/10 py-5 my-2 space-y-3.5 text-left text-xs text-slate-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold shrink-0">✓</div>
+                    <p>Acesso a todos os 9 dias do retiro em áudio e texto</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold shrink-0">✓</div>
+                    <p>Meditações completas, exames de consciência e resoluções</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold shrink-0">✓</div>
+                    <p>Rosário guiado por áudio e todas as novenas exclusivas</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Button 
+                      onClick={() => handleSubscribe("monthly")}
+                      className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider h-11 transition-all shadow-md rounded-xl cursor-pointer"
+                    >
+                      Mensal • R$ 14,90
+                    </Button>
+                    <Button 
+                      onClick={() => handleSubscribe("annual")}
+                      className="bg-transparent border border-amber-500/50 hover:bg-amber-500/10 text-amber-400 font-bold text-xs uppercase tracking-wider h-11 transition-all rounded-xl cursor-pointer"
+                    >
+                      Anual • R$ 149,00
+                    </Button>
+                  </div>
+                  <p className="text-[10px] text-slate-400">
+                    Assinatura 100% segura. Cancele quando quiser nas configurações do perfil.
+                  </p>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section className={`rounded-2xl border transition-all duration-500 p-4 sm:p-6 ${
+              activeTab === "audio"
+                ? "bg-[#0b1329] border-amber-500/10 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
+                : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+            }`}>
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "audio" | "text")}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-border/20 pb-4 mb-4 gap-4">
                 <TabsList className={`p-1 rounded-xl transition-all w-full sm:w-fit grid grid-cols-2 sm:flex ${
                   activeTab === "audio"
@@ -372,6 +453,7 @@ export default function ImitacaoCristoRetiro() {
               </TabsContent>
             </Tabs>
           </section>
+          )}
 
           <aside className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white p-3 h-fit text-[#2d251e]">
             <h3 className="mb-3 px-2 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)]">
@@ -380,6 +462,8 @@ export default function ImitacaoCristoRetiro() {
             <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
               {IMITACAO_PILULAS.map((pill) => {
                 const active = pill.id === selected.id;
+                const isPillPremium = pill.id !== "pill1";
+                const isLocked = isPillPremium && !isPremium;
                 return (
                   <button
                     key={pill.id}
@@ -394,7 +478,10 @@ export default function ImitacaoCristoRetiro() {
                       <span className={`text-[9px] font-bold uppercase tracking-wider ${
                         active ? "text-[oklch(0.65_0.12_70)]" : "text-muted-foreground"
                       }`}>{pill.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}</span>
-                      <span className="text-[9px] text-muted-foreground">{pill.durationLabel}</span>
+                      <div className="flex items-center gap-1.5">
+                        {isLocked && <Lock size={10} className="text-amber-500 shrink-0" />}
+                        <span className="text-[9px] text-muted-foreground">{pill.durationLabel}</span>
+                      </div>
                     </div>
                     <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">{pill.title}</p>
                   </button>
