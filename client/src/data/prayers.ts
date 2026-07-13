@@ -182,27 +182,6 @@ se a ti me confiou a piedade divina,
 sempre me rege, me guarde, me governe e me ilumine. Amém.`,
   },
   {
-    id: "meditacao-sagrado-coracao",
-    type: "meditacao",
-    name: "Meditação do Sagrado Coração",
-    description: "Meditação guiada diante do Sagrado Coração de Jesus.",
-    icon: "❤️‍🔥",
-    duration: "10 min",
-    category: "premium",
-    content: `Coração Sagrado de Jesus,
-fonte inesgotável de misericórdia,
-faço hoje silêncio diante de Vós.
-
-Lembro-me de tudo o que recebi de Vossa bondade
-e ofereço-Vos as alegrias e as fadigas deste dia.
-
-Tomai a minha vida, transformai meu coração,
-ensinai-me a amar como Vós amais.
-
-Sagrado Coração de Jesus, em Vós confio.
-  Sagrado Coração de Jesus, fazei o meu coração semelhante ao Vosso. Amém.`,
-  },
-  {
     id: "meditacao-divina-misericordia",
     type: "meditacao",
     name: "Terço da Divina Misericórdia",
