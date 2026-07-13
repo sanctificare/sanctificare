@@ -663,17 +663,6 @@ export default function VelaVirtual() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.82_0.10_80)] mb-2">Opções de Silêncio</p>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full border-white/15 bg-white/5 text-white hover:bg-white/10 text-xs"
-                        onClick={toggleSilentGuidedMode}
-                      >
-                        {silentGuidedMode ? "Desativar silêncio guiado" : "Ativar silêncio guiado"}
-                      </Button>
-                    </div>
 
                     <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                       <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.82_0.10_80)] mb-3">Estilo Visual</p>
