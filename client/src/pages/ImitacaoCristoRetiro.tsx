@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from "react";
+import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "wouter";
 import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,6 +48,19 @@ export default function ImitacaoCristoRetiro() {
 
   const [selectedId, setSelectedId] = useState(IMITACAO_PILULAS[0].id);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
+  const blockerRef = useRef<HTMLElement | null>(null);
+
+  const handleSelectPill = useCallback((pillId: string, isLocked: boolean) => {
+    setSelectedId(pillId);
+    if (isLocked && !isPremium) {
+      // Scroll suave até o bloqueador premium no mobile
+      setTimeout(() => {
+        if (blockerRef.current) {
+          blockerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 50);
+    }
+  }, [isPremium]);
   const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
 
   // Audio player states
@@ -183,7 +196,7 @@ export default function ImitacaoCristoRetiro() {
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
           {selectedId !== "pill1" && !isPremium ? (
-            <section className="rounded-2xl border border-amber-500/20 bg-[#0b1329] text-slate-100 p-6 sm:p-10 shadow-[0_12px_40px_rgba(11,19,41,0.35)] flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <section ref={blockerRef} className="rounded-2xl border border-amber-500/20 bg-[#0b1329] text-slate-100 p-6 sm:p-10 shadow-[0_12px_40px_rgba(11,19,41,0.35)] flex flex-col items-center justify-center text-center relative overflow-hidden">
               {/* Glow effect */}
               <div className="absolute w-72 h-72 rounded-full bg-amber-500/10 blur-3xl -top-20 -left-10 pointer-events-none" />
               <div className="absolute w-72 h-72 rounded-full bg-amber-500/5 blur-3xl -bottom-20 -right-10 pointer-events-none" />
@@ -533,7 +546,7 @@ export default function ImitacaoCristoRetiro() {
                 return (
                   <button
                     key={pill.id}
-                    onClick={() => setSelectedId(pill.id)}
+                    onClick={() => handleSelectPill(pill.id, isPillPremium)}
                     className={`w-full rounded-xl border px-3 py-2.5 text-left transition-all cursor-pointer ${
                       active
                         ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] shadow-sm"
