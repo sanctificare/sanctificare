@@ -58,8 +58,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
       };
 
       // Configuração para o Salmo Cantado
-      // Para os dias 13, 14 e 15, os áudios estão no bucket 'salmos-cantados' com prefixo 'salmos'
-      if (dayNum === 13 || dayNum === 14 || dayNum === 15) {
+      // Para os dias 13 a 19, os áudios estão no bucket 'salmos-cantados' com prefixo 'salmos'
+      if (dayNum >= 13 && dayNum <= 19) {
         audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmos${formattedDate}.mp3`;
       } else if (dayNum >= 5 && dayNum <= 12) {
         audio.singedPsalm = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/salmo${formattedDate}.mp3`;
