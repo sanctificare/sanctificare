@@ -12,6 +12,7 @@ import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
+import { UpgradeDialog } from "@/components/UpgradeDialog";
 
 const LOGO_IMG = "/assets/logo-sanctificare.webp";
 
@@ -443,52 +444,11 @@ export default function Prayers() {
       </Dialog>
 
       {/* Modal de Upgrade Premium */}
-      <Dialog open={isUpgradeModalOpen} onOpenChange={setIsUpgradeModalOpen}>
-        <DialogContent className="sm:max-w-md bg-[#0b1329] text-slate-100 border-amber-500/20 rounded-3xl overflow-hidden p-6 sm:p-8">
-          <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 -left-10 pointer-events-none" />
-          
-          <DialogHeader className="text-center relative z-10 flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-3">
-              <Crown size={22} className="text-amber-500" />
-            </div>
-            <DialogTitle className="font-display text-2xl font-black text-white">
-              Acesso Premium
-            </DialogTitle>
-            <DialogDescription className="font-serif text-slate-300 text-sm mt-2 text-center">
-              Esta oração e outros devocionais exclusivos estão disponíveis apenas para assinantes Premium.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="border-t border-white/10 my-4 pt-4 space-y-3 text-xs text-slate-300 relative z-10">
-            <div className="flex items-center gap-3">
-              <span className="text-amber-400 font-bold">✓</span>
-              <p>Músicas sacras selecionadas para oração e contemplação</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-amber-400 font-bold">✓</span>
-              <p>Retiro completo "A Imitação de Cristo" e Novenas exclusivas</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-amber-400 font-bold">✓</span>
-              <p>Áudios guiados do Rosário e Terço Mariano</p>
-            </div>
-          </div>
-
-          <div className="mt-5 space-y-3 relative z-10">
-            <Link href="/premium" onClick={() => setIsUpgradeModalOpen(false)}>
-              <Button
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-sm uppercase tracking-wider h-11 transition-all rounded-xl cursor-pointer"
-              >
-                <Crown size={14} className="mr-2" />
-                Ver Planos Premium
-              </Button>
-            </Link>
-            <p className="text-[10px] text-center text-slate-400 mt-2">
-              A partir de R$ 14,90/mês · Cancele a qualquer momento
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <UpgradeDialog
+        open={isUpgradeModalOpen}
+        onOpenChange={setIsUpgradeModalOpen}
+        description="Esta oração e outros devocionais exclusivos estão disponíveis apenas para assinantes Premium."
+      />
     </div>
   );
 }
