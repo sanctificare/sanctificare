@@ -290,6 +290,7 @@ async function startServer() {
         const {
           createOrUpdateStripeSubscription,
           cancelStripeSubscription,
+          getSubscriptionByStripeId,
         } = await import("../db");
 
         const { type, data } = event;
@@ -301,6 +302,10 @@ async function startServer() {
             return res.sendStatus(200);
           }
           const userId = Number(session.metadata?.userId);
+          if (isNaN(userId) || !userId) {
+            console.error("[Stripe Webhook] checkout.session.completed sem userId válido nos metadata");
+            return res.sendStatus(200);
+          }
           const plan = (session.metadata?.plan ?? "monthly") as "monthly" | "annual";
           const stripeCustomerId = session.customer as string;
           const stripeSubscriptionId = session.subscription as string;
@@ -337,9 +342,17 @@ async function startServer() {
           const startedAt = new Date(stripeSub.current_period_start * 1000);
 
           // Determinar userId — pode estar nos metadata da subscription
-          const userId = Number(stripeSub.metadata?.userId ?? 0);
+          let userId = Number(stripeSub.metadata?.userId ?? 0);
           if (!userId) {
-            console.warn("[Stripe Webhook] customer.subscription.updated sem userId nos metadata");
+            // Fallback: tentar buscar no banco pela stripeSubscriptionId
+            const existingSub = await getSubscriptionByStripeId(stripeSubscriptionId);
+            if (existingSub) {
+              userId = existingSub.userId;
+            }
+          }
+
+          if (!userId) {
+            console.warn("[Stripe Webhook] customer.subscription.updated sem userId nos metadata e sem registro no banco");
             return res.sendStatus(200);
           }
 

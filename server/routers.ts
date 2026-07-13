@@ -47,7 +47,10 @@ import {
   createSubscription,
   cancelSubscription,
   getActiveSubscription,
+  getDb,
 } from "./db";
+import { subscriptions } from "../drizzle/schema";
+import { eq, and, isNotNull } from "drizzle-orm";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
 import axios from "axios";
 import { getChapter as getBibleChapter, search as searchBible } from "./bible";
@@ -149,9 +152,30 @@ export const appRouter = router({
           const successUrl = `${ENV.appUrl}/premium/sucesso?session_id={CHECKOUT_SESSION_ID}`;
           const cancelUrl = `${ENV.appUrl}/premium`;
 
+          // Buscar se o usuário já tem um stripeCustomerId registrado em alguma assinatura anterior
+          const db = await getDb();
+          let stripeCustomerId: string | undefined = undefined;
+          if (db) {
+            const existingSubs = await db
+              .select({ stripeCustomerId: subscriptions.stripeCustomerId })
+              .from(subscriptions)
+              .where(
+                and(
+                  eq(subscriptions.userId, ctx.user.id),
+                  isNotNull(subscriptions.stripeCustomerId)
+                )
+              )
+              .limit(1);
+            if (existingSubs[0]?.stripeCustomerId) {
+              stripeCustomerId = existingSubs[0].stripeCustomerId;
+            }
+          }
+
           const session = await stripe.checkout.sessions.create({
             mode: "subscription",
             payment_method_types: ["card"],
+            customer: stripeCustomerId || undefined,
+            customer_creation: stripeCustomerId ? undefined : "always",
             line_items: [{ price: priceId, quantity: 1 }],
             success_url: successUrl,
             cancel_url: cancelUrl,
@@ -189,12 +213,29 @@ export const appRouter = router({
         }
         const Stripe = (await import("stripe")).default;
         const stripe = new Stripe(ENV.stripeSecretKey);
-        const sub = await getActiveSubscription(ctx.user.id);
-        if (!sub?.stripeCustomerId) {
+
+        // Buscar qualquer assinatura anterior ou atual do usuário para obter o stripeCustomerId
+        const db = await getDb();
+        let customerId: string | null = null;
+        if (db) {
+          const subs = await db
+            .select({ stripeCustomerId: subscriptions.stripeCustomerId })
+            .from(subscriptions)
+            .where(
+              and(
+                eq(subscriptions.userId, ctx.user.id),
+                isNotNull(subscriptions.stripeCustomerId)
+              )
+            )
+            .limit(1);
+          customerId = subs[0]?.stripeCustomerId || null;
+        }
+
+        if (!customerId) {
           throw new TRPCError({ code: "NOT_FOUND", message: "Assinatura Stripe não encontrada." });
         }
         const session = await stripe.billingPortal.sessions.create({
-          customer: sub.stripeCustomerId,
+          customer: customerId,
           return_url: `${ENV.appUrl}/premium`,
         });
         return { portalUrl: session.url };
