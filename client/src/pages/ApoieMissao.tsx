@@ -146,14 +146,20 @@ export default function ApoieMissao() {
 
         {/* Carta Solo */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5 mb-8 backdrop-blur-sm">
-          <h2 className="text-md font-bold text-white mb-3 flex items-center gap-2">
-            🤝 Desenvolvido de forma independente
-          </h2>
           <p className="text-sm text-slate-300 leading-relaxed font-serif">
-            Olá! Sou o criador do <strong>Sanctificare</strong>. Desenvolvo e gerencio este projeto de maneira solo, buscando oferecer a melhor plataforma digital para a vida de oração do fiel católico.
+            Olá! Sou Amarildo Ferrari, católico, marido, pai e o criador do <strong>Sanctificare</strong>.
           </p>
           <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
-            Para manter o app gratuito, sem anúncios invasivos, e continuar pagando a infraestrutura de servidores, banco de dados e as vozes premium de inteligência artificial, conto com o seu apoio voluntário. Se o Sanctificare ajuda a sua espiritualidade, faça um gesto de generosidade!
+            O Sanctificare nasceu do desejo de ajudar mais pessoas a cultivarem uma vida de oração mais profunda e um caminho de santidade no dia a dia. Hoje, desenvolvo e mantenho todo o projeto sozinho, dedicando meu tempo e meu trabalho para que ele continue crescendo.
+          </p>
+          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
+            Procuro manter o aplicativo gratuito, sem anúncios invasivos, para que nada distraia esse momento de encontro com Deus. Mas, para isso, preciso arcar com os custos de servidores, banco de dados, recursos de inteligência artificial e toda a infraestrutura que faz o app funcionar.
+          </p>
+          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
+            Se o Sanctificare tem sido uma bênção para a sua caminhada de fé, considere fazer uma contribuição voluntária. Qualquer valor faz diferença e ajuda a manter este projeto vivo, alcançando cada vez mais pessoas.
+          </p>
+          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3 font-semibold text-amber-400">
+            Muito obrigado pelo seu apoio. Que Deus o abençoe abundantemente!
           </p>
         </div>
 
