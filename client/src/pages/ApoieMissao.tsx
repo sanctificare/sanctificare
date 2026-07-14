@@ -100,6 +100,7 @@ export default function ApoieMissao() {
   const [isCustom, setIsCustom] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<boolean>(false);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [showQrCode, setShowQrCode] = useState<boolean>(false);
 
   const amount = useMemo(() => {
     if (isCustom) {
@@ -277,10 +278,30 @@ export default function ApoieMissao() {
           </div>
 
           {/* Subtitle */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-[8px] text-amber-400">◆</span>
-            <span className="text-[11px] text-slate-300 font-bold uppercase tracking-wider">PIX Copia e Cola</span>
+          <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-[8px] text-amber-400">◆</span>
+              <span className="text-[11px] text-slate-300 font-bold uppercase tracking-wider">PIX Copia e Cola</span>
+            </div>
+            
+            <button
+              onClick={() => setShowQrCode(!showQrCode)}
+              className="text-[10px] font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline-none bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1"
+            >
+              <span>{showQrCode ? "Ocultar QR" : "Gerar QR Code"}</span>
+            </button>
           </div>
+
+          {showQrCode && (
+            <div className="bg-white p-3 rounded-2xl w-44 h-44 mx-auto mb-4 flex items-center justify-center shadow-lg border border-amber-500/20 transition-all duration-300">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=0b0d10&data=${encodeURIComponent(pixCode)}`}
+                alt="QR Code PIX"
+                className="w-36 h-36 object-contain"
+                loading="lazy"
+              />
+            </div>
+          )}
 
           {/* Código PIX Field */}
           <div className="flex items-center justify-between bg-black/40 rounded-xl px-4 py-3 border border-white/5 mb-4 max-w-full relative overflow-hidden">
