@@ -162,14 +162,25 @@ export default function ApoieMissao() {
           </h1>
         </div>
 
-        {/* Carta Solo */}
+        {/* Carta Solo (Nossa História) */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5 mb-6 backdrop-blur-md shadow-xl relative">
+          <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">Nossa História</h2>
+            <span className="text-amber-400 font-bold text-lg leading-none">†</span>
+          </div>
+
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-            {/* Logo Circle */}
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 rounded-full border border-white/10 bg-white/5 flex items-center justify-center shadow-md overflow-hidden">
-                <img src="/assets/sanctificare-logo-v2.webp" alt="Sanctificare Logo" className="w-12 h-12 object-contain" />
+            {/* Circular Avatar com o logo correto */}
+            <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full border-2 border-amber-500/60 bg-gradient-to-br from-amber-500/20 to-amber-500/5 flex items-center justify-center shadow-md overflow-hidden p-1.5">
+                  <img src="/assets/logo-sanctificare.webp" alt="Sanctificare Logo" className="w-12 h-12 object-contain" />
+                </div>
+                <div className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-amber-500 border border-slate-950 flex items-center justify-center shadow">
+                  <span className="text-[10px] text-slate-950 font-bold leading-none">†</span>
+                </div>
               </div>
+              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Fundador</span>
             </div>
 
             {/* Texto da História */}
