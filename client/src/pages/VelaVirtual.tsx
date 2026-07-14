@@ -664,25 +664,7 @@ export default function VelaVirtual() {
                     </div>
 
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.82_0.10_80)] mb-3">Estilo Visual</p>
-                      <div className="grid grid-cols-3 gap-2">
-                        {AMBIENCES.map((ambience) => (
-                          <button
-                            key={ambience.id}
-                            type="button"
-                            onClick={() => setSelectedAmbienceId(ambience.id)}
-                            className={`rounded-xl border py-1.5 text-xs font-medium transition-all duration-300 ${
-                              selectedAmbienceId === ambience.id
-                                ? "border-[oklch(0.82_0.10_80/0.8)] bg-[oklch(0.82_0.10_80/0.14)]"
-                                : "border-white/10 bg-white/5 hover:bg-white/10"
-                            }`}
-                          >
-                            {ambience.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+
                   </CardContent>
                 </Card>
 
