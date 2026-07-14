@@ -9,13 +9,15 @@ export interface PendingPrayerLog {
   completedAt: string;
 }
 
+let isSyncingGlobal = false;
+
 export function useOfflineSync() {
   const [isOnline, setIsOnline] = useState<boolean>(
     typeof navigator !== "undefined" ? navigator.onLine : true
   );
 
   const logMutation = trpc.prayers.logPrayer.useMutation();
-  const isSyncingRef = useRef(false);
+  const utils = trpc.useUtils();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -65,12 +67,12 @@ export function useOfflineSync() {
   }, []);
 
   const syncOfflineLogs = useCallback(async () => {
-    if (!isOnline || isSyncingRef.current) return;
+    if (!isOnline || isSyncingGlobal) return;
     
     const logs = getPendingLogs();
     if (logs.length === 0) return;
 
-    isSyncingRef.current = true;
+    isSyncingGlobal = true;
     console.log(`[OfflineSync] Syncing ${logs.length} offline prayer logs...`);
     
     let successCount = 0;
@@ -90,12 +92,14 @@ export function useOfflineSync() {
     }
 
     savePendingLogs(remainingLogs);
-    isSyncingRef.current = false;
+    isSyncingGlobal = false;
 
     if (successCount > 0) {
       toast.success(`${successCount} oração(ões) offline sincronizada(s) com sucesso!`);
+      utils.prayers.getAllLogs.invalidate();
+      utils.dailyPlan.getStatus.invalidate();
     }
-  }, [isOnline, logMutation]);
+  }, [isOnline, logMutation, utils]);
 
   // Sync on mount or when coming back online
   useEffect(() => {

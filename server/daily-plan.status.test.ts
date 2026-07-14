@@ -28,6 +28,7 @@ describe("computeDailyPlanStatusFromData", () => {
       intercessionCompleted: true,
       novenaCompleted: true,
       streak: 3,
+      weeklyActivity: ["2026-06-30", "2026-07-01", "2026-07-02"],
     });
   });
 
@@ -52,6 +53,7 @@ describe("computeDailyPlanStatusFromData", () => {
       intercessionCompleted: false,
       novenaCompleted: false,
       streak: 1,
+      weeklyActivity: ["2026-07-02"],
     });
   });
 
@@ -73,6 +75,7 @@ describe("computeDailyPlanStatusFromData", () => {
       intercessionCompleted: false,
       novenaCompleted: false,
       streak: 2,
+      weeklyActivity: ["2026-06-30", "2026-07-01"],
     });
   });
 });

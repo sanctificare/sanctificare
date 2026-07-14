@@ -1446,6 +1446,7 @@ export type DailyPlanStatus = {
   intercessionCompleted: boolean;
   novenaCompleted: boolean;
   streak: number;
+  weeklyActivity: string[];
 };
 
 type DailyPlanPrayerLogLike = {
@@ -1527,6 +1528,16 @@ export function computeDailyPlanStatusFromData(params: {
     }
   }
 
+  const weeklyActivity: string[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
+    const dayStr = formatSaoPauloDate(d);
+    if (dates.has(dayStr)) {
+      weeklyActivity.push(dayStr);
+    }
+  }
+
   return {
     liturgyCompleted,
     rosaryCompleted,
@@ -1535,6 +1546,7 @@ export function computeDailyPlanStatusFromData(params: {
     intercessionCompleted,
     novenaCompleted,
     streak,
+    weeklyActivity,
   };
 }
 

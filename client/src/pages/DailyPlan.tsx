@@ -77,16 +77,11 @@ function toSaoPauloIsoDate(date: Date): string {
   return SAO_PAULO_DATE_FORMATTER.format(date);
 }
 
-function getWeeklyChartData(logs: any[] | undefined) {
+function getWeeklyChartData(weeklyActivity: string[] | undefined) {
   const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
   const data = [];
   const now = new Date();
-  const logDays = new Set<string>();
-
-  logs?.forEach((log) => {
-    if (!log.completedAt) return;
-    logDays.add(toSaoPauloIsoDate(new Date(log.completedAt)));
-  });
+  const activeDates = new Set<string>(weeklyActivity || []);
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now);
@@ -99,7 +94,7 @@ function getWeeklyChartData(logs: any[] | undefined) {
       timeZone: "America/Sao_Paulo",
     });
     const dayIso = toSaoPauloIsoDate(d);
-    const count = logDays.has(dayIso) ? 1 : 0;
+    const count = activeDates.has(dayIso) ? 1 : 0;
 
     data.push({
       name: dayName,
@@ -114,7 +109,6 @@ function getWeeklyChartData(logs: any[] | undefined) {
 export default function DailyPlan() {
   const { queueOfflinePrayerLog } = useOfflineSync();
   const { isAuthenticated, loading } = useAuth();
-  const { data: logs } = trpc.prayers.getAllLogs.useQuery(undefined, { enabled: isAuthenticated });
   const { data: dailyPlanFromServer } = trpc.dailyPlan.getStatus.useQuery(undefined, { enabled: isAuthenticated });
   const [dailyPlan, setDailyPlan] = useState<any>(null);
 
@@ -290,7 +284,7 @@ export default function DailyPlan() {
     : 0;
   const nextMeta = activeMetas.find(meta => !meta.completed);
   const allDone = activeMetasCount > 0 && completedMetasCount === activeMetasCount;
-  const chartData = useMemo(() => getWeeklyChartData(logs), [logs]);
+  const chartData = useMemo(() => getWeeklyChartData(dailyPlan?.weeklyActivity), [dailyPlan?.weeklyActivity]);
 
 
 
