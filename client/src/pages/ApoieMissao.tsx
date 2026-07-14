@@ -144,14 +144,6 @@ export default function ApoieMissao() {
             <span className="text-[10px] font-bold uppercase tracking-wider">Voltar</span>
           </button>
         </Link>
-
-        {/* Emblema sagrado dourado do topo direito (dove outline) */}
-        <div className="text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]">
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.905 0-5.64-.5-8.125-1.418m16.25 0A11.95 11.95 0 0 1 12 13.5c-2.905 0-5.64-.5-8.125-1.418m16.25 0C16.2 16.674 12.324 18 8 18" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6M10 9h4" />
-          </svg>
-        </div>
       </div>
 
       <div className="max-w-xl mx-auto px-6 mt-4 relative z-10">
