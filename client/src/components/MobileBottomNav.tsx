@@ -44,7 +44,7 @@ export default function MobileBottomNav() {
                   }`}
                 >
                   <Icon size={20} className={isActive ? "scale-105" : ""} />
-                  <span className={`text-[10px] leading-none ${isActive ? "font-bold" : "font-medium"}`}>
+                  <span className={`text-[9px] min-[360px]:text-[10px] leading-none truncate max-w-full px-0.5 ${isActive ? "font-bold" : "font-medium"}`}>
                     {item.label}
                   </span>
                 </button>

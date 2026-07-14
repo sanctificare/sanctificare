@@ -53,7 +53,7 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-[#0b1329] text-slate-100 border-amber-500/20 rounded-3xl overflow-hidden p-6 sm:p-8">
+      <DialogContent className="sm:max-w-lg bg-[#0b1329] text-slate-100 border-amber-500/20 rounded-3xl p-6 sm:p-8 max-h-[92vh] overflow-y-auto">
         <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 -left-10 pointer-events-none" />
 
         <DialogHeader className="text-center relative z-10 flex flex-col items-center">
