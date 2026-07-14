@@ -34,7 +34,7 @@ interface AudioPlayerProps {
   onPlayStateChange?: (isPlaying: boolean) => void;
 }
 
-const FALLBACK_ARTWORK_URL = "/assets/logo-sanctificare.webp";
+const FALLBACK_ARTWORK_URL = "/assets/sanctificare-logo-v2.webp";
 
 /**
  * Split text into tokens preserving whitespace structure for rendering.

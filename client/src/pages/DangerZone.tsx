@@ -8,7 +8,7 @@ import { AlertTriangle, ArrowLeft, Trash2 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { isMobileApp } from "@/const";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 export default function DangerZone() {
   const { user, isAuthenticated, loading, logout } = useAuth();

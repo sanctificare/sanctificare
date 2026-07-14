@@ -15,7 +15,7 @@ import { getAudioCollectionArt } from "@/lib/cardArt";
 import { trpc } from "@/lib/trpc";
 import { UpgradeDialog } from "./UpgradeDialog";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 interface AudioLibraryPageProps {
   eyebrow: string;

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Search, Compass } from "lucide-react";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 type ExploreCard = {
   href: string;

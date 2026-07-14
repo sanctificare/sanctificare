@@ -14,7 +14,7 @@ import AudioPlayer from "@/components/AudioPlayer";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 type PrayerCardTheme = {
   icon: ComponentType<any>;

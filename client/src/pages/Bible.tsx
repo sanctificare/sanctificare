@@ -20,7 +20,7 @@ import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 type BibleFavorite = {
   bookId: string;

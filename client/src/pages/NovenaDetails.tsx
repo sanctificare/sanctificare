@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { getNovenaArt } from "@/lib/cardArt";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const PROGRESS_KEY = "sanctificare.novenas.progress.v1";
 const INITIAL_PRAYER_MARKER = "ORAÇÃO INICIAL PARA TODOS OS DIAS";
 const FINAL_PRAYER_MARKER = "ORAÇÃO FINAL PARA TODOS OS DIAS";

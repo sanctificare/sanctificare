@@ -30,7 +30,7 @@ import {
 } from "@/data/lectio-audio";
 import AudioPlayer from "@/components/AudioPlayer";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const COVER_IMG = "/assets/lectiodivinapartes.webp";
 const DAILY_GOSPEL_PASSAGE_ID = "daily-gospel";
 

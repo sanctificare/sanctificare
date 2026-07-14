@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const HERO_BG = "/assets/premium-hero-bg.jpg";
 
 export default function Premium() {

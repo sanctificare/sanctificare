@@ -12,7 +12,7 @@ import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } f
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 async function performLogin(input: any) {
   const base = getApiBaseUrl();

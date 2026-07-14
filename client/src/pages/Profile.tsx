@@ -28,7 +28,7 @@ import {
   cancelNovenaReminder,
 } from "@/lib/notifications";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 const PRAYER_IMAGE_BY_TYPE: Record<string, string> = {
   rosario: "/assets/sanctificare-rosary.webp",

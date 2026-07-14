@@ -17,7 +17,7 @@ import ShareModal from "@/components/ShareModal";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 export interface LiturgicalTheme {
   name: string;

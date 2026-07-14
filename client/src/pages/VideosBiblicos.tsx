@@ -14,7 +14,7 @@ import { shareText } from "@/lib/share";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
 const TRUSTED_BUNNY_ORIGINS = new Set(["https://iframe.mediadelivery.net"]);
 

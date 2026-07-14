@@ -18,7 +18,7 @@ interface ShareModalProps {
   artworkUrl?: string;
 }
 
-const FALLBACK_ARTWORK_URL = "/assets/logo-sanctificare.webp";
+const FALLBACK_ARTWORK_URL = "/assets/sanctificare-logo-v2.webp";
 
 export default function ShareModal({
   isOpen,

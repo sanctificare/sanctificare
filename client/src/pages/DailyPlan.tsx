@@ -32,7 +32,7 @@ import { Switch } from "@/components/ui/switch";
 
 const WeeklyActivityChart = lazy(() => import("@/components/daily-plan/WeeklyActivityChart"));
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 interface MetasConfig {
   liturgia: boolean;

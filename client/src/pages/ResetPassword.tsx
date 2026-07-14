@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Lock, Eye, EyeOff, ChevronLeft, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { getApiBaseUrl } from "@/const";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 async function fetchValidateToken({ queryKey }: any) {
   const [_, token] = queryKey;

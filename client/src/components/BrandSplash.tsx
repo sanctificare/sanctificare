@@ -51,7 +51,7 @@ export default function BrandSplash() {
           <div className="absolute inset-0 rounded-full border border-amber-500/20 animate-ping [animation-duration:3s]" />
           <div className="absolute -inset-2 rounded-full border border-amber-500/10 animate-pulse [animation-duration:2s]" />
           <img
-            src="/assets/logo-sanctificare.webp"
+            src="/assets/sanctificare-logo-v2.webp"
             alt="Sanctificare Logo"
             className="w-24 h-24 object-contain filter drop-shadow-[0_0_15px_rgba(245,158,11,0.2)] animate-pulse"
           />

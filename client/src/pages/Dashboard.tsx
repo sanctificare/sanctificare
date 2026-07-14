@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { shareText } from "@/lib/share";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
 const SANCTIFICARE_SHARE_TEXT = `Conheça o Sanctificare: um app para rezar, acompanhar a liturgia e fortalecer sua vida espiritual. ${SANCTIFICARE_SHARE_URL}`;
 

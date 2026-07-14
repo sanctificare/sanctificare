@@ -13,7 +13,7 @@ import {
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 const CATEGORIES = [
   { value: "cura",      label: "Cura e Saúde",        emoji: "🙏", color: "oklch(0.55 0.18 15)" },

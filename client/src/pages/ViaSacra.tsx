@@ -18,7 +18,7 @@ import {
 import { Cross } from "@/components/CrossIcon";
 import { VIA_SACRA_STATIONS } from "@/data/via-sacra";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 export default function ViaSacra() {
   const { queueOfflinePrayerLog } = useOfflineSync();

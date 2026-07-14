@@ -9,7 +9,7 @@ import { Link } from "wouter";
 import { getNovenaArt } from "@/lib/cardArt";
 import { NOVENA_PROGRESS_STORAGE_KEY, ProgressMap, buildNovenasInProgressItems, parseNovenaProgress } from "@/lib/novenaProgress";
 
-const LOGO_IMG = "/assets/logo-sanctificare.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 function readProgress(): ProgressMap {
   if (typeof window === "undefined") return {};

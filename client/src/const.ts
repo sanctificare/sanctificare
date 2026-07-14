@@ -136,7 +136,7 @@ export const resolveMediaUrl = (url: string | undefined): string => {
   return url;
 };
 
-export const DEFAULT_IMAGE_FALLBACK = "/assets/logo-sanctificare.webp";
+export const DEFAULT_IMAGE_FALLBACK = "/assets/sanctificare-logo-v2.webp";
 
 export const applyImageFallback = (
   img: HTMLImageElement,
