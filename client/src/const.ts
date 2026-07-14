@@ -169,7 +169,7 @@ export const resolveR2Redirect = async (url: string | undefined): Promise<string
 };
 
 // Chave PIX padrão para doações/apoio ao desenvolvedor solo.
-export const DEFAULT_PIX_KEY = "contato@sanctificare.app";
+export const DEFAULT_PIX_KEY = "61931497087";
 
 
 
