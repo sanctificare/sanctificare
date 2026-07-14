@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle, Crown } from "lucide-react";
+import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle, Crown, HeartHandshake } from "lucide-react";
 import { Link } from "wouter";
 import { Heart } from "@/components/HeartIcon";
 import { getPrayerArt } from "@/lib/cardArt";
@@ -396,6 +396,36 @@ export default function Profile() {
               </div>
             )}
           </div>
+
+          {/* Apoie a Missão (Doações) */}
+          <div className="section-block prayer-card p-4 sm:p-6 mb-6 animate-fade-in">
+            <div className="flex items-center gap-2 mb-4">
+              <HeartHandshake size={16} className="text-amber-500" />
+              <h2 className="section-title-sm">
+                Apoie a Missão Sanctificare
+              </h2>
+            </div>
+            <div className="divider-gold mb-4" />
+            
+            <div className="bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <span className="text-sm font-semibold text-foreground block">Contribuição Voluntária</span>
+                <p className="text-xs text-muted-foreground mt-1 leading-normal">
+                  O Sanctificare é mantido por um único desenvolvedor católico. Ajude-nos voluntariamente a manter os servidores de alta performance e a inteligência artificial de voz funcionando.
+                </p>
+              </div>
+              <Link href="/apoie-a-missao" className="self-start sm:self-auto flex-shrink-0">
+                <Button
+                  size="sm"
+                  className="bg-navy text-white hover:bg-navy/90 flex items-center justify-center gap-1.5 cursor-pointer font-semibold shadow-sm"
+                >
+                  <HeartHandshake size={14} className="text-amber-400" />
+                  Apoiar Missão
+                </Button>
+              </Link>
+            </div>
+          </div>
+
 
           {/* Lembretes Diários */}
           <div className="section-block prayer-card p-4 sm:p-6">

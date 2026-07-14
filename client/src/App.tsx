@@ -67,6 +67,8 @@ const DegrausPerfeicao = lazyWithPreload(() => import("./pages/DegrausPerfeicao"
 const ImitacaoCristoRetiro = lazyWithPreload(() => import("./pages/ImitacaoCristoRetiro"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
+const ApoieMissao = lazyWithPreload(() => import("./pages/ApoieMissao"));
+
 
 // Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
 // ("Carregando...") na primeira navegação a cada página.
@@ -194,6 +196,11 @@ function PremiumSucessoRoute(props: any) {
   return <PremiumSucesso {...props} />;
 }
 
+function ApoieMissaoRoute(props: any) {
+  return <ApoieMissao {...props} />;
+}
+
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
@@ -228,6 +235,7 @@ function Router() {
         <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
         <Route path="/premium" component={PremiumRoute} />
         <Route path="/premium/sucesso" component={PremiumSucessoRoute} />
+        <Route path="/apoie-a-missao" component={ApoieMissaoRoute} />
         <Route path="/redefinir-senha" component={ResetPassword} />
         <Route path="/privacidade" component={Privacy} />
         <Route path="/404" component={NotFound} />
@@ -240,8 +248,14 @@ function Router() {
 function AppShell() {
   const [location] = useLocation();
 
-  // Rotas sem AppNav (têm navbar própria ou não precisam do nav de app)
-  const isLandingPage = location === "/" || location === "/login" || location === "/redefinir-senha" || location === "/privacidade" || location === "/premium" || location === "/premium/sucesso";
+  const isLandingPage =
+    location === "/" ||
+    location === "/login" ||
+    location === "/redefinir-senha" ||
+    location === "/privacidade" ||
+    location === "/premium" ||
+    location === "/premium/sucesso" ||
+    location === "/apoie-a-missao";
 
   return (
     <>
