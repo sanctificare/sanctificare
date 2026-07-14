@@ -23,19 +23,19 @@ export const MYSTERY_AUDIO_SET_BY_KEY = {
  * em /audio/rosary/ e são distribuídos aleatoriamente por todos os mistérios.
  */
 export const AVE_MARIA_AUDIO_FILES: readonly string[] = [
-  "/audio/rosary/ave-maria1.mp3",
-  "/audio/rosary/ave-maria2.mp3",
-  "/audio/rosary/ave-maria3.mp3",
-  "/audio/rosary/ave-maria4.mp3",
-  "/audio/rosary/ave-maria5.mp3",
-  "/audio/rosary/ave-maria6.mp3",
-  "/audio/rosary/ave-maria7.mp3",
-  "/audio/rosary/ave-maria8.mp3",
-  "/audio/rosary/ave-maria9.mp3",
-  "/audio/rosary/ave-maria10.mp3",
+  "/r2-storage/audio/rosary/ave-maria1.mp3",
+  "/r2-storage/audio/rosary/ave-maria2.mp3",
+  "/r2-storage/audio/rosary/ave-maria3.mp3",
+  "/r2-storage/audio/rosary/ave-maria4.mp3",
+  "/r2-storage/audio/rosary/ave-maria5.mp3",
+  "/r2-storage/audio/rosary/ave-maria6.mp3",
+  "/r2-storage/audio/rosary/ave-maria7.mp3",
+  "/r2-storage/audio/rosary/ave-maria8.mp3",
+  "/r2-storage/audio/rosary/ave-maria9.mp3",
+  "/r2-storage/audio/rosary/ave-maria10.mp3",
 ];
 
-export const PAI_NOSSO_AUDIO_FILE = "/audio/rosary/Pai-Nosso.mp3";
+export const PAI_NOSSO_AUDIO_FILE = "/r2-storage/audio/rosary/Pai-Nosso.mp3";
 
 const AVE_MARIA_AVG_DURATION = 18;
 const PAI_NOSSO_AVG_DURATION = 25;
@@ -46,13 +46,13 @@ const GLORIA_AVG_DURATION = 14;
 const FATIMA_AVG_DURATION = 16;
 const SALVE_RAINHA_AVG_DURATION = 55;
 
-const SINAL_CRUZ_AUDIO_FILE = "/audio/rosary/intro-terco.mp3";
-const GLORIA_AUDIO_FILE = "/audio/rosary/gloria.mp3";
-const FATIMA_AUDIO_FILE = "/audio/rosary/jaculatoria.mp3";
-const SALVE_RAINHA_AUDIO_FILE = "/audio/rosary/salve rainha.mp3";
+const SINAL_CRUZ_AUDIO_FILE = "/r2-storage/audio/rosary/intro-terco.mp3";
+const GLORIA_AUDIO_FILE = "/r2-storage/audio/rosary/gloria.mp3";
+const FATIMA_AUDIO_FILE = "/r2-storage/audio/rosary/jaculatoria.mp3";
+const SALVE_RAINHA_AUDIO_FILE = "/r2-storage/audio/rosary/salve rainha.mp3";
 
 function getMysteryAudioFiles(mysterySet: RosaryMysteryAudioSet): string[] {
-  return Array.from({ length: 5 }, (_, index) => `/audio/rosary/${mysterySet}${index + 1}.mp3`);
+  return Array.from({ length: 5 }, (_, index) => `/r2-storage/audio/rosary/${mysterySet}${index + 1}.mp3`);
 }
 
 /**

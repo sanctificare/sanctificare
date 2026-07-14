@@ -12,7 +12,8 @@ import {
 const publicDir = join(process.cwd(), "client", "public");
 
 function publicPathFromUrl(url: string): string {
-  return join(publicDir, ...url.split("/").filter(Boolean));
+  const cleanUrl = url.replace(/^\/r2-storage/, "");
+  return join(publicDir, ...cleanUrl.split("/").filter(Boolean));
 }
 
 describe("rosary-audio", () => {
@@ -50,7 +51,7 @@ describe("rosary-audio", () => {
 
   it("todas as faixas devem ter URLs válidas", () => {
     rosaryAudioTracks.forEach((track) => {
-      expect(track.audioUrl).toMatch(/^\/audio\/rosary\/.+\.mp3$/);
+      expect(track.audioUrl).toMatch(/^\/r2-storage\/audio\/rosary\/.+\.mp3$/);
     });
   });
 
@@ -92,12 +93,12 @@ describe("rosary-audio", () => {
   it("deve ter 10 arquivos de Ave Maria disponíveis", () => {
     expect(AVE_MARIA_AUDIO_FILES).toHaveLength(10);
     AVE_MARIA_AUDIO_FILES.forEach((url) => {
-      expect(url).toMatch(/^\/audio\/rosary\/ave-maria\d+\.mp3$/);
+      expect(url).toMatch(/^\/r2-storage\/audio\/rosary\/ave-maria\d+\.mp3$/);
     });
   });
 
   it("deve usar arquivo único de Pai Nosso", () => {
-    expect(PAI_NOSSO_AUDIO_FILE).toBe("/audio/rosary/Pai-Nosso.mp3");
+    expect(PAI_NOSSO_AUDIO_FILE).toBe("/r2-storage/audio/rosary/Pai-Nosso.mp3");
   });
 
   it("deve haver 3 Ave Marias iniciais + 50 Ave Marias distribuídas pelos mistérios", () => {

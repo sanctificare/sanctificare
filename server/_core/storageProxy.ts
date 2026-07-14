@@ -68,6 +68,13 @@ export function registerStorageProxy(app: Express) {
           cleanKey = lKey;
           foundInR2 = true;
         }
+      } else if (key.startsWith("audio/rosary/")) {
+        const rKey = key.replace(/^audio\/rosary\//, "");
+        if (await storageExists(rKey, "rosario")) {
+          bucket = "rosario";
+          cleanKey = rKey;
+          foundInR2 = true;
+        }
       } else {
         // Standard keys: check default bucket
         if (await storageExists(key, ENV.r2BucketName)) {
@@ -150,6 +157,13 @@ export function registerStorageProxy(app: Express) {
         if (await storageExists(lKey, "liturgia-diaria")) {
           bucket = "liturgia-diaria";
           cleanKey = lKey;
+          foundInR2 = true;
+        }
+      } else if (key.startsWith("audio/rosary/")) {
+        const rKey = key.replace(/^audio\/rosary\//, "");
+        if (await storageExists(rKey, "rosario")) {
+          bucket = "rosario";
+          cleanKey = rKey;
           foundInR2 = true;
         }
       } else {
