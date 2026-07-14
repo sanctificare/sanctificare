@@ -61,7 +61,13 @@ export default function ImitacaoCristoRetiro() {
       }, 50);
     }
   }, [isPremium]);
-  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">("md");
+  const [fontSize, setFontSize] = useState<"sm" | "md" | "lg" | "xl">(
+    () => ((typeof window !== "undefined" ? localStorage.getItem("sanctificare_imitacao_font_size") : null) as any) || "md"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("sanctificare_imitacao_font_size", fontSize);
+  }, [fontSize]);
 
   // Audio player states
   const [isPlaying, setIsPlaying] = useState(false);

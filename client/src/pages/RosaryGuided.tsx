@@ -585,8 +585,8 @@ export default function RosaryGuided() {
           </p>
         </div>
 
-        {/* Botões de navegação simplificados para celular */}
-        <div className="flex gap-3 mt-4 sm:hidden">
+        {/* Botões de navegação */}
+        <div className="flex gap-3 mt-4">
           <Button
             variant="outline"
             size="lg"

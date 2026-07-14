@@ -616,7 +616,20 @@ export default function Liturgy() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => dateInputRef.current?.showPicker()}
+                  onClick={() => {
+                    try {
+                      if (dateInputRef.current) {
+                        if (typeof dateInputRef.current.showPicker === "function") {
+                          dateInputRef.current.showPicker();
+                        } else {
+                          dateInputRef.current.click();
+                        }
+                      }
+                    } catch (err) {
+                      console.warn("[Liturgy] showPicker failed fallback to click:", err);
+                      dateInputRef.current?.click();
+                    }
+                  }}
                   className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   title="Escolher data"
                 >
