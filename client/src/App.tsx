@@ -254,8 +254,7 @@ function AppShell() {
     location === "/redefinir-senha" ||
     location === "/privacidade" ||
     location === "/premium" ||
-    location === "/premium/sucesso" ||
-    location === "/apoie-a-missao";
+    location === "/premium/sucesso";
 
   return (
     <>
