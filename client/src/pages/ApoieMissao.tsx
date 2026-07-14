@@ -66,29 +66,29 @@ interface Tier {
 const TIERS: Tier[] = [
   {
     id: "simples",
-    name: "Apoio",
-    subLabel: "Apoio Simples",
+    name: "Amigo",
+    subLabel: "Apoio Fraterno",
     amount: 5.0,
     icon: Sparkles,
   },
   {
     id: "cafe",
-    name: "Café",
-    subLabel: "Apoio Simples",
+    name: "Colaborador",
+    subLabel: "Ajuda Generosa",
     amount: 10.0,
     icon: Coffee,
   },
   {
     id: "vela",
-    name: "Vela",
-    subLabel: "Luz e Oração",
+    name: "Benfeitor",
+    subLabel: "Cuidado e Fé",
     amount: 25.0,
     icon: Flame,
   },
   {
     id: "missao",
-    name: "Missão",
-    subLabel: "Impacto Profundo",
+    name: "Patrono",
+    subLabel: "Sustentáculo da Missão",
     amount: 50.0,
     icon: Heart,
   },
@@ -100,7 +100,7 @@ export default function ApoieMissao() {
   const [isCustom, setIsCustom] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<boolean>(false);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
-  const [showQrCode, setShowQrCode] = useState<boolean>(false);
+  const [showQrCode, setShowQrCode] = useState<boolean>(true);
 
   const amount = useMemo(() => {
     if (isCustom) {
@@ -149,7 +149,7 @@ export default function ApoieMissao() {
       <div className="max-w-xl mx-auto px-6 mt-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="font-display text-2xl sm:text-3xl font-black text-amber-400 tracking-wider uppercase drop-shadow-[0_0_12px_rgba(251,191,36,0.3)]">
+          <h1 className="font-display text-3xl sm:text-4xl font-black text-amber-400 tracking-wider uppercase drop-shadow-[0_0_12px_rgba(251,191,36,0.3)]">
             Apoie a Missão
           </h1>
         </div>
@@ -157,7 +157,7 @@ export default function ApoieMissao() {
         {/* Carta Solo (Nossa História) */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5 mb-6 backdrop-blur-md shadow-xl relative">
           <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">Sobre Mim</h2>
+            <h2 className="text-base font-bold text-white uppercase tracking-wider">Sobre Mim</h2>
             <span className="text-amber-400 font-bold text-lg leading-none">†</span>
           </div>
 
@@ -172,11 +172,11 @@ export default function ApoieMissao() {
                   <span className="text-[10px] text-slate-950 font-bold leading-none">†</span>
                 </div>
               </div>
-              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Fundador</span>
+              <span className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">Fundador</span>
             </div>
 
             {/* Texto da História */}
-            <div className="flex-1 text-xs text-slate-300 leading-relaxed font-serif text-justify">
+            <div className="flex-1 text-sm text-slate-300 leading-relaxed font-serif text-justify">
               Olá! Sou Amarildo Ferrari, católico, marido, pai e criador do Sanctificare. O app nasceu do desejo de ajudar mais pessoas a cultivarem uma vida de oração e santidade no dia a dia. Hoje, desenvolvo e mantenho todo o projeto sozinho, buscando manter o app gratuito e livre de anúncios invasivos. Mas, para isso, preciso arcar com os custos de servidores, banco de dados, recursos de inteligência artificial e toda a infraestrutura que faz o app funcionar. Se o Sanctificare tem sido uma bênção para sua caminhada, apoie nosso trabalho!
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function ApoieMissao() {
 
         {/* Seleção de Valor */}
         <div className="mb-6">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 block">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 block">
             Selecione um Nível de Apoio
           </h3>
 
@@ -208,18 +208,18 @@ export default function ApoieMissao() {
                   {/* Icon + Name */}
                   <div className="flex items-center gap-3">
                     <Icon className="text-amber-400 flex-shrink-0" size={16} />
-                    <span className="font-bold text-sm text-white">{tier.name}</span>
+                    <span className="font-bold text-base text-white">{tier.name}</span>
                   </div>
 
                   {/* Subtitle / Description */}
-                  <div className="hidden sm:block text-xs text-slate-400 truncate max-w-[150px] font-serif italic pr-4">
+                  <div className="hidden sm:block text-sm text-slate-400 truncate max-w-[150px] font-serif italic pr-4">
                     {tier.subLabel}
                   </div>
 
                   {/* Amount Pill */}
                   <div className="px-4 py-1.5 rounded-full border border-amber-500/30 bg-black/40 flex items-center justify-center flex-shrink-0">
-                    <span className="font-black text-amber-400 text-xs">R$ {tier.amount.toFixed(0)}</span>
-                    <span className="text-[8px] text-slate-400 font-medium ml-1">/mês</span>
+                    <span className="font-black text-amber-400 text-sm">R$ {tier.amount.toFixed(0)}</span>
+                    <span className="text-[10px] text-slate-400 font-medium ml-1">/mês</span>
                   </div>
                 </button>
               );
@@ -235,10 +235,10 @@ export default function ApoieMissao() {
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-white">Outro Valor (Doação Livre)</span>
+                <span className="font-bold text-base text-white">Outro Valor (Doação Livre)</span>
                 {isCustom ? (
                   <div className="flex items-center gap-1.5 bg-black/40 rounded-full px-3 py-1 border border-white/10 animate-fade-in">
-                    <span className="text-slate-400 font-bold text-xs">R$</span>
+                    <span className="text-slate-400 font-bold text-sm">R$</span>
                     <input
                       type="number"
                       pattern="[0-9]*"
@@ -246,13 +246,13 @@ export default function ApoieMissao() {
                       placeholder="20"
                       value={customAmount}
                       onChange={(e) => setCustomAmount(e.target.value)}
-                      className="bg-transparent text-white focus:outline-none w-16 text-xs font-black text-center"
+                      className="bg-transparent text-white focus:outline-none w-16 text-sm font-black text-center"
                       autoFocus
                     />
-                    <span className="text-[8px] text-slate-400">/mês</span>
+                    <span className="text-[10px] text-slate-400">/mês</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-slate-400">Definir valor livre</span>
+                  <span className="text-sm text-slate-400">Definir valor livre</span>
                 )}
               </div>
             </button>
@@ -266,19 +266,19 @@ export default function ApoieMissao() {
           {/* Title */}
           <div className="flex items-center gap-2 mb-4 border-b border-white/10 pb-3">
             <span className="text-amber-400 text-lg leading-none">❖</span>
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Pagar com PIX</h3>
+            <h3 className="font-bold text-white text-base uppercase tracking-wider">Pagar com PIX</h3>
           </div>
 
           {/* Subtitle */}
           <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
             <div className="flex items-center gap-2">
-              <span className="text-[8px] text-amber-400">◆</span>
-              <span className="text-[11px] text-slate-300 font-bold uppercase tracking-wider">PIX Copia e Cola</span>
+              <span className="text-[10px] text-amber-400">◆</span>
+              <span className="text-sm text-slate-300 font-bold uppercase tracking-wider">PIX Copia e Cola</span>
             </div>
             
             <button
               onClick={() => setShowQrCode(!showQrCode)}
-              className="text-[10px] font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline-none bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1"
+              className="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline-none bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-full cursor-pointer flex items-center gap-1"
             >
               <span>{showQrCode ? "Ocultar QR" : "Gerar QR Code"}</span>
             </button>
@@ -297,12 +297,12 @@ export default function ApoieMissao() {
 
           {/* Código PIX Field */}
           <div className="flex items-center justify-between bg-black/40 rounded-xl px-4 py-3 border border-white/5 mb-4 max-w-full relative overflow-hidden">
-            <span className="text-xs text-slate-400 font-mono truncate mr-4">
+            <span className="text-sm text-slate-400 font-mono truncate mr-4">
               {pixCode}
             </span>
             <button
               onClick={handleCopyCode}
-              className="text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline-none flex-shrink-0 cursor-pointer"
+              className="text-sm font-bold text-amber-400 hover:text-amber-300 transition-colors focus:outline-none flex-shrink-0 cursor-pointer"
             >
               {copiedCode ? "[Copiado!]" : "[Copiar Código]"}
             </button>
@@ -311,7 +311,7 @@ export default function ApoieMissao() {
           {/* Big Gold Button */}
           <Button
             onClick={handleCopyCode}
-            className="w-full py-5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:shadow-[0_0_25px_rgba(245,158,11,0.35)] transition-all duration-300 border-none cursor-pointer"
+            className="w-full py-5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:shadow-[0_0_25px_rgba(245,158,11,0.35)] transition-all duration-300 border-none cursor-pointer"
           >
             Doar com PIX
           </Button>
@@ -319,12 +319,12 @@ export default function ApoieMissao() {
           {/* Chave PIX Direta */}
           <div className="mt-4 flex items-center justify-between bg-white/5 rounded-xl px-4 py-2.5 border border-white/5">
             <div className="text-left">
-              <span className="text-[8px] text-slate-400 block uppercase tracking-wider">Chave PIX E-mail</span>
-              <span className="text-xs font-semibold text-slate-200">{DEFAULT_PIX_KEY}</span>
+              <span className="text-[10px] text-slate-400 block uppercase tracking-wider">Chave PIX E-mail</span>
+              <span className="text-sm font-semibold text-slate-200">{DEFAULT_PIX_KEY}</span>
             </div>
             <button
               onClick={handleCopyKey}
-              className="text-xs font-bold text-slate-300 hover:text-white transition-colors focus:outline-none cursor-pointer"
+              className="text-sm font-bold text-slate-300 hover:text-white transition-colors focus:outline-none cursor-pointer"
             >
               {copiedKey ? "Copiada" : "Copiar Chave"}
             </button>
@@ -333,7 +333,7 @@ export default function ApoieMissao() {
           {/* Informativo */}
           <div className="mt-4 flex items-start gap-2 text-left bg-blue-500/5 border border-blue-500/10 rounded-xl p-3">
             <AlertCircle size={14} className="text-blue-400 flex-shrink-0 mt-0.5" />
-            <p className="text-[9px] text-slate-400 leading-normal">
+            <p className="text-xs text-slate-400 leading-normal">
               As doações são 100% voluntárias e não garantem recursos premium de orações ou áudios adicionais (para isso, utilize o plano Premium). Que Deus lhes pague!
             </p>
           </div>
