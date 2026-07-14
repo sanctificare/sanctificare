@@ -8,7 +8,8 @@ import {
   Copy,
   Check,
   QrCode,
-  AlertCircle
+  AlertCircle,
+  Barcode
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -253,8 +254,31 @@ export default function ApoieMissao() {
           {/* Sutil glow interno */}
           <div className="absolute inset-0 rounded-2xl bg-amber-500/5 opacity-40 pointer-events-none" />
 
-          <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
-            <QrCode className="text-amber-400" size={24} />
+          {/* Visual Barcode Graphic */}
+          <div className="flex flex-col items-center justify-center bg-white/5 border border-white/10 p-3 rounded-xl w-44 mx-auto mb-4 backdrop-blur-md shadow-inner">
+            <div className="flex items-stretch justify-center h-10 w-36 gap-[2px] opacity-75">
+              <div className="w-[3px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[4px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[2px] bg-white" />
+              <div className="w-[3px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[4px] bg-white" />
+              <div className="w-[2px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[3px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[2px] bg-white" />
+              <div className="w-[4px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[3px] bg-white" />
+              <div className="w-[2px] bg-white" />
+              <div className="w-[1px] bg-white" />
+              <div className="w-[4px] bg-white" />
+              <div className="w-[1px] bg-white" />
+            </div>
+            <span className="text-[8px] text-amber-400 font-mono tracking-widest mt-1.5 font-bold uppercase">PIX Copia e Cola</span>
           </div>
 
           <h3 className="font-bold text-white text-md mb-1">Doar R$ {amount.toFixed(2)} via PIX</h3>
