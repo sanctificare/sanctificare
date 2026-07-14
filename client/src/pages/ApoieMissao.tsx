@@ -129,50 +129,55 @@ export default function ApoieMissao() {
   };
 
   return (
-    <div className="min-h-screen bg-[oklch(0.08_0.04_260)] text-slate-100 font-sans pb-16">
+    <div className="min-h-screen bg-gradient-to-b from-[oklch(0.12_0.05_270)] via-[oklch(0.08_0.04_260)] to-[oklch(0.05_0.03_250)] text-slate-100 font-sans pb-16 relative overflow-hidden">
+      {/* Elementos de Brilho de Fundo (Glow Effect) */}
+      <div className="absolute top-[-10%] left-[-10%] w-[60dvw] h-[60dvw] rounded-full bg-violet-600/10 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[-10%] w-[70dvw] h-[70dvw] rounded-full bg-indigo-500/10 blur-[160px] pointer-events-none" />
+      <div className="absolute top-[40%] left-[20%] w-[35dvw] h-[35dvw] rounded-full bg-amber-500/5 blur-[100px] pointer-events-none" />
+
       {/* Navbar */}
       <div className="relative z-10 flex items-center justify-between px-4 pt-5 max-w-3xl mx-auto">
         <Link href="/perfil">
-          <button className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors cursor-pointer focus:outline-none">
-            <ArrowLeft size={18} />
-            <span className="text-sm font-semibold">Voltar ao Perfil</span>
+          <button className="flex items-center gap-2 text-slate-300 hover:text-white transition-all cursor-pointer focus:outline-none bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md shadow-sm">
+            <ArrowLeft size={16} />
+            <span className="text-xs font-bold">Voltar ao Perfil</span>
           </button>
         </Link>
       </div>
 
-      <div className="max-w-xl mx-auto px-4 mt-8">
+      <div className="max-w-xl mx-auto px-4 mt-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="font-display text-3xl font-black text-white mb-2 tracking-tight">
+          <h1 className="font-display text-3xl sm:text-4xl font-black text-white mb-2 tracking-tight drop-shadow-sm">
             Apoie a Missão
           </h1>
-          <p className="text-amber-400 font-serif italic text-sm">
+          <p className="text-amber-400 font-serif italic text-sm drop-shadow-md">
             “Dê cada um conforme o impulso do seu coração” (2 Coríntios 9, 7)
           </p>
         </div>
 
-        {/* Carta Solo */}
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 mb-8 backdrop-blur-sm">
-          <p className="text-sm text-slate-300 leading-relaxed font-serif">
+        {/* Carta Solo (Glassmorphic) */}
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 mb-8 backdrop-blur-md shadow-xl shadow-black/10">
+          <p className="text-sm text-slate-200 leading-relaxed font-serif">
             Olá! Sou Amarildo Ferrari, católico, marido, pai e o criador do <strong>Sanctificare</strong>.
           </p>
-          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
+          <p className="text-sm text-slate-200 leading-relaxed font-serif mt-3">
             O Sanctificare nasceu do desejo de ajudar mais pessoas a cultivarem uma vida de oração mais profunda e um caminho de santidade no dia a dia. Hoje, desenvolvo e mantenho todo o projeto sozinho, dedicando meu tempo e meu trabalho para que ele continue crescendo.
           </p>
-          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
+          <p className="text-sm text-slate-200 leading-relaxed font-serif mt-3">
             Procuro manter o aplicativo gratuito, sem anúncios invasivos, para que nada distraia esse momento de encontro com Deus. Mas, para isso, preciso arcar com os custos de servidores, banco de dados, recursos de inteligência artificial e toda a infraestrutura que faz o app funcionar.
           </p>
-          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3">
+          <p className="text-sm text-slate-200 leading-relaxed font-serif mt-3">
             Se o Sanctificare tem sido uma bênção para a sua caminhada de fé, considere fazer uma contribuição voluntária. Qualquer valor faz diferença e ajuda a manter este projeto vivo, alcançando cada vez mais pessoas.
           </p>
-          <p className="text-sm text-slate-300 leading-relaxed font-serif mt-3 font-semibold text-amber-400">
+          <p className="text-sm text-slate-200 leading-relaxed font-serif mt-4 font-semibold text-amber-400">
             Muito obrigado pelo seu apoio. Que Deus o abençoe abundantemente!
           </p>
         </div>
 
         {/* Seleção de Valor */}
         <div className="mb-8">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 block">
             Selecione uma opção de apoio
           </h3>
 
@@ -187,13 +192,13 @@ export default function ApoieMissao() {
                     setIsCustom(false);
                     setSelectedTierId(tier.id);
                   }}
-                  className={`flex items-start gap-4 p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                  className={`flex items-start gap-4 p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer backdrop-blur-md ${
                     isSelected
-                      ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_20px_oklch(0.75_0.18_75/0.1)]"
-                      : "border-white/10 bg-white/5 hover:border-white/20"
+                      ? "border-amber-500/50 bg-amber-500/10 shadow-[0_0_25px_oklch(0.75_0.18_75/0.12)] scale-[1.01]"
+                      : "border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10"
                   }`}
                 >
-                  <div className={`p-2 rounded-lg ${isSelected ? "bg-amber-500/20 text-amber-400" : "bg-white/5 text-slate-300"}`}>
+                  <div className={`p-2 rounded-lg transition-colors ${isSelected ? "bg-amber-500/20 text-amber-400" : "bg-white/5 text-slate-300"}`}>
                     <Icon size={20} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -212,10 +217,10 @@ export default function ApoieMissao() {
             {/* Outro valor */}
             <button
               onClick={() => setIsCustom(true)}
-              className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+              className={`p-4 rounded-xl border text-left transition-all duration-300 cursor-pointer backdrop-blur-md ${
                 isCustom
-                  ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_20px_oklch(0.75_0.18_75/0.1)]"
-                  : "border-white/10 bg-white/5 hover:border-white/20"
+                  ? "border-amber-500/50 bg-amber-500/10 shadow-[0_0_25px_oklch(0.75_0.18_75/0.12)] scale-[1.01]"
+                  : "border-white/5 bg-white/5 hover:border-white/10 hover:bg-white/10"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
@@ -223,7 +228,7 @@ export default function ApoieMissao() {
                 {isCustom && <span className="text-xs font-bold text-amber-400">Ativado</span>}
               </div>
               {isCustom ? (
-                <div className="flex items-center gap-2 bg-black/30 rounded-lg px-3 py-1.5 border border-white/10">
+                <div className="flex items-center gap-2 bg-black/40 rounded-lg px-3 py-1.5 border border-white/10 animate-fade-in">
                   <span className="text-slate-400 font-bold text-sm">R$</span>
                   <input
                     type="number"
@@ -243,8 +248,11 @@ export default function ApoieMissao() {
           </div>
         </div>
 
-        {/* Área do PIX */}
-        <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-b from-amber-500/5 to-transparent p-5 text-center">
+        {/* Área do PIX (Glassmorphic Glow Card) */}
+        <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-6 text-center backdrop-blur-lg shadow-2xl relative">
+          {/* Sutil glow interno */}
+          <div className="absolute inset-0 rounded-2xl bg-amber-500/5 opacity-40 pointer-events-none" />
+
           <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-4">
             <QrCode className="text-amber-400" size={24} />
           </div>
@@ -260,10 +268,10 @@ export default function ApoieMissao() {
             <Button
               onClick={handleCopyCode}
               size="sm"
-              className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold flex-shrink-0"
+              className="bg-gradient-to-r from-amber-500 to-amber-300 hover:from-amber-600 hover:to-amber-400 text-slate-950 font-black flex-shrink-0 shadow-[0_0_15px_oklch(0.75_0.18_75/0.2)]"
             >
               {copiedCode ? <Check size={14} /> : <Copy size={14} />}
-              <span className="ml-1 text-xs">Copiar</span>
+              <span className="ml-1 text-xs">Copiar PIX</span>
             </Button>
           </div>
 
@@ -277,7 +285,7 @@ export default function ApoieMissao() {
               onClick={handleCopyKey}
               variant="ghost"
               size="sm"
-              className="text-slate-300 hover:text-white"
+              className="text-slate-300 hover:text-white hover:bg-white/5"
             >
               {copiedKey ? <Check size={14} /> : <Copy size={14} />}
               <span className="ml-1 text-xs">Copiar Chave</span>
