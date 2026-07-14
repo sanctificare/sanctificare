@@ -65,6 +65,13 @@ interface Tier {
 
 const TIERS: Tier[] = [
   {
+    id: "simples",
+    name: "Apoio Simples",
+    amount: 5.0,
+    icon: Sparkles,
+    description: "Uma pequena ajuda voluntária que faz diferença para o projeto.",
+  },
+  {
     id: "cafe",
     name: "Café do Desenvolvedor",
     amount: 10.0,

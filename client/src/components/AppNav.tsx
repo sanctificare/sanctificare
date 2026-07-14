@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown, HeartHandshake } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -35,6 +35,7 @@ const moreLinks = [
   { href: "/musica-sacra", label: "Música Sacra", icon: Music },
   { href: "/videos", label: "Vídeos", icon: Film },
   { href: "/intencoes", label: "Intenções", icon: Users },
+  { href: "/apoie-a-missao", label: "Apoie a Missão", icon: HeartHandshake },
 ];
 
 const mobilePrimaryLinks = [
@@ -190,6 +191,13 @@ export default function AppNav() {
                     <DropdownMenuItem asChild>
                       <Link href="/perfil">
                         <User size={14} className="mr-2" /> Meu Perfil
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/apoie-a-missao" className="flex items-center gap-2">
+                        <HeartHandshake size={14} className="text-amber-500" />
+                        <span>Apoie a Missão</span>
                       </Link>
                     </DropdownMenuItem>
 

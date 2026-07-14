@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Search, Calendar, Menu, X } from "lucide-react";
+import { Search, Calendar, Menu, X, HeartHandshake } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { Link } from "wouter";
 
 export default function MobileTopMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,14 +44,27 @@ export default function MobileTopMenu() {
             <span className="text-sm font-medium">Busca</span>
           </button>
 
-          <a
+          <Link
             href="/plano-diario"
             onClick={() => setIsOpen(false)}
-            className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors"
+            className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors block"
           >
-            <Calendar size={18} />
-            <span className="text-sm font-medium">Plano Diário</span>
-          </a>
+            <span className="flex items-center gap-3">
+              <Calendar size={18} />
+              <span className="text-sm font-medium">Plano Diário</span>
+            </span>
+          </Link>
+
+          <Link
+            href="/apoie-a-missao"
+            onClick={() => setIsOpen(false)}
+            className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors border-t border-[oklch(0.75_0.12_75/0.25)] block"
+          >
+            <span className="flex items-center gap-3">
+              <HeartHandshake size={18} className="text-amber-400" />
+              <span className="text-sm font-medium">Apoie a Missão</span>
+            </span>
+          </Link>
         </div>
       )}
     </>
