@@ -165,7 +165,7 @@ export default function ApoieMissao() {
         {/* Carta Solo (Nossa História) */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5 mb-6 backdrop-blur-md shadow-xl relative">
           <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider">Nossa História</h2>
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider">Sobre Mim</h2>
             <span className="text-amber-400 font-bold text-lg leading-none">†</span>
           </div>
 
