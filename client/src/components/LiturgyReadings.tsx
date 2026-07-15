@@ -6,7 +6,7 @@ import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
 import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
 import ShareModal from "@/components/ShareModal";
-import { isMobileApp } from "@/const";
+import { isMobileApp, resolveR2Redirect } from "@/const";
 import { shareText } from "@/lib/share";
 
 
@@ -166,6 +166,17 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [playingUrl, setPlayingUrl] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    resolveR2Redirect(audioUrl).then((url) => {
+      if (active) setPlayingUrl(url);
+    });
+    return () => {
+      active = false;
+    };
+  }, [audioUrl]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -210,7 +221,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [audioUrl]);
+  }, [playingUrl]);
 
   const formatTime = (time: number) => {
     const mins = Math.floor(time / 60);
@@ -227,7 +238,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent p-4 my-3 shadow-sm">
-      <audio ref={audioRef} src={audioUrl} preload="metadata" />
+      <audio ref={audioRef} src={playingUrl} preload="metadata" />
       <div className="flex items-center justify-between gap-4 mb-3">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
