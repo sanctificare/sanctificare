@@ -257,7 +257,16 @@ router.post("/forgot-password", async (req, res) => {
         await createPasswordResetToken(user.id, token);
         console.log(`[ForgotPassword] Token created for userId=${user.id}`);
 
-        const appUrl = ENV.appUrl;
+        let appUrl = ENV.appUrl;
+        const requestOrigin = req.header("origin") || req.header("referer");
+        if (requestOrigin) {
+          try {
+            const parsed = new URL(requestOrigin);
+            appUrl = parsed.origin;
+          } catch {
+            // Ignore invalid URL formats
+          }
+        }
         const resetLink = `${appUrl}/redefinir-senha?token=${token}`;
 
         await sendPasswordResetEmail(
