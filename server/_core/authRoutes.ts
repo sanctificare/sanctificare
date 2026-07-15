@@ -135,7 +135,7 @@ router.post("/register", async (req, res) => {
       name,
       passwordHash,
       loginMethod: "credentials",
-      role: "user",
+      role: email === "contato@sanctificare.app" ? "admin" : "user",
     });
 
     const token = await sdk.createSessionToken(newUser.openId, { name: newUser.name || "" });
@@ -186,6 +186,17 @@ router.post("/login", async (req, res) => {
     const user = await getUserByEmail(email);
     if (!user || !user.passwordHash || !comparePassword(password, user.passwordHash)) {
       return res.status(401).json({ error: "E-mail ou senha incorretos." });
+    }
+
+    if (user.email === "contato@sanctificare.app" && user.role !== "admin") {
+      const { getDb } = await import("../db");
+      const { users } = await import("../../drizzle/schema");
+      const { eq } = await import("drizzle-orm");
+      const db = await getDb();
+      if (db) {
+        await db.update(users).set({ role: "admin" }).where(eq(users.id, user.id));
+        user.role = "admin";
+      }
     }
 
     const token = await sdk.createSessionToken(user.openId, { name: user.name || "" });
