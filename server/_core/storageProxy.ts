@@ -1,5 +1,5 @@
 import type { Express } from "express";
-import { storageGetSignedUrl, storageExists } from "../storage";
+import { storageGetSignedUrl, storageExists, storageGetStream } from "../storage";
 import { ENV } from "./env";
 import path from "path";
 import fs from "fs";
@@ -85,10 +85,39 @@ export function registerStorageProxy(app: Express) {
       }
 
       if (foundInR2) {
-        const signedUrl = await storageGetSignedUrl(cleanKey, bucket);
-        res.set("Cache-Control", "public, max-age=86400"); // cache 24h
-        res.redirect(307, signedUrl);
-        return;
+        try {
+          const rangeHeader = req.headers.range;
+          const { body, contentType, contentLength, contentRange, acceptRanges } = 
+            await storageGetStream(cleanKey, bucket, rangeHeader);
+
+          res.status(rangeHeader ? 206 : 200);
+
+          res.set({
+            "Cache-Control": "public, max-age=86400",
+            "Content-Type": contentType || "application/octet-stream",
+            "Accept-Ranges": acceptRanges || "bytes",
+          });
+
+          if (contentLength !== undefined) {
+            res.set("Content-Length", String(contentLength));
+          }
+          if (contentRange) {
+            res.set("Content-Range", contentRange);
+          }
+
+          if (body) {
+            (body as any).pipe(res);
+          } else {
+            res.end();
+          }
+          return;
+        } catch (streamErr) {
+          console.warn("[StorageProxy] Error streaming from R2, falling back to 307 redirect:", streamErr);
+          const signedUrl = await storageGetSignedUrl(cleanKey, bucket);
+          res.set("Cache-Control", "public, max-age=86400"); // cache 24h
+          res.redirect(307, signedUrl);
+          return;
+        }
       }
 
       console.warn(`[StorageProxy] Key "${key}" not found in R2. Trying local fallback.`);

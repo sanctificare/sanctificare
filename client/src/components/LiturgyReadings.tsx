@@ -461,6 +461,10 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
                       </div>
                     )}
 
+                    {section.id === "psalm" && section.audioUrl && (
+                      <SingedPsalmPlayer audioUrl={section.audioUrl} />
+                    )}
+
                     {section.id === "gospel" && (
                       <div className="mt-4 pt-3 border-t border-border/20 flex items-center justify-between">
                         <a href={`/lectio?date=${liturgy.liturgyDate || ""}`}>

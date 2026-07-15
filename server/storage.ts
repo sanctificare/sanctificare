@@ -140,3 +140,37 @@ export async function storageDelete(relKey: string): Promise<void> {
     })
   );
 }
+
+/**
+ * Get a readable stream for a stored file, with optional Range header support.
+ */
+export async function storageGetStream(
+  relKey: string,
+  bucket = ENV.r2BucketName,
+  range?: string
+): Promise<{
+  body: any;
+  contentType?: string;
+  contentLength?: number;
+  contentRange?: string;
+  acceptRanges?: string;
+}> {
+  const client = getR2Client();
+  const key = normalizeKey(relKey);
+
+  const command = new GetObjectCommand({
+    Bucket: bucket,
+    Key: key,
+    Range: range,
+  });
+
+  const response = await client.send(command);
+  return {
+    body: response.Body,
+    contentType: response.ContentType,
+    contentLength: response.ContentLength,
+    contentRange: response.ContentRange,
+    acceptRanges: response.AcceptRanges,
+  };
+}
+
