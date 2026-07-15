@@ -10,6 +10,7 @@ import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
 
+// Cache buster for deployment: 2026-07-15 17:45
 const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
 
 const parseVersionCore = (version: string | null | undefined) => {
