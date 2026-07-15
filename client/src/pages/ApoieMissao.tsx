@@ -30,24 +30,32 @@ function calculateCRC16(str: string): string {
   return (crc & 0xffff).toString(16).toUpperCase().padStart(4, "0");
 }
 
+function formatEMVField(tag: string, value: string): string {
+  return tag + value.length.toString().padStart(2, "0") + value;
+}
+
 function generatePixCode(amount: number, key: string): string {
   const amountStr = amount.toFixed(2);
-  const amountLen = amountStr.length.toString().padStart(2, "0");
   
+  const merchantAccountInfo = [
+    formatEMVField("00", "br.gov.bcb.pix"),
+    formatEMVField("01", key),
+  ].join("");
+
+  const additionalData = formatEMVField("05", "***");
+
   // Estrutura padrão EMV do PIX
   const payload = [
-    "000201", // Payload Format Indicator
-    "010212", // Point of Initiation Method
-    `26${(38 + key.length).toString()}`, // Merchant Account Information
-    "0014br.gov.bcb.pix",
-    `01${key.length.toString().padStart(2, "0")}${key}`,
-    "52040000", // Merchant Category Code
-    "5303986", // Transaction Currency (986 = BRL)
-    `54${amountLen}${amountStr}`, // Transaction Amount
-    "5802BR", // Country Code
-    "5913Sanctificare", // Merchant Name
-    "6009Sao Paulo", // Merchant City
-    "62070503***", // Additional Data Field
+    formatEMVField("00", "01"),
+    formatEMVField("01", "12"),
+    formatEMVField("26", merchantAccountInfo),
+    formatEMVField("52", "0000"),
+    formatEMVField("53", "986"),
+    formatEMVField("54", amountStr),
+    formatEMVField("58", "BR"),
+    formatEMVField("59", "Sanctificare"),
+    formatEMVField("60", "Sao Paulo"),
+    formatEMVField("62", additionalData),
     "6304", // CRC16 Indicator
   ].join("");
 
