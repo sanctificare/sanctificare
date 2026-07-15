@@ -1611,3 +1611,184 @@ export async function getDailyPlanStatus(userId: number) {
 
   return computeDailyPlanStatusFromData({ logs, journals, intentions });
 }
+
+export async function getAdminStats() {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const [
+    totalUsersRes,
+    newUsersTodayRes,
+    activeUsersTodayRes,
+    activeSubscriptionsRes,
+    totalPrayersRes,
+    recentUsers,
+    recentActivities
+  ] = await Promise.all([
+    db.select({ count: sql<number>`count(*)::int` }).from(users),
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(gte(users.createdAt, today)),
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(gte(users.lastSignedIn, today)),
+    db.select({ count: sql<number>`count(*)::int` }).from(subscriptions).where(and(eq(subscriptions.status, 'active'), gt(subscriptions.expiresAt, new Date()))),
+    db.select({ count: sql<number>`count(*)::int` }).from(prayerLogs),
+    db.select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      createdAt: users.createdAt,
+    }).from(users).orderBy(desc(users.createdAt)).limit(10),
+    db.select({
+      id: prayerLogs.id,
+      prayerName: prayerLogs.prayerName,
+      prayerType: prayerLogs.prayerType,
+      completedAt: prayerLogs.completedAt,
+      userName: users.name,
+      userEmail: users.email,
+    })
+    .from(prayerLogs)
+    .leftJoin(users, eq(prayerLogs.userId, users.id))
+    .orderBy(desc(prayerLogs.completedAt))
+    .limit(10)
+  ]);
+
+  return {
+    totalUsers: totalUsersRes[0]?.count ?? 0,
+    newUsersToday: newUsersTodayRes[0]?.count ?? 0,
+    activeUsersToday: activeUsersTodayRes[0]?.count ?? 0,
+    activeSubscriptions: activeSubscriptionsRes[0]?.count ?? 0,
+    totalPrayers: totalPrayersRes[0]?.count ?? 0,
+    recentUsers,
+    recentActivities
+  };
+}
+
+export async function getAdminUsersList(search?: string, limit: number = 20, offset: number = 0) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  let conditions = [];
+  if (search) {
+    const searchPattern = `%${search.toLowerCase()}%`;
+    conditions.push(
+      or(
+        sql`lower(${users.name}) like ${searchPattern}`,
+        sql`lower(${users.email}) like ${searchPattern}`
+      )
+    );
+  }
+
+  const queryWhere = conditions.length > 0 ? and(...conditions) : undefined;
+
+  const [usersList, countRes] = await Promise.all([
+    db.select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      loginMethod: users.loginMethod,
+      role: users.role,
+      createdAt: users.createdAt,
+      lastSignedIn: users.lastSignedIn,
+    })
+    .from(users)
+    .where(queryWhere)
+    .orderBy(desc(users.createdAt))
+    .limit(limit)
+    .offset(offset),
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(queryWhere)
+  ]);
+
+  return {
+    users: usersList,
+    total: countRes[0]?.count ?? 0
+  };
+}
+
+export async function getAdminUserDetail(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const userRes = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  if (userRes.length === 0) return null;
+
+  const recentLogs = await db
+    .select()
+    .from(prayerLogs)
+    .where(eq(prayerLogs.userId, userId))
+    .orderBy(desc(prayerLogs.completedAt))
+    .limit(20);
+
+  const subscriptionRes = await db
+    .select()
+    .from(subscriptions)
+    .where(eq(subscriptions.userId, userId))
+    .orderBy(desc(subscriptions.createdAt))
+    .limit(1);
+
+  return {
+    user: userRes[0],
+    recentLogs,
+    subscription: subscriptionRes[0] ?? null
+  };
+}
+
+export async function toggleUserPremiumStatus(userId: number, grant: boolean) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  if (grant) {
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+    const existing = await db.select().from(subscriptions).where(eq(subscriptions.userId, userId)).limit(1);
+    if (existing.length > 0) {
+      await db.update(subscriptions)
+        .set({
+          status: 'active',
+          expiresAt,
+          plan: 'annual',
+          updatedAt: new Date()
+        })
+        .where(eq(subscriptions.userId, userId));
+    } else {
+      await db.insert(subscriptions).values({
+        userId,
+        status: 'active',
+        expiresAt,
+        plan: 'annual',
+        stripeCustomerId: 'admin-manual',
+        stripeSubscriptionId: 'admin-manual-' + Math.random().toString(36).substring(2, 11),
+      });
+    }
+  } else {
+    await db.update(subscriptions)
+      .set({
+        status: 'expired',
+        expiresAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(subscriptions.userId, userId));
+  }
+
+  return { success: true };
+}
+
+export async function getAdminRegistrationGrowth() {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const result = await db.select({
+    date: sql<string>`date_trunc('day', ${users.createdAt})::date::text`,
+    count: sql<number>`count(*)::int`,
+  })
+  .from(users)
+  .where(gte(users.createdAt, thirtyDaysAgo))
+  .groupBy(sql`date_trunc('day', ${users.createdAt})`)
+  .orderBy(sql`date_trunc('day', ${users.createdAt})`);
+
+  return result;
+}

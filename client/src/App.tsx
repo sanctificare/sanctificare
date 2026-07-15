@@ -21,6 +21,7 @@ import {
 import Login from "./pages/Login";
 import PrayerDetail from "./pages/PrayerDetail";
 import ResetPassword from "./pages/ResetPassword";
+import AdminDashboard from "./pages/AdminDashboard";
 import Privacy from "./pages/Privacy";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
@@ -200,6 +201,16 @@ function ApoieMissaoRoute(props: any) {
   return <ApoieMissao {...props} />;
 }
 
+function ProtectedAdminRoute(props: any) {
+  const { user } = useAuth();
+  
+  if (user && user.role !== "admin") {
+    return <NotFound />;
+  }
+  
+  return <ProtectedRoute component={AdminDashboard} {...props} />;
+}
+
 
 function Router() {
   // Carregar e aplicar tema do usuário
@@ -237,6 +248,7 @@ function Router() {
         <Route path="/premium/sucesso" component={PremiumSucessoRoute} />
         <Route path="/apoie-a-missao" component={ApoieMissaoRoute} />
         <Route path="/redefinir-senha" component={ResetPassword} />
+        <Route path="/admin" component={ProtectedAdminRoute} />
         <Route path="/privacidade" component={Privacy} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
@@ -254,7 +266,8 @@ function AppShell() {
     location === "/redefinir-senha" ||
     location === "/privacidade" ||
     location === "/premium" ||
-    location === "/premium/sucesso";
+    location === "/premium/sucesso" ||
+    location === "/admin";
 
   return (
     <>

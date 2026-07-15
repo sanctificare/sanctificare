@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown, HeartHandshake } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown, HeartHandshake, Shield } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
@@ -200,6 +200,18 @@ export default function AppNav() {
                         <span>Apoie a Missão</span>
                       </Link>
                     </DropdownMenuItem>
+
+                    {user?.role === "admin" && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link href="/admin" className="flex items-center gap-2 text-amber-500 hover:text-amber-400">
+                            <Shield size={14} />
+                            <span>Painel Admin</span>
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
 
                     <DropdownMenuSeparator />
                     <DropdownMenuItem

@@ -4,7 +4,7 @@ import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./_
 import { ENV } from "./_core/env";
 import { systemRouter } from "./_core/systemRouter";
 
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod/v4";
 import { TRPCError } from "@trpc/server";
 import { sdk } from "./_core/sdk";
@@ -47,6 +47,11 @@ import {
   createSubscription,
   cancelSubscription,
   getActiveSubscription,
+  getAdminStats,
+  getAdminUsersList,
+  getAdminUserDetail,
+  toggleUserPremiumStatus,
+  getAdminRegistrationGrowth,
   getDb,
 } from "./db";
 import { subscriptions } from "../drizzle/schema";
@@ -129,6 +134,83 @@ function getPublicTrpcErrorMessage(error: unknown, fallback: string): string {
 
 export const appRouter = router({
   system: systemRouter,
+
+  admin: router({
+    getStats: adminProcedure.query(async () => {
+      try {
+        return await getAdminStats();
+      } catch (err: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: getPublicTrpcErrorMessage(err, "Falha ao carregar estatísticas.")
+        });
+      }
+    }),
+
+    getUsersList: adminProcedure
+      .input(z.object({
+        search: z.string().optional(),
+        limit: z.number().default(20),
+        offset: z.number().default(0),
+      }))
+      .query(async ({ input }) => {
+        try {
+          return await getAdminUsersList(input.search, input.limit, input.offset);
+        } catch (err: any) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao buscar usuários.")
+          });
+        }
+      }),
+
+    getUserDetail: adminProcedure
+      .input(z.object({
+        userId: z.number()
+      }))
+      .query(async ({ input }) => {
+        try {
+          const detail = await getAdminUserDetail(input.userId);
+          if (!detail) {
+            throw new TRPCError({ code: "NOT_FOUND", message: "Usuário não encontrado." });
+          }
+          return detail;
+        } catch (err: any) {
+          if (err instanceof TRPCError) throw err;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao buscar detalhes do usuário.")
+          });
+        }
+      }),
+
+    togglePremium: adminProcedure
+      .input(z.object({
+        userId: z.number(),
+        grant: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          return await toggleUserPremiumStatus(input.userId, input.grant);
+        } catch (err: any) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao alterar status de premium.")
+          });
+        }
+      }),
+
+    getRegistrationGrowth: adminProcedure.query(async () => {
+      try {
+        return await getAdminRegistrationGrowth();
+      } catch (err: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: getPublicTrpcErrorMessage(err, "Falha ao buscar crescimento de registros.")
+        });
+      }
+    }),
+  }),
 
   subscriptions: router({
     get: protectedProcedure

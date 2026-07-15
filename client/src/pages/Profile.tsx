@@ -4,6 +4,7 @@ import { getLoginUrl, isMobileApp } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { User, Calendar, Clock, ChevronRight, Bell, Lock, LogOut, Trash2, FileText, Key, AlertTriangle, Crown, HeartHandshake } from "lucide-react";
 import { Link } from "wouter";
+import AdminQuickPortal from "@/components/AdminQuickPortal";
 import { Heart } from "@/components/HeartIcon";
 import { getPrayerArt } from "@/lib/cardArt";
 import { Switch } from "@/components/ui/switch";
@@ -545,6 +546,8 @@ export default function Profile() {
               </Button>
             </div>
           </div>
+
+          {user?.role === "admin" && <AdminQuickPortal />}
         </div>
       </main>
     </div>
