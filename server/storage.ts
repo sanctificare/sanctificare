@@ -18,6 +18,10 @@ let _s3Client: S3Client | null = null;
 function getR2Client(): S3Client {
   if (_s3Client) return _s3Client;
 
+  if (process.env.NODE_ENV !== "production") {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  }
+
   if (!ENV.r2AccountId || !ENV.r2AccessKeyId || !ENV.r2SecretAccessKey) {
     throw new Error(
       "R2 config missing: set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, and R2_SECRET_ACCESS_KEY in .env"
