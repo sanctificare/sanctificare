@@ -282,6 +282,11 @@ router.post("/forgot-password", async (req, res) => {
 
 router.get("/validate-reset-token", async (req, res) => {
   try {
+    const rateKey = getRequestRateKey(req);
+    if (!authRateLimiter.allow(`validate-token:${rateKey}`, 10)) {
+      return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
+    }
+
     const token = req.query.token as string;
     if (!token) {
       return res.status(400).json({ error: "Token é obrigatório" });
@@ -296,6 +301,11 @@ router.get("/validate-reset-token", async (req, res) => {
 
 router.post("/reset-password", async (req, res) => {
   try {
+    const rateKey = getRequestRateKey(req);
+    if (!authRateLimiter.allow(`reset-password:${rateKey}`, 8)) {
+      return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
+    }
+
     const { token, password } = req.body;
     if (!token || !password || password.length < 8) {
       return res.status(400).json({ error: "Token e senha com pelo menos 8 caracteres são obrigatórios" });

@@ -40,12 +40,12 @@ function sanitizeAppPath(value: string | undefined, fallback = "/dashboard") {
 }
 
 function encodeOAuthState(payload: OAuthStatePayload) {
-  return btoa(JSON.stringify(payload));
+  return Buffer.from(JSON.stringify(payload)).toString("base64url");
 }
 
 function decodeOAuthState(state: string): OAuthStatePayload | null {
   try {
-    const decoded = atob(state);
+    const decoded = Buffer.from(state, "base64url").toString("utf8");
     const parsed = JSON.parse(decoded) as Partial<OAuthStatePayload>;
     if (
       parsed &&

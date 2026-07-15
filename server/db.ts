@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { eq, desc, and, or, sql, gt, gte, isNull, ne, inArray } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -1196,8 +1197,13 @@ export async function recordCandlePrayer(candleId: number, userId: number) {
 
 // ─── Password Reset Tokens ────────────────────────────────────────────────────
 
+function hashResetToken(token: string): string {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
 /**
  * Cria um token de redefinição de senha (TTL: 1 hora).
+ * Invalida automaticamente quaisquer tokens ativos anteriores do mesmo usuário.
  */
 export async function createPasswordResetToken(
   userId: number,
@@ -1206,9 +1212,21 @@ export async function createPasswordResetToken(
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
-  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // +1 hora
+  // Invalida quaisquer tokens ativos anteriores deste usuário
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(
+      and(
+        eq(passwordResetTokens.userId, userId),
+        isNull(passwordResetTokens.usedAt)
+      )
+    );
 
-  await db.insert(passwordResetTokens).values({ userId, token, expiresAt });
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // +1 hora
+  const tokenHash = hashResetToken(token);
+
+  await db.insert(passwordResetTokens).values({ userId, token: tokenHash, expiresAt });
 }
 
 /**
@@ -1221,12 +1239,14 @@ export async function validatePasswordResetToken(
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
+  const tokenHash = hashResetToken(token);
+
   const rows = await db
     .select()
     .from(passwordResetTokens)
     .where(
       and(
-        eq(passwordResetTokens.token, token),
+        eq(passwordResetTokens.token, tokenHash),
         isNull(passwordResetTokens.usedAt),
         gt(passwordResetTokens.expiresAt, new Date())
       )
@@ -1249,11 +1269,13 @@ export async function consumePasswordResetToken(
   const userId = await validatePasswordResetToken(token);
   if (!userId) return false;
 
+  const tokenHash = hashResetToken(token);
+
   // Marca o token enviado como usado
   await db
     .update(passwordResetTokens)
     .set({ usedAt: new Date() })
-    .where(eq(passwordResetTokens.token, token));
+    .where(eq(passwordResetTokens.token, tokenHash));
 
   // Atualiza a senha
   await db
