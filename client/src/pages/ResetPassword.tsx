@@ -12,7 +12,7 @@ import { getApiBaseUrl } from "@/const";
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 async function fetchValidateToken({ queryKey }: any) {
-  const [_, token] = queryKey;
+  const token = queryKey[2];
   const base = getApiBaseUrl();
   const res = await fetch(`${base}/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`, {
     credentials: "include",
