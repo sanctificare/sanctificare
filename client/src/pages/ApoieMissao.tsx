@@ -324,7 +324,7 @@ export default function ApoieMissao() {
             Doar com PIX
           </Button>
 
-          {/* Chave PIX Direta */}
+          {/* Chave PIX Direta - Ocultado a pedido do usuário
           <div className="mt-4 flex items-center justify-between bg-white/5 rounded-xl px-4 py-2.5 border border-white/5">
             <div className="text-left">
               <span className="text-[10px] text-slate-400 block uppercase tracking-wider">Chave PIX E-mail</span>
@@ -337,6 +337,7 @@ export default function ApoieMissao() {
               {copiedKey ? "Copiada" : "Copiar Chave"}
             </button>
           </div>
+          */}
 
           {/* Informativo */}
           <div className="mt-4 flex items-start gap-2 text-left bg-blue-500/5 border border-blue-500/10 rounded-xl p-3">
