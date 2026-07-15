@@ -276,6 +276,10 @@ export default function Liturgy() {
   const [isMuted, setIsMuted] = useState(false);
   const [playingUrl, setPlayingUrl] = useState("");
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [shareData, setShareData] = useState({
+    title: "Salmo Cantado",
+    description: "Ouça o Salmo Cantado da Liturgia de hoje."
+  });
 
   useEffect(() => {
     let active = true;
@@ -482,14 +486,41 @@ export default function Liturgy() {
       isMobileApp() ||
       (typeof navigator !== "undefined" &&
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    const title = liturgy?.psalm?.referencia || "Salmo Responsorial";
+    const text = `Ouça o Salmo Cantado da Liturgia de hoje (${formattedDate}) no Sanctificare: ${window.location.href}`;
     if (isMobile) {
       if (typeof window === "undefined") return;
-      const pageUrl = window.location.href;
       await shareText({
-        title: "Salmo Cantado",
-        text: `Ouça o Salmo Cantado da Liturgia de hoje no Sanctificare: ${pageUrl}`,
+        title,
+        text,
       });
     } else {
+      setShareData({
+        title,
+        description: `Versão cantada do salmo ${liturgy?.psalm?.referencia || "de hoje"}.`,
+      });
+      setIsShareOpen(true);
+    }
+  };
+
+  const handleShareLiturgy = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    const title = liturgy?.celebration || "Liturgia Diária";
+    const text = `Ouça as Leituras e Reflexão da Liturgia Diária de hoje (${formattedDate}) no Sanctificare: ${window.location.href}`;
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      await shareText({
+        title,
+        text,
+      });
+    } else {
+      setShareData({
+        title,
+        description: `Leituras e Reflexão da Liturgia Diária de hoje (${formattedDate}).`,
+      });
       setIsShareOpen(true);
     }
   };
@@ -794,6 +825,14 @@ export default function Liturgy() {
                       </button>
 
                       <button
+                        onClick={handleShareLiturgy}
+                        className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                        title="Compartilhar áudio"
+                      >
+                        <Share2 size={15} />
+                      </button>
+
+                      <button
                         onClick={togglePlay}
                         className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
                         title={isPlaying ? "Pausar" : "Reproduzir"}
@@ -1007,8 +1046,8 @@ export default function Liturgy() {
       <ShareModal
         isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}
-        title="Salmo Cantado"
-        description="Ouça o Salmo Cantado da Liturgia de hoje."
+        title={shareData.title}
+        description={shareData.description}
         url={typeof window !== "undefined" ? window.location.href : ""}
       />
     </div>

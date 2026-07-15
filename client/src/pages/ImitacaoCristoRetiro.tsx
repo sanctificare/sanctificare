@@ -1,13 +1,15 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "wouter";
-import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown, Loader2 } from "lucide-react";
+import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown, Loader2, Share2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IMITACAO_PILULAS } from "@/data/imitacao-pilulas";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import { getLoginUrl } from "@/const";
+import { getLoginUrl, isMobileApp } from "@/const";
+import { shareText } from "@/lib/share";
+import ShareModal from "@/components/ShareModal";
 
 export default function ImitacaoCristoRetiro() {
   const { user, isAuthenticated, refresh } = useAuth();
@@ -75,6 +77,7 @@ export default function ImitacaoCristoRetiro() {
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const selected = useMemo(
@@ -149,6 +152,24 @@ export default function ImitacaoCristoRetiro() {
       const newTime = Math.max(audioRef.current.currentTime - 10, 0);
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
+    }
+  };
+
+  const handleShare = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    const title = `${selected.title}`;
+    const text = `Ouça "${selected.title}" do Retiro Imitação de Cristo no Sanctificare: ${window.location.href}`;
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      await shareText({
+        title,
+        text,
+      });
+    } else {
+      setIsShareOpen(true);
     }
   };
 
@@ -472,6 +493,15 @@ export default function ImitacaoCristoRetiro() {
                             <RotateCw size={16} />
                           </button>
 
+                          {/* Share button */}
+                          <button
+                            onClick={handleShare}
+                            className="text-slate-300 hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors cursor-pointer"
+                            title="Compartilhar áudio"
+                          >
+                            <Share2 size={16} />
+                          </button>
+
                           {/* Volume Mute/Unmute */}
                           <button
                             onClick={toggleMute}
@@ -576,6 +606,14 @@ export default function ImitacaoCristoRetiro() {
           </aside>
         </div>
       </main>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title={selected.title}
+        description={selected.description}
+        url={typeof window !== "undefined" ? window.location.href : ""}
+      />
     </div>
   );
 }

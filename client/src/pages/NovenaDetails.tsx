@@ -1,10 +1,12 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { applyImageFallback, getLoginUrl, resolveR2Redirect } from "@/const";
+import { applyImageFallback, getLoginUrl, resolveR2Redirect, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
-import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX, X, PartyPopper, Minus, Plus } from "lucide-react";
+import { Crown, Lock, CheckCircle2, ArrowLeft, Info, Headphones, Play, Pause, RotateCcw, Volume2, VolumeX, X, PartyPopper, Minus, Plus, Share2 } from "lucide-react";
+import { shareText } from "@/lib/share";
+import ShareModal from "@/components/ShareModal";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { Link, useRoute } from "wouter";
 import { Heart } from "@/components/HeartIcon";
@@ -181,6 +183,7 @@ export default function NovenaDetails() {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   // Resolve audio URL
   useEffect(() => {
@@ -273,6 +276,24 @@ export default function NovenaDetails() {
     audio.currentTime = 0;
     setCurrentTime(0);
     audio.play().then(() => setIsPlaying(true));
+  };
+
+  const handleShare = async () => {
+    const isMobile =
+      isMobileApp() ||
+      (typeof navigator !== "undefined" &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    const title = `${selectedNovena?.name || "Novena"} - Dia ${safeDay}`;
+    const text = `Ouça o Dia ${safeDay} da ${selectedNovena?.name || "Novena"} no Sanctificare: ${window.location.href}`;
+    if (isMobile) {
+      if (typeof window === "undefined") return;
+      await shareText({
+        title,
+        text,
+      });
+    } else {
+      setIsShareOpen(true);
+    }
   };
 
   // Helper to format track timings
@@ -807,6 +828,14 @@ export default function NovenaDetails() {
                             </button>
 
                             <button
+                              onClick={handleShare}
+                              className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                              title="Compartilhar áudio"
+                            >
+                              <Share2 size={15} />
+                            </button>
+
+                            <button
                               onClick={togglePlay}
                               className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
                               title={isPlaying ? "Pausar" : "Reproduzir"}
@@ -1047,6 +1076,14 @@ export default function NovenaDetails() {
           </button>
         </div>
       )}
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title={`${selectedNovena?.name || "Novena"} - Dia ${safeDay}`}
+        description={`Ouça o Dia ${safeDay} da ${selectedNovena?.name || "Novena"} no Sanctificare.`}
+        url={typeof window !== "undefined" ? window.location.href : ""}
+      />
     </div>
   );
 }
