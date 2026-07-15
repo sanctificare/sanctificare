@@ -28,6 +28,17 @@ export default function ShareModal({
   url,
   artworkUrl,
 }: ShareModalProps) {
+  const isLogo = useMemo(() => {
+    const artUrl = artworkUrl || FALLBACK_ARTWORK_URL;
+    const lower = artUrl.toLowerCase();
+    return (
+      lower.includes("logo-sanctificare") ||
+      lower.includes("logo_sanctificare") ||
+      lower.includes("sanctificare-logo") ||
+      lower.includes("logo")
+    );
+  }, [artworkUrl]);
+
   const shareTextContent = useMemo(() => {
     return `${description || `Estou ouvindo "${title}" no Sanctificare.`}`;
   }, [title, description]);
@@ -105,7 +116,9 @@ export default function ShareModal({
           <img
             src={artworkUrl || FALLBACK_ARTWORK_URL}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            className={`w-full h-full transition-transform duration-500 hover:scale-105 ${
+              isLogo ? "object-contain p-4" : "object-cover"
+            }`}
             onError={(e) => {
               (e.target as HTMLImageElement).src = FALLBACK_ARTWORK_URL;
             }}
