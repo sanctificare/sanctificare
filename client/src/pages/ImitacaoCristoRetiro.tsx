@@ -155,22 +155,8 @@ export default function ImitacaoCristoRetiro() {
     }
   };
 
-  const handleShare = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    const title = `${selected.title}`;
-    const text = `Ouça "${selected.title}" do Retiro Imitação de Cristo no Sanctificare: ${window.location.href}`;
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      await shareText({
-        title,
-        text,
-      });
-    } else {
-      setIsShareOpen(true);
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   const toggleMute = () => {

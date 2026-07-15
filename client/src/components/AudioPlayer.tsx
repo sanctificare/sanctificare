@@ -326,21 +326,8 @@ export default function AudioPlayer({
     if (nextVolume > 0) setIsMuted(false);
   };
 
-  const handleShare = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      const pageUrl = window.location.href;
-      await shareText({
-        title,
-        text: `${description || `Estou ouvindo "${title}" no Sanctificare.`} ${pageUrl}`,
-      });
-    } else {
-      setIsShareOpen(true);
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   const toggleMute = () => {

@@ -278,22 +278,8 @@ export default function NovenaDetails() {
     audio.play().then(() => setIsPlaying(true));
   };
 
-  const handleShare = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    const title = `${selectedNovena?.name || "Novena"} - Dia ${safeDay}`;
-    const text = `Ouça o Dia ${safeDay} da ${selectedNovena?.name || "Novena"} no Sanctificare: ${window.location.href}`;
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      await shareText({
-        title,
-        text,
-      });
-    } else {
-      setIsShareOpen(true);
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   // Helper to format track timings

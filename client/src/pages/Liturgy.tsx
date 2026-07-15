@@ -481,48 +481,22 @@ export default function Liturgy() {
     audio.play().then(() => setIsPlaying(true));
   };
 
-  const handleSharePsalm = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  const handleSharePsalm = () => {
     const title = liturgy?.psalm?.referencia || "Salmo Responsorial";
-    const text = `Ouça o Salmo Cantado da Liturgia de hoje (${formattedDate}) no Sanctificare: ${window.location.href}`;
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      await shareText({
-        title,
-        text,
-      });
-    } else {
-      setShareData({
-        title,
-        description: `Versão cantada do salmo ${liturgy?.psalm?.referencia || "de hoje"}.`,
-      });
-      setIsShareOpen(true);
-    }
+    setShareData({
+      title,
+      description: `Versão cantada do salmo ${liturgy?.psalm?.referencia || "de hoje"}.`,
+    });
+    setIsShareOpen(true);
   };
 
-  const handleShareLiturgy = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  const handleShareLiturgy = () => {
     const title = liturgy?.celebration || "Liturgia Diária";
-    const text = `Ouça as Leituras e Reflexão da Liturgia Diária de hoje (${formattedDate}) no Sanctificare: ${window.location.href}`;
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      await shareText({
-        title,
-        text,
-      });
-    } else {
-      setShareData({
-        title,
-        description: `Leituras e Reflexão da Liturgia Diária de hoje (${formattedDate}).`,
-      });
-      setIsShareOpen(true);
-    }
+    setShareData({
+      title,
+      description: `Leituras e Reflexão da Liturgia Diária de hoje (${formattedDate}).`,
+    });
+    setIsShareOpen(true);
   };
 
   const formatTime = (seconds: number): string => {

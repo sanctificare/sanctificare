@@ -9,6 +9,8 @@ import { Link2, Mail, MoreHorizontal } from "lucide-react";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
 
+import { isMobileApp } from "@/const";
+
 interface ShareModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -100,7 +102,7 @@ export default function ShareModal({
     }
   };
 
-  const hasNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+  const hasNativeShare = (typeof navigator !== "undefined" && !!navigator.share) || isMobileApp();
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

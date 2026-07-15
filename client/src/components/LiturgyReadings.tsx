@@ -176,21 +176,8 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
     }
   };
 
-  const handleShare = async () => {
-    const isMobile =
-      isMobileApp() ||
-      (typeof navigator !== "undefined" &&
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    if (isMobile) {
-      if (typeof window === "undefined") return;
-      const pageUrl = window.location.href;
-      await shareText({
-        title: "Salmo Cantado",
-        text: `Ouça o Salmo Cantado da Liturgia de hoje no Sanctificare: ${pageUrl}`,
-      });
-    } else {
-      setIsShareOpen(true);
-    }
+  const handleShare = () => {
+    setIsShareOpen(true);
   };
 
   useEffect(() => {
