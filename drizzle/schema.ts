@@ -337,3 +337,36 @@ export const userState = pgTable(
 
 export type UserState = typeof userState.$inferSelect;
 export type InsertUserState = typeof userState.$inferInsert;
+
+// Central de feedback de suporte
+export const userFeedback = pgTable("user_feedback", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").references(() => users.id, { onDelete: "cascade" }),
+  email: varchar("email", { length: 320 }).notNull(),
+  name: text("name"),
+  subject: varchar("subject", { length: 200 }).notNull(),
+  message: text("message").notNull(),
+  resolved: boolean("resolved").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  resolvedIdx: index("user_feedback_resolved_idx").on(table.resolved),
+  createdIdx: index("user_feedback_created_idx").on(table.createdAt),
+}));
+
+export type UserFeedback = typeof userFeedback.$inferSelect;
+export type InsertUserFeedback = typeof userFeedback.$inferInsert;
+
+// Orações customizadas cadastradas pelo administrador
+export const customPrayers = pgTable("custom_prayers", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 128 }).notNull(),
+  content: text("content").notNull(),
+  category: varchar("category", { length: 64 }).default("geral").notNull(),
+  isPremium: boolean("isPremium").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export type CustomPrayer = typeof customPrayers.$inferSelect;
+export type InsertCustomPrayer = typeof customPrayers.$inferInsert;
+

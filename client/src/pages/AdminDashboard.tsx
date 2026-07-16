@@ -205,6 +205,23 @@ export default function AdminDashboard() {
             <div className="w-10 h-10 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
             <span className="text-sm text-slate-400 animate-pulse font-medium">Carregando painel de administração...</span>
           </div>
+        ) : statsQuery.isError || growthQuery.isError ? (
+          <div className="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center">
+            <div className="text-red-500 text-3xl">⚠️</div>
+            <h3 className="text-lg font-serif font-bold text-amber-500">Erro ao Carregar o Painel</h3>
+            <p className="text-xs text-slate-400 max-w-md">
+              {statsQuery.error?.message || growthQuery.error?.message || "Não foi possível conectar ao banco de dados ou autenticar."}
+            </p>
+            <Button
+              onClick={() => {
+                statsQuery.refetch();
+                growthQuery.refetch();
+              }}
+              className="mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold"
+            >
+              Tentar Novamente
+            </Button>
+          </div>
         ) : (
           <div className="flex-1 p-6 md:p-8 space-y-8 max-w-7xl w-full mx-auto">
             {/* ── Welcome Heading ── */}
@@ -343,7 +360,7 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent className="p-0">
                       <div className="divide-y divide-slate-800/80">
-                        {statsQuery.data?.recentUsers.map((user) => (
+                        {(statsQuery.data?.recentUsers || []).map((user) => (
                           <div key={user.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-800/20 transition-colors">
                             <div>
                               <p className="text-sm font-semibold text-slate-200">{user.name || "Sem Nome"}</p>
@@ -367,7 +384,7 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent className="p-0">
                       <div className="divide-y divide-slate-800/80">
-                        {statsQuery.data?.recentActivities.map((log) => (
+                        {(statsQuery.data?.recentActivities || []).map((log) => (
                           <div key={log.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-800/20 transition-colors">
                             <div className="flex-1 min-w-0 pr-4">
                               <p className="text-sm font-semibold text-slate-200 truncate">{log.prayerName}</p>
