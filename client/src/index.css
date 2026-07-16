@@ -705,14 +705,27 @@
   }
 
   /* Layout de tela cheia do Rosário Guiado */
-  .rosary-fullscreen-layout {
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+  @media (max-width: 768px) {
+    .rosary-fullscreen-layout {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .rosary-fullscreen-layout {
+      min-height: 100vh;
+      display: block;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      padding-bottom: 2rem;
+    }
   }
 
   .rosary-chain {

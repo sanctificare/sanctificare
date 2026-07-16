@@ -569,28 +569,28 @@ export default function RosaryGuided() {
 
     return (
       <section
-        className="flex flex-col flex-1 min-h-0 rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in overflow-hidden"
+        className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in md:overflow-visible overflow-hidden"
         style={prayerPanelStyle}
       >
         {/* Cabeçalho da oração – compacto no mobile */}
         <div className="text-center px-4 pt-3 pb-1 md:pt-6 md:pb-3 shrink-0">
-          <p className="text-[10px] xs:text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5">{display.subtitle}</p>
+          <p className="text-[10px] xs:text-xs md:text-sm text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1.5">{display.subtitle}</p>
           <h2 className="font-display text-base xs:text-xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
           {intention.trim() && (
-            <p className="mt-1 font-serif text-[10px] xs:text-xs italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
+            <p className="mt-1 md:mt-2 font-serif text-[10px] xs:text-xs md:text-sm italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
           )}
         </div>
 
-        {/* Terço interativo — ocupa todo o espaço disponível */}
-        <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-2">
+        {/* Terço interativo — ocupa todo o espaço disponível no mobile, block no desktop */}
+        <div className="flex-1 min-h-0 md:flex-initial md:block md:my-6 flex flex-col items-center justify-center px-2">
           <RosaryBoard step={step} onSelectStep={handleSelectStep} mysteryImageUrl={centerMysteryImage} />
-          <p className="mt-1 text-center text-[9px] xs:text-[10px] text-muted-foreground line-clamp-1 px-4">
+          <p className="mt-1 text-center text-[9px] xs:text-[10px] md:text-xs text-muted-foreground line-clamp-1 px-4">
             Toque em qualquer conta ou utilize os botões abaixo para navegar.
           </p>
         </div>
 
-        {/* Controles de navegação + player — fixos na base do card */}
-        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-6 md:pb-5">
+        {/* Controles de navegação + player — fixos na base no mobile, block no desktop */}
+        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-0 md:pb-0 md:pt-0 md:mb-6 md:gap-4">
           <div className="flex gap-3">
             <Button
               variant="outline"
@@ -611,10 +611,10 @@ export default function RosaryGuided() {
         </div>
 
         {display.meditation && (
-          <div className="shrink-0 mx-3 mb-3 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-6">
-            <h3 className="font-display text-base xs:text-lg font-bold text-[oklch(0.22_0.07_260)] mb-1">{display.text}</h3>
-            <p className="text-[10px] font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1">Meditação</p>
-            <p className="font-serif text-xs xs:text-sm leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
+          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-8 mt-3">
+            <h3 className="font-display text-base xs:text-lg md:text-xl font-bold text-[oklch(0.22_0.07_260)] mb-1 md:mb-3">{display.text}</h3>
+            <p className="text-[10px] md:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1 md:mb-2">Meditação</p>
+            <p className="font-serif text-xs xs:text-sm md:text-base leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
           </div>
         )}
       </section>
@@ -683,14 +683,14 @@ export default function RosaryGuided() {
       </header>
 
       {/* Conteúdo principal */}
-      <main className={`flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 ${
+      <main className={`flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 md:flex-initial md:block md:overflow-visible md:p-0 md:pb-8 ${
         (step.type === "intro" && !autoRosaryActive) ? "overflow-y-auto" : "overflow-hidden"
       }`}>
         {step.type === "intro" && !autoRosaryActive && renderPreparation()}
         {step.type === "complete" && renderCompletion()}
 
         {(step.type !== "complete" && (step.type !== "intro" || autoRosaryActive)) && (
-          <div className="flex flex-col flex-1 min-h-0 max-w-2xl w-full mx-auto">
+          <div className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto max-w-2xl w-full mx-auto">
             {renderPrayer()}
           </div>
         )}
