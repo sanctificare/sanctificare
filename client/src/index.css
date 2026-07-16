@@ -707,7 +707,8 @@
   /* Layout de tela cheia do Rosário Guiado */
   @media (max-width: 768px) {
     .rosary-fullscreen-layout {
-      height: 100dvh;
+      height: calc(100vh - var(--mobile-bottom-nav-height) - var(--safe-area-bottom));
+      height: calc(100dvh - var(--mobile-bottom-nav-height) - var(--safe-area-bottom));
       display: flex;
       flex-direction: column;
       overflow: hidden;
