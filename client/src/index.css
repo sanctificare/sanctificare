@@ -1056,8 +1056,8 @@
        * portrait seja SEMPRE respeitado, mesmo quando max-height conflitaria
        * com width:100% (bug do CSS aspect-ratio).
        */
-      height: min(78vh, 38rem);
-      width: calc(min(78vh, 38rem) * (380 / 520));
+      height: min(58vh, 26rem);
+      width: calc(min(58vh, 26rem) * (380 / 520));
       max-width: none;
       max-height: none;
       aspect-ratio: 380 / 520; /* mantido como referência visual */
@@ -1117,8 +1117,8 @@
   /* Desktop XXL (1200px+) - Board maior, mesma abordagem height-first */
   @media (min-width: 1200px) {
     .rosary-board {
-      height: min(82vh, 46rem);
-      width: calc(min(82vh, 46rem) * (380 / 520));
+      height: min(62vh, 30rem);
+      width: calc(min(62vh, 30rem) * (380 / 520));
     }
 
     .rosary-core-image {

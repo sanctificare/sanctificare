@@ -573,38 +573,38 @@ export default function RosaryGuided() {
         style={prayerPanelStyle}
       >
         {/* Cabeçalho da oração – compacto no mobile */}
-        <div className="text-center px-4 pt-3 pb-1 md:pt-6 md:pb-3 lg:pt-8 lg:pb-4 xl:pt-10 xl:pb-6 shrink-0">
-          <p className="text-[10px] xs:text-xs md:text-sm lg:text-base xl:text-lg text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1.5 lg:mb-2 xl:mb-3">{display.subtitle}</p>
-          <h2 className="font-display text-base xs:text-xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
+        <div className="text-center px-4 pt-3 pb-1 md:pt-4 md:pb-2 lg:pt-5 lg:pb-2 xl:pt-6 xl:pb-3 shrink-0">
+          <p className="text-[10px] xs:text-xs md:text-xs lg:text-sm xl:text-sm text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1 lg:mb-1.5 xl:mb-2">{display.subtitle}</p>
+          <h2 className="font-display text-base xs:text-xl md:text-2xl lg:text-3xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
           {intention.trim() && (
-            <p className="mt-1 md:mt-2 lg:mt-3 xl:mt-4 font-serif text-[10px] xs:text-xs md:text-sm lg:text-base xl:text-lg italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
+            <p className="mt-1 md:mt-1.5 lg:mt-2 font-serif text-[10px] xs:text-xs md:text-xs lg:text-sm italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
           )}
         </div>
 
         {/* Terço interativo — ocupa todo o espaço disponível no mobile, block no desktop */}
-        <div className="flex-1 min-h-0 md:flex-initial md:block md:my-6 lg:my-8 xl:my-12 flex flex-col items-center justify-center px-2">
+        <div className="flex-1 min-h-0 md:flex-initial md:block md:my-3 lg:my-4 xl:my-5 flex flex-col items-center justify-center px-2">
           <RosaryBoard step={step} onSelectStep={handleSelectStep} mysteryImageUrl={centerMysteryImage} />
-          <p className="mt-1 text-center text-[9px] xs:text-[10px] md:text-xs lg:text-sm xl:text-base text-muted-foreground line-clamp-1 px-4">
+          <p className="mt-1 text-center text-[9px] xs:text-[10px] md:text-xs text-muted-foreground line-clamp-1 px-4">
             Toque em qualquer conta ou utilize os botões abaixo para navegar.
           </p>
         </div>
 
         {/* Controles de navegação + player — fixos na base no mobile, block no desktop */}
-        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-0 md:pb-0 md:pt-0 md:mb-6 md:gap-4 lg:mb-8 lg:gap-6 lg:px-6 xl:mb-12 xl:gap-8 xl:px-8">
-          <div className="flex gap-3">
+        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-4 md:pb-4 md:pt-0 md:mb-3 md:gap-2 lg:mb-4 lg:gap-3 lg:px-5 xl:mb-5 xl:gap-3 xl:px-6">
+          <div className="flex gap-2">
             <Button
               variant="outline"
-              className="flex-1 font-semibold text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl h-11 xs:h-12 lg:h-14 xl:h-16 bg-white"
+              className="flex-1 font-semibold text-xs xs:text-sm md:text-sm lg:text-sm xl:text-base h-11 xs:h-12 md:h-9 lg:h-10 xl:h-10 bg-white"
               onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
             >
-              <ChevronLeft size={16} className="mr-1 lg:mr-2 xl:mr-3" /> Anterior
+              <ChevronLeft size={14} className="mr-1" /> Anterior
             </Button>
             <Button
               variant="default"
-              className="flex-1 font-semibold text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl h-11 xs:h-12 lg:h-14 xl:h-16 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+              className="flex-1 font-semibold text-xs xs:text-sm md:text-sm lg:text-sm xl:text-base h-11 xs:h-12 md:h-9 lg:h-10 xl:h-10 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
               onClick={() => setStep((currentStep) => getNextStep(currentStep))}
             >
-              Próximo <ChevronRight size={16} className="ml-1 lg:ml-2 xl:ml-3" />
+              Próximo <ChevronRight size={14} className="ml-1" />
             </Button>
           </div>
           {renderAudioControls()}
