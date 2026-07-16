@@ -594,14 +594,14 @@ export default function RosaryGuided() {
           <div className="flex gap-3">
             <Button
               variant="outline"
-              className="flex-1 font-semibold text-xs h-10 bg-white"
+              className="flex-1 font-semibold text-xs xs:text-sm h-11 xs:h-12 bg-white"
               onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
             >
               <ChevronLeft size={16} className="mr-1" /> Anterior
             </Button>
             <Button
               variant="default"
-              className="flex-1 font-semibold text-xs h-10 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+              className="flex-1 font-semibold text-xs xs:text-sm h-11 xs:h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
               onClick={() => setStep((currentStep) => getNextStep(currentStep))}
             >
               Próximo <ChevronRight size={16} className="ml-1" />
@@ -655,25 +655,27 @@ export default function RosaryGuided() {
       }}
     >
       {/* Topo: botão voltar + barra de progresso */}
-      <header className="shrink-0 flex flex-row items-center gap-2 px-3 py-2 md:px-6 md:py-4 bg-[oklch(0.12_0.04_260/0.72)] backdrop-blur-sm border-b border-white/10">
+      <header
+        className="shrink-0 flex flex-row items-center gap-2 px-3 pb-1 pt-2 md:px-6 md:pb-2 md:pt-4 bg-transparent pr-14 border-none"
+        style={{ paddingTop: "calc(0.5rem + var(--safe-area-top))" }}
+      >
         <Link href="/oracoes">
           <Button
             variant="outline"
             size="sm"
-            className="gap-1.5 bg-white/15 border-white/25 text-white hover:bg-white/25 shrink-0 px-2.5 h-8 text-xs"
+            className="w-9 h-9 p-0 flex items-center justify-center bg-white/80 border-white/20 text-foreground hover:bg-white/90 rounded-lg shadow-sm shrink-0"
           >
-            <ChevronLeft size={14} />
-            <span className="hidden xs:inline">Orações</span>
+            <ChevronLeft size={18} />
           </Button>
         </Link>
-        <div className="flex-1 min-w-0">
-          <div className="flex justify-between text-[10px] text-white/80 mb-0.5">
+        <div className="flex-1 min-w-0 rounded-full bg-white/72 backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-3 py-1.5 xs:px-4 xs:py-2">
+          <div className="flex justify-between text-[10px] text-[oklch(0.22_0.07_260)] mb-0.5">
             <span className="font-semibold truncate">{mysteries.name}</span>
             <span className="shrink-0 ml-2">{progress}%</span>
           </div>
-          <div className="h-1 bg-white/20 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-[oklch(0.88_0.01_260)] rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-[oklch(0.75_0.12_75)] to-[oklch(0.85_0.14_75)] rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.75_0.12_75)] rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
