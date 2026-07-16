@@ -1050,12 +1050,15 @@
   /* Desktop (1024px+) - Rosário ampliado para web */
   @media (min-width: 1024px) {
     .rosary-board {
-      max-width: 60rem;
-      max-height: min(85vh, 50rem);
+      /* Board mais compacto para que as contas fiquem visivelmente ao redor da imagem */
+      max-width: 38rem;
+      max-height: min(82vh, 44rem);
     }
 
     .rosary-core-image {
-      width: 84%;
+      /* Imagem menor para caber dentro do loop de contas (não cobrir as contas) */
+      width: 65%;
+      top: 33.5%;
       border: 4px solid oklch(0.84 0.04 92 / 0.86);
       box-shadow:
         0 14px 36px oklch(0.22 0.03 55 / 0.32),
@@ -1067,27 +1070,27 @@
     }
 
     .rosary-node--hm {
-      width: clamp(0.96rem, 6.8%, 1.48rem);
-      font-size: 0.74rem;
+      width: clamp(0.8rem, 5.6%, 1.24rem);
+      font-size: 0.68rem;
     }
 
     .rosary-node--of {
-      width: clamp(1.28rem, 8.8%, 2.08rem);
-      font-size: clamp(0.84rem, 2.6vw, 1.18rem);
+      width: clamp(1.1rem, 7.2%, 1.76rem);
+      font-size: clamp(0.74rem, 2.2vw, 1rem);
     }
 
     .rosary-node--medal {
-      width: clamp(1.76rem, 12.4%, 3.12rem);
-      font-size: clamp(1rem, 4vw, 1.56rem);
+      width: clamp(1.5rem, 10.2%, 2.56rem);
+      font-size: clamp(0.88rem, 3.2vw, 1.32rem);
     }
 
     .rosary-node--crucifix {
-      width: clamp(1.68rem, 10.6%, 2.64rem);
+      width: clamp(1.4rem, 8.8%, 2.2rem);
     }
 
     .rosary-chain-line {
-      stroke-width: 1.6;
-      stroke-dasharray: 1 6.4;
+      stroke-width: 1.5;
+      stroke-dasharray: 1 6.2;
     }
 
     .rosary-node.is-active {
@@ -1106,27 +1109,32 @@
   /* Desktop XXL (1400px+) - Rosário ainda maior */
   @media (min-width: 1400px) {
     .rosary-board {
-      max-width: 70rem;
-      max-height: min(88vh, 58rem);
+      max-width: 44rem;
+      max-height: min(88vh, 52rem);
+    }
+
+    .rosary-core-image {
+      width: 65%;
+      top: 33.5%;
     }
 
     .rosary-node--hm {
-      width: clamp(1.04rem, 7.4%, 1.68rem);
-      font-size: 0.82rem;
+      width: clamp(0.88rem, 6.2%, 1.44rem);
+      font-size: 0.76rem;
     }
 
     .rosary-node--of {
-      width: clamp(1.42rem, 9.6%, 2.32rem);
-      font-size: clamp(0.92rem, 2.8vw, 1.32rem);
+      width: clamp(1.2rem, 8.2%, 1.96rem);
+      font-size: clamp(0.82rem, 2.4vw, 1.16rem);
     }
 
     .rosary-node--medal {
-      width: clamp(1.96rem, 13.2%, 3.48rem);
-      font-size: clamp(1.08rem, 4.2vw, 1.76rem);
+      width: clamp(1.68rem, 11.2%, 2.96rem);
+      font-size: clamp(0.96rem, 3.6vw, 1.52rem);
     }
 
     .rosary-node--crucifix {
-      width: clamp(1.88rem, 11.2%, 2.96rem);
+      width: clamp(1.56rem, 9.6%, 2.52rem);
     }
 
     .rosary-core-title {
