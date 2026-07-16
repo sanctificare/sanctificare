@@ -1047,8 +1047,8 @@
     }
   }
 
-  /* Desktop (1024px+) - Rosário ampliado para web */
-  @media (min-width: 1024px) {
+  /* Desktop (800px+) - Rosário ampliado para web */
+  @media (min-width: 800px) {
     .rosary-board {
       /* Board mais compacto para que as contas fiquem visivelmente ao redor da imagem */
       max-width: 38rem;
@@ -1106,8 +1106,8 @@
     }
   }
 
-  /* Desktop XXL (1400px+) - Rosário ainda maior */
-  @media (min-width: 1400px) {
+  /* Desktop XXL (1200px+) - Rosário ainda maior */
+  @media (min-width: 1200px) {
     .rosary-board {
       max-width: 44rem;
       max-height: min(88vh, 52rem);
