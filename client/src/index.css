@@ -1085,7 +1085,7 @@
 
     /* Contas ligeiramente menores para dar mais espaçamento/respiro entre elas */
     .rosary-node--hm {
-      width: clamp(0.68rem, 4.5%, 1.05rem);
+      width: clamp(0.68rem, 4%, 1.05rem);
       font-size: 0.6rem;
     }
 
@@ -1134,7 +1134,7 @@
     }
 
     .rosary-node--hm {
-      width: clamp(0.74rem, 5.0%, 1.2rem);
+      width: clamp(0.74rem, 4.5%, 1.2rem);
       font-size: 0.66rem;
     }
 
