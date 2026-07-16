@@ -704,6 +704,17 @@
     filter: drop-shadow(0 14px 26px oklch(0.2 0.03 60 / 0.18));
   }
 
+  /* Layout de tela cheia do Rosário Guiado */
+  .rosary-fullscreen-layout {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
   .rosary-chain {
     position: absolute;
     inset: 0.4rem;
@@ -1007,8 +1018,11 @@
 
   @media (max-width: 640px) {
     .rosary-board {
-      max-width: 15.5rem;
-      max-height: min(39vh, 23rem);
+      /* No mobile: o board escala pela ALTURA disponível do flex-1, não pela largura */
+      height: 100%;
+      width: auto;
+      max-width: min(100%, calc(100vh * 380 / 520));
+      max-height: 100%;
     }
 
     .rosary-core-title {

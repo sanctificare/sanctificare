@@ -533,7 +533,7 @@ export default function RosaryGuided() {
 
   const renderAudioControls = () =>
     showAudio ? (
-      <div className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] p-3 xs:p-5 shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in">
+      <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in overflow-hidden">
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
           <audio
             key={`preload-aside-${currentAudioTrack + 1}`}
@@ -567,49 +567,52 @@ export default function RosaryGuided() {
 
     return (
       <section
-        className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-4 xs:p-5 sm:p-6 md:p-8 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in"
+        className="flex flex-col flex-1 min-h-0 rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in overflow-hidden"
         style={prayerPanelStyle}
       >
-        <div className="text-center mb-3 xs:mb-4 md:mb-6">
-          <p className="text-[10px] xs:text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 xs:mb-1.5">{display.subtitle}</p>
-          <h2 className="font-display text-lg xs:text-2xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)]">{display.title}</h2>
+        {/* Cabeçalho da oração – compacto no mobile */}
+        <div className="text-center px-4 pt-3 pb-1 md:pt-6 md:pb-3 shrink-0">
+          <p className="text-[10px] xs:text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5">{display.subtitle}</p>
+          <h2 className="font-display text-base xs:text-xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
           {intention.trim() && (
-            <p className="mt-1.5 font-serif text-[11px] xs:text-sm italic text-muted-foreground">Intenção: {intention}</p>
+            <p className="mt-1 font-serif text-[10px] xs:text-xs italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
           )}
         </div>
 
-        <div className="mb-3 xs:mb-4 md:mb-5">
+        {/* Terço interativo — ocupa todo o espaço disponível */}
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center px-2">
           <RosaryBoard step={step} onSelectStep={handleSelectStep} mysteryImageUrl={centerMysteryImage} />
-          <p className="mt-1.5 text-center text-[10px] xs:text-xs text-muted-foreground line-clamp-1">
+          <p className="mt-1 text-center text-[9px] xs:text-[10px] text-muted-foreground line-clamp-1 px-4">
             Toque em qualquer conta ou utilize os botões abaixo para navegar.
           </p>
         </div>
 
-        {/* Botões de navegação */}
-        <div className="flex gap-3 mt-2 xs:mt-3 md:mt-4">
-          <Button
-            variant="outline"
-            className="flex-1 font-semibold text-[11px] xs:text-xs h-10 xs:h-11 md:h-12 bg-white"
-            onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
-          >
-            <ChevronLeft size={16} className="mr-1" /> Anterior
-          </Button>
-          <Button
-            variant="default"
-            className="flex-1 font-semibold text-[11px] xs:text-xs h-10 xs:h-11 md:h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
-            onClick={() => setStep((currentStep) => getNextStep(currentStep))}
-          >
-            Próximo <ChevronRight size={16} className="ml-1" />
-          </Button>
+        {/* Controles de navegação + player — fixos na base do card */}
+        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-6 md:pb-5">
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              className="flex-1 font-semibold text-xs h-10 bg-white"
+              onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
+            >
+              <ChevronLeft size={16} className="mr-1" /> Anterior
+            </Button>
+            <Button
+              variant="default"
+              className="flex-1 font-semibold text-xs h-10 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+              onClick={() => setStep((currentStep) => getNextStep(currentStep))}
+            >
+              Próximo <ChevronRight size={16} className="ml-1" />
+            </Button>
+          </div>
+          {renderAudioControls()}
         </div>
 
-        <div className="mb-2 xs:mb-4 md:mb-7">{renderAudioControls()}</div>
-
         {display.meditation && (
-          <div className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-4 xs:p-5 sm:p-6 md:p-8 mt-3">
-            <h3 className="font-display text-lg xs:text-xl font-bold text-[oklch(0.22_0.07_260)] mb-2">{display.text}</h3>
-            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1.5">Meditação</p>
-            <p className="font-serif text-sm xs:text-base leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
+          <div className="shrink-0 mx-3 mb-3 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-6">
+            <h3 className="font-display text-base xs:text-lg font-bold text-[oklch(0.22_0.07_260)] mb-1">{display.text}</h3>
+            <p className="text-[10px] font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1">Meditação</p>
+            <p className="font-serif text-xs xs:text-sm leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
           </div>
         )}
       </section>
@@ -641,47 +644,50 @@ export default function RosaryGuided() {
   const audioSupport = getAudioSupportDisplay();
 
   return (
-    <div className="min-h-screen bg-[oklch(0.18_0.04_260)]">
-      <main
-        className="min-h-[calc(100vh-4rem)] bg-cover bg-center bg-fixed"
-        style={{
-          backgroundImage: `linear-gradient(180deg, oklch(0.12 0.04 260 / 0.74), oklch(0.97 0.01 85 / 0.92)), url(${ROSARY_IMG})`,
-        }}
-      >
-        <div className="container py-2 xs:py-4 md:py-8 px-3">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-row items-center gap-3 mb-3 md:mb-6">
-              <Link href="/oracoes">
-                <Button variant="outline" size="sm" className="gap-2 bg-white/85 border-[oklch(0.75_0.12_75/0.35)] shrink-0 px-2.5 xs:px-3 text-xs h-9">
-                  <ChevronLeft size={14} /> <span className="hidden xs:inline">Orações</span>
-                </Button>
-              </Link>
-              <div className="flex-1 rounded-full bg-white/72 backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-3 py-1.5 xs:px-4 xs:py-2.5">
-                <div className="flex justify-between text-[10px] xs:text-xs text-[oklch(0.22_0.07_260)] mb-1 xs:mb-2">
-                  <span className="font-semibold truncate max-w-[150px] xs:max-w-none">{mysteries.name}</span>
-                  <span>{progress}%</span>
-                </div>
-                <div className="h-1.5 xs:h-2 bg-[oklch(0.88_0.01_260)] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.75_0.12_75)] rounded-full transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {step.type === "intro" && !autoRosaryActive && renderPreparation()}
-            {step.type === "complete" && renderCompletion()}
-
-            {(step.type !== "complete" && (step.type !== "intro" || autoRosaryActive)) && (
-              <div className="max-w-2xl mx-auto">
-                {renderPrayer()}
-              </div>
-            )}
-
-
+    <div
+      className="rosary-fullscreen-layout bg-[oklch(0.18_0.04_260)]"
+      style={{
+        backgroundImage: `linear-gradient(180deg, oklch(0.12 0.04 260 / 0.74), oklch(0.97 0.01 85 / 0.92)), url(${ROSARY_IMG})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Topo: botão voltar + barra de progresso */}
+      <header className="shrink-0 flex flex-row items-center gap-2 px-3 py-2 md:px-6 md:py-4 bg-[oklch(0.12_0.04_260/0.72)] backdrop-blur-sm border-b border-white/10">
+        <Link href="/oracoes">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 bg-white/15 border-white/25 text-white hover:bg-white/25 shrink-0 px-2.5 h-8 text-xs"
+          >
+            <ChevronLeft size={14} />
+            <span className="hidden xs:inline">Orações</span>
+          </Button>
+        </Link>
+        <div className="flex-1 min-w-0">
+          <div className="flex justify-between text-[10px] text-white/80 mb-0.5">
+            <span className="font-semibold truncate">{mysteries.name}</span>
+            <span className="shrink-0 ml-2">{progress}%</span>
+          </div>
+          <div className="h-1 bg-white/20 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-[oklch(0.75_0.12_75)] to-[oklch(0.85_0.14_75)] rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
+      </header>
+
+      {/* Conteúdo principal */}
+      <main className="flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 overflow-hidden">
+        {step.type === "intro" && !autoRosaryActive && renderPreparation()}
+        {step.type === "complete" && renderCompletion()}
+
+        {(step.type !== "complete" && (step.type !== "intro" || autoRosaryActive)) && (
+          <div className="flex flex-col flex-1 min-h-0 max-w-2xl w-full mx-auto">
+            {renderPrayer()}
+          </div>
+        )}
       </main>
     </div>
   );
