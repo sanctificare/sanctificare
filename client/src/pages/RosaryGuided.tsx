@@ -590,7 +590,7 @@ export default function RosaryGuided() {
         </div>
 
         {/* Controles de navegação + player — fixos na base no mobile, block no desktop */}
-        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-4 md:pb-4 md:pt-0 md:mb-3 md:gap-2 lg:mb-4 lg:gap-3 lg:px-5 xl:mb-5 xl:gap-3 xl:px-6">
+        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-4 md:pb-4 md:pt-0 md:mb-3 md:gap-2 lg:mb-4 lg:gap-3 lg:px-5 xl:mb-5 xl:gap-3 xl:px-6 md:max-w-[480px] md:mx-auto w-full">
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -611,7 +611,7 @@ export default function RosaryGuided() {
         </div>
 
         {display.meditation && (
-          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-8 lg:p-10 xl:p-12 mt-3">
+          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-6 lg:p-6 xl:p-6 mt-3">
             <h3 className="font-display text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-1 md:mb-3 lg:mb-4 xl:mb-6">{display.text}</h3>
             <p className="text-[10px] md:text-xs lg:text-sm xl:text-base font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1 md:mb-2 lg:mb-3 xl:mb-4">Meditação</p>
             <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
@@ -690,7 +690,7 @@ export default function RosaryGuided() {
         {step.type === "complete" && renderCompletion()}
 
         {(step.type !== "complete" && (step.type !== "intro" || autoRosaryActive)) && (
-          <div className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto max-w-2xl lg:max-w-6xl xl:max-w-7xl w-full mx-auto">
+          <div className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto max-w-2xl w-full mx-auto">
             {renderPrayer()}
           </div>
         )}
