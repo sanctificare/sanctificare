@@ -573,48 +573,48 @@ export default function RosaryGuided() {
         style={prayerPanelStyle}
       >
         {/* Cabeçalho da oração – compacto no mobile */}
-        <div className="text-center px-4 pt-3 pb-1 md:pt-6 md:pb-3 lg:pt-8 lg:pb-4 shrink-0">
-          <p className="text-[10px] xs:text-xs md:text-sm lg:text-base text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1.5 lg:mb-2">{display.subtitle}</p>
-          <h2 className="font-display text-base xs:text-xl md:text-3xl lg:text-4xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
+        <div className="text-center px-4 pt-3 pb-1 md:pt-6 md:pb-3 lg:pt-8 lg:pb-4 xl:pt-10 xl:pb-6 shrink-0">
+          <p className="text-[10px] xs:text-xs md:text-sm lg:text-base xl:text-lg text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1.5 lg:mb-2 xl:mb-3">{display.subtitle}</p>
+          <h2 className="font-display text-base xs:text-xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
           {intention.trim() && (
-            <p className="mt-1 md:mt-2 lg:mt-3 font-serif text-[10px] xs:text-xs md:text-sm lg:text-base italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
+            <p className="mt-1 md:mt-2 lg:mt-3 xl:mt-4 font-serif text-[10px] xs:text-xs md:text-sm lg:text-base xl:text-lg italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
           )}
         </div>
 
         {/* Terço interativo — ocupa todo o espaço disponível no mobile, block no desktop */}
-        <div className="flex-1 min-h-0 md:flex-initial md:block md:my-6 lg:my-8 flex flex-col items-center justify-center px-2">
+        <div className="flex-1 min-h-0 md:flex-initial md:block md:my-6 lg:my-8 xl:my-12 flex flex-col items-center justify-center px-2">
           <RosaryBoard step={step} onSelectStep={handleSelectStep} mysteryImageUrl={centerMysteryImage} />
-          <p className="mt-1 text-center text-[9px] xs:text-[10px] md:text-xs lg:text-sm text-muted-foreground line-clamp-1 px-4">
+          <p className="mt-1 text-center text-[9px] xs:text-[10px] md:text-xs lg:text-sm xl:text-base text-muted-foreground line-clamp-1 px-4">
             Toque em qualquer conta ou utilize os botões abaixo para navegar.
           </p>
         </div>
 
         {/* Controles de navegação + player — fixos na base no mobile, block no desktop */}
-        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-0 md:pb-0 md:pt-0 md:mb-6 md:gap-4 lg:mb-8 lg:gap-6 lg:px-6">
+        <div className="shrink-0 px-3 pb-3 pt-1 flex flex-col gap-2 md:px-0 md:pb-0 md:pt-0 md:mb-6 md:gap-4 lg:mb-8 lg:gap-6 lg:px-6 xl:mb-12 xl:gap-8 xl:px-8">
           <div className="flex gap-3">
             <Button
               variant="outline"
-              className="flex-1 font-semibold text-xs xs:text-sm md:text-base h-11 xs:h-12 lg:h-14 bg-white"
+              className="flex-1 font-semibold text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl h-11 xs:h-12 lg:h-14 xl:h-16 bg-white"
               onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
             >
-              <ChevronLeft size={16} className="mr-1 lg:mr-2" /> Anterior
+              <ChevronLeft size={16} className="mr-1 lg:mr-2 xl:mr-3" /> Anterior
             </Button>
             <Button
               variant="default"
-              className="flex-1 font-semibold text-xs xs:text-sm md:text-base h-11 xs:h-12 lg:h-14 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+              className="flex-1 font-semibold text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl h-11 xs:h-12 lg:h-14 xl:h-16 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
               onClick={() => setStep((currentStep) => getNextStep(currentStep))}
             >
-              Próximo <ChevronRight size={16} className="ml-1 lg:ml-2" />
+              Próximo <ChevronRight size={16} className="ml-1 lg:ml-2 xl:ml-3" />
             </Button>
           </div>
           {renderAudioControls()}
         </div>
 
         {display.meditation && (
-          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-8 lg:p-10 mt-3">
-            <h3 className="font-display text-base xs:text-lg md:text-xl lg:text-2xl font-bold text-[oklch(0.22_0.07_260)] mb-1 md:mb-3 lg:mb-4">{display.text}</h3>
-            <p className="text-[10px] md:text-xs lg:text-sm font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1 md:mb-2 lg:mb-3">Meditação</p>
-            <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
+          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-8 lg:p-10 xl:p-12 mt-3">
+            <h3 className="font-display text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-1 md:mb-3 lg:mb-4 xl:mb-6">{display.text}</h3>
+            <p className="text-[10px] md:text-xs lg:text-sm xl:text-base font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1 md:mb-2 lg:mb-3 xl:mb-4">Meditação</p>
+            <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
           </div>
         )}
       </section>
@@ -683,14 +683,14 @@ export default function RosaryGuided() {
       </header>
 
       {/* Conteúdo principal */}
-      <main className={`flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 lg:p-8 lg:gap-6 md:flex-initial md:block md:overflow-visible md:p-0 md:pb-8 lg:pb-12 ${
+      <main className={`flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 lg:p-8 lg:gap-6 xl:p-12 xl:gap-8 md:flex-initial md:block md:overflow-visible md:p-0 md:pb-8 lg:pb-12 xl:pb-16 ${
         (step.type === "intro" && !autoRosaryActive) ? "overflow-y-auto" : "overflow-hidden"
       }`}>
         {step.type === "intro" && !autoRosaryActive && renderPreparation()}
         {step.type === "complete" && renderCompletion()}
 
         {(step.type !== "complete" && (step.type !== "intro" || autoRosaryActive)) && (
-          <div className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto max-w-2xl lg:max-w-5xl w-full mx-auto">
+          <div className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto max-w-2xl lg:max-w-6xl xl:max-w-7xl w-full mx-auto">
             {renderPrayer()}
           </div>
         )}
