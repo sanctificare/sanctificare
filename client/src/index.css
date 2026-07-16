@@ -1047,17 +1047,25 @@
     }
   }
 
-  /* Desktop (800px+) - Rosário ampliado para web */
+  /* Desktop (800px+) - Rosário: altura como dimensão primária p/ manter proporção */
   @media (min-width: 800px) {
     .rosary-board {
-      /* Board mais compacto para que as contas fiquem visivelmente ao redor da imagem */
-      max-width: 38rem;
-      max-height: min(82vh, 44rem);
+      /*
+       * Abordagem height-first: define altura explícita e deriva a largura
+       * a partir dela (380/520 ≈ 0.731). Isso garante que o aspect-ratio
+       * portrait seja SEMPRE respeitado, mesmo quando max-height conflitaria
+       * com width:100% (bug do CSS aspect-ratio).
+       */
+      height: min(78vh, 38rem);
+      width: calc(min(78vh, 38rem) * (380 / 520));
+      max-width: none;
+      max-height: none;
+      aspect-ratio: 380 / 520; /* mantido como referência visual */
     }
 
     .rosary-core-image {
-      /* Imagem menor para caber dentro do loop de contas (não cobrir as contas) */
-      width: 65%;
+      /* 63% da largura do board → claramente dentro do loop de contas */
+      width: 63%;
       top: 33.5%;
       border: 4px solid oklch(0.84 0.04 92 / 0.86);
       box-shadow:
@@ -1070,22 +1078,22 @@
     }
 
     .rosary-node--hm {
-      width: clamp(0.8rem, 5.6%, 1.24rem);
-      font-size: 0.68rem;
+      width: clamp(0.76rem, 5.2%, 1.18rem);
+      font-size: 0.66rem;
     }
 
     .rosary-node--of {
-      width: clamp(1.1rem, 7.2%, 1.76rem);
-      font-size: clamp(0.74rem, 2.2vw, 1rem);
+      width: clamp(1.04rem, 7.0%, 1.68rem);
+      font-size: clamp(0.7rem, 2.0vw, 0.96rem);
     }
 
     .rosary-node--medal {
-      width: clamp(1.5rem, 10.2%, 2.56rem);
-      font-size: clamp(0.88rem, 3.2vw, 1.32rem);
+      width: clamp(1.4rem, 9.8%, 2.44rem);
+      font-size: clamp(0.84rem, 3.0vw, 1.26rem);
     }
 
     .rosary-node--crucifix {
-      width: clamp(1.4rem, 8.8%, 2.2rem);
+      width: clamp(1.32rem, 8.4%, 2.1rem);
     }
 
     .rosary-chain-line {
@@ -1106,35 +1114,35 @@
     }
   }
 
-  /* Desktop XXL (1200px+) - Rosário ainda maior */
+  /* Desktop XXL (1200px+) - Board maior, mesma abordagem height-first */
   @media (min-width: 1200px) {
     .rosary-board {
-      max-width: 44rem;
-      max-height: min(88vh, 52rem);
+      height: min(82vh, 46rem);
+      width: calc(min(82vh, 46rem) * (380 / 520));
     }
 
     .rosary-core-image {
-      width: 65%;
+      width: 63%;
       top: 33.5%;
     }
 
     .rosary-node--hm {
-      width: clamp(0.88rem, 6.2%, 1.44rem);
-      font-size: 0.76rem;
+      width: clamp(0.84rem, 5.8%, 1.36rem);
+      font-size: 0.72rem;
     }
 
     .rosary-node--of {
-      width: clamp(1.2rem, 8.2%, 1.96rem);
-      font-size: clamp(0.82rem, 2.4vw, 1.16rem);
+      width: clamp(1.14rem, 7.8%, 1.88rem);
+      font-size: clamp(0.78rem, 2.2vw, 1.08rem);
     }
 
     .rosary-node--medal {
-      width: clamp(1.68rem, 11.2%, 2.96rem);
-      font-size: clamp(0.96rem, 3.6vw, 1.52rem);
+      width: clamp(1.56rem, 10.6%, 2.72rem);
+      font-size: clamp(0.9rem, 3.2vw, 1.4rem);
     }
 
     .rosary-node--crucifix {
-      width: clamp(1.56rem, 9.6%, 2.52rem);
+      width: clamp(1.48rem, 9.2%, 2.36rem);
     }
 
     .rosary-core-title {
