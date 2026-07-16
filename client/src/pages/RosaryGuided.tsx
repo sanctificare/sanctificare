@@ -395,7 +395,7 @@ export default function RosaryGuided() {
 
   const renderPreparation = () => (
     <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-6 items-stretch animate-fade-in">
-      <section className="rounded-2xl overflow-hidden min-h-[440px] relative bg-[oklch(0.18_0.05_260)]">
+      <section className="hidden md:block rounded-2xl overflow-hidden min-h-[440px] relative bg-[oklch(0.18_0.05_260)]">
         <img src={ROSARY_IMG} alt="Terço" className="absolute inset-0 w-full h-full object-cover opacity-75" />
         <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.12_0.04_260/0.88)] via-[oklch(0.18_0.05_260/0.48)] to-transparent" />
         <div className="relative h-full p-7 flex flex-col justify-end text-white">
@@ -407,48 +407,50 @@ export default function RosaryGuided() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-6 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)]">
-        <div className="mb-5">
-          <p className="text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1">Hoje</p>
-          <h2 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)]">{mysteries.name}</h2>
-          <p className="text-sm text-muted-foreground">{mysteries.days}</p>
-        </div>
+      <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-5 xs:p-6 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] flex flex-col justify-between">
+        <div>
+          <div className="mb-4">
+            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1">Hoje</p>
+            <h2 className="font-display text-xl xs:text-2xl font-bold text-[oklch(0.22_0.07_260)]">{mysteries.name}</h2>
+            <p className="text-xs xs:text-sm text-muted-foreground">{mysteries.days}</p>
+          </div>
 
-        <div className="mb-5">
-          <label className="text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] block mb-2">
-            Minha intenção
-          </label>
-          <textarea
-            value={intention}
-            onChange={(event) => setIntention(event.target.value)}
-            rows={4}
-            placeholder="Ofereço este terço por..."
-            className="w-full rounded-xl border border-[oklch(0.22_0.07_260/0.14)] bg-white/85 p-3 text-sm font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.38)]"
-          />
-        </div>
+          <div className="mb-4">
+            <label className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] block mb-1.5">
+              Minha intenção
+            </label>
+            <textarea
+              value={intention}
+              onChange={(event) => setIntention(event.target.value)}
+              rows={3}
+              placeholder="Ofereço este terço por..."
+              className="w-full rounded-xl border border-[oklch(0.22_0.07_260/0.14)] bg-white/85 p-3 text-sm font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.38)]"
+            />
+          </div>
 
-        <div className="mb-6">
-          <p className="text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-2">Mistérios</p>
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(ROSARY_MYSTERIES) as Array<keyof typeof ROSARY_MYSTERIES>).map((key) => (
-              <button
-                key={key}
-                onClick={() => setSelectedKey(key)}
-                className={`px-3 py-2 rounded-full text-xs font-medium transition-all ${
-                  selectedKey === key
-                    ? "bg-[oklch(0.22_0.07_260)] text-white shadow-md shadow-[oklch(0.22_0.07_260/0.18)]"
-                    : "bg-white text-[oklch(0.22_0.07_260)] border border-[oklch(0.22_0.07_260/0.12)] hover:bg-[oklch(0.75_0.12_75/0.12)]"
-                }`}
-              >
-                {ROSARY_MYSTERIES[key].name.replace("Mistérios ", "")}
-              </button>
-            ))}
+          <div className="mb-5">
+            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1.5">Mistérios</p>
+            <div className="flex flex-wrap gap-1.5">
+              {(Object.keys(ROSARY_MYSTERIES) as Array<keyof typeof ROSARY_MYSTERIES>).map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedKey(key)}
+                  className={`px-2.5 py-1.5 rounded-full text-[10px] xs:text-xs font-medium transition-all ${
+                    selectedKey === key
+                      ? "bg-[oklch(0.22_0.07_260)] text-white shadow-md shadow-[oklch(0.22_0.07_260/0.18)]"
+                      : "bg-white text-[oklch(0.22_0.07_260)] border border-[oklch(0.22_0.07_260/0.12)] hover:bg-[oklch(0.75_0.12_75/0.12)]"
+                  }`}
+                >
+                  {ROSARY_MYSTERIES[key].name.replace("Mistérios ", "")}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-2">
           <Button
-            className="w-full h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold animate-pulse"
+            className="w-full h-11 xs:h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold animate-pulse"
             onClick={handleStartAutomaticRosary}
           >
             <PlayCircle size={18} className="mr-2" />
@@ -468,7 +470,7 @@ export default function RosaryGuided() {
         )}
 
         {showAudio && (
-          <div className="mt-5 animate-fade-in">
+          <div className="mt-4 animate-fade-in">
             <AudioPlayer
               audioUrl={rosaryAudioTracks[currentAudioTrack].audioUrl}
               title={rosaryAudioTracks[currentAudioTrack].title}
@@ -679,7 +681,9 @@ export default function RosaryGuided() {
       </header>
 
       {/* Conteúdo principal */}
-      <main className="flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 overflow-hidden">
+      <main className={`flex-1 min-h-0 flex flex-col p-3 gap-2 md:p-6 md:gap-4 ${
+        (step.type === "intro" && !autoRosaryActive) ? "overflow-y-auto" : "overflow-hidden"
+      }`}>
         {step.type === "intro" && !autoRosaryActive && renderPreparation()}
         {step.type === "complete" && renderCompletion()}
 
