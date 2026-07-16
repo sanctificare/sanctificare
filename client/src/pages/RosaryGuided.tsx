@@ -533,7 +533,7 @@ export default function RosaryGuided() {
 
   const renderAudioControls = () =>
     showAudio ? (
-      <div className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] p-5 shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in">
+      <div className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] p-3 xs:p-5 shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in">
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
           <audio
             key={`preload-aside-${currentAudioTrack + 1}`}
@@ -567,51 +567,49 @@ export default function RosaryGuided() {
 
     return (
       <section
-        className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-6 md:p-8 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in"
+        className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-4 xs:p-5 sm:p-6 md:p-8 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in"
         style={prayerPanelStyle}
       >
-        <div className="text-center mb-6">
-          <p className="text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-2">{display.subtitle}</p>
-          <h2 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)]">{display.title}</h2>
+        <div className="text-center mb-3 xs:mb-4 md:mb-6">
+          <p className="text-[10px] xs:text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 xs:mb-1.5">{display.subtitle}</p>
+          <h2 className="font-display text-lg xs:text-2xl md:text-3xl font-bold text-[oklch(0.22_0.07_260)]">{display.title}</h2>
           {intention.trim() && (
-            <p className="mt-3 font-serif text-sm italic text-muted-foreground">Intenção: {intention}</p>
+            <p className="mt-1.5 font-serif text-[11px] xs:text-sm italic text-muted-foreground">Intenção: {intention}</p>
           )}
         </div>
 
-        <div className="mb-5">
+        <div className="mb-3 xs:mb-4 md:mb-5">
           <RosaryBoard step={step} onSelectStep={handleSelectStep} mysteryImageUrl={centerMysteryImage} />
-          <p className="mt-3 text-center text-xs text-muted-foreground">
+          <p className="mt-1.5 text-center text-[10px] xs:text-xs text-muted-foreground line-clamp-1">
             Toque em qualquer conta ou utilize os botões abaixo para navegar.
           </p>
         </div>
 
         {/* Botões de navegação */}
-        <div className="flex gap-3 mt-4">
+        <div className="flex gap-3 mt-2 xs:mt-3 md:mt-4">
           <Button
             variant="outline"
-            size="lg"
-            className="flex-1 font-semibold text-xs h-12 bg-white"
+            className="flex-1 font-semibold text-[11px] xs:text-xs h-10 xs:h-11 md:h-12 bg-white"
             onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
           >
             <ChevronLeft size={16} className="mr-1" /> Anterior
           </Button>
           <Button
             variant="default"
-            size="lg"
-            className="flex-1 font-semibold text-xs h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
+            className="flex-1 font-semibold text-[11px] xs:text-xs h-10 xs:h-11 md:h-12 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
             onClick={() => setStep((currentStep) => getNextStep(currentStep))}
           >
             Próximo <ChevronRight size={16} className="ml-1" />
           </Button>
         </div>
 
-        <div className="mb-7">{renderAudioControls()}</div>
+        <div className="mb-2 xs:mb-4 md:mb-7">{renderAudioControls()}</div>
 
         {display.meditation && (
-          <div className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-6 md:p-8">
-            <h3 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-3">{display.text}</h3>
-            <p className="text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-2">Meditação</p>
-            <p className="font-serif text-base leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
+          <div className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-4 xs:p-5 sm:p-6 md:p-8 mt-3">
+            <h3 className="font-display text-lg xs:text-xl font-bold text-[oklch(0.22_0.07_260)] mb-2">{display.text}</h3>
+            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1.5">Meditação</p>
+            <p className="font-serif text-sm xs:text-base leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
           </div>
         )}
       </section>
@@ -650,20 +648,20 @@ export default function RosaryGuided() {
           backgroundImage: `linear-gradient(180deg, oklch(0.12 0.04 260 / 0.74), oklch(0.97 0.01 85 / 0.92)), url(${ROSARY_IMG})`,
         }}
       >
-        <div className="container py-8">
+        <div className="container py-2 xs:py-4 md:py-8 px-3">
           <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+            <div className="flex flex-row items-center gap-3 mb-3 md:mb-6">
               <Link href="/oracoes">
-                <Button variant="outline" size="sm" className="gap-2 bg-white/85 border-[oklch(0.75_0.12_75/0.35)]">
-                  <ChevronLeft size={14} /> Orações
+                <Button variant="outline" size="sm" className="gap-2 bg-white/85 border-[oklch(0.75_0.12_75/0.35)] shrink-0 px-2.5 xs:px-3 text-xs h-9">
+                  <ChevronLeft size={14} /> <span className="hidden xs:inline">Orações</span>
                 </Button>
               </Link>
-              <div className="flex-1 rounded-full bg-white/72 backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-4 py-3">
-                <div className="flex justify-between text-xs text-[oklch(0.22_0.07_260)] mb-2">
-                  <span className="font-semibold">{mysteries.name}</span>
+              <div className="flex-1 rounded-full bg-white/72 backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-3 py-1.5 xs:px-4 xs:py-2.5">
+                <div className="flex justify-between text-[10px] xs:text-xs text-[oklch(0.22_0.07_260)] mb-1 xs:mb-2">
+                  <span className="font-semibold truncate max-w-[150px] xs:max-w-none">{mysteries.name}</span>
                   <span>{progress}%</span>
                 </div>
-                <div className="h-2 bg-[oklch(0.88_0.01_260)] rounded-full overflow-hidden">
+                <div className="h-1.5 xs:h-2 bg-[oklch(0.88_0.01_260)] rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.75_0.12_75)] rounded-full transition-all duration-500"
                     style={{ width: `${progress}%` }}

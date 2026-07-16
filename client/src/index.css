@@ -1007,7 +1007,8 @@
 
   @media (max-width: 640px) {
     .rosary-board {
-      max-width: 19.2rem;
+      max-width: 15.5rem;
+      max-height: min(39vh, 23rem);
     }
 
     .rosary-core-title {
