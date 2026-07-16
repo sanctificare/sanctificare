@@ -704,8 +704,8 @@ export default function Dashboard() {
                         </>
                       ) : (
                         <>
-                          <h4 className="font-display text-lg font-bold text-white mb-1">Novena de São José</h4>
-                          <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-2">Inicie uma jornada de fé com o Patrono da Igreja Universal.</p>
+                          <h4 className="font-display text-lg font-bold text-white mb-1">Novena ao Sagrado Coração de Jesus</h4>
+                          <p className="text-xs text-[oklch(0.95_0.01_80/0.8)] line-clamp-2">Nove dias de meditação e súplica diante do Sagrado Coração de Jesus.</p>
                         </>
                       )}
                     </div>
