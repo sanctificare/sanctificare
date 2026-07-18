@@ -95,6 +95,7 @@ Available pre-defined system envs:
 - `DATABASE_URL`: MySQL/TiDB connection string
 - `JWT_SECRET`: Session cookie signing secret
 - `VITE_APP_ID`: OAuth application ID
+- `VITE_GA_MEASUREMENT_ID`: Google Analytics 4 measurement ID for web (ex: `G-XXXXXXXXXX`)
 - `OAUTH_SERVER_URL`: OAuth backend base URL
 - `VITE_OAUTH_PORTAL_URL`: Login portal URL (frontend)
 - `OWNER_OPEN_ID`, `OWNER_NAME`: Owner's info

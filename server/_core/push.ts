@@ -73,47 +73,55 @@ export async function sendPushToTokens(tokens: string[], message: PushMessage): 
   }
 
   const client = ensureFirebaseMessaging();
-  const response = await client.sendEachForMulticast({
-    tokens,
-    notification: {
-      title: truncateText(message.title, 120),
-      body: truncateText(message.body, 500),
-    },
-    data: message.data,
-    android: {
-      priority: "high",
+  const invalidTokens: string[] = [];
+  let successCount = 0;
+  let failureCount = 0;
+
+  for (let start = 0; start < tokens.length; start += 500) {
+    const batch = tokens.slice(start, start + 500);
+    const response = await client.sendEachForMulticast({
+      tokens: batch,
       notification: {
-        channelId: "default",
-        sound: "default",
+        title: truncateText(message.title, 120),
+        body: truncateText(message.body, 500),
       },
-    },
-    apns: {
-      payload: {
-        aps: {
+      data: message.data,
+      android: {
+        priority: "high",
+        notification: {
+          channelId: "default",
           sound: "default",
         },
       },
-    },
-  });
+      apns: {
+        payload: {
+          aps: {
+            sound: "default",
+          },
+        },
+      },
+    });
 
-  const invalidTokens: string[] = [];
-  response.responses.forEach((entry: (typeof response.responses)[number], index: number) => {
-    if (entry.success) return;
-    const code = entry.error?.code;
-    if (
-      code === "messaging/invalid-registration-token" ||
-      code === "messaging/registration-token-not-registered"
-    ) {
-      invalidTokens.push(tokens[index]);
-    }
-  });
+    successCount += response.successCount;
+    failureCount += response.failureCount;
+    response.responses.forEach((entry: (typeof response.responses)[number], index: number) => {
+      if (entry.success) return;
+      const code = entry.error?.code;
+      if (
+        code === "messaging/invalid-registration-token" ||
+        code === "messaging/registration-token-not-registered"
+      ) {
+        invalidTokens.push(batch[index]);
+      }
+    });
+  }
 
   if (invalidTokens.length > 0) {
     await disablePushTokens(invalidTokens);
   }
 
   return {
-    successCount: response.successCount,
-    failureCount: response.failureCount,
+    successCount,
+    failureCount,
   };
 }

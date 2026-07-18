@@ -9,6 +9,7 @@ import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, getStoredS
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
+import { initAnalytics } from "./lib/analytics";
 
 // Cache buster for deployment: 2026-07-15 17:45
 const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
@@ -256,6 +257,10 @@ const trpcClient = trpc.createClient({
     }),
   ],
 });
+
+if (typeof window !== "undefined") {
+  void initAnalytics();
+}
 
 createRoot(document.getElementById("root")!).render(
   <trpc.Provider client={trpcClient} queryClient={queryClient}>

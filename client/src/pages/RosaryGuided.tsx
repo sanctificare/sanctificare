@@ -18,6 +18,7 @@ import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { Link } from "wouter";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
+import { trackEvent } from "@/lib/analytics";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
@@ -282,6 +283,10 @@ export default function RosaryGuided() {
   };
 
   const handleStartAutomaticRosary = () => {
+    void trackEvent("rosary_started", {
+      mystery_set: selectedKey,
+      has_intention: Boolean(intention.trim()),
+    });
     setAutoRosaryActive(true);
     setCurrentAudioTrack(0);
     setStep({ type: "intro" });
@@ -334,6 +339,10 @@ export default function RosaryGuided() {
 
   const handleComplete = async () => {
     const prayerName = `Rosário — ${mysteries.name}`;
+    void trackEvent("rosary_completed", {
+      mystery_set: selectedKey,
+      has_intention: Boolean(intention.trim()),
+    });
     try {
       if (typeof navigator !== "undefined" && !navigator.onLine) {
         queueOfflinePrayerLog("rosario", prayerName);

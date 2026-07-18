@@ -63,6 +63,40 @@ export const subscriptions = pgTable("subscriptions", {
 export type Subscription = typeof subscriptions.$inferSelect;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
 
+export const adminPremiumGrants = pgTable("admin_premium_grants", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  grantedByUserId: integer("grantedByUserId")
+    .references(() => users.id, { onDelete: "set null" }),
+  grantedAt: timestamp("grantedAt", { withTimezone: true }).defaultNow().notNull(),
+  expiresAt: timestamp("expiresAt", { withTimezone: true }).notNull(),
+  revokedAt: timestamp("revokedAt", { withTimezone: true }),
+  revokedByUserId: integer("revokedByUserId")
+    .references(() => users.id, { onDelete: "set null" }),
+}, (table) => ({
+  userAccessIdx: index("admin_premium_grants_user_access_idx").on(table.userId, table.revokedAt, table.expiresAt),
+}));
+
+export type AdminPremiumGrant = typeof adminPremiumGrants.$inferSelect;
+
+export const adminAuditLogs = pgTable("admin_audit_logs", {
+  id: serial("id").primaryKey(),
+  actorUserId: integer("actorUserId")
+    .references(() => users.id, { onDelete: "set null" }),
+  targetUserId: integer("targetUserId")
+    .references(() => users.id, { onDelete: "set null" }),
+  action: varchar("action", { length: 80 }).notNull(),
+  metadata: jsonb("metadata").$type<Record<string, string | number | boolean | null>>().notNull(),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  createdAtIdx: index("admin_audit_logs_created_at_idx").on(table.createdAt),
+  targetUserIdx: index("admin_audit_logs_target_user_idx").on(table.targetUserId),
+}));
+
+export type AdminAuditLog = typeof adminAuditLogs.$inferSelect;
+
 // Histórico de orações realizadas
 export const prayerLogs = pgTable(
   "prayer_logs",

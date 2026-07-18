@@ -71,6 +71,19 @@ function createPublicContext(): TrpcContext {
 }
 
 describe("Admin tRPC procedures security", () => {
+  it("rejects invalid pagination and user identifiers", async () => {
+    const caller = appRouter.createCaller(createAdminContext());
+
+    await expect(caller.admin.getUsersList({ limit: 0, offset: 0 })).rejects.toThrow();
+    await expect(caller.admin.getUsersList({ limit: 101, offset: 0 })).rejects.toThrow();
+    await expect(caller.admin.getUsersList({ limit: 10, offset: -1 })).rejects.toThrow();
+    await expect(caller.admin.getUserDetail({ userId: 0 })).rejects.toThrow();
+    await expect(caller.admin.togglePremium({ userId: -1, grant: true })).rejects.toThrow();
+    await expect(caller.admin.getAuditLogs({ limit: 0 })).rejects.toThrow();
+    await expect(caller.admin.sendPush({ audience: "all", title: "", body: "Mensagem" })).rejects.toThrow();
+    await expect(caller.admin.sendPush({ audience: "all", title: "Título", body: "Mensagem", screen: "https://example.com" })).rejects.toThrow();
+  });
+
   it("rejects unauthenticated requests", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
@@ -80,6 +93,8 @@ describe("Admin tRPC procedures security", () => {
     await expect(caller.admin.getUserDetail({ userId: 999 })).rejects.toThrow();
     await expect(caller.admin.togglePremium({ userId: 999, grant: true })).rejects.toThrow();
     await expect(caller.admin.getRegistrationGrowth()).rejects.toThrow();
+    await expect(caller.admin.getAuditLogs()).rejects.toThrow();
+    await expect(caller.admin.sendPush({ audience: "all", title: "Título", body: "Mensagem" })).rejects.toThrow();
   });
 
   it("rejects regular user requests (role: user)", async () => {
@@ -91,6 +106,8 @@ describe("Admin tRPC procedures security", () => {
     await expect(caller.admin.getUserDetail({ userId: 999 })).rejects.toThrow();
     await expect(caller.admin.togglePremium({ userId: 999, grant: true })).rejects.toThrow();
     await expect(caller.admin.getRegistrationGrowth()).rejects.toThrow();
+    await expect(caller.admin.getAuditLogs()).rejects.toThrow();
+    await expect(caller.admin.sendPush({ audience: "all", title: "Título", body: "Mensagem" })).rejects.toThrow();
   });
 
   it("allows admin user requests (role: admin)", async () => {

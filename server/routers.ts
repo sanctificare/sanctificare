@@ -41,6 +41,9 @@ import {
   registerPushDevice,
   unregisterPushDeviceByToken,
   getEnabledPushTokensByUser,
+  getAdminPushTokens,
+  createAdminAuditLog,
+  getAdminAuditLogs,
   getUserStateEntries,
   upsertUserStateEntries,
   markUserStateKeysDeleted,
@@ -150,8 +153,8 @@ export const appRouter = router({
     getUsersList: adminProcedure
       .input(z.object({
         search: z.string().optional(),
-        limit: z.number().default(20),
-        offset: z.number().default(0),
+        limit: z.number().int().min(1).max(100).default(20),
+        offset: z.number().int().min(0).default(0),
       }))
       .query(async ({ input }) => {
         try {
@@ -166,7 +169,7 @@ export const appRouter = router({
 
     getUserDetail: adminProcedure
       .input(z.object({
-        userId: z.number()
+        userId: z.number().int().positive()
       }))
       .query(async ({ input }) => {
         try {
@@ -186,12 +189,23 @@ export const appRouter = router({
 
     togglePremium: adminProcedure
       .input(z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         grant: z.boolean(),
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
         try {
-          return await toggleUserPremiumStatus(input.userId, input.grant);
+          const result = await toggleUserPremiumStatus(input.userId, ctx.user.id, input.grant);
+          try {
+            await createAdminAuditLog({
+              actorUserId: ctx.user.id,
+              targetUserId: input.userId,
+              action: input.grant ? "premium.granted" : "premium.revoked",
+              metadata: { source: "admin" },
+            });
+          } catch (auditError) {
+            console.error("[Admin Audit] Failed to record premium change:", auditError);
+          }
+          return result;
         } catch (err: any) {
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
@@ -210,6 +224,62 @@ export const appRouter = router({
         });
       }
     }),
+
+    getAuditLogs: adminProcedure
+      .input(z.object({ limit: z.number().int().min(1).max(100).default(50) }).optional())
+      .query(async ({ input }) => {
+        try {
+          return await getAdminAuditLogs(input?.limit ?? 50);
+        } catch (err: any) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao carregar auditoria."),
+          });
+        }
+      }),
+
+    sendPush: adminProcedure
+      .input(z.object({
+        audience: z.enum(["all", "premium"]),
+        title: z.string().trim().min(1).max(120),
+        body: z.string().trim().min(1).max(500),
+        screen: z.string().regex(/^\/[a-z0-9\-/]*$/i).max(120).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const tokens = await getAdminPushTokens(input.audience);
+          const result = await sendPushToTokens(tokens, {
+            title: input.title,
+            body: input.body,
+            data: {
+              kind: "admin_campaign",
+              ...(input.screen ? { screen: input.screen } : {}),
+            },
+          });
+
+          try {
+            await createAdminAuditLog({
+              actorUserId: ctx.user.id,
+              action: "push.sent",
+              metadata: {
+                audience: input.audience,
+                title: input.title,
+                sent: result.successCount,
+                failed: result.failureCount,
+              },
+            });
+          } catch (auditError) {
+            console.error("[Admin Audit] Failed to record push campaign:", auditError);
+          }
+
+          return { targeted: tokens.length, sent: result.successCount, failed: result.failureCount };
+        } catch (err: any) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao enviar notificações."),
+          });
+        }
+      }),
   }),
 
   subscriptions: router({

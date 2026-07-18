@@ -12,6 +12,7 @@ import { isMobileApp } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
+import { setAnalyticsUserId, trackPageView } from "./lib/analytics";
 import {
   applyRemoteState,
   collectSyncableLocalSnapshot,
@@ -260,6 +261,10 @@ function Router() {
 function AppShell() {
   const [location] = useLocation();
 
+  useEffect(() => {
+    void trackPageView(location);
+  }, [location]);
+
   const isLandingPage =
     location === "/" ||
     location === "/login" ||
@@ -291,7 +296,7 @@ function AppShell() {
 
 function App() {
   useOfflineSync();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const registerDeviceMutation = trpc.push.registerDevice.useMutation();
   const stateSyncQuery = trpc.stateSync.getAll.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -422,6 +427,11 @@ function App() {
       },
     });
   }, [isAuthenticated, registerDeviceMutation]);
+
+  useEffect(() => {
+    const userId = user?.id ? String(user.id) : null;
+    void setAnalyticsUserId(userId);
+  }, [user?.id]);
 
   useEffect(() => {
     const handleDocumentClick = (event: MouseEvent) => {

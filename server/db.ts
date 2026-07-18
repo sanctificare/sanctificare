@@ -12,6 +12,8 @@ import {
   intentionPrayers,
   intentionMessages,
   subscriptions,
+  adminPremiumGrants,
+  adminAuditLogs,
   dailyLiturgy,
   InsertDailyLiturgy,
   lectioJournal,
@@ -113,6 +115,41 @@ async function bootstrapDb(sql: any) {
     `;
     await sql`
       CREATE UNIQUE INDEX IF NOT EXISTS "subscriptions_stripe_sub_id_idx" ON subscriptions ("stripeSubscriptionId") WHERE "stripeSubscriptionId" IS NOT NULL;
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS admin_premium_grants (
+        id serial PRIMARY KEY,
+        "userId" integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        "grantedByUserId" integer REFERENCES users(id) ON DELETE SET NULL,
+        "grantedAt" timestamp with time zone DEFAULT now() NOT NULL,
+        "expiresAt" timestamp with time zone NOT NULL,
+        "revokedAt" timestamp with time zone,
+        "revokedByUserId" integer REFERENCES users(id) ON DELETE SET NULL
+      );
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS "admin_premium_grants_user_access_idx"
+      ON admin_premium_grants ("userId", "revokedAt", "expiresAt");
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS admin_audit_logs (
+        id serial PRIMARY KEY,
+        "actorUserId" integer REFERENCES users(id) ON DELETE SET NULL,
+        "targetUserId" integer REFERENCES users(id) ON DELETE SET NULL,
+        action varchar(80) NOT NULL,
+        metadata jsonb NOT NULL,
+        "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+      );
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS "admin_audit_logs_created_at_idx"
+      ON admin_audit_logs ("createdAt");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS "admin_audit_logs_target_user_idx"
+      ON admin_audit_logs ("targetUserId");
     `;
 
     await sql`
@@ -665,6 +702,7 @@ export async function deleteUserAccount(userId: number): Promise<{ deleted: bool
     await tx.delete(virtualCandles).where(eq(virtualCandles.userId, userId));
     await tx.delete(prayerLogs).where(eq(prayerLogs.userId, userId));
     await tx.delete(lectioJournal).where(eq(lectioJournal.userId, userId));
+    await tx.delete(adminPremiumGrants).where(eq(adminPremiumGrants.userId, userId));
     await tx.delete(subscriptions).where(eq(subscriptions.userId, userId));
     await tx.delete(passwordResetTokens).where(eq(passwordResetTokens.userId, userId));
     await tx.delete(pushDevices).where(eq(pushDevices.userId, userId));
@@ -891,23 +929,53 @@ export async function getActiveSubscription(userId: number) {
   }
 
   const now = new Date();
-  const result = await db
-    .select()
-    .from(subscriptions)
-    .where(
-      and(
-        eq(subscriptions.userId, userId),
-        or(
-          eq(subscriptions.status, "active"),
-          eq(subscriptions.status, "cancelled"),
-          eq(subscriptions.status, "past_due")
-        ),
-        gt(subscriptions.expiresAt, now)
+  const [subscriptionResult, adminGrantResult] = await Promise.all([
+    db
+      .select()
+      .from(subscriptions)
+      .where(
+        and(
+          eq(subscriptions.userId, userId),
+          or(
+            eq(subscriptions.status, "active"),
+            eq(subscriptions.status, "cancelled"),
+            eq(subscriptions.status, "past_due")
+          ),
+          gt(subscriptions.expiresAt, now)
+        )
       )
-    )
-    .orderBy(desc(subscriptions.expiresAt))
-    .limit(1);
-  return result[0] || null;
+      .orderBy(desc(subscriptions.expiresAt))
+      .limit(1),
+    db
+      .select()
+      .from(adminPremiumGrants)
+      .where(
+        and(
+          eq(adminPremiumGrants.userId, userId),
+          isNull(adminPremiumGrants.revokedAt),
+          gt(adminPremiumGrants.expiresAt, now)
+        )
+      )
+      .orderBy(desc(adminPremiumGrants.expiresAt))
+      .limit(1),
+  ]);
+
+  if (subscriptionResult[0]) return subscriptionResult[0];
+  if (!adminGrantResult[0]) return null;
+
+  const grant = adminGrantResult[0];
+  return {
+    id: grant.id,
+    userId: grant.userId,
+    plan: "annual" as const,
+    status: "active" as const,
+    startedAt: grant.grantedAt,
+    expiresAt: grant.expiresAt,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    createdAt: grant.grantedAt,
+    updatedAt: grant.revokedAt ?? grant.grantedAt,
+  };
 }
 
 export async function createSubscription(userId: number, plan: "monthly" | "annual") {
@@ -1349,6 +1417,79 @@ export async function getEnabledPushTokensByUser(userId: number): Promise<string
   return rows.map(r => r.token);
 }
 
+export async function getAdminPushTokens(segment: "all" | "premium"): Promise<string[]> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  if (segment === "all") {
+    const rows = await db
+      .select({ token: pushDevices.token })
+      .from(pushDevices)
+      .where(eq(pushDevices.enabled, true));
+    return rows.map((row) => row.token);
+  }
+
+  const now = new Date();
+  const rows = await db
+    .selectDistinct({ token: pushDevices.token })
+    .from(pushDevices)
+    .innerJoin(users, eq(pushDevices.userId, users.id))
+    .leftJoin(subscriptions, eq(subscriptions.userId, users.id))
+    .leftJoin(adminPremiumGrants, eq(adminPremiumGrants.userId, users.id))
+    .where(and(
+      eq(pushDevices.enabled, true),
+      or(
+        eq(users.email, "contato@sanctificare.app"),
+        and(
+          or(
+            eq(subscriptions.status, "active"),
+            eq(subscriptions.status, "cancelled"),
+            eq(subscriptions.status, "past_due")
+          ),
+          gt(subscriptions.expiresAt, now)
+        ),
+        and(isNull(adminPremiumGrants.revokedAt), gt(adminPremiumGrants.expiresAt, now))
+      )
+    ));
+
+  return rows.map((row) => row.token);
+}
+
+export async function createAdminAuditLog(input: {
+  actorUserId: number;
+  targetUserId?: number;
+  action: string;
+  metadata: Record<string, string | number | boolean | null>;
+}): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  await db.insert(adminAuditLogs).values({
+    actorUserId: input.actorUserId,
+    targetUserId: input.targetUserId ?? null,
+    action: input.action,
+    metadata: input.metadata,
+  });
+}
+
+export async function getAdminAuditLogs(limit = 50) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  return db
+    .select({
+      id: adminAuditLogs.id,
+      actorUserId: adminAuditLogs.actorUserId,
+      targetUserId: adminAuditLogs.targetUserId,
+      action: adminAuditLogs.action,
+      metadata: adminAuditLogs.metadata,
+      createdAt: adminAuditLogs.createdAt,
+    })
+    .from(adminAuditLogs)
+    .orderBy(desc(adminAuditLogs.createdAt))
+    .limit(limit);
+}
+
 export async function disablePushTokens(tokens: string[]) {
   if (tokens.length === 0) return;
   const db = await getDb();
@@ -1623,7 +1764,7 @@ export async function getAdminStats() {
     totalUsersRes,
     newUsersTodayRes,
     activeUsersTodayRes,
-    activeSubscriptionsRes,
+    activePremiumUsersRes,
     totalPrayersRes,
     recentUsers,
     recentActivities
@@ -1631,7 +1772,21 @@ export async function getAdminStats() {
     db.select({ count: sql<number>`count(*)::int` }).from(users),
     db.select({ count: sql<number>`count(*)::int` }).from(users).where(gte(users.createdAt, today)),
     db.select({ count: sql<number>`count(*)::int` }).from(users).where(gte(users.lastSignedIn, today)),
-    db.select({ count: sql<number>`count(*)::int` }).from(subscriptions).where(and(eq(subscriptions.status, 'active'), gt(subscriptions.expiresAt, new Date()))),
+    db.select({ count: sql<number>`count(distinct ${users.id})::int` })
+      .from(users)
+      .leftJoin(subscriptions, eq(subscriptions.userId, users.id))
+      .leftJoin(adminPremiumGrants, eq(adminPremiumGrants.userId, users.id))
+      .where(or(
+        and(
+          or(
+            eq(subscriptions.status, "active"),
+            eq(subscriptions.status, "cancelled"),
+            eq(subscriptions.status, "past_due")
+          ),
+          gt(subscriptions.expiresAt, new Date())
+        ),
+        and(isNull(adminPremiumGrants.revokedAt), gt(adminPremiumGrants.expiresAt, new Date()))
+      )),
     db.select({ count: sql<number>`count(*)::int` }).from(prayerLogs),
     db.select({
       id: users.id,
@@ -1657,7 +1812,7 @@ export async function getAdminStats() {
     totalUsers: totalUsersRes[0]?.count ?? 0,
     newUsersToday: newUsersTodayRes[0]?.count ?? 0,
     activeUsersToday: activeUsersTodayRes[0]?.count ?? 0,
-    activeSubscriptions: activeSubscriptionsRes[0]?.count ?? 0,
+    activeSubscriptions: activePremiumUsersRes[0]?.count ?? 0,
     totalPrayers: totalPrayersRes[0]?.count ?? 0,
     recentUsers,
     recentActivities
@@ -1709,8 +1864,18 @@ export async function getAdminUserDetail(userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
-  const userRes = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  const userRes = await db.select({
+    id: users.id,
+    name: users.name,
+    email: users.email,
+    loginMethod: users.loginMethod,
+    role: users.role,
+    createdAt: users.createdAt,
+    lastSignedIn: users.lastSignedIn,
+  }).from(users).where(eq(users.id, userId)).limit(1);
   if (userRes.length === 0) return null;
+
+  const now = new Date();
 
   const recentLogs = await db
     .select()
@@ -1719,56 +1884,67 @@ export async function getAdminUserDetail(userId: number) {
     .orderBy(desc(prayerLogs.completedAt))
     .limit(20);
 
-  const subscriptionRes = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.userId, userId))
-    .orderBy(desc(subscriptions.createdAt))
-    .limit(1);
+  const [subscriptionRes, adminGrantRes] = await Promise.all([
+    db
+      .select()
+      .from(subscriptions)
+      .where(and(
+        eq(subscriptions.userId, userId),
+        or(
+          eq(subscriptions.status, "active"),
+          eq(subscriptions.status, "cancelled"),
+          eq(subscriptions.status, "past_due")
+        ),
+        gt(subscriptions.expiresAt, now)
+      ))
+      .orderBy(desc(subscriptions.expiresAt))
+      .limit(1),
+    db
+      .select({
+        id: adminPremiumGrants.id,
+        expiresAt: adminPremiumGrants.expiresAt,
+        grantedAt: adminPremiumGrants.grantedAt,
+      })
+      .from(adminPremiumGrants)
+      .where(and(
+        eq(adminPremiumGrants.userId, userId),
+        isNull(adminPremiumGrants.revokedAt),
+        gt(adminPremiumGrants.expiresAt, now)
+      ))
+      .orderBy(desc(adminPremiumGrants.expiresAt))
+      .limit(1),
+  ]);
 
   return {
     user: userRes[0],
     recentLogs,
-    subscription: subscriptionRes[0] ?? null
+    subscription: subscriptionRes[0] ?? null,
+    adminPremiumGrant: adminGrantRes[0] ?? null,
   };
 }
 
-export async function toggleUserPremiumStatus(userId: number, grant: boolean) {
+export async function toggleUserPremiumStatus(userId: number, adminUserId: number, grant: boolean) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
+
+  const user = await db.select({ id: users.id }).from(users).where(eq(users.id, userId)).limit(1);
+  if (!user[0]) throw new Error("Usuário não encontrado");
 
   if (grant) {
     const expiresAt = new Date();
     expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-
-    const existing = await db.select().from(subscriptions).where(eq(subscriptions.userId, userId)).limit(1);
-    if (existing.length > 0) {
-      await db.update(subscriptions)
-        .set({
-          status: 'active',
-          expiresAt,
-          plan: 'annual',
-          updatedAt: new Date()
-        })
-        .where(eq(subscriptions.userId, userId));
-    } else {
-      await db.insert(subscriptions).values({
-        userId,
-        status: 'active',
-        expiresAt,
-        plan: 'annual',
-        stripeCustomerId: 'admin-manual',
-        stripeSubscriptionId: 'admin-manual-' + Math.random().toString(36).substring(2, 11),
-      });
-    }
+    await db.insert(adminPremiumGrants).values({
+      userId,
+      grantedByUserId: adminUserId,
+      expiresAt,
+    });
   } else {
-    await db.update(subscriptions)
+    await db.update(adminPremiumGrants)
       .set({
-        status: 'expired',
-        expiresAt: new Date(),
-        updatedAt: new Date()
+        revokedAt: new Date(),
+        revokedByUserId: adminUserId,
       })
-      .where(eq(subscriptions.userId, userId));
+      .where(and(eq(adminPremiumGrants.userId, userId), isNull(adminPremiumGrants.revokedAt)));
   }
 
   return { success: true };

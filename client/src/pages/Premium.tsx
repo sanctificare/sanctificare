@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
+import { trackEvent } from "@/lib/analytics";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const HERO_BG = "/assets/premium-hero-bg.jpg";
@@ -37,21 +38,43 @@ export default function Premium() {
 
   const handleSubscribe = async () => {
     if (!isAuthenticated) {
+      void trackEvent("subscription_cta_click_unauthenticated", {
+        source: "premium_page",
+        plan: selectedPlan,
+      });
       window.location.href = getLoginUrl();
       return;
     }
+
+    void trackEvent("subscription_checkout_started", {
+      source: "premium_page",
+      plan: selectedPlan,
+    });
+
     setSubscribing(true);
     try {
       const result = await subscribeMutation.mutateAsync({ plan: selectedPlan });
       if (result.checkoutUrl) {
+        void trackEvent("subscription_checkout_redirect", {
+          source: "premium_page",
+          plan: selectedPlan,
+        });
         window.location.href = result.checkoutUrl;
       } else {
         // fallback dev: subscription created locally
+        void trackEvent("subscription_activated_fallback", {
+          source: "premium_page",
+          plan: selectedPlan,
+        });
         toast.success("Assinatura ativada com sucesso!");
         await refresh();
         navigate("/premium/sucesso");
       }
     } catch (err: any) {
+      void trackEvent("subscription_checkout_error", {
+        source: "premium_page",
+        plan: selectedPlan,
+      });
       toast.error(err?.message ?? "Erro ao iniciar pagamento.");
     } finally {
       setSubscribing(false);
@@ -183,7 +206,13 @@ export default function Premium() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Mensal */}
               <button
-                onClick={() => setSelectedPlan("monthly")}
+                onClick={() => {
+                  setSelectedPlan("monthly");
+                  void trackEvent("subscription_plan_selected", {
+                    source: "premium_page",
+                    plan: "monthly",
+                  });
+                }}
                 className={`relative rounded-2xl border p-6 text-left transition-all cursor-pointer ${
                   selectedPlan === "monthly"
                     ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_30px_oklch(0.75_0.18_75/0.15)]"
@@ -208,7 +237,13 @@ export default function Premium() {
 
               {/* Anual */}
               <button
-                onClick={() => setSelectedPlan("annual")}
+                onClick={() => {
+                  setSelectedPlan("annual");
+                  void trackEvent("subscription_plan_selected", {
+                    source: "premium_page",
+                    plan: "annual",
+                  });
+                }}
                 className={`relative rounded-2xl border p-6 text-left transition-all cursor-pointer ${
                   selectedPlan === "annual"
                     ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_30px_oklch(0.75_0.18_75/0.15)]"

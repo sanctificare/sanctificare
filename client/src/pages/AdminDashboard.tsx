@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
 import { trpc } from "../lib/trpc";
 import { 
   Users, 
@@ -15,7 +14,10 @@ import {
   Award, 
   Clock,
   LogOut,
-  LayoutDashboard
+  LayoutDashboard,
+  Bell,
+  ClipboardList,
+  Send
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -39,7 +41,7 @@ import { useLocation } from "wouter";
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<"overview" | "users" | "logs">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "users" | "notifications" | "audit">("overview");
   
   // User search & pagination states
   const [search, setSearch] = useState("");
@@ -48,6 +50,10 @@ export default function AdminDashboard() {
 
   // Selected user details dialog state
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [pushAudience, setPushAudience] = useState<"all" | "premium">("all");
+  const [pushTitle, setPushTitle] = useState("");
+  const [pushBody, setPushBody] = useState("");
+  const [pushScreen, setPushScreen] = useState("/dashboard");
 
   const trpcContext = trpc.useUtils();
 
@@ -70,6 +76,11 @@ export default function AdminDashboard() {
     { enabled: selectedUserId !== null }
   );
 
+  const auditQuery = trpc.admin.getAuditLogs.useQuery(
+    { limit: 50 },
+    { enabled: activeTab === "audit" }
+  );
+
   // ── Mutations ──
   const togglePremiumMutation = trpc.admin.togglePremium.useMutation({
     onSuccess: (data, variables) => {
@@ -88,6 +99,18 @@ export default function AdminDashboard() {
     onError: (err) => {
       toast.error(err.message || "Erro ao alterar assinatura.");
     }
+  });
+
+  const sendPushMutation = trpc.admin.sendPush.useMutation({
+    onSuccess: (result) => {
+      toast.success(`Notificação enviada para ${result.sent} dispositivo(s).`);
+      setPushTitle("");
+      setPushBody("");
+      void auditQuery.refetch();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Não foi possível enviar a notificação.");
+    },
   });
 
   // Calculate totals and format chart data
@@ -111,8 +134,18 @@ export default function AdminDashboard() {
     setPage(0); // Reset to first page
   };
 
-  const handleTogglePremium = (userId: number, isCurrentlyPremium: boolean) => {
-    togglePremiumMutation.mutate({ userId, grant: !isCurrentlyPremium });
+  const handleTogglePremium = (userId: number, grant: boolean) => {
+    togglePremiumMutation.mutate({ userId, grant });
+  };
+
+  const handleSendPush = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    sendPushMutation.mutate({
+      audience: pushAudience,
+      title: pushTitle,
+      body: pushBody,
+      screen: pushScreen || undefined,
+    });
   };
 
   // Loading indicator for page
@@ -156,6 +189,28 @@ export default function AdminDashboard() {
             Gestão de Usuários
           </button>
           <button
+            onClick={() => setActiveTab("notifications")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+              activeTab === "notifications"
+                ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent"
+            }`}
+          >
+            <Bell className="w-4 h-4" />
+            Notificações
+          </button>
+          <button
+            onClick={() => setActiveTab("audit")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+              activeTab === "audit"
+                ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent"
+            }`}
+          >
+            <ClipboardList className="w-4 h-4" />
+            Auditoria
+          </button>
+          <button
             onClick={() => setLocation("/")}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 border border-transparent transition-all duration-300"
           >
@@ -177,7 +232,7 @@ export default function AdminDashboard() {
             <span className="text-amber-500 font-serif font-bold text-xl">✝</span>
             <span className="font-serif font-semibold text-amber-500">Sanctificare Admin</span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 overflow-x-auto">
             <Button
               size="sm"
               variant={activeTab === "overview" ? "default" : "outline"}
@@ -193,6 +248,22 @@ export default function AdminDashboard() {
               className={activeTab === "users" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
             >
               Usuários
+            </Button>
+            <Button
+              size="sm"
+              variant={activeTab === "notifications" ? "default" : "outline"}
+              onClick={() => setActiveTab("notifications")}
+              className={activeTab === "notifications" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+            >
+              <Bell className="w-4 h-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant={activeTab === "audit" ? "default" : "outline"}
+              onClick={() => setActiveTab("audit")}
+              className={activeTab === "audit" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+            >
+              <ClipboardList className="w-4 h-4" />
             </Button>
             <Button size="sm" variant="ghost" onClick={() => setLocation("/")} className="text-slate-400">
               Sair
@@ -276,12 +347,12 @@ export default function AdminDashboard() {
 
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                      <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Assinantes Premium</CardTitle>
+                      <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Usuários Premium</CardTitle>
                       <Award className="w-4 h-4 text-amber-500" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-amber-400">{statsQuery.data?.activeSubscriptions}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Assinaturas Stripe ativas</p>
+                      <p className="text-[10px] text-slate-500 mt-1">Stripe e concessões administrativas</p>
                     </CardContent>
                   </Card>
 
@@ -443,6 +514,13 @@ export default function AdminDashboard() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
+                      {usersQuery.isError && (
+                        <TableRow>
+                          <TableCell colSpan={7} className="h-32 text-center text-red-400">
+                            {usersQuery.error.message || "Não foi possível carregar a lista de fiéis."}
+                          </TableCell>
+                        </TableRow>
+                      )}
                       {usersQuery.data?.users.map((user) => (
                         <TableRow key={user.id} className="border-b border-slate-800/60 hover:bg-slate-800/10">
                           <TableCell className="font-mono text-slate-500 text-xs">{user.id}</TableCell>
@@ -474,7 +552,7 @@ export default function AdminDashboard() {
                           </TableCell>
                         </TableRow>
                       ))}
-                      {usersQuery.data?.users.length === 0 && (
+                      {!usersQuery.isError && usersQuery.data?.users.length === 0 && (
                         <TableRow>
                           <TableCell colSpan={7} className="h-32 text-center text-slate-500">
                             Nenhum fiel encontrado com o termo informado.
@@ -514,6 +592,115 @@ export default function AdminDashboard() {
                     </Button>
                   </div>
                 </div>
+              </Card>
+            )}
+
+            {activeTab === "notifications" && (
+              <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
+                <CardHeader className="border-b border-slate-800">
+                  <CardTitle className="text-xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <Bell className="w-5 h-5" /> Notificações
+                  </CardTitle>
+                  <CardDescription className="text-xs text-slate-400">
+                    Envie uma campanha para dispositivos com notificações habilitadas.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <form onSubmit={handleSendPush} className="max-w-2xl space-y-5">
+                    <div className="grid gap-2">
+                      <label htmlFor="push-audience" className="text-sm font-medium text-slate-300">Público</label>
+                      <select
+                        id="push-audience"
+                        value={pushAudience}
+                        onChange={(event) => setPushAudience(event.target.value as "all" | "premium")}
+                        className="h-10 rounded-md border border-amber-500/15 bg-[#1c2132] px-3 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      >
+                        <option value="all">Todos os dispositivos habilitados</option>
+                        <option value="premium">Somente usuários Premium</option>
+                      </select>
+                    </div>
+                    <div className="grid gap-2">
+                      <label htmlFor="push-title" className="text-sm font-medium text-slate-300">Título</label>
+                      <Input
+                        id="push-title"
+                        value={pushTitle}
+                        onChange={(event) => setPushTitle(event.target.value)}
+                        maxLength={120}
+                        required
+                        className="bg-[#1c2132] border-amber-500/15 text-slate-200"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <label htmlFor="push-body" className="text-sm font-medium text-slate-300">Mensagem</label>
+                      <textarea
+                        id="push-body"
+                        value={pushBody}
+                        onChange={(event) => setPushBody(event.target.value)}
+                        maxLength={500}
+                        required
+                        rows={5}
+                        className="w-full resize-y rounded-md border border-amber-500/15 bg-[#1c2132] px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <label htmlFor="push-screen" className="text-sm font-medium text-slate-300">Abrir ao tocar</label>
+                      <Input
+                        id="push-screen"
+                        value={pushScreen}
+                        onChange={(event) => setPushScreen(event.target.value)}
+                        maxLength={120}
+                        placeholder="/dashboard"
+                        className="bg-[#1c2132] border-amber-500/15 text-slate-200"
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      disabled={sendPushMutation.isPending}
+                      className="bg-amber-500 text-slate-900 hover:bg-amber-600 font-bold"
+                    >
+                      <Send className="mr-2 w-4 h-4" />
+                      {sendPushMutation.isPending ? "Enviando..." : "Enviar Notificação"}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
+
+            {activeTab === "audit" && (
+              <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
+                <CardHeader className="border-b border-slate-800">
+                  <CardTitle className="text-xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                    <ClipboardList className="w-5 h-5" /> Auditoria Administrativa
+                  </CardTitle>
+                  <CardDescription className="text-xs text-slate-400">
+                    Últimas ações executadas pelo proprietário no painel.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-0">
+                  {auditQuery.isLoading ? (
+                    <div className="p-10 text-center text-sm text-slate-400">Carregando auditoria...</div>
+                  ) : auditQuery.isError ? (
+                    <div className="p-10 text-center text-sm text-red-400">{auditQuery.error.message || "Não foi possível carregar a auditoria."}</div>
+                  ) : auditQuery.data?.length ? (
+                    <div className="divide-y divide-slate-800">
+                      {auditQuery.data.map((entry) => (
+                        <div key={entry.id} className="px-6 py-4 text-sm">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span className="font-medium text-slate-200">{entry.action}</span>
+                            <span className="text-xs text-slate-500">{new Date(entry.createdAt).toLocaleString("pt-BR")}</span>
+                          </div>
+                          <p className="mt-1 text-xs text-slate-400">
+                            Administrador #{entry.actorUserId ?? "removido"}
+                            {entry.targetUserId ? ` · Usuário #${entry.targetUserId}` : ""}
+                            {Object.entries(entry.metadata).length > 0 ? ` · ${Object.entries(entry.metadata).map(([key, value]) => `${key}: ${value}`).join(" · ")}` : ""}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-10 text-center text-sm text-slate-500">Nenhuma ação administrativa registrada.</div>
+                  )}
+                </CardContent>
               </Card>
             )}
           </div>
@@ -583,8 +770,7 @@ export default function AdminDashboard() {
                     <div className="text-xs text-slate-400 space-y-2">
                       <div className="flex justify-between items-center">
                         <span>Status Premium:</span>
-                        {userDetailQuery.data?.subscription?.status === "active" && 
-                        new Date(userDetailQuery.data.subscription.expiresAt) > new Date() ? (
+                        {userDetailQuery.data?.subscription || userDetailQuery.data?.adminPremiumGrant ? (
                           <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30">ATIVO (Premium)</Badge>
                         ) : (
                           <Badge className="bg-slate-800 text-slate-500">Padrão (Gratuito)</Badge>
@@ -604,31 +790,49 @@ export default function AdminDashboard() {
                           </div>
                         </>
                       )}
+                      {userDetailQuery.data?.adminPremiumGrant && (
+                        <>
+                          <div className="flex justify-between">
+                            <span>Concessão administrativa:</span>
+                            <strong className="text-slate-200">Ativa</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Expira em:</span>
+                            <strong className="text-slate-200">
+                              {new Date(userDetailQuery.data.adminPremiumGrant.expiresAt).toLocaleDateString("pt-BR")}
+                            </strong>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
 
-                  <Button
+                  {(userDetailQuery.data?.adminPremiumGrant || !userDetailQuery.data?.subscription) && <Button
                     size="sm"
-                    variant={userDetailQuery.data?.subscription?.status === "active" ? "destructive" : "default"}
+                    variant={userDetailQuery.data?.adminPremiumGrant ? "destructive" : "default"}
                     onClick={() => {
                       if (userDetailQuery.data) {
-                        const isPremium = userDetailQuery.data.subscription?.status === "active";
-                        handleTogglePremium(userDetailQuery.data.user.id, isPremium);
+                        handleTogglePremium(userDetailQuery.data.user.id, !userDetailQuery.data.adminPremiumGrant);
                       }
                     }}
                     disabled={togglePremiumMutation.isPending}
                     className={`mt-4 w-full text-xs font-semibold ${
-                      userDetailQuery.data?.subscription?.status === "active"
+                      userDetailQuery.data?.adminPremiumGrant
                         ? "bg-red-500/10 text-red-500 border border-red-500/30 hover:bg-red-500/20 hover:text-red-400"
                         : "bg-amber-500 text-slate-900 hover:bg-amber-600 font-bold"
                     }`}
                   >
                     {togglePremiumMutation.isPending ? "Alterando..." : (
-                      userDetailQuery.data?.subscription?.status === "active"
+                      userDetailQuery.data?.adminPremiumGrant
                         ? "Revogar Acesso Premium" 
-                        : "Conceder Acesso Premium"
+                        : "Conceder Acesso Premium Manual"
                     )}
-                  </Button>
+                  </Button>}
+                  {userDetailQuery.data?.subscription && !userDetailQuery.data?.adminPremiumGrant && (
+                    <p className="mt-4 text-center text-xs text-slate-500">
+                      Assinatura Stripe ativa. O gerenciamento deve ser feito no portal de cobrança.
+                    </p>
+                  )}
                 </div>
               </div>
 

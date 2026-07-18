@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import AudioPlayer from "@/components/AudioPlayer";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
+import { trackEvent } from "@/lib/analytics";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -200,9 +201,20 @@ export default function Prayers() {
 
   const handleOpenPrayer = (prayer: Prayer) => {
     if (prayer.category === "premium" && !isPremium) {
+      void trackEvent("prayer_locked_upgrade_prompt", {
+        prayer_id: prayer.id,
+        prayer_type: prayer.type,
+      });
       setIsUpgradeModalOpen(true);
       return;
     }
+
+    void trackEvent("prayer_opened", {
+      prayer_id: prayer.id,
+      prayer_type: prayer.type,
+      has_audio: Boolean(prayer.audioUrl),
+    });
+
     setSelectedPrayer(prayer);
     setPraying(false);
 
@@ -262,7 +274,13 @@ export default function Prayers() {
               <h2 className="font-display text-xl font-bold text-white mb-1">Rosário</h2>
               <p className="text-sm text-[oklch(0.75_0.03_260)] lead-copy">Reze o Santo Rosário com guia completo, mistérios e apoio visual para favorecer o recolhimento.</p>
             </div>
-            <Link href="/rosario" className="w-full sm:w-auto rounded-md focus-gold-ring">
+            <Link
+              href="/rosario"
+              className="w-full sm:w-auto rounded-md focus-gold-ring"
+              onClick={() => {
+                void trackEvent("rosary_cta_click", { source: "prayers_page" });
+              }}
+            >
               <Button className="w-full sm:w-auto bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
                 Rezar o Rosário
                 <ChevronRight size={15} className="ml-1" />

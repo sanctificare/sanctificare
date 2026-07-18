@@ -13,6 +13,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { getLoginUrl } from "@/const";
+import { trackEvent } from "@/lib/analytics";
 
 interface UpgradeDialogProps {
   open: boolean;
@@ -30,21 +31,43 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
 
   const handleSubscribe = async () => {
     if (!isAuthenticated) {
+      void trackEvent("subscription_cta_click_unauthenticated", {
+        source: "upgrade_dialog",
+        plan: selectedPlan,
+      });
       window.location.href = getLoginUrl();
       return;
     }
+
+    void trackEvent("subscription_checkout_started", {
+      source: "upgrade_dialog",
+      plan: selectedPlan,
+    });
+
     setSubscribing(true);
     try {
       const result = await subscribeMutation.mutateAsync({ plan: selectedPlan });
       if (result.checkoutUrl) {
+        void trackEvent("subscription_checkout_redirect", {
+          source: "upgrade_dialog",
+          plan: selectedPlan,
+        });
         window.location.href = result.checkoutUrl;
       } else {
+        void trackEvent("subscription_activated_fallback", {
+          source: "upgrade_dialog",
+          plan: selectedPlan,
+        });
         toast.success("Assinatura de teste ativada!");
         await refresh();
         onOpenChange(false);
         navigate("/premium/sucesso");
       }
     } catch (err: any) {
+      void trackEvent("subscription_checkout_error", {
+        source: "upgrade_dialog",
+        plan: selectedPlan,
+      });
       toast.error(err?.message ?? "Erro ao iniciar pagamento.");
     } finally {
       setSubscribing(false);
@@ -72,7 +95,13 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-5 relative z-10">
           {/* Mensal */}
           <button
-            onClick={() => setSelectedPlan("monthly")}
+            onClick={() => {
+              setSelectedPlan("monthly");
+              void trackEvent("subscription_plan_selected", {
+                source: "upgrade_dialog",
+                plan: "monthly",
+              });
+            }}
             className={`relative rounded-xl border p-4 text-left transition-all cursor-pointer ${
               selectedPlan === "monthly"
                 ? "border-amber-500/60 bg-amber-500/10"
@@ -99,7 +128,13 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
 
           {/* Anual */}
           <button
-            onClick={() => setSelectedPlan("annual")}
+            onClick={() => {
+              setSelectedPlan("annual");
+              void trackEvent("subscription_plan_selected", {
+                source: "upgrade_dialog",
+                plan: "annual",
+              });
+            }}
             className={`relative rounded-xl border p-4 text-left transition-all cursor-pointer ${
               selectedPlan === "annual"
                 ? "border-amber-500/60 bg-amber-500/10"
