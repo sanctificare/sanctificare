@@ -58,9 +58,7 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
       };
 
       // Configuração para o Salmo Cantado
-      if (dayNum >= 15 && dayNum <= 26) {
-        audio.singedPsalm = `https://pub-96913c18248f4d87b51150bb084c6bb8.r2.dev/julho26/salmos${formattedDate}.mp3`;
-      } else if (dayNum >= 13 && dayNum <= 14) {
+      if (dayNum >= 13 && dayNum <= 26) {
         audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmos${formattedDate}.mp3`;
       } else if (dayNum >= 5 && dayNum <= 12) {
         audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmo${formattedDate}.mp3`;
