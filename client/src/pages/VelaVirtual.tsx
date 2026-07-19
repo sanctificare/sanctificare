@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
+import { trackEvent } from "@/lib/analytics";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -522,6 +523,11 @@ export default function VelaVirtual() {
                           setPrivateCandleIntention(trimmedIntention);
                           setIsCandleLit(true);
                           setNewIntention("");
+
+                          void trackEvent("light_candle", {
+                            candle_type: candleType,
+                            has_intention: trimmedIntention.length > 0,
+                          });
                           
                           // Iniciar o ambiente e modo limpo
                           await startPrayerSpace();

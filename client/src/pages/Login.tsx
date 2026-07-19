@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
+import { trackEvent } from "@/lib/analytics";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
@@ -109,6 +110,7 @@ export default function Login() {
       setStoredCsrfToken(data?.csrfToken);
       queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Bem-vindo ao Sanctificare!");
+      void trackEvent("login", { method: "email" });
       void queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
     onError: (err: any) => {
@@ -123,6 +125,7 @@ export default function Login() {
       setStoredCsrfToken(data?.csrfToken);
       queryClient.setQueryData(["auth", "me"], data?.user ?? null);
       toast.success("Conta criada com sucesso! Bem-vindo.");
+      void trackEvent("sign_up", { method: "email" });
       void queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
     },
     onError: (err: any) => {
@@ -201,6 +204,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
+    void trackEvent("login_started", { method: "google" });
     const postAuthPath = getPostAuthPath();
     const path = isMobileApp()
       ? postAuthPath.startsWith("sanctificare://callback")

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
+import { trackEvent } from "@/lib/analytics";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -184,7 +185,7 @@ export default function Intentions() {
   });
 
   const createIntention = trpc.intentions.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       utils.intentions.list.invalidate();
       setShowForm(false);
       setDescription("");
@@ -192,6 +193,10 @@ export default function Intentions() {
       setIsAnonymous(false);
       toast.success("Intenção publicada!", {
         description: "Que o Senhor atenda à sua oração.",
+      });
+      void trackEvent("add_intention", {
+        category: variables.category || "none",
+        is_anonymous: variables.isAnonymous,
       });
     },
     onError: () => toast.error("Não foi possível publicar sua intenção agora."),
