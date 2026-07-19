@@ -48,8 +48,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
   const [yearStr, monthStr, dayStr] = dateIso.split("-");
   if (yearStr === "2026" && monthStr === "07") {
     const dayNum = parseInt(dayStr, 10);
-    // Temos áudios individuais na pasta de julho26 de 05 a 19 de julho
-    if (dayNum >= 5 && dayNum <= 19) {
+    // Temos áudios individuais na pasta de julho26 de 05 a 26 de julho
+    if (dayNum >= 5 && dayNum <= 26) {
       const formattedDate = `${dayStr}${monthStr}26`; // ex: 050726
 
       const audio: LiturgyReadingsAudio = {
@@ -58,7 +58,7 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
       };
 
       // Configuração para o Salmo Cantado
-      if (dayNum >= 15 && dayNum <= 19) {
+      if (dayNum >= 15 && dayNum <= 26) {
         audio.singedPsalm = `https://pub-96913c18248f4d87b51150bb084c6bb8.r2.dev/julho26/salmos${formattedDate}.mp3`;
       } else if (dayNum >= 13 && dayNum <= 14) {
         audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmos${formattedDate}.mp3`;
@@ -66,8 +66,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmo${formattedDate}.mp3`;
       }
 
-      // Apenas dias 5, 12 e 19 têm segunda leitura no R2 (domingos)
-      if (dayNum === 5 || dayNum === 12 || dayNum === 19) {
+      // Apenas dias 5, 12, 19 e 26 têm segunda leitura no R2 (domingos)
+      if (dayNum === 5 || dayNum === 12 || dayNum === 19 || dayNum === 26) {
         audio.secondReading = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/2leitura${formattedDate}.mp3`;
       }
 
