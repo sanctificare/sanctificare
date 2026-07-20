@@ -29,6 +29,10 @@ import { ENV } from './_core/env';
 let _db: PostgresJsDatabase | null = null;
 let _bootstrapPromise: Promise<void> | null = null;
 
+function shouldRunLazyBootstrap() {
+  return process.env.NODE_ENV !== "production";
+}
+
 async function bootstrapDb(sql: any) {
   try {
     // 1. Create enum types safely
@@ -428,15 +432,17 @@ export async function getDb() {
 
         _db = drizzle(client);
         
-        if (!_bootstrapPromise) {
-          _bootstrapPromise = bootstrapDb(client);
-        }
-        
-        try {
-          await _bootstrapPromise;
-        } catch (bootstrapErr) {
-          _bootstrapPromise = null; // Clear so we can retry on next connection attempt
-          throw bootstrapErr;
+        if (shouldRunLazyBootstrap()) {
+          if (!_bootstrapPromise) {
+            _bootstrapPromise = bootstrapDb(client);
+          }
+
+          try {
+            await _bootstrapPromise;
+          } catch (bootstrapErr) {
+            _bootstrapPromise = null; // Clear so we can retry on next connection attempt
+            throw bootstrapErr;
+          }
         }
       } catch (error) {
         console.warn("[Database] Failed to connect:", error);
