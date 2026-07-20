@@ -1,20 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { trpc } from "../lib/trpc";
 import { Users, Sparkles, Award, Activity, ShieldAlert, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
+const ADMIN_PORTAL_STALL_MS = 8000;
+
 export default function AdminQuickPortal() {
   const statsQuery = trpc.admin.getStats.useQuery(undefined, {
     refetchInterval: 60000,
   });
 
-  if (statsQuery.isLoading) {
+  const [timedOut, setTimedOut] = useState(false);
+
+  useEffect(() => {
+    if (!statsQuery.isPending) {
+      setTimedOut(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => setTimedOut(true), ADMIN_PORTAL_STALL_MS);
+    return () => window.clearTimeout(timer);
+  }, [statsQuery.isPending]);
+
+  if (statsQuery.isPending && !timedOut) {
     return (
       <div className="w-full py-6 flex items-center justify-center gap-2">
         <div className="w-5 h-5 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
         <span className="text-xs text-slate-400">Carregando painel do dono...</span>
+      </div>
+    );
+  }
+
+  if (timedOut) {
+    return (
+      <div className="w-full py-6 space-y-3 border-t border-[oklch(0.75_0.12_75/0.2)] mt-6">
+        <div className="rounded-xl border border-amber-500/20 bg-[oklch(0.25_0.05_260)] p-4 text-center">
+          <p className="text-sm font-semibold text-amber-400">Painel do Dono indisponível no momento</p>
+          <p className="mt-1 text-xs text-slate-400">As estatísticas demoraram para responder. Você pode tentar novamente.</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setTimedOut(false);
+              void statsQuery.refetch();
+            }}
+            className="mt-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+          >
+            Tentar novamente
+          </Button>
+        </div>
       </div>
     );
   }

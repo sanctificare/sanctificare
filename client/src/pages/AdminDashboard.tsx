@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { trpc } from "../lib/trpc";
 import { 
   Users, 
@@ -39,6 +39,8 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+
+const ADMIN_QUERY_STALL_MS = 12000;
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -129,6 +131,21 @@ export default function AdminDashboard() {
     },
   });
 
+  const [overviewTimedOut, setOverviewTimedOut] = useState(false);
+
+  useEffect(() => {
+    if (!statsQuery.isPending && !growthQuery.isPending) {
+      setOverviewTimedOut(false);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setOverviewTimedOut(true);
+    }, ADMIN_QUERY_STALL_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [statsQuery.isPending, growthQuery.isPending]);
+
   // Calculate totals and format chart data
   const chartData = growthQuery.data?.map(item => {
     try {
@@ -164,8 +181,14 @@ export default function AdminDashboard() {
     });
   };
 
-  // Loading indicator for page
-  const isLoading = statsQuery.isLoading || growthQuery.isLoading;
+  const isOverviewLoading = (statsQuery.isPending || growthQuery.isPending) && !overviewTimedOut;
+  const hasOverviewError = statsQuery.isError || growthQuery.isError;
+
+  const retryOverviewQueries = () => {
+    setOverviewTimedOut(false);
+    void statsQuery.refetch();
+    void growthQuery.refetch();
+  };
 
   return (
     <div className="flex min-h-screen bg-[#0B0D13] text-slate-100 font-sans">
@@ -287,30 +310,7 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        {isLoading ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
-            <span className="text-sm text-slate-400 animate-pulse font-medium">Carregando painel de administração...</span>
-          </div>
-        ) : statsQuery.isError || growthQuery.isError ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center">
-            <div className="text-red-500 text-3xl">⚠️</div>
-            <h3 className="text-lg font-serif font-bold text-amber-500">Erro ao Carregar o Painel</h3>
-            <p className="text-xs text-slate-400 max-w-md">
-              {statsQuery.error?.message || growthQuery.error?.message || "Não foi possível conectar ao banco de dados ou autenticar."}
-            </p>
-            <Button
-              onClick={() => {
-                statsQuery.refetch();
-                growthQuery.refetch();
-              }}
-              className="mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold"
-            >
-              Tentar Novamente
-            </Button>
-          </div>
-        ) : (
-          <div className="flex-1 p-6 md:p-8 space-y-8 max-w-7xl w-full mx-auto">
+        <div className="flex-1 p-6 md:p-8 space-y-8 max-w-7xl w-full mx-auto">
             {/* ── Welcome Heading ── */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
@@ -326,6 +326,51 @@ export default function AdminDashboard() {
             {/* ── Active Tab Content ── */}
             {activeTab === "overview" && (
               <>
+                {isOverviewLoading && (
+                  <Card className="border-amber-500/10 bg-[#121622] shadow-xl">
+                    <CardContent className="flex min-h-40 flex-col items-center justify-center gap-3 p-8 text-center">
+                      <div className="w-10 h-10 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
+                      <span className="text-sm text-slate-400 animate-pulse font-medium">Carregando painel de administração...</span>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {!isOverviewLoading && overviewTimedOut && !hasOverviewError && (
+                  <Card className="border-amber-500/20 bg-[#121622] shadow-xl">
+                    <CardContent className="flex min-h-40 flex-col items-center justify-center gap-3 p-8 text-center">
+                      <div className="text-amber-400 text-3xl">⌛</div>
+                      <h3 className="text-lg font-serif font-bold text-amber-500">O painel demorou mais que o normal</h3>
+                      <p className="max-w-md text-xs text-slate-400">
+                        As estatísticas ainda não responderam. Você pode tentar novamente sem perder acesso ao restante do painel.
+                      </p>
+                      <Button
+                        onClick={retryOverviewQueries}
+                        className="mt-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold"
+                      >
+                        Tentar Novamente
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {hasOverviewError && (
+                  <Card className="border-red-500/20 bg-[#121622] shadow-xl">
+                    <CardContent className="flex min-h-40 flex-col items-center justify-center gap-3 p-8 text-center">
+                      <div className="text-red-500 text-3xl">⚠️</div>
+                      <h3 className="text-lg font-serif font-bold text-amber-500">Erro ao Carregar o Painel</h3>
+                      <p className="max-w-md text-xs text-slate-400">
+                        {statsQuery.error?.message || growthQuery.error?.message || "Não foi possível conectar ao banco de dados ou autenticar."}
+                      </p>
+                      <Button
+                        onClick={retryOverviewQueries}
+                        className="mt-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold"
+                      >
+                        Tentar Novamente
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+
                 {/* ── STATS CARDS ── */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
@@ -334,7 +379,7 @@ export default function AdminDashboard() {
                       <Users className="w-4 h-4 text-amber-500/80" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold font-serif text-slate-100">{statsQuery.data?.totalUsers}</div>
+                      <div className="text-2xl font-bold font-serif text-slate-100">{statsQuery.data?.totalUsers ?? "--"}</div>
                       <p className="text-[10px] text-slate-500 mt-1">Usuários cadastrados</p>
                     </CardContent>
                   </Card>
@@ -345,7 +390,7 @@ export default function AdminDashboard() {
                       <Sparkles className="w-4 h-4 text-emerald-500/80" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold font-serif text-emerald-400">+{statsQuery.data?.newUsersToday}</div>
+                      <div className="text-2xl font-bold font-serif text-emerald-400">{statsQuery.data?.newUsersToday != null ? `+${statsQuery.data.newUsersToday}` : "--"}</div>
                       <p className="text-[10px] text-slate-500 mt-1">Registrados nas últimas 24h</p>
                     </CardContent>
                   </Card>
@@ -356,7 +401,7 @@ export default function AdminDashboard() {
                       <Flame className="w-4 h-4 text-orange-500/80" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold font-serif text-orange-400">{statsQuery.data?.activeUsersToday}</div>
+                      <div className="text-2xl font-bold font-serif text-orange-400">{statsQuery.data?.activeUsersToday ?? "--"}</div>
                       <p className="text-[10px] text-slate-500 mt-1">Acessaram o app hoje</p>
                     </CardContent>
                   </Card>
@@ -367,7 +412,7 @@ export default function AdminDashboard() {
                       <Award className="w-4 h-4 text-amber-500" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold font-serif text-amber-400">{statsQuery.data?.activeSubscriptions}</div>
+                      <div className="text-2xl font-bold font-serif text-amber-400">{statsQuery.data?.activeSubscriptions ?? "--"}</div>
                       <p className="text-[10px] text-slate-500 mt-1">Stripe e concessões administrativas</p>
                     </CardContent>
                   </Card>
@@ -378,7 +423,7 @@ export default function AdminDashboard() {
                       <Activity className="w-4 h-4 text-sky-500/80" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold font-serif text-sky-400">{statsQuery.data?.totalPrayers}</div>
+                      <div className="text-2xl font-bold font-serif text-sky-400">{statsQuery.data?.totalPrayers ?? "--"}</div>
                       <p className="text-[10px] text-slate-500 mt-1">Terços, novenas e orações</p>
                     </CardContent>
                   </Card>
@@ -393,47 +438,57 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="h-[300px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <defs>
-                          <linearGradient id="colorCadastros" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#d97706" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#d97706" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                        <XAxis 
-                          dataKey="date" 
-                          stroke="#6b7280" 
-                          fontSize={11}
-                          tickLine={false}
-                          axisLine={false}
-                        />
-                        <YAxis 
-                          stroke="#6b7280" 
-                          fontSize={11}
-                          tickLine={false}
-                          axisLine={false}
-                          allowDecimals={false}
-                        />
-                        <Tooltip 
-                          contentStyle={{ 
-                            backgroundColor: "#1c1f2e", 
-                            borderColor: "rgba(245, 158, 11, 0.2)",
-                            borderRadius: "8px",
-                            color: "#fff"
-                          }} 
-                        />
-                        <Area 
-                          type="monotone" 
-                          dataKey="Novos Cadastros" 
-                          stroke="#f59e0b" 
-                          strokeWidth={2}
-                          fillOpacity={1} 
-                          fill="url(#colorCadastros)" 
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
+                    {growthQuery.data?.length ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                          <defs>
+                            <linearGradient id="colorCadastros" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#d97706" stopOpacity={0.3}/>
+                              <stop offset="95%" stopColor="#d97706" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                          <XAxis 
+                            dataKey="date" 
+                            stroke="#6b7280" 
+                            fontSize={11}
+                            tickLine={false}
+                            axisLine={false}
+                          />
+                          <YAxis 
+                            stroke="#6b7280" 
+                            fontSize={11}
+                            tickLine={false}
+                            axisLine={false}
+                            allowDecimals={false}
+                          />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: "#1c1f2e", 
+                              borderColor: "rgba(245, 158, 11, 0.2)",
+                              borderRadius: "8px",
+                              color: "#fff"
+                            }} 
+                          />
+                          <Area 
+                            type="monotone" 
+                            dataKey="Novos Cadastros" 
+                            stroke="#f59e0b" 
+                            strokeWidth={2}
+                            fillOpacity={1} 
+                            fill="url(#colorCadastros)" 
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-center text-sm text-slate-500">
+                        {growthQuery.isPending && !overviewTimedOut
+                          ? "Carregando gráfico de cadastros..."
+                          : growthQuery.isError
+                            ? "Não foi possível carregar o gráfico agora."
+                            : "Ainda não há dados de crescimento para exibir."}
+                      </div>
+                    )}
                   </div>
                 </Card>
 
@@ -459,6 +514,13 @@ export default function AdminDashboard() {
                             </div>
                           </div>
                         ))}
+                        {!statsQuery.data?.recentUsers?.length && (
+                          <div className="px-6 py-8 text-center text-xs text-slate-500">
+                            {statsQuery.isPending && !overviewTimedOut
+                              ? "Carregando cadastros recentes..."
+                              : "Nenhum cadastro recente disponível."}
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -490,6 +552,13 @@ export default function AdminDashboard() {
                             </div>
                           </div>
                         ))}
+                        {!statsQuery.data?.recentActivities?.length && (
+                          <div className="px-6 py-8 text-center text-xs text-slate-500">
+                            {statsQuery.isPending && !overviewTimedOut
+                              ? "Carregando atividades recentes..."
+                              : "Nenhuma atividade recente disponível."}
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -740,7 +809,6 @@ export default function AdminDashboard() {
               </Card>
             )}
           </div>
-        )}
       </main>
 
       {/* ── User Detail Dialog/Modal ── */}

@@ -66,6 +66,7 @@ import { sendPushToTokens } from "./_core/push";
 import { createMemoryRateLimiter } from "./_core/rateLimit";
 
 const PUBLIC_RATE_WINDOW_MS = 60 * 1000;
+const ADMIN_QUERY_TIMEOUT_MS = 15_000;
 const publicRateLimiter = createMemoryRateLimiter({
   windowMs: PUBLIC_RATE_WINDOW_MS,
   cleanupIntervalMs: 5 * 60 * 1000,
@@ -135,14 +136,44 @@ function getPublicTrpcErrorMessage(error: unknown, fallback: string): string {
   return fallback;
 }
 
+async function withAdminQueryTimeout<T>(work: Promise<T>, fallbackMessage: string): Promise<T> {
+  let timer: NodeJS.Timeout | null = null;
+
+  try {
+    return await Promise.race([
+      work,
+      new Promise<T>((_, reject) => {
+        timer = setTimeout(() => {
+          reject(new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: fallbackMessage,
+          }));
+        }, ADMIN_QUERY_TIMEOUT_MS);
+
+        if (typeof timer?.unref === "function") {
+          timer.unref();
+        }
+      }),
+    ]);
+  } finally {
+    if (timer) {
+      clearTimeout(timer);
+    }
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
 
   admin: router({
     getStats: adminProcedure.query(async () => {
       try {
-        return await getAdminStats();
+        return await withAdminQueryTimeout(
+          getAdminStats(),
+          "As estatísticas do painel demoraram demais para responder. Tente novamente."
+        );
       } catch (err: any) {
+        if (err instanceof TRPCError) throw err;
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: getPublicTrpcErrorMessage(err, "Falha ao carregar estatísticas.")
@@ -158,8 +189,12 @@ export const appRouter = router({
       }))
       .query(async ({ input }) => {
         try {
-          return await getAdminUsersList(input.search, input.limit, input.offset);
+          return await withAdminQueryTimeout(
+            getAdminUsersList(input.search, input.limit, input.offset),
+            "A lista de usuários demorou demais para responder. Tente novamente."
+          );
         } catch (err: any) {
+          if (err instanceof TRPCError) throw err;
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: getPublicTrpcErrorMessage(err, "Falha ao buscar usuários.")
@@ -173,7 +208,10 @@ export const appRouter = router({
       }))
       .query(async ({ input }) => {
         try {
-          const detail = await getAdminUserDetail(input.userId);
+          const detail = await withAdminQueryTimeout(
+            getAdminUserDetail(input.userId),
+            "Os detalhes do usuário demoraram demais para responder. Tente novamente."
+          );
           if (!detail) {
             throw new TRPCError({ code: "NOT_FOUND", message: "Usuário não encontrado." });
           }
@@ -216,8 +254,12 @@ export const appRouter = router({
 
     getRegistrationGrowth: adminProcedure.query(async () => {
       try {
-        return await getAdminRegistrationGrowth();
+        return await withAdminQueryTimeout(
+          getAdminRegistrationGrowth(),
+          "O gráfico de crescimento demorou demais para responder. Tente novamente."
+        );
       } catch (err: any) {
+        if (err instanceof TRPCError) throw err;
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: getPublicTrpcErrorMessage(err, "Falha ao buscar crescimento de registros.")
@@ -229,8 +271,12 @@ export const appRouter = router({
       .input(z.object({ limit: z.number().int().min(1).max(100).default(50) }).optional())
       .query(async ({ input }) => {
         try {
-          return await getAdminAuditLogs(input?.limit ?? 50);
+          return await withAdminQueryTimeout(
+            getAdminAuditLogs(input?.limit ?? 50),
+            "A auditoria demorou demais para responder. Tente novamente."
+          );
         } catch (err: any) {
+          if (err instanceof TRPCError) throw err;
           throw new TRPCError({
             code: "INTERNAL_SERVER_ERROR",
             message: getPublicTrpcErrorMessage(err, "Falha ao carregar auditoria."),
