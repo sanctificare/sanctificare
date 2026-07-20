@@ -15,9 +15,14 @@ let fcmReady = false;
 function readServiceAccount(): ServiceAccount | null {
   if (ENV.fcmServiceAccountJson) {
     try {
-      const parsed = JSON.parse(ENV.fcmServiceAccountJson) as ServiceAccount;
-      if (parsed.projectId && parsed.clientEmail && parsed.privateKey) {
-        return parsed;
+      const parsed = JSON.parse(ENV.fcmServiceAccountJson) as any;
+      const mapped: ServiceAccount = {
+        projectId: parsed.project_id || parsed.projectId,
+        clientEmail: parsed.client_email || parsed.clientEmail,
+        privateKey: parsed.private_key || parsed.privateKey,
+      };
+      if (mapped.projectId && mapped.clientEmail && mapped.privateKey) {
+        return mapped;
       }
     } catch {
       throw new TRPCError({
