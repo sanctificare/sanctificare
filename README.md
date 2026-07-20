@@ -123,16 +123,23 @@ Android setup:
 
 1. Place `google-services.json` in `android/app/google-services.json`.
 2. Build or sync Android after changes: `pnpm exec cap sync android`.
+3. The Android app now uses the branded `sanctificare_general` notification channel and a monochrome Sanctificare icon for push/local notifications.
 
 iOS setup:
 
-1. Add `GoogleService-Info.plist` in the iOS app target.
-2. Upload APNs key/certificate in Firebase console.
-3. Enable Push Notifications capability in Xcode.
+This repository currently does not include an `ios/` Capacitor project. To enable iOS push:
+
+1. Generate the native project with `pnpm exec cap add ios`.
+2. Open the Xcode workspace and keep the bundle id aligned with `com.sanctificare.app`.
+3. Add `GoogleService-Info.plist` to the iOS app target.
+4. In Apple Developer, create an APNs Authentication Key and upload it in Firebase Console > Project Settings > Cloud Messaging.
+5. In Xcode, enable the `Push Notifications` capability and `Background Modes` with `Remote notifications`.
+6. Run `pnpm exec cap sync ios` after web changes and test on a physical iPhone.
 
 Notes:
 
 - Without native Firebase files, push registration will not work on device.
+- On iOS, remote push cannot be validated in this repo until the native `ios/` project is added.
 - Local reminders (LocalNotifications) continue to work independently.
 
 ---

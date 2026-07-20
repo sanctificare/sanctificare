@@ -1,4 +1,7 @@
 import { isMobileApp } from "@/const";
+import {
+  ensureAndroidNotificationChannel,
+} from "./nativeNotifications";
 
 type InitPushParams = {
   onRegistered: (token: string, meta: { platform: "android" | "ios" | "web"; deviceId?: string | null }) => Promise<void>;
@@ -22,6 +25,8 @@ export async function initNativePushNotifications(params: InitPushParams): Promi
     ]);
 
     const platform = mapPlatform(Capacitor.getPlatform());
+
+  await ensureAndroidNotificationChannel();
 
     await PushNotifications.removeAllListeners();
 

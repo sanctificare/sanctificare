@@ -10,6 +10,10 @@ type PushMessage = {
   data?: Record<string, string>;
 };
 
+const ANDROID_NOTIFICATION_CHANNEL_ID = "sanctificare_general";
+const ANDROID_NOTIFICATION_ICON = "ic_stat_sanctificare";
+const ANDROID_NOTIFICATION_COLOR = "#C8A04D";
+
 let fcmReady = false;
 
 function readServiceAccount(): ServiceAccount | null {
@@ -94,7 +98,9 @@ export async function sendPushToTokens(tokens: string[], message: PushMessage): 
       android: {
         priority: "high",
         notification: {
-          channelId: "default",
+          channelId: ANDROID_NOTIFICATION_CHANNEL_ID,
+          icon: ANDROID_NOTIFICATION_ICON,
+          color: ANDROID_NOTIFICATION_COLOR,
           sound: "default",
         },
       },

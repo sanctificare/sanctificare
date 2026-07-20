@@ -1,4 +1,8 @@
 import { isMobileApp } from "@/const";
+import {
+  ANDROID_LOCAL_NOTIFICATION_OPTIONS,
+  ensureAndroidNotificationChannel,
+} from "./nativeNotifications";
 
 // Fixed ids so scheduling/cancelling always targets the same reminders.
 const DAILY_REMINDER_ID = 1001;
@@ -52,6 +56,7 @@ export async function scheduleDailyReminder(time: string): Promise<void> {
   const { hour, minute } = parseTime(time);
   try {
     const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await ensureAndroidNotificationChannel();
     await LocalNotifications.cancel({
       notifications: [{ id: DAILY_REMINDER_ID }],
     });
@@ -61,6 +66,7 @@ export async function scheduleDailyReminder(time: string): Promise<void> {
           id: DAILY_REMINDER_ID,
           title: "Sanctificare",
           body: "Está na hora da sua oração diária. Mantenha viva a sua constância espiritual!",
+          ...ANDROID_LOCAL_NOTIFICATION_OPTIONS,
           schedule: {
             on: { hour, minute },
             allowWhileIdle: true,
@@ -92,6 +98,7 @@ export async function scheduleAngelusReminders(): Promise<void> {
   if (!isMobileApp()) return;
   try {
     const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await ensureAndroidNotificationChannel();
     await LocalNotifications.cancel({
       notifications: [{ id: ANGELUS_12_ID }, { id: ANGELUS_18_ID }],
     });
@@ -101,6 +108,7 @@ export async function scheduleAngelusReminders(): Promise<void> {
           id: ANGELUS_12_ID,
           title: "Ângelus — Sanctificare",
           body: "Hora do Ângelus. 'O Anjo do Senhor anunciou a Maria...' Una-se em oração com a encarnação de nosso Salvador.",
+          ...ANDROID_LOCAL_NOTIFICATION_OPTIONS,
           schedule: {
             on: { hour: 12, minute: 0 },
             allowWhileIdle: true,
@@ -111,6 +119,7 @@ export async function scheduleAngelusReminders(): Promise<void> {
           id: ANGELUS_18_ID,
           title: "Ângelus — Sanctificare",
           body: "Hora do Ângelus do entardecer. 'E o Verbo se fez carne e habitou entre nós...' Eleve seu coração a Nossa Senhora.",
+          ...ANDROID_LOCAL_NOTIFICATION_OPTIONS,
           schedule: {
             on: { hour: 18, minute: 0 },
             allowWhileIdle: true,
@@ -143,6 +152,7 @@ export async function scheduleNovenaReminder(time: string = "20:00"): Promise<vo
   const { hour, minute } = parseTime(time);
   try {
     const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await ensureAndroidNotificationChannel();
     await LocalNotifications.cancel({
       notifications: [{ id: NOVENA_REMINDER_ID }],
     });
@@ -152,6 +162,7 @@ export async function scheduleNovenaReminder(time: string = "20:00"): Promise<vo
           id: NOVENA_REMINDER_ID,
           title: "Novena Ativa — Sanctificare",
           body: "Não se esqueça de rezar o dia de hoje da sua novena ativa! Mantenha a sua perseverança.",
+          ...ANDROID_LOCAL_NOTIFICATION_OPTIONS,
           schedule: {
             on: { hour, minute },
             allowWhileIdle: true,

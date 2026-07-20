@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   ResponsiveContainer, 
   AreaChart, 
@@ -110,6 +111,21 @@ export default function AdminDashboard() {
     },
     onError: (err) => {
       toast.error(err.message || "Não foi possível enviar a notificação.");
+    },
+  });
+
+  const sendPushTestMutation = trpc.push.sendTestToMe.useMutation({
+    onSuccess: (result) => {
+      if (!result.success) {
+        toast.warning("Nenhum dispositivo com push habilitado foi encontrado para a sua conta.");
+        return;
+      }
+
+      toast.success(`Push de teste enviado para ${result.sent} dispositivo(s) seu(s).`);
+      void auditQuery.refetch();
+    },
+    onError: (err) => {
+      toast.error(err.message || "Não foi possível enviar o push de teste.");
     },
   });
 
@@ -607,6 +623,26 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <form onSubmit={handleSendPush} className="max-w-2xl space-y-5">
+                    <div className="rounded-xl border border-amber-500/15 bg-amber-500/5 p-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-amber-400">Teste rápido no seu celular</p>
+                          <p className="text-xs text-slate-400">
+                            Dispara uma notificação de validação apenas para os dispositivos vinculados ao seu usuário.
+                          </p>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled={sendPushTestMutation.isPending}
+                          onClick={() => sendPushTestMutation.mutate()}
+                          className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
+                        >
+                          <Bell className="mr-2 w-4 h-4" />
+                          {sendPushTestMutation.isPending ? "Enviando teste..." : "Enviar para mim"}
+                        </Button>
+                      </div>
+                    </div>
                     <div className="grid gap-2">
                       <label htmlFor="push-audience" className="text-sm font-medium text-slate-300">Público</label>
                       <select
@@ -632,14 +668,14 @@ export default function AdminDashboard() {
                     </div>
                     <div className="grid gap-2">
                       <label htmlFor="push-body" className="text-sm font-medium text-slate-300">Mensagem</label>
-                      <textarea
+                      <Textarea
                         id="push-body"
                         value={pushBody}
                         onChange={(event) => setPushBody(event.target.value)}
                         maxLength={500}
                         required
                         rows={5}
-                        className="w-full resize-y rounded-md border border-amber-500/15 bg-[#1c2132] px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        className="resize-y border-amber-500/15 bg-[#1c2132] text-slate-200 focus-visible:ring-amber-500"
                       />
                     </div>
                     <div className="grid gap-2">

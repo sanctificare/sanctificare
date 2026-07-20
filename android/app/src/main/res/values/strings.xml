@@ -4,4 +4,7 @@
     <string name="title_activity_main">Sanctificare</string>
     <string name="package_name">com.sanctificare.app</string>
     <string name="custom_url_scheme">com.sanctificare.app</string>
+    <string name="push_notification_channel_id">sanctificare_general</string>
+    <string name="push_notification_channel_name">Sanctificare</string>
+    <string name="push_notification_channel_description">Orações, lembretes e notificações do app.</string>
 </resources>

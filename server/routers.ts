@@ -753,6 +753,21 @@ export const appRouter = router({
           data: { screen: "/perfil", kind: "test" },
         });
 
+        if (ctx.user.role === "admin") {
+          try {
+            await createAdminAuditLog({
+              actorUserId: ctx.user.id,
+              action: "push.test_sent",
+              metadata: {
+                sent: result.successCount,
+                failed: result.failureCount,
+              },
+            });
+          } catch (auditError) {
+            console.error("[Admin Audit] Failed to record test push:", auditError);
+          }
+        }
+
         return {
           success: result.successCount > 0,
           sent: result.successCount,
