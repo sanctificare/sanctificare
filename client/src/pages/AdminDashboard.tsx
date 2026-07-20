@@ -116,21 +116,6 @@ export default function AdminDashboard() {
     },
   });
 
-  const sendPushTestMutation = trpc.push.sendTestToMe.useMutation({
-    onSuccess: (result) => {
-      if (!result.success) {
-        toast.warning("Nenhum dispositivo com push habilitado foi encontrado para a sua conta.");
-        return;
-      }
-
-      toast.success(`Push de teste enviado para ${result.sent} dispositivo(s) seu(s).`);
-      void auditQuery.refetch();
-    },
-    onError: (err) => {
-      toast.error(err.message || "Não foi possível enviar o push de teste.");
-    },
-  });
-
   const [overviewTimedOut, setOverviewTimedOut] = useState(false);
 
   useEffect(() => {
@@ -692,26 +677,6 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <form onSubmit={handleSendPush} className="max-w-2xl space-y-5">
-                    <div className="rounded-xl border border-amber-500/15 bg-amber-500/5 p-4">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                          <p className="text-sm font-semibold text-amber-400">Teste rápido no seu celular</p>
-                          <p className="text-xs text-slate-400">
-                            Dispara uma notificação de validação apenas para os dispositivos vinculados ao seu usuário.
-                          </p>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          disabled={sendPushTestMutation.isPending}
-                          onClick={() => sendPushTestMutation.mutate()}
-                          className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300"
-                        >
-                          <Bell className="mr-2 w-4 h-4" />
-                          {sendPushTestMutation.isPending ? "Enviando teste..." : "Enviar para mim"}
-                        </Button>
-                      </div>
-                    </div>
                     <div className="grid gap-2">
                       <label htmlFor="push-audience" className="text-sm font-medium text-slate-300">Público</label>
                       <select
