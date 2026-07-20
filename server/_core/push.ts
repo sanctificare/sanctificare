@@ -18,6 +18,18 @@ let fcmReady = false;
 
 function readServiceAccount(): ServiceAccount | null {
   if (ENV.fcmServiceAccountJson) {
+    const rawFirstChar = ENV.fcmServiceAccountJson.trimStart()[0];
+    if (rawFirstChar !== "{") {
+      console.error(
+        "[FCM] FCM_SERVICE_ACCOUNT_JSON does not start with '{'. " +
+        "Likely wrapped in quotes in .env. First char:",
+        JSON.stringify(rawFirstChar),
+      );
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "FCM_SERVICE_ACCOUNT_JSON is not valid JSON (starts with wrong character — remove surrounding quotes from .env).",
+      });
+    }
     try {
       const parsed = JSON.parse(ENV.fcmServiceAccountJson) as any;
       const mapped: ServiceAccount = {
@@ -28,7 +40,13 @@ function readServiceAccount(): ServiceAccount | null {
       if (mapped.projectId && mapped.clientEmail && mapped.privateKey) {
         return mapped;
       }
-    } catch {
+      console.error("[FCM] FCM_SERVICE_ACCOUNT_JSON parsed but is missing fields:", {
+        hasProjectId: !!mapped.projectId,
+        hasClientEmail: !!mapped.clientEmail,
+        hasPrivateKey: !!mapped.privateKey,
+      });
+    } catch (parseErr) {
+      console.error("[FCM] FCM_SERVICE_ACCOUNT_JSON JSON.parse() failed:", parseErr);
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
         message: "FCM_SERVICE_ACCOUNT_JSON is not valid JSON.",
@@ -44,6 +62,7 @@ function readServiceAccount(): ServiceAccount | null {
     };
   }
 
+  console.error("[FCM] No FCM credentials found. Set FCM_SERVICE_ACCOUNT_JSON or FCM_PROJECT_ID + FCM_CLIENT_EMAIL + FCM_PRIVATE_KEY.");
   return null;
 }
 
