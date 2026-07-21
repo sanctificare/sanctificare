@@ -1,0 +1,33 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /premium
+Allow: /apoie-a-missao
+Allow: /privacidade
+Allow: /redefinir-senha
+
+# Disallow crawling of app pages that require authentication or are private
+Disallow: /dashboard
+Disallow: /explore
+Disallow: /oracoes
+Disallow: /rosario
+Disallow: /liturgia
+Disallow: /lectio
+Disallow: /via-sacra
+Disallow: /vela-virtual
+Disallow: /musica-sacra
+Disallow: /biblia
+Disallow: /novenas
+Disallow: /intencoes
+Disallow: /perfil
+Disallow: /profile
+Disallow: /plano-diario
+Disallow: /videos
+Disallow: /degraus-de-perfeicao
+Disallow: /oracao/
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://sanctificare.app/sitemap.xml
+Sitemap: https://blog.sanctificare.app/wp-sitemap.xml
