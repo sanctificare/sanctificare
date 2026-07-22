@@ -321,18 +321,21 @@ export default function QuoteCardModal({
 
           {/* Author, Book Title & Website Link */}
           <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1.5 ${themeObj.borderClass}`}>
-            {/* Author - Font size reduced 50% to text-[10px] / text-[11px] so it stays on 1 line with clean spacing */}
-            <p className={`text-[10px] sm:text-[11px] font-bold text-center leading-normal uppercase tracking-wider break-words max-w-full ${themeObj.authorClass}`}>
+            {/* Author - Strictly single line (whiteSpace: nowrap) with small 9px font size */}
+            <p
+              className={`text-[9px] font-bold text-center leading-tight uppercase tracking-wider max-w-full ${themeObj.authorClass}`}
+              style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+            >
               {author}
             </p>
 
             {/* Book Title / Day */}
-            <p className={`text-[9px] sm:text-[9.5px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
+            <p className={`text-[8.5px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
               {bookTitle} • {dayTitle}
             </p>
 
             {/* Brand URL */}
-            <p className={`text-[9px] font-sans font-semibold tracking-widest uppercase mt-0.5 leading-none ${themeObj.subtextClass}`}>
+            <p className={`text-[8.5px] font-sans font-semibold tracking-widest uppercase mt-0.5 leading-none ${themeObj.subtextClass}`}>
               Acesse <span className="underline font-extrabold">sanctificare.app</span>
             </p>
           </div>
