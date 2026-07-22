@@ -16,9 +16,11 @@ import {
   FileText,
   Loader2,
   ImageIcon,
+  Monitor,
 } from "lucide-react";
 import { toast } from "sonner";
 import { shareImage, shareText, copyImageToClipboard } from "@/lib/share";
+import { isMobileApp } from "@/const";
 import { toBlob } from "html-to-image";
 
 interface QuoteCardModalProps {
@@ -122,6 +124,15 @@ export default function QuoteCardModal({
   const [isGenerating, setIsGenerating] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
+  // Detect Desktop PC vs Mobile device
+  const isDesktop = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    if (isMobileApp()) return false;
+    const ua = navigator.userAgent || "";
+    const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    return !isMobileUserAgent && (navigator.maxTouchPoints === 0 || window.innerWidth > 1024);
+  }, []);
+
   const themeObj = useMemo(
     () => THEMES.find((t) => t.id === selectedTheme) ?? THEMES[0],
     [selectedTheme]
@@ -149,7 +160,66 @@ export default function QuoteCardModal({
   };
 
   /**
-   * Main Action: Shares the Card Image natively on any device
+   * Action 1: Copy PNG Card Image to Clipboard for Ctrl+V
+   */
+  const handleCopyImage = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
+    toast.info("Gerando imagem do card...");
+
+    const blob = await captureCardBlob();
+    setIsGenerating(false);
+
+    if (!blob) {
+      toast.error("Não foi possível gerar a imagem.");
+      return;
+    }
+
+    const success = await copyImageToClipboard(blob);
+    if (success) {
+      setCopiedImage(true);
+      toast.success("Imagem do Card copiada para o Ctrl+V!", {
+        description: "Abra o WhatsApp Web ou rede social e pressione Ctrl+V para colar o card.",
+      });
+      setTimeout(() => setCopiedImage(false), 3000);
+      onClose();
+    } else {
+      // Fallback: faz o download se a cópia de imagem não for permitida pelo browser
+      handleDownloadImage();
+    }
+  };
+
+  /**
+   * Action 2: Download PNG Card Image to Gallery/Downloads
+   */
+  const handleDownloadImage = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
+    toast.info("Baixando imagem do card...");
+
+    const blob = await captureCardBlob();
+    setIsGenerating(false);
+
+    if (!blob) {
+      toast.error("Não foi possível salvar a imagem.");
+      return;
+    }
+
+    const fileName = `sanctificare-citacao-${selectedTheme}.png`;
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = fileName;
+    link.href = url;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success("Imagem salva com sucesso!", {
+      description: "Pronta para postar no Instagram Stories, Status ou Feed.",
+    });
+    onClose();
+  };
+
+  /**
+   * Action 3: Native Share (Android/iOS Mobile Drawer)
    */
   const handleShareCardImage = async () => {
     if (isGenerating) return;
@@ -173,75 +243,16 @@ export default function QuoteCardModal({
     });
 
     if (result.status === "shared") {
-      toast.success("Card compartilhado com sucesso!");
+      toast.success("Card compartilhado!");
       onClose();
     } else if (result.status === "downloaded") {
-      toast.success("Imagem do Card baixada!");
+      toast.success("Imagem do Card salva.");
       onClose();
     }
   };
 
   /**
-   * Copy the generated PNG image directly to system clipboard
-   */
-  const handleCopyImage = async () => {
-    if (isGenerating) return;
-    setIsGenerating(true);
-    toast.info("Copiando imagem do card...");
-
-    const blob = await captureCardBlob();
-    setIsGenerating(false);
-
-    if (!blob) {
-      toast.error("Não foi possível gerar a imagem.");
-      return;
-    }
-
-    const success = await copyImageToClipboard(blob);
-    if (success) {
-      setCopiedImage(true);
-      toast.success("Imagem do Card copiada!", {
-        description: "Cole em qualquer conversa (WhatsApp, Instagram, Telegram).",
-      });
-      setTimeout(() => setCopiedImage(false), 3000);
-      onClose();
-    } else {
-      // Se a cópia de imagem não for suportada no browser atual, baixa a imagem
-      handleDownloadImage();
-    }
-  };
-
-  /**
-   * Download PNG image directly to photos / gallery
-   */
-  const handleDownloadImage = async () => {
-    if (isGenerating) return;
-    setIsGenerating(true);
-    toast.info("Baixando imagem do card...");
-
-    const blob = await captureCardBlob();
-    setIsGenerating(false);
-
-    if (!blob) {
-      toast.error("Não foi possível salvar a imagem.");
-      return;
-    }
-
-    const fileName = `sanctificare-citacao-${selectedTheme}.png`;
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = fileName;
-    link.href = url;
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    toast.success("Imagem salva na galeria!", {
-      description: "Pronta para postar no Instagram Stories ou Feed.",
-    });
-    onClose();
-  };
-
-  /**
-   * Copy formatted plain text to clipboard
+   * Action 4: Copy formatted plain text to clipboard
    */
   const handleCopyText = async () => {
     try {
@@ -319,78 +330,153 @@ export default function QuoteCardModal({
 
         {/* Action Controls */}
         <div className="flex flex-col gap-2.5 mt-4 pt-3 border-t border-white/10">
-          {/* 1. Main Action Button: Share Image (Native Sheet with Image File) */}
-          <button
-            onClick={handleShareCardImage}
-            disabled={isGenerating}
-            className="w-full h-12 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs xs:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Gerando Imagem...</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="w-4 h-4" />
-                <span>Compartilhar Imagem do Card</span>
-              </>
-            )}
-          </button>
+          {isDesktop ? (
+            /* DESKTOP PC MODE: Prioritizes 1-click Image Copy (Ctrl+V) and Download without Windows share dialog */
+            <>
+              {/* Main Desktop Primary Button: Copy Image */}
+              <button
+                onClick={handleCopyImage}
+                disabled={isGenerating}
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs xs:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Gerando Imagem...</span>
+                  </>
+                ) : copiedImage ? (
+                  <>
+                    <Check className="w-4.5 h-4.5 text-slate-950 font-bold" />
+                    <span>Imagem Copiada para Ctrl+V!</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-4.5 h-4.5" />
+                    <span>Copiar Imagem do Card (Ctrl+V)</span>
+                  </>
+                )}
+              </button>
 
-          {/* 2. Secondary Actions Grid (Copiar Imagem, Baixar Imagem, Copiar Texto) */}
-          <div className="grid grid-cols-3 gap-2">
-            {/* Copiar Imagem */}
-            <button
-              onClick={handleCopyImage}
-              disabled={isGenerating}
-              className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
-              title="Copiar imagem para colar no WhatsApp / Instagram"
-            >
-              {copiedImage ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copiada</span>
-                </>
-              ) : (
-                <>
-                  <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Copiar Card</span>
-                </>
-              )}
-            </button>
+              {/* Secondary Grid for Desktop */}
+              <div className="grid grid-cols-2 gap-2">
+                {/* Baixar Imagem */}
+                <button
+                  onClick={handleDownloadImage}
+                  disabled={isGenerating}
+                  className="h-10 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-xs flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                  title="Salvar imagem PNG no computador"
+                >
+                  <Download className="w-3.5 h-3.5 text-pink-400" />
+                  <span>Baixar Imagem</span>
+                </button>
 
-            {/* Baixar Imagem (Instagram / Stories) */}
-            <button
-              onClick={handleDownloadImage}
-              disabled={isGenerating}
-              className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
-              title="Salvar imagem no celular"
-            >
-              <Download className="w-3.5 h-3.5 text-pink-400" />
-              <span>Baixar Card</span>
-            </button>
+                {/* Copiar Texto */}
+                <button
+                  onClick={handleCopyText}
+                  disabled={isGenerating}
+                  className="h-10 px-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-xs flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                  title="Copiar texto puro"
+                >
+                  {copiedText ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">Copiado</span>
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Copiar Texto</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
-            {/* Copiar Texto */}
-            <button
-              onClick={handleCopyText}
-              disabled={isGenerating}
-              className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
-              title="Copiar texto da citação"
-            >
-              {copiedText ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copiado</span>
-                </>
-              ) : (
-                <>
-                  <FileText className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Copiar Texto</span>
-                </>
-              )}
-            </button>
-          </div>
+              {/* Optional link for OS Share popup */}
+              <button
+                onClick={handleShareCardImage}
+                disabled={isGenerating}
+                className="text-[10px] text-slate-400 hover:text-amber-400 transition-colors mt-1 underline text-center cursor-pointer"
+              >
+                Abrir janela de compartilhamento do Windows
+              </button>
+            </>
+          ) : (
+            /* MOBILE / SMARTPHONE MODE: Uses Native Share Sheet */
+            <>
+              {/* Primary Mobile Button: Share Image File */}
+              <button
+                onClick={handleShareCardImage}
+                disabled={isGenerating}
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs xs:text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Gerando Imagem...</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-4 h-4" />
+                    <span>Compartilhar Imagem do Card</span>
+                  </>
+                )}
+              </button>
+
+              {/* Mobile Secondary Grid */}
+              <div className="grid grid-cols-3 gap-2">
+                {/* Copiar Imagem */}
+                <button
+                  onClick={handleCopyImage}
+                  disabled={isGenerating}
+                  className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                  title="Copiar imagem para colar no WhatsApp / Instagram"
+                >
+                  {copiedImage ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">Copiada</span>
+                    </>
+                  ) : (
+                    <>
+                      <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Copiar Imagem</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Baixar Imagem */}
+                <button
+                  onClick={handleDownloadImage}
+                  disabled={isGenerating}
+                  className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                  title="Salvar imagem no celular"
+                >
+                  <Download className="w-3.5 h-3.5 text-pink-400" />
+                  <span>Baixar Imagem</span>
+                </button>
+
+                {/* Copiar Texto */}
+                <button
+                  onClick={handleCopyText}
+                  disabled={isGenerating}
+                  className="h-10 px-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 font-medium text-[11px] flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                  title="Copiar texto da citação"
+                >
+                  {copiedText ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">Copiado</span>
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Copiar Texto</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>
