@@ -11,12 +11,10 @@ import {
   Palette,
   Download,
   Share2,
-  Copy,
   Check,
   FileText,
   Loader2,
   ImageIcon,
-  Monitor,
 } from "lucide-react";
 import { toast } from "sonner";
 import { shareImage, shareText, copyImageToClipboard } from "@/lib/share";
@@ -139,10 +137,10 @@ export default function QuoteCardModal({
   );
 
   const shareTextContent = useMemo(() => {
-    return `“${quote}”\n\n— ${author} (${bookTitle} • ${dayTitle})`;
+    return `“${quote}”\n\n— ${author} (${bookTitle} • ${dayTitle})\n\nAcesse: https://sanctificare.app`;
   }, [quote, author, bookTitle, dayTitle]);
 
-  const fullShareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const fullShareUrl = typeof window !== "undefined" ? window.location.href : "https://sanctificare.app";
 
   const captureCardBlob = async (): Promise<Blob | null> => {
     if (!cardRef.current) return null;
@@ -178,13 +176,12 @@ export default function QuoteCardModal({
     const success = await copyImageToClipboard(blob);
     if (success) {
       setCopiedImage(true);
-      toast.success("Imagem do Card copiada para o Ctrl+V!", {
-        description: "Abra o WhatsApp Web ou rede social e pressione Ctrl+V para colar o card.",
+      toast.success("Imagem do Card copiada!", {
+        description: "Abra o WhatsApp Web ou rede social e pressione Ctrl+V para colar.",
       });
       setTimeout(() => setCopiedImage(false), 3000);
       onClose();
     } else {
-      // Fallback: faz o download se a cópia de imagem não for permitida pelo browser
       handleDownloadImage();
     }
   };
@@ -257,7 +254,7 @@ export default function QuoteCardModal({
   const handleCopyText = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${shareTextContent}\n\nMeditação no aplicativo Sanctificare ✦ ${fullShareUrl}`
+        `${shareTextContent}\n\nMeditação no aplicativo Sanctificare ✦ https://sanctificare.app`
       );
       setCopiedText(true);
       toast.success("Texto da citação copiado!");
@@ -302,15 +299,15 @@ export default function QuoteCardModal({
         {/* Visual Card Node to Render as Image */}
         <div
           ref={cardRef}
-          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
+          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3.5 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
         >
           {/* Subtle background glow */}
           <div className="absolute w-36 h-36 rounded-full bg-amber-500/10 blur-3xl -top-8 -right-8 pointer-events-none" />
 
           {/* Card Header Branding */}
-          <div className="flex items-center justify-center gap-2 opacity-80">
+          <div className="flex items-center justify-center gap-2 opacity-90">
             <span className={`h-[1px] w-6 ${themeObj.headerLineClass}`} />
-            <span className="text-[9px] font-extrabold uppercase tracking-widest font-serif">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest font-serif leading-none">
               Sanctificare ✦ Degraus
             </span>
             <span className={`h-[1px] w-6 ${themeObj.headerLineClass}`} />
@@ -318,22 +315,31 @@ export default function QuoteCardModal({
 
           <Quote size={24} className={`mx-auto stroke-[1.5] ${themeObj.quoteClass}`} />
 
-          <blockquote className={`italic text-sm leading-relaxed font-medium px-1 ${themeObj.textClass}`}>
+          <blockquote className={`italic text-sm leading-relaxed font-medium px-1 break-words ${themeObj.textClass}`}>
             “{quote}”
           </blockquote>
 
-          <div className={`pt-2 border-t flex flex-col items-center gap-0.5 ${themeObj.borderClass}`}>
-            <p className={`text-xs ${themeObj.authorClass}`}>{author}</p>
-            <p className={`text-[9px] ${themeObj.subtextClass}`}>{bookTitle} • {dayTitle}</p>
+          {/* Author, Book Title & Website Link */}
+          <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1 ${themeObj.borderClass}`}>
+            <p className={`text-xs sm:text-sm font-bold text-center leading-normal break-words max-w-full ${themeObj.authorClass}`}>
+              {author}
+            </p>
+            <p className={`text-[10px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
+              {bookTitle} • {dayTitle}
+            </p>
+
+            {/* Brand URL included directly on the image card */}
+            <p className={`text-[9.5px] font-sans font-semibold tracking-wider uppercase mt-1 leading-none ${themeObj.subtextClass}`}>
+              Acesse <span className="underline font-extrabold">sanctificare.app</span>
+            </p>
           </div>
         </div>
 
         {/* Action Controls */}
         <div className="flex flex-col gap-2.5 mt-4 pt-3 border-t border-white/10">
           {isDesktop ? (
-            /* DESKTOP PC MODE: Prioritizes 1-click Image Copy (Ctrl+V) and Download without Windows share dialog */
+            /* DESKTOP PC MODE */
             <>
-              {/* Main Desktop Primary Button: Copy Image */}
               <button
                 onClick={handleCopyImage}
                 disabled={isGenerating}
@@ -357,9 +363,7 @@ export default function QuoteCardModal({
                 )}
               </button>
 
-              {/* Secondary Grid for Desktop */}
               <div className="grid grid-cols-2 gap-2">
-                {/* Baixar Imagem */}
                 <button
                   onClick={handleDownloadImage}
                   disabled={isGenerating}
@@ -370,7 +374,6 @@ export default function QuoteCardModal({
                   <span>Baixar Imagem</span>
                 </button>
 
-                {/* Copiar Texto */}
                 <button
                   onClick={handleCopyText}
                   disabled={isGenerating}
@@ -391,7 +394,6 @@ export default function QuoteCardModal({
                 </button>
               </div>
 
-              {/* Optional link for OS Share popup */}
               <button
                 onClick={handleShareCardImage}
                 disabled={isGenerating}
@@ -401,9 +403,8 @@ export default function QuoteCardModal({
               </button>
             </>
           ) : (
-            /* MOBILE / SMARTPHONE MODE: Uses Native Share Sheet */
+            /* MOBILE / SMARTPHONE MODE */
             <>
-              {/* Primary Mobile Button: Share Image File */}
               <button
                 onClick={handleShareCardImage}
                 disabled={isGenerating}
@@ -422,9 +423,7 @@ export default function QuoteCardModal({
                 )}
               </button>
 
-              {/* Mobile Secondary Grid */}
               <div className="grid grid-cols-3 gap-2">
-                {/* Copiar Imagem */}
                 <button
                   onClick={handleCopyImage}
                   disabled={isGenerating}
@@ -444,7 +443,6 @@ export default function QuoteCardModal({
                   )}
                 </button>
 
-                {/* Baixar Imagem */}
                 <button
                   onClick={handleDownloadImage}
                   disabled={isGenerating}
@@ -455,7 +453,6 @@ export default function QuoteCardModal({
                   <span>Baixar Imagem</span>
                 </button>
 
-                {/* Copiar Texto */}
                 <button
                   onClick={handleCopyText}
                   disabled={isGenerating}
