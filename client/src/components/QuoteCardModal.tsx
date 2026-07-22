@@ -1,14 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Quote, Sparkles, Link2, Mail, MoreHorizontal, Check, Palette } from "lucide-react";
+import { Quote, Sparkles, Link2, Mail, MoreHorizontal, Check, Palette, Download, Share2 } from "lucide-react";
 import { toast } from "sonner";
-import { shareText } from "@/lib/share";
-import { isMobileApp } from "@/const";
+import { shareImage, shareText } from "@/lib/share";
+import { toBlob } from "html-to-image";
 
 interface QuoteCardModalProps {
   isOpen: boolean;
@@ -107,6 +107,8 @@ export default function QuoteCardModal({
 }: QuoteCardModalProps) {
   const [selectedTheme, setSelectedTheme] = useState<CardTheme>("noite");
   const [copied, setCopied] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const themeObj = useMemo(
     () => THEMES.find((t) => t.id === selectedTheme) ?? THEMES[0],
@@ -119,19 +121,106 @@ export default function QuoteCardModal({
 
   const fullShareUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  const handleCopy = async () => {
+  const captureCardBlob = async (): Promise<Blob | null> => {
+    if (!cardRef.current) return null;
     try {
-      await navigator.clipboard.writeText(`${shareTextContent}\n\nMeditação no aplicativo Sanctificare ✦ ${fullShareUrl}`);
-      setCopied(true);
-      toast.success("Citação copiada!");
-      setTimeout(() => setCopied(false), 2500);
-      onClose();
-    } catch {
-      toast.error("Não foi possível copiar.");
+      const blob = await toBlob(cardRef.current, {
+        pixelRatio: 3,
+        cacheBust: true,
+      });
+      return blob;
+    } catch (err) {
+      console.error("Erro ao converter card em imagem:", err);
+      return null;
     }
   };
 
-  const shareToWhatsApp = () => {
+  const handleDownloadImage = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
+    toast.info("Gerando imagem do card...");
+
+    const blob = await captureCardBlob();
+    setIsGenerating(false);
+
+    if (!blob) {
+      toast.error("Não foi possível gerar a imagem do card.");
+      return;
+    }
+
+    const fileName = `sanctificare-citacao-${selectedTheme}.png`;
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = fileName;
+    link.href = url;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success("Imagem do Card salva na galeria!");
+    onClose();
+  };
+
+  const handleShareCardImage = async () => {
+    if (isGenerating) return;
+    setIsGenerating(true);
+    toast.info("Preparando imagem para compartilhar...");
+
+    const blob = await captureCardBlob();
+    setIsGenerating(false);
+
+    const fileName = `sanctificare-citacao-${selectedTheme}.png`;
+
+    if (blob) {
+      const result = await shareImage(blob, {
+        fileName,
+        title: `${bookTitle} — Citação`,
+        text: `${shareTextContent}\n\n${fullShareUrl}`,
+      });
+      if (result.status === "shared" || result.status === "downloaded") {
+        toast.success(result.status === "shared" ? "Card compartilhado!" : "Imagem salva.");
+        onClose();
+        return;
+      }
+    }
+
+    // Fallback se compartilhamento de imagem falhar
+    await handleNativeTextShare();
+  };
+
+  const handleCopyText = async () => {
+    try {
+      await navigator.clipboard.writeText(`${shareTextContent}\n\nMeditação no aplicativo Sanctificare ✦ ${fullShareUrl}`);
+      setCopied(true);
+      toast.success("Texto da citação copiado!");
+      setTimeout(() => setCopied(false), 2500);
+      onClose();
+    } catch {
+      toast.error("Não foi possível copiar o texto.");
+    }
+  };
+
+  const shareToWhatsApp = async () => {
+    // Tenta compartilhar primeiro como imagem se possível
+    setIsGenerating(true);
+    const blob = await captureCardBlob();
+    setIsGenerating(false);
+
+    if (blob && typeof navigator !== "undefined" && navigator.canShare) {
+      const file = new File([blob], `sanctificare-citacao-${selectedTheme}.png`, { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: `${bookTitle} — Citação`,
+            text: `${shareTextContent}\n\n${fullShareUrl}`,
+          });
+          onClose();
+          return;
+        } catch {
+          // segue para fallback de texto
+        }
+      }
+    }
+
     const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
       `${shareTextContent}\n\nMeditação no aplicativo Sanctificare ✦\n${fullShareUrl}`
     )}`;
@@ -163,7 +252,7 @@ export default function QuoteCardModal({
     onClose();
   };
 
-  const handleNativeShare = async () => {
+  const handleNativeTextShare = async () => {
     const result = await shareText({
       title: `${bookTitle} — Citação`,
       text: `${shareTextContent}\n\n${fullShareUrl}`,
@@ -171,7 +260,7 @@ export default function QuoteCardModal({
 
     if (result.status === "shared" || result.status === "copied" || result.status === "cancelled") {
       if (result.status === "copied") {
-        toast.success("Citação copiada.");
+        toast.success("Texto copiado.");
       }
       onClose();
     }
@@ -208,8 +297,9 @@ export default function QuoteCardModal({
           </div>
         </div>
 
-        {/* Visual Card Preview */}
+        {/* Visual Card Preview (Ref for HTML-to-Image conversion) */}
         <div
+          ref={cardRef}
           className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
         >
           {/* Subtle background glow */}
@@ -236,11 +326,40 @@ export default function QuoteCardModal({
           </div>
         </div>
 
-        {/* Share Buttons Grid (Matching Design) */}
+        {/* Action Buttons */}
         <div className="grid grid-cols-4 gap-y-4 gap-x-2 mt-4 pt-3 border-t border-white/10">
+          {/* Compartilhar Card (Imagem) */}
+          <button
+            onClick={handleShareCardImage}
+            disabled={isGenerating}
+            className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
+          >
+            <div className="w-11 h-11 rounded-full flex items-center justify-center bg-amber-500 text-slate-950 font-bold transition-transform duration-200 group-hover:scale-110 shadow-lg shadow-amber-500/20">
+              <Share2 className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] text-amber-400 font-bold tracking-wide">
+              Enviar Card
+            </span>
+          </button>
+
+          {/* Baixar Imagem (Para Instagram / Stories) */}
+          <button
+            onClick={handleDownloadImage}
+            disabled={isGenerating}
+            className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
+          >
+            <div className="w-11 h-11 rounded-full flex items-center justify-center bg-gradient-to-tr from-purple-600 to-pink-500 text-white transition-transform duration-200 group-hover:scale-110 shadow-lg">
+              <Download className="w-5 h-5" />
+            </div>
+            <span className="text-[10px] text-slate-300 font-medium tracking-wide">
+              Baixar Card
+            </span>
+          </button>
+
           {/* WhatsApp */}
           <button
             onClick={shareToWhatsApp}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#25D366] text-white transition-transform duration-200 group-hover:scale-110 shadow-lg">
@@ -256,6 +375,7 @@ export default function QuoteCardModal({
           {/* Facebook */}
           <button
             onClick={shareToFacebook}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#1877F2] text-white transition-transform duration-200 group-hover:scale-110 shadow-lg">
@@ -271,6 +391,7 @@ export default function QuoteCardModal({
           {/* X */}
           <button
             onClick={shareToX}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#0f1419] text-white border border-white/10 transition-transform duration-200 group-hover:scale-110 shadow-lg">
@@ -286,6 +407,7 @@ export default function QuoteCardModal({
           {/* E-mail */}
           <button
             onClick={shareToEmail}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#24344d] text-slate-200 border border-white/10 transition-transform duration-200 group-hover:scale-110 shadow-lg">
@@ -298,7 +420,8 @@ export default function QuoteCardModal({
 
           {/* Copiar Texto */}
           <button
-            onClick={handleCopy}
+            onClick={handleCopyText}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-amber-950/60 text-amber-400 border border-amber-500/40 transition-transform duration-200 group-hover:scale-110 shadow-lg">
@@ -309,16 +432,17 @@ export default function QuoteCardModal({
             </span>
           </button>
 
-          {/* Mais */}
+          {/* Mais (Texto) */}
           <button
-            onClick={handleNativeShare}
+            onClick={handleNativeTextShare}
+            disabled={isGenerating}
             className="flex flex-col items-center gap-1.5 focus:outline-none group cursor-pointer"
           >
             <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#1b253b] text-slate-200 border border-white/10 transition-transform duration-200 group-hover:scale-110 shadow-lg">
               <MoreHorizontal className="w-5 h-5" />
             </div>
             <span className="text-[10px] text-slate-300 font-medium tracking-wide">
-              Mais
+              Texto
             </span>
           </button>
         </div>
