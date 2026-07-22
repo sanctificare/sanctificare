@@ -28,6 +28,7 @@ const PRAYER_ART: Record<string, CardArt> = {
 
 const NOVENA_ART: Record<string, CardArt> = {
   "novena-sagrado-coracao-jesus": { image: "/assets/novenas/sagrado-coracao-jesus.webp", overlay: "oklch(0.39 0.17 22 / 0.58)" },
+  "novena-nossa-senhora-bom-remedio": { image: "/assets/sanctificare-rosary.webp", overlay: "oklch(0.30 0.12 240 / 0.58)" },
 };
 
 const LECTIO_STEP_ART: Record<string, string> = {

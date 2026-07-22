@@ -4,7 +4,6 @@ import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
-import { ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { getNovenaArt } from "@/lib/cardArt";
 import { NOVENA_PROGRESS_STORAGE_KEY, ProgressMap, buildNovenasInProgressItems, parseNovenaProgress } from "@/lib/novenaProgress";
@@ -55,10 +54,7 @@ export default function Novenas() {
   const { isAuthenticated, loading } = useAuth();
   const [progress] = useState<ProgressMap>(() => readProgress());
   const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
-  const isPremium = !!subscription &&
-    (subscription.status === "active" ||
-     subscription.status === "cancelled" ||
-     subscription.status === "past_due");
+
   const activeNovenas = buildNovenasInProgressItems(progress, NOVENAS);
 
   const stats = useMemo(() => {
@@ -75,10 +71,7 @@ export default function Novenas() {
     return { totalDays, started, completed };
   }, [progress]);
 
-  const faithNovenas = NOVENAS.filter((n) =>
-    ["novena-sagrado-coracao-jesus"].includes(n.id)
-  );
-  const intercessionNovenas: typeof NOVENAS = [];
+  const faithNovenas = NOVENAS;
 
   const renderNovenaCard = (novena: typeof NOVENAS[number]) => {
     const done = progress[novena.id]?.length ?? 0;
@@ -120,7 +113,6 @@ export default function Novenas() {
       </Link>
     );
   };
-
 
   if (loading) {
     return (
@@ -241,9 +233,6 @@ export default function Novenas() {
             </div>
           </div>
         )}
-
-
-
 
       </main>
     </div>
