@@ -299,7 +299,7 @@ export default function QuoteCardModal({
         {/* Visual Card Node to Render as Image */}
         <div
           ref={cardRef}
-          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3.5 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
+          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
         >
           {/* Subtle background glow */}
           <div className="absolute w-36 h-36 rounded-full bg-amber-500/10 blur-3xl -top-8 -right-8 pointer-events-none" />
@@ -307,29 +307,32 @@ export default function QuoteCardModal({
           {/* Card Header Branding */}
           <div className="flex items-center justify-center gap-2 opacity-90">
             <span className={`h-[1px] w-6 ${themeObj.headerLineClass}`} />
-            <span className="text-[10px] font-extrabold uppercase tracking-widest font-serif leading-none">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest font-serif leading-none">
               Sanctificare ✦ Degraus
             </span>
             <span className={`h-[1px] w-6 ${themeObj.headerLineClass}`} />
           </div>
 
-          <Quote size={24} className={`mx-auto stroke-[1.5] ${themeObj.quoteClass}`} />
+          <Quote size={22} className={`mx-auto stroke-[1.5] ${themeObj.quoteClass}`} />
 
-          <blockquote className={`italic text-sm leading-relaxed font-medium px-1 break-words ${themeObj.textClass}`}>
+          <blockquote className={`italic text-xs sm:text-sm leading-relaxed font-medium px-1 break-words ${themeObj.textClass}`}>
             “{quote}”
           </blockquote>
 
           {/* Author, Book Title & Website Link */}
-          <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1 ${themeObj.borderClass}`}>
-            <p className={`text-xs sm:text-sm font-bold text-center leading-normal break-words max-w-full ${themeObj.authorClass}`}>
+          <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1.5 ${themeObj.borderClass}`}>
+            {/* Author - Font size reduced 50% to text-[10px] / text-[11px] so it stays on 1 line with clean spacing */}
+            <p className={`text-[10px] sm:text-[11px] font-bold text-center leading-normal uppercase tracking-wider break-words max-w-full ${themeObj.authorClass}`}>
               {author}
             </p>
-            <p className={`text-[10px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
+
+            {/* Book Title / Day */}
+            <p className={`text-[9px] sm:text-[9.5px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
               {bookTitle} • {dayTitle}
             </p>
 
-            {/* Brand URL included directly on the image card */}
-            <p className={`text-[9.5px] font-sans font-semibold tracking-wider uppercase mt-1 leading-none ${themeObj.subtextClass}`}>
+            {/* Brand URL */}
+            <p className={`text-[9px] font-sans font-semibold tracking-widest uppercase mt-0.5 leading-none ${themeObj.subtextClass}`}>
               Acesse <span className="underline font-extrabold">sanctificare.app</span>
             </p>
           </div>
