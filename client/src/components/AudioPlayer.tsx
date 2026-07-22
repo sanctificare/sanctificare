@@ -12,6 +12,7 @@ import { formatTime } from "@/data/rosary-audio";
 import { resolveR2Redirect, isMobileApp } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
+import { useAudioKeepAwake } from "@/hooks/useAudioKeepAwake";
 import {
   Dialog,
   DialogContent,
@@ -283,21 +284,42 @@ export default function AudioPlayer({
     }
   }, [isSupportOpen, currentTime]);
 
-  const playAudio = () => {
+  const playAudio = useCallback(() => {
     if (!audioRef.current) return;
 
     audioRef.current
       .play()
       .then(() => setIsPlaying(true))
       .catch(() => setIsPlaying(false));
-  };
+  }, []);
+
+  const pauseAudio = useCallback(() => {
+    if (!audioRef.current) return;
+    audioRef.current.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const handleSeekTo = useCallback((time: number) => {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = time;
+    setCurrentTime(time);
+  }, []);
+
+  useAudioKeepAwake({
+    isPlaying,
+    title,
+    album: supportTitle || description,
+    artworkUrl: artworkUrl || FALLBACK_ARTWORK_URL,
+    onPlay: playAudio,
+    onPause: pauseAudio,
+    onSeekTo: handleSeekTo,
+  });
 
   const togglePlayPause = () => {
     if (!audioRef.current) return;
 
     if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+      pauseAudio();
       return;
     }
 

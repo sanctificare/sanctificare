@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { X, Play, Pause, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { resolveR2Redirect } from "@/const";
+import { useAudioKeepAwake } from "@/hooks/useAudioKeepAwake";
 
 interface ExpandedMeditationPlayerProps {
   audioUrl: string;
@@ -114,25 +115,42 @@ export default function ExpandedMeditationPlayer({
     };
   }, []);
 
-  const togglePlay = () => {
+  const playAudio = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+  }, []);
 
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio.play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
-    }
-  };
+  const pauseAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    setIsPlaying(false);
+  }, []);
 
-  const handleSeek = (value: number) => {
+  const handleSeek = useCallback((value: number) => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.currentTime = value;
     setCurrentTime(value);
+  }, []);
+
+  useAudioKeepAwake({
+    isPlaying,
+    title,
+    album: subtitle,
+    artworkUrl,
+    onPlay: playAudio,
+    onPause: pauseAudio,
+    onSeekTo: handleSeek,
+  });
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      pauseAudio();
+    } else {
+      playAudio();
+    }
   };
 
   const handleRestart = () => {
