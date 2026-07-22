@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "wouter";
-import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown, Loader2, Share2 } from "lucide-react";
+import { BookOpenText, Check, CircleHelp, Headphones, Quote, Type, RotateCcw, RotateCw, Volume2, VolumeX, Play, Pause, Lock, Crown, Loader2, Share2, Bell, Sparkles, Music, Award } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FILOTEIA_PILULAS } from "@/data/filoteia-pilulas";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,9 @@ import { toast } from "sonner";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
+import QuoteCardModal from "@/components/QuoteCardModal";
+import RetiroCompletionModal from "@/components/RetiroCompletionModal";
+import DailyReminderModal from "@/components/DailyReminderModal";
 
 export default function FiloteiaRetiro() {
   const { user, isAuthenticated, refresh } = useAuth();
@@ -52,6 +55,16 @@ export default function FiloteiaRetiro() {
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const blockerRef = useRef<HTMLElement | null>(null);
 
+  // Modals state
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isQuoteCardOpen, setIsQuoteCardOpen] = useState(false);
+  const [isReminderOpen, setIsReminderOpen] = useState(false);
+  const [isCompletionOpen, setIsCompletionOpen] = useState(false);
+
+  // Ambient sound state
+  const [isAmbientOn, setIsAmbientOn] = useState(false);
+  const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
+
   const handleSelectPill = useCallback((pillId: string, isLocked: boolean) => {
     setSelectedId(pillId);
     if (isLocked && !isPremium) {
@@ -77,7 +90,6 @@ export default function FiloteiaRetiro() {
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [isShareOpen, setIsShareOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const selected = useMemo(
@@ -101,15 +113,40 @@ export default function FiloteiaRetiro() {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
+    if (ambientAudioRef.current) {
+      ambientAudioRef.current.pause();
+    }
   }, [selectedId]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
+      if (ambientAudioRef.current) ambientAudioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+        if (isAmbientOn && ambientAudioRef.current) {
+          ambientAudioRef.current.volume = 0.15;
+          ambientAudioRef.current.play().catch(() => {});
+        }
+      }).catch(() => setIsPlaying(false));
+    }
+  };
+
+  const toggleAmbientSound = () => {
+    const nextState = !isAmbientOn;
+    setIsAmbientOn(nextState);
+    if (ambientAudioRef.current) {
+      if (nextState && isPlaying) {
+        ambientAudioRef.current.volume = 0.15;
+        ambientAudioRef.current.play().catch(() => {});
+        toast.success("Fundo Sacro ativado");
+      } else {
+        ambientAudioRef.current.pause();
+        toast.info("Fundo Sacro desativado");
+      }
     }
   };
 
@@ -135,6 +172,10 @@ export default function FiloteiaRetiro() {
   const handleAudioEnd = () => {
     setIsPlaying(false);
     setCurrentTime(0);
+    if (ambientAudioRef.current) ambientAudioRef.current.pause();
+    if (selected.id === "pill15") {
+      setIsCompletionOpen(true);
+    }
   };
 
   const skipForward = () => {
@@ -184,25 +225,68 @@ export default function FiloteiaRetiro() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)] pb-24 lg:pb-12 relative overflow-hidden">
+      {/* Hidden Ambient Audio Track */}
+      <audio
+        ref={ambientAudioRef}
+        src="https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/Miserere%20No.1.mp3"
+        loop
+        preload="auto"
+      />
+
       {/* Pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
 
       <main className="container py-7 relative z-10">
-        <div className="mb-5">
-          <Link href="/degraus-de-perfeicao">
-            <button className="mb-3 text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)]">
-              ← Voltar aos Degraus de Perfeição
-            </button>
-          </Link>
-          <p className="text-xs font-semibold uppercase tracking-wide text-[oklch(0.65_0.12_70)]">
-            Virtudes
-          </p>
-          <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)]">
-            Filoteia (Introdução à Vida Devota)
-          </h1>
-          <p className="font-serif text-sm text-muted-foreground">
-            Por São Francisco de Sales • Formato Áudio/Meditações
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-5 gap-4">
+          <div>
+            <Link href="/degraus-de-perfeicao">
+              <button className="mb-3 text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)]">
+                ← Voltar aos Degraus de Perfeição
+              </button>
+            </Link>
+            <p className="text-xs font-semibold uppercase tracking-wide text-[oklch(0.65_0.12_70)]">
+              Virtudes
+            </p>
+            <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)]">
+              Filoteia (Introdução à Vida Devota)
+            </h1>
+            <p className="font-serif text-sm text-muted-foreground">
+              Por São Francisco de Sales • 15 Dias de Itinerário Espiritual
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              onClick={() => setIsReminderOpen(true)}
+              variant="outline"
+              size="sm"
+              className="border-[oklch(0.75_0.12_75/0.3)] bg-white text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.98_0.03_85)] font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
+            >
+              <Bell size={14} className="text-amber-500" />
+              Lembrete Diário
+            </Button>
+
+            <Button
+              onClick={() => setIsQuoteCardOpen(true)}
+              variant="outline"
+              size="sm"
+              className="border-[oklch(0.75_0.12_75/0.3)] bg-white text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.98_0.03_85)] font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
+            >
+              <Sparkles size={14} className="text-amber-500" />
+              Card de Citação
+            </Button>
+
+            {selected.id === "pill15" && (
+              <Button
+                onClick={() => setIsCompletionOpen(true)}
+                size="sm"
+                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs gap-1.5 shadow-md rounded-xl h-9 animate-pulse"
+              >
+                <Award size={14} />
+                Concluir Retiro
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
@@ -471,6 +555,18 @@ export default function FiloteiaRetiro() {
 
                               <div className="flex items-center gap-1">
                                 <button
+                                  onClick={toggleAmbientSound}
+                                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                                    isAmbientOn
+                                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+                                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                                  }`}
+                                  title={isAmbientOn ? "Desativar Fundo Sacro" : "Ativar Fundo Sacro (Canto Gregoriano)"}
+                                >
+                                  <Music size={15} />
+                                </button>
+
+                                <button
                                   onClick={toggleMute}
                                   disabled={!audioUrl}
                                   className="text-slate-300 hover:text-white w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center transition-colors cursor-pointer disabled:opacity-40"
@@ -553,7 +649,7 @@ export default function FiloteiaRetiro() {
 
           <aside className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white p-3 h-fit text-[#2d251e]">
             <h3 className="mb-3 px-2 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)]">
-              Meditações
+              Meditações ({FILOTEIA_PILULAS.length} Dias)
             </h3>
             <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
               {FILOTEIA_PILULAS.map((pill) => {
@@ -594,6 +690,29 @@ export default function FiloteiaRetiro() {
         title={selected.title}
         description={selected.description}
         url={typeof window !== "undefined" ? window.location.href : ""}
+      />
+
+      <QuoteCardModal
+        isOpen={isQuoteCardOpen}
+        onClose={() => setIsQuoteCardOpen(false)}
+        quote={selected.quote}
+        bookTitle="Filoteia"
+        author="São Francisco de Sales"
+        dayTitle={selected.title}
+      />
+
+      <DailyReminderModal
+        isOpen={isReminderOpen}
+        onClose={() => setIsReminderOpen(false)}
+        bookTitle="Filoteia"
+      />
+
+      <RetiroCompletionModal
+        isOpen={isCompletionOpen}
+        onClose={() => setIsCompletionOpen(false)}
+        bookTitle="Filoteia (Introdução à Vida Devota)"
+        author="São Francisco de Sales"
+        totalDays={FILOTEIA_PILULAS.length}
       />
     </div>
   );

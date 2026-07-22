@@ -38,6 +38,30 @@ const DEGRAVS: DegrauCard[] = [
       "A Doutora da Igreja ensina as regras douradas da oração mental, contemplação e as virtudes que sustentam a vida interior.",
     image: "/assets/degraus/caminho_perfeicao_essence.jpg",
   },
+  {
+    category: "Devoção Mariana",
+    title: "Tratado da Verdadeira Devoção",
+    author: "São Luís Maria Grignion de Montfort",
+    description:
+      "O caminho perfeito de consagração total a Jesus Cristo pelas mãos da Santíssima Virgem Maria.",
+    image: "/assets/degraus/imitacao_cristo_essence.jpg",
+  },
+  {
+    category: "Mística & Contemplação",
+    title: "O Castelo Interior (As Moradas)",
+    author: "Santa Teresa de Ávila",
+    description:
+      "A jornada da alma através de sete moradas interiores em direção à união mística com Deus.",
+    image: "/assets/degraus/caminho_perfeicao_essence.jpg",
+  },
+  {
+    category: "Purificação da Alma",
+    title: "Subida do Monte Carmelo",
+    author: "São João da Cruz",
+    description:
+      "O guia místico de purificação dos sentidos e do espírito para alcançar o topo da união divina.",
+    image: "/assets/degraus/filoteia_essence.jpg",
+  },
 ];
 
 export default function DegrausPerfeicao() {
