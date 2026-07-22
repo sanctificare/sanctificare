@@ -19,6 +19,20 @@ function isAbortError(err: unknown): boolean {
   ) || (err as any)?.name === "AbortError";
 }
 
+export async function copyImageToClipboard(blob: Blob): Promise<boolean> {
+  try {
+    if (typeof navigator !== "undefined" && navigator.clipboard && typeof ClipboardItem !== "undefined") {
+      const item = new ClipboardItem({ [blob.type || "image/png"]: blob });
+      await navigator.clipboard.write([item]);
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.warn("Não foi possível copiar a imagem para a área de transferência:", err);
+    return false;
+  }
+}
+
 async function copyText(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
