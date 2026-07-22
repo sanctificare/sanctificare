@@ -299,7 +299,7 @@ export default function QuoteCardModal({
         {/* Visual Card Node to Render as Image */}
         <div
           ref={cardRef}
-          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
+          className={`relative rounded-2xl border p-5 text-center shadow-xl space-y-3.5 transition-all duration-300 overflow-hidden ${themeObj.cardClass}`}
         >
           {/* Subtle background glow */}
           <div className="absolute w-36 h-36 rounded-full bg-amber-500/10 blur-3xl -top-8 -right-8 pointer-events-none" />
@@ -321,16 +321,13 @@ export default function QuoteCardModal({
 
           {/* Author, Book Title & Website Link */}
           <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1.5 ${themeObj.borderClass}`}>
-            {/* Author - Strictly single line (whiteSpace: nowrap) with small 9px font size */}
-            <p
-              className={`text-[9px] font-bold text-center leading-tight uppercase tracking-wider max-w-full ${themeObj.authorClass}`}
-              style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
-            >
+            {/* Author - Natural casing, normal letter-spacing, clear leading-normal so full name renders completely without truncation or line overlap */}
+            <p className={`text-[11px] sm:text-xs font-bold text-center leading-normal tracking-normal max-w-full ${themeObj.authorClass}`}>
               {author}
             </p>
 
             {/* Book Title / Day */}
-            <p className={`text-[8.5px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
+            <p className={`text-[9.5px] sm:text-[10px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
               {bookTitle} • {dayTitle}
             </p>
 
