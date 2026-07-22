@@ -315,23 +315,22 @@ export default function QuoteCardModal({
 
           <Quote size={22} className={`mx-auto stroke-[1.5] ${themeObj.quoteClass}`} />
 
+          {/* Italic Quote */}
           <blockquote className={`italic text-xs sm:text-sm leading-relaxed font-medium px-1 break-words ${themeObj.textClass}`}>
             “{quote}”
           </blockquote>
 
-          {/* Author, Book Title & Website Link */}
-          <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1.5 ${themeObj.borderClass}`}>
-            {/* Author - Natural casing, normal letter-spacing, clear leading-normal so full name renders completely without truncation or line overlap */}
-            <p className={`text-[11px] sm:text-xs font-bold text-center leading-normal tracking-normal max-w-full ${themeObj.authorClass}`}>
-              {author}
-            </p>
+          {/* Author Name: Placed directly below the quote */}
+          <p className={`text-[10.5px] sm:text-[11px] font-bold text-center leading-normal tracking-wide mt-1.5 break-words max-w-full ${themeObj.authorClass}`}>
+            — {author}
+          </p>
 
-            {/* Book Title / Day */}
-            <p className={`text-[9.5px] sm:text-[10px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
+          {/* Footer Divider & Book Metadata / URL */}
+          <div className={`pt-3 border-t flex flex-col items-center justify-center gap-1 ${themeObj.borderClass}`}>
+            <p className={`text-[9.5px] text-center leading-normal break-words max-w-full ${themeObj.subtextClass}`}>
               {bookTitle} • {dayTitle}
             </p>
 
-            {/* Brand URL */}
             <p className={`text-[8.5px] font-sans font-semibold tracking-widest uppercase mt-0.5 leading-none ${themeObj.subtextClass}`}>
               Acesse <span className="underline font-extrabold">sanctificare.app</span>
             </p>
