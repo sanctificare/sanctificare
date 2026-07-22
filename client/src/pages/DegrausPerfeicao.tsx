@@ -23,7 +23,7 @@ const DEGRAVS: DegrauCard[] = [
   },
   {
     category: "Virtudes",
-    title: "Filoteia (Introdução à Vida Devota)",
+    title: "Filoteia (Alma que Ama a Deus)",
     author: "São Francisco de Sales",
     description:
       "O manual clássico escrito especificamente para leigos que vivem no mundo e desejam a santidade no cotidiano.",

@@ -248,7 +248,7 @@ export default function FiloteiaRetiro() {
               Virtudes
             </p>
             <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)]">
-              Filoteia (Introdução à Vida Devota)
+              Filoteia (Alma que Ama a Deus)
             </h1>
             <p className="font-serif text-sm text-muted-foreground">
               Por São Francisco de Sales • 15 Dias de Itinerário Espiritual
@@ -710,7 +710,7 @@ export default function FiloteiaRetiro() {
       <RetiroCompletionModal
         isOpen={isCompletionOpen}
         onClose={() => setIsCompletionOpen(false)}
-        bookTitle="Filoteia (Introdução à Vida Devota)"
+        bookTitle="Filoteia (Alma que Ama a Deus)"
         author="São Francisco de Sales"
         totalDays={FILOTEIA_PILULAS.length}
       />
