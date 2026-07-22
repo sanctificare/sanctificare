@@ -8,6 +8,7 @@ type DegrauCard = {
   author: string;
   description: string;
   image: string;
+  route?: string;
 };
 
 const DEGRAVS: DegrauCard[] = [
@@ -18,6 +19,7 @@ const DEGRAVS: DegrauCard[] = [
     description:
       "O livro mais lido da cristandade depois da Bíblia Sagrada. Um roteiro milenar de renúncia e intimidade com Jesus.",
     image: "/assets/degraus/imitacao_cristo_essence.jpg",
+    route: "/degraus-de-perfeicao/imitacao-de-cristo",
   },
   {
     category: "Virtudes",
@@ -26,6 +28,7 @@ const DEGRAVS: DegrauCard[] = [
     description:
       "O manual clássico escrito especificamente para leigos que vivem no mundo e desejam a santidade no cotidiano.",
     image: "/assets/degraus/filoteia_essence.jpg",
+    route: "/degraus-de-perfeicao/filoteia",
   },
   {
     category: "Vida de oração",
@@ -59,7 +62,7 @@ export default function DegrausPerfeicao() {
 
         <section className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-3xl mx-auto" aria-label="Obras espirituais">
           {DEGRAVS.map((item) => {
-            const isImitacao = item.title === "A Imitação de Cristo";
+            const hasRoute = !!item.route;
             const card = (
               <article
                 key={item.title}
@@ -90,7 +93,7 @@ export default function DegrausPerfeicao() {
                   </div>
 
                   <div className="mt-4 pt-3 border-t border-[oklch(0.22_0.07_260/0.05)]">
-                    {isImitacao ? (
+                    {hasRoute ? (
                       <Button size="sm" className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white font-semibold transition-all duration-200 shadow-sm flex items-center justify-center gap-1.5 group/btn h-8 text-xs">
                         <BookOpen size={14} />
                         Iniciar Caminhada
@@ -107,10 +110,10 @@ export default function DegrausPerfeicao() {
               </article>
             );
 
-            if (!isImitacao) return card;
+            if (!hasRoute) return card;
 
             return (
-              <Link key={item.title} href="/degraus-de-perfeicao/imitacao-de-cristo" className="h-full">
+              <Link key={item.title} href={item.route!} className="h-full">
                 <div role="link" tabIndex={0} className="cursor-pointer h-full">
                   {card}
                 </div>

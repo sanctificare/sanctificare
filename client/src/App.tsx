@@ -67,6 +67,7 @@ const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
 const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
 const DegrausPerfeicao = lazyWithPreload(() => import("./pages/DegrausPerfeicao"));
 const ImitacaoCristoRetiro = lazyWithPreload(() => import("./pages/ImitacaoCristoRetiro"));
+const FiloteiaRetiro = lazyWithPreload(() => import("./pages/FiloteiaRetiro"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
 const ApoieMissao = lazyWithPreload(() => import("./pages/ApoieMissao"));
@@ -88,6 +89,7 @@ const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] 
   VideosBiblicos,
   DegrausPerfeicao,
   ImitacaoCristoRetiro,
+  FiloteiaRetiro,
   Premium,
   PremiumSucesso,
 ];
@@ -186,6 +188,10 @@ function ProtectedImitacaoCristoRoute(props: any) {
   return <ProtectedRoute component={ImitacaoCristoRetiro} {...props} />;
 }
 
+function ProtectedFiloteiaRoute(props: any) {
+  return <ProtectedRoute component={FiloteiaRetiro} {...props} />;
+}
+
 function ProtectedPrayerDetailRoute(props: any) {
   return <ProtectedRoute component={PrayerDetail} {...props} />;
 }
@@ -244,6 +250,7 @@ function Router() {
         <Route path="/videos" component={ProtectedVideosRoute} />
   <Route path="/degraus-de-perfeicao" component={ProtectedDegrausRoute} />
   <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ProtectedImitacaoCristoRoute} />
+  <Route path="/degraus-de-perfeicao/filoteia" component={ProtectedFiloteiaRoute} />
         <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
         <Route path="/premium" component={PremiumRoute} />
         <Route path="/premium/sucesso" component={PremiumSucessoRoute} />
