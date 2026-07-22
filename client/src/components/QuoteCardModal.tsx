@@ -127,6 +127,7 @@ export default function QuoteCardModal({
       const blob = await toBlob(cardRef.current, {
         pixelRatio: 3,
         cacheBust: true,
+        skipFonts: true,
       });
       return blob;
     } catch (err) {
