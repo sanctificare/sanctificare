@@ -771,7 +771,10 @@ export default function NovenaDetails() {
                           
                           {/* Frase Devocional de Destaque */}
                           <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
-                            {`"${currentDayContent.reflection.split('.')[0]}."`}
+                            “{currentDayContent.reflection
+                              .split('\n')[0]
+                              .replace(/[^\x00-\x7F\u00C0-\u017F\u1E00-\u1EFF]/g, "")
+                              .trim()}”
                           </p>
                         </div>
 
