@@ -365,9 +365,6 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
     background-color: oklch(0.12 0.03 260);
   }
 

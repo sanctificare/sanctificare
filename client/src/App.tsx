@@ -271,10 +271,8 @@ function AppShell() {
   useEffect(() => {
     void trackPageView(location);
     window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-    const viewport = document.querySelector('.mobile-app-viewport');
-    if (viewport) {
-      viewport.scrollTop = 0;
-    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [location]);
 
   const isLandingPage =
