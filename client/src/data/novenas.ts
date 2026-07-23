@@ -274,6 +274,7 @@ function buildNossaSenhoraBomRemedioDays(): NovenaDay[] {
     title: d.title,
     reflection: d.reflection,
     prayer: NOSSA_SENHORA_BOM_REMEDIO_PRAYER,
+    audioUrl: "https://pub-21852f9bf53947ed985e54ec1a2bd8a2.r2.dev/Novena%20a%20Nossa%20Senhora%20do%20Bom%20Rem%C3%A9dio.mp3",
   }));
 }
 

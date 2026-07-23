@@ -911,10 +911,28 @@ export default function NovenaDetails() {
                               </div>
                             </div>
                           ) : (
-                            <div className="bg-[#fdfbf7] dark:bg-stone-900 border border-[#e8dfc7]/50 dark:border-stone-800 p-5 sm:p-6 rounded-2xl shadow-sm">
-                              <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
-                                {currentDayContent.prayer}
-                              </p>
+                            <div className="space-y-6">
+                              {currentDayContent.reflection && (
+                                <div className="p-5 sm:p-6 rounded-2xl border border-[#bf9926]/40 bg-[#bf9926]/5 shadow-sm">
+                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-3">
+                                    Meditação & Reflexão — Dia {safeDay}
+                                  </h4>
+                                  <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
+                                    {currentDayContent.reflection}
+                                  </p>
+                                </div>
+                              )}
+
+                              {currentDayContent.prayer && (
+                                <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
+                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
+                                    Oração Tradicional da Novena
+                                  </h4>
+                                  <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
+                                    {currentDayContent.prayer}
+                                  </p>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>
