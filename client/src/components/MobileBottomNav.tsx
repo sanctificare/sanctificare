@@ -27,8 +27,8 @@ export default function MobileBottomNav() {
   return (
     <>
       <div className="mobile-bottom-nav-spacer lg:hidden" />
-      <nav className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.96)] text-white shadow-[0_-12px_30px_oklch(0.08_0.02_260/0.22)] backdrop-blur-xl">
-        <div className="grid grid-cols-6 px-2 py-1.5 gap-0.5">
+      <nav className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.12_0.03_260/0.94)] text-white shadow-[0_-8px_24px_oklch(0.08_0.02_260/0.18)] backdrop-blur-md">
+        <div className="grid grid-cols-6 px-1.5 py-1.5 gap-0.5">
           {mobileLinks.map((item) => {
             const isActive = isActiveRoute(location, item.href);
             const Icon = item.icon;
@@ -37,13 +37,13 @@ export default function MobileBottomNav() {
               <Link key={item.href} href={item.href}>
                 <button
                   aria-current={isActive ? "page" : undefined}
-                  className={`flex h-[3.75rem] w-full flex-col items-center justify-center gap-1 rounded-xl transition-all ${
+                  className={`flex h-[3.75rem] w-full flex-col items-center justify-center gap-1 rounded-xl transition-all duration-100 ease-out active:scale-95 active:bg-white/10 ${
                     isActive
                       ? "bg-white text-[oklch(0.18_0.04_260)] shadow-sm"
                       : "text-[oklch(0.78_0.03_260)] hover:text-white"
                   }`}
                 >
-                  <Icon size={20} className={isActive ? "scale-105" : ""} />
+                  <Icon size={20} className={isActive ? "scale-105 transition-transform" : ""} />
                   <span className={`text-[9px] min-[360px]:text-[10px] leading-none truncate max-w-full px-0.5 ${isActive ? "font-bold" : "font-medium"}`}>
                     {item.label}
                   </span>

@@ -270,6 +270,11 @@ function AppShell() {
 
   useEffect(() => {
     void trackPageView(location);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    const viewport = document.querySelector('.mobile-app-viewport');
+    if (viewport) {
+      viewport.scrollTop = 0;
+    }
   }, [location]);
 
   const isLandingPage =
@@ -291,7 +296,9 @@ function AppShell() {
       )}
       {!isLandingPage && <MobileTopMenu />}
       <div className="theme-contemplative-a mobile-app-viewport min-h-[100dvh]">
-        <Router />
+        <div key={location} className="animate-fade-in">
+          <Router />
+        </div>
         {!isLandingPage && <MobileBottomNav />}
         <Suspense fallback={null}>
           <GlobalSearch />
