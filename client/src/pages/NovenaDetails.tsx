@@ -749,9 +749,9 @@ export default function NovenaDetails() {
                           </div>
                         )}
 
-                        {/* Visual de Capa e Frase Devocional */}
+                        {/* Visual de Capa */}
                         <div className="flex flex-col items-center justify-center my-6">
-                          <div className="relative w-36 h-36 mb-6">
+                          <div className="relative w-36 h-36">
                             <div
                               className={`absolute -inset-1.5 rounded-3xl bg-gradient-to-tr from-amber-600 to-amber-300 blur-sm transition-opacity duration-1000 ${
                                 isPlaying ? "opacity-90 animate-pulse" : "opacity-40"
@@ -768,14 +768,6 @@ export default function NovenaDetails() {
                               }`}
                             />
                           </div>
-                          
-                          {/* Frase Devocional de Destaque */}
-                          <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
-                            “{currentDayContent.reflection
-                              .split('\n')[0]
-                              .replace(/[^\x00-\x7F\u00C0-\u017F\u1E00-\u1EFF]/g, "")
-                              .trim()}”
-                          </p>
                         </div>
 
                         {/* Controles de Áudio (Navy + Gold + Glassmorphism) */}
