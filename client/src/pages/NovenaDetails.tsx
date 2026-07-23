@@ -177,6 +177,17 @@ export default function NovenaDetails() {
 
   // Audio states
   const audioRef = useRef<HTMLAudioElement>(null);
+  const pillNavRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (pillNavRef.current) {
+      const activePill = pillNavRef.current.querySelector('[data-active="true"]');
+      if (activePill) {
+        activePill.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+    }
+  }, [safeDay]);
+
   const [playingUrl, setPlayingUrl] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
