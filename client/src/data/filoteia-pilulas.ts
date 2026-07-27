@@ -23,6 +23,7 @@ export const FILOTEIA_PILULAS: FiloteiaPill[] = [
     exam:
       "1. Existe algum pecado venial, fofoca ou hábito frívolo que eu ainda justifico dizendo: 'Ah, mas todo mundo faz, não tem nada demais'?\n2. Quando me confesso, tenho dor sincera de ter ofendido a Deus ou busco apenas aliviar o peso da culpa, mantendo a intenção de retornar às mesmas conversas e atitudes vãs?\n3. Onde está fixado o meu afeto principal ao longo do dia: nas coisas do Céu ou no aplauso e conforto do mundo?",
     durationLabel: "07:15",
+    audioUrl: "/r2-storage/filoteia/filoteiadia1.mp3",
     scriptText: `Minha querida alma, chamada por Deus à santidade no meio do mundo. Seja muito bem-vinda ao primeiro dia desta santa jornada baseada na Filoteia de São Francisco de Sales.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -52,6 +53,7 @@ Para dar hoje o seu primeiro passo real no caminho da santidade:
     exam:
       "1. Tenho medo do silêncio? Ao entrar no carro ou caminhar sozinho, minha primeira reação é preencher o vazio com notícias, redes sociais ou barulho?\n2. Quanto tempo do meu dia eu dedico a conversar com Deus versus o tempo gasto rolando telas e consumindo entretenimento estéril?\n3. Rezo minhas orações de forma mecânica e apressada, apenas para cumprir uma tarefa, ou me coloco com reverência e amor diante da majestade de Cristo?",
     durationLabel: "07:00",
+    audioUrl: "/r2-storage/filoteia/filoteiadia2.mp3",
     scriptText: `Paz e bem a você, Filoteia. No segundo dia do nosso itinerário, São Francisco de Sales nos convida a erguer um oratório secreto dentro da própria alma.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -81,6 +83,7 @@ Dê hoje este passo firme em direção à intimidade com Deus:
     exam:
       "1. Qual é o meu defeito dominante que mais magoa as pessoas que vivem comigo (impaciência, vaidade, orgulho, teimosia, preguiça)?\n2. Tenho o costume de sonhar com grandes obras espirituais no futuro enquanto descuido das obrigações simples do meu dia de hoje?\n3. Pratico as virtudes para agradar a Deus ou para demonstrar superioridade moral perante os outros?",
     durationLabel: "06:45",
+    audioUrl: "/r2-storage/filoteia/filoteiadia3.mp3",
     scriptText: `Seja firme no bem, Filoteia ou Alma que ama a Deus. Muitas almas se perdem em devaneios espirituais e na falsa santidade dos desejos platônicos.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -110,6 +113,7 @@ Faça da sua jornada espiritual um combate prático e focado:
     exam:
       "1. Quando cometo uma falha, fico perturbado e amargurado comigo mesmo por horas, recusando-me a aceitar minha própria fraqueza humana diante de Deus?\n2. Como me dirijo aos membros da minha família quando eles erram: com a paciência do Bom Pastor ou com o julgamento impaciente do juiz?\n3. O meu tom de voz habitual em casa e no trabalho transmite a paz de Cristo ou o estresse e a agitação da carne?",
     durationLabel: "07:30",
+    audioUrl: "/r2-storage/filoteia/filoteiadia4.mp3",
     scriptText: `Compreenda este grande mistério, Filoteia ou Alma que ama a Deus: a mansidão é a flor da caridade cristã.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -139,6 +143,7 @@ Semeie a doçura de Cristo nas suas relações de hoje:
     exam:
       "1. Fico incomodado ou ressentido quando faço um bom trabalho e ninguém me elogia ou agradece publicamente?\n2. Tenho o costume de contar aos outros as minhas boas ações, doações ou sacrifícios para obter admiração espiritual?\n3. Como reajo quando sou corrigido ou quando alguém aponta uma falha no meu comportamento? Aceito com paz ou me defendo com veemência?",
     durationLabel: "07:10",
+    audioUrl: "/r2-storage/filoteia/filoteiadia5.mp3",
     scriptText: `No quinto dia da nossa caminhada devota, meditemos sobre o fundamento firme de todas as virtudes: a Santa Humildade.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -168,6 +173,7 @@ Pratique a sabedoria da obscuridade amorosa:
     exam:
       "1. Tenho participado de conversas fofoqueiras, repassando comentários pejorativos sobre colegas, parentes ou sacerdotes?\n2. Tenho a tendência de interpretar a atitude dos outros sob a pior luz possível, criando suspeitas sem provas reais?\n3. A minha palavra costuma construir, edificar e trazer paz às pessoas, ou espalha discórdia, pessimismo e murmuração?",
     durationLabel: "07:20",
+    audioUrl: "/r2-storage/filoteia/filoteiadia6.mp3",
     scriptText: `Guarde a sua língua como quem guarda o ostensório com o Santíssimo Sacramento, Filoteia.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -197,6 +203,7 @@ Santifique a sua língua hoje:
     exam:
       "1. Tenho permitido que meus olhos contemplem imagens, redes sociais ou conteúdos que despertam pensamentos impuros e sensuais?\n2. Mantenho modéstia no meu vestir, nas minhas atitudes e nas minhas conversas diárias?\n3. Quando pensamentos impuros surgem na minha mente, eu os rejeito imediatamente ou brinco com a tentação antes de afastá-la?",
     durationLabel: "07:00",
+    audioUrl: "/r2-storage/filoteia/filoteiadia7.mp3",
     scriptText: `Chegamos ao sétimo dia do nosso itinerário devoto. Contemplemos a radiante beleza da Santa Castidade.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -226,6 +233,7 @@ Proteja o templo do Espírito Santo que é o seu corpo:
     exam:
       "1. Sou escravo da comida, da bebida, do café ou do conforto, ficando de mau humor quando minhas vontades corporais não são satisfeitas imediatamente?\n2. Cedo com facilidade à preguiça para levantar da cama ao despertar, enrolando na soneca e atrasando minhas orações?\n3. Sei dizer 'não' aos meus pequenos caprichos em favor do amor a Deus e do serviço aos outros?",
     durationLabel: "06:50",
+    audioUrl: "/r2-storage/filoteia/filoteiadia8.mp3",
     scriptText: `Bendito seja Deus por este oitavo dia. Refletiremos sobre a santa mortificação da vontade e o autodomínio cristão.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -255,6 +263,7 @@ Treine o seu espírito para a liberdade dos filhos de Deus:
     exam:
       "1. O meu círculo de amizades mais íntimas me impulsiona para a virtude, para os sacramentos e para a oração, ou me arrasta para o mundanismo e o pecado?\n2. Sou um amigo que sabe ouvir, apoiar na dor e dar bons conselhos espirituais, ou encorajo atitudes vingativas e vaidosas?\n3. Tenho coragem de defender a minha fé cristã com respeito diante dos meus amigos quando a verdade é atacada?",
     durationLabel: "07:15",
+    audioUrl: "/r2-storage/filoteia/filoteiadia9.mp3",
     scriptText: `No nono dia do nosso itinerário, o Santo Bispo de Genebra nos ensina sobre a sabedoria nas amizades.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -284,6 +293,7 @@ Edifique os seus irmãos na caridade de Cristo:
     exam:
       "1. Sinto uma dependência compulsiva de checar o celular a todo momento, perdendo horas preciosas em rolagem infinita de vídeos e redes sociais?\n2. Acompanho a vida de pessoas famosas ou fofocas virtuais com mais interesse do que leio a Bíblia ou os escritos dos santos?\n3. O uso desmedido da tecnologia tem roubado a minha presença atenta e carinhosa junto à minha família e meus deveres de casa?",
     durationLabel: "07:00",
+    audioUrl: "/r2-storage/filoteia/filoteiadia10.mp3",
     scriptText: `A paz de Nosso Senhor esteja com você, Filoteia. Hoje meditaremos sobre a necessidade urgente do silêncio da mente contra a tirania da curiosidade.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -313,6 +323,7 @@ Pratique a santa desintoxicação digital:
     exam:
       "1. Há quanto tempo não me confesso com uma preparação séria e profunda? Escondi algum pecado grave em confissões passadas por vergonha do padre?\n2. Tenho verdadeiro desgosto de ter ofendido a Deus por Seu infinito amor, ou só me arrependo quando minhas falhas trazem consequências humanas desagradáveis?\n3. Fiz um propósito firme e prático de evitar as ocasiões próximas de pecado, ou pretendo voltar aos mesmos lugares e hábitos ruins?",
     durationLabel: "07:40",
+    audioUrl: "/r2-storage/filoteia/filoteiadia11.mp3",
     scriptText: `Chegamos ao décimo primeiro dia. Aproxime-se com confiança do Trono da Misericórdia Divina: o Sacramento da Santa Confissão.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -342,6 +353,7 @@ Organize a limpeza da sua alma:
     exam:
       "1. Tenho me aproximado da Comunhão por mera rotina social na Missa, sem a devida preparação do coração e sem o recolhimento necessário?\n2. Tenho o cuidado de respeitar o jejum eucarístico de uma hora antes da Comunhão e de vestir-me com modéstia e reverência para a Santa Missa?\n3. Após receber a Eucaristia, costumo sair apressado da igreja ou dedico tempo de ação de graças ao Senhor que habita em mim?",
     durationLabel: "07:25",
+    audioUrl: "/r2-storage/filoteia/filoteiadia12.mp3",
     scriptText: `Filoteia, contemple o maior milagre do amor de Deus presente na terra: a Sagrada Eucaristia!
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -371,6 +383,7 @@ Desperte a fome da alma pelo Pão do Céu:
     exam:
       "1. Realizo meu trabalho profissional ou afazeres domésticos com desleixo, má vontade ou murmuração constante?\n2. Tenho o hábito de procrastinar tarefas importantes por preguiça, deixando acumular obrigações que sobrecarregam os outros?\n3. Trato as pessoas que trabalham comigo ou que me atendem no dia a dia com a dignidade, respeito e paciência de um discípulo de Cristo?",
     durationLabel: "07:05",
+    audioUrl: "/r2-storage/filoteia/filoteiadia13.mp3",
     scriptText: `No décimo terceiro dia da nossa caminhada, reaprendamos a sublime beleza dos nossos deveres cotidianos.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -400,6 +413,7 @@ Santifique a matéria do seu dia ordinário:
     exam:
       "1. Quando meus planos são frustrados ou as coisas não saem do meu jeito, reajo com raiva, revolta ou desespero?\n2. Tenho o hábito de me vitimizar diante dos outros, buscando compaixão humana em vez de oferecer minhas dores em silêncio a Deus?\n3. Consigo enxergar nas dificuldades e sofrimentos uma oportunidade de expiar meus pecados e crescer no amor a Cristo?",
     durationLabel: "07:35",
+    audioUrl: "/r2-storage/filoteia/filoteiadia14.mp3",
     scriptText: `Estamos na reta final do nosso itinerário devoto, Filoteia. Meditemos hoje sobre a coroa da paciência cristã nas tribulações da vida.
 
 I. APROFUNDAMENTO DA REFLEXÃO
@@ -429,6 +443,7 @@ Abrace a Cruz de Cristo com nobreza de alma:
     exam:
       "1. Olhando para estes 15 dias, percebo mudanças reais na minha vida de oração, no meu tom de voz e no meu desejo de fugir do pecado?\n2. Qual é a virtude que Deus mais trabalhou no meu coração ao longo deste itinerário?\n3. Estou decidido a manter uma regra diária de oração, exames de consciência e sacramentos frequentes para não esfriar na fé?",
     durationLabel: "08:00",
+    audioUrl: "/r2-storage/filoteia/filoteiadia15.mp3",
     scriptText: `Parabéns e louvado seja Deus, minha cara Filoteia! Com a graça de Deus, você concluiu os 15 dias do nosso Itinerário de Vida Devota.
 
 I. APROFUNDAMENTO DA REFLEXÃO

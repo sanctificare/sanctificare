@@ -75,10 +75,25 @@ export function registerStorageProxy(app: Express) {
           cleanKey = rKey;
           foundInR2 = true;
         }
+      } else if (key.startsWith("filoteia/")) {
+        const fKey = key.replace(/^filoteia\//, "");
+        if (await storageExists(fKey, "filoteia")) {
+          bucket = "filoteia";
+          cleanKey = fKey;
+          foundInR2 = true;
+        } else if (await storageExists(key, "filoteia")) {
+          bucket = "filoteia";
+          cleanKey = key;
+          foundInR2 = true;
+        }
       } else {
         // Standard keys: check default bucket
         if (await storageExists(key, ENV.r2BucketName)) {
           bucket = ENV.r2BucketName;
+          cleanKey = key;
+          foundInR2 = true;
+        } else if (await storageExists(key, "filoteia")) {
+          bucket = "filoteia";
           cleanKey = key;
           foundInR2 = true;
         }
@@ -195,9 +210,24 @@ export function registerStorageProxy(app: Express) {
           cleanKey = rKey;
           foundInR2 = true;
         }
+      } else if (key.startsWith("filoteia/")) {
+        const fKey = key.replace(/^filoteia\//, "");
+        if (await storageExists(fKey, "filoteia")) {
+          bucket = "filoteia";
+          cleanKey = fKey;
+          foundInR2 = true;
+        } else if (await storageExists(key, "filoteia")) {
+          bucket = "filoteia";
+          cleanKey = key;
+          foundInR2 = true;
+        }
       } else {
         if (await storageExists(key, ENV.r2BucketName)) {
           bucket = ENV.r2BucketName;
+          cleanKey = key;
+          foundInR2 = true;
+        } else if (await storageExists(key, "filoteia")) {
+          bucket = "filoteia";
           cleanKey = key;
           foundInR2 = true;
         }

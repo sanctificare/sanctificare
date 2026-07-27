@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import { getLoginUrl, isMobileApp } from "@/const";
+import { getLoginUrl, isMobileApp, resolveR2Redirect } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 import QuoteCardModal from "@/components/QuoteCardModal";
@@ -101,6 +101,7 @@ export default function FiloteiaRetiro() {
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
+  const [resolvedAudioUrl, setResolvedAudioUrl] = useState<string>("");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const selected = useMemo(
@@ -127,7 +128,14 @@ export default function FiloteiaRetiro() {
     if (ambientAudioRef.current) {
       ambientAudioRef.current.pause();
     }
-  }, [selectedId]);
+    if (selected.audioUrl) {
+      resolveR2Redirect(selected.audioUrl).then((url) => {
+        setResolvedAudioUrl(url);
+      });
+    } else {
+      setResolvedAudioUrl("");
+    }
+  }, [selectedId, selected.audioUrl]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -522,7 +530,7 @@ export default function FiloteiaRetiro() {
                     </div>
 
                     {(() => {
-                      const audioUrl = selected.audioUrl || "";
+                      const audioUrl = resolvedAudioUrl || selected.audioUrl || "";
                       return (
                         <>
                           {audioUrl ? (
