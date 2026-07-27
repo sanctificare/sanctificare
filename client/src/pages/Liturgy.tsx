@@ -277,8 +277,8 @@ export default function Liturgy() {
   const [playingUrl, setPlayingUrl] = useState("");
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [shareData, setShareData] = useState({
-    title: "Salmo Cantado",
-    description: "Ouça o Salmo Cantado da Liturgia de hoje."
+    title: "Salmo Responsorial Cantado",
+    description: "Ouça o Salmo Responsorial Cantado da Liturgia de hoje."
   });
 
   useEffect(() => {
@@ -873,7 +873,7 @@ export default function Liturgy() {
                           </div>
                           <div className="text-left">
                             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
-                              Salmo Cantado
+                              Salmo Responsorial Cantado
                             </h4>
                             <p className="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-0.5">
                               Ouça a versão cantada deste salmo

@@ -258,7 +258,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
           </div>
           <div className="text-left">
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
-              Salmo Cantado
+              Salmo Responsorial Cantado
             </h4>
             <p className="text-[10px] text-muted-foreground">
               Ouça a versão cantada deste salmo
@@ -272,7 +272,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
             size="icon"
             onClick={handleShare}
             className="h-9 w-9 rounded-full border border-amber-500/20 text-amber-600 hover:bg-amber-500/10 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 shrink-0 transition-all duration-300 flex items-center justify-center"
-            aria-label="Compartilhar salmo cantado"
+            aria-label="Compartilhar Salmo Responsorial Cantado"
           >
             <Share2 className="w-4 h-4" />
           </Button>
@@ -326,8 +326,8 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
       <ShareModal
         isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}
-        title="Salmo Cantado"
-        description="Ouça o Salmo Cantado da Liturgia de hoje."
+        title="Salmo Responsorial Cantado"
+        description="Ouça o Salmo Responsorial Cantado da Liturgia de hoje."
         url={typeof window !== "undefined" ? window.location.href : ""}
       />
     </div>
