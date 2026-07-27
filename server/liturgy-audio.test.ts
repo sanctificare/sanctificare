@@ -22,6 +22,9 @@ describe("liturgy-audio", () => {
       expect(audios.gospel).toBe(
         `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`
       );
+      expect(audios.singedPsalm).toBe(
+        `/r2-storage/salmos-cantados/julho26/salmos${formattedDate}.mp3`
+      );
     }
   });
 
@@ -33,6 +36,9 @@ describe("liturgy-audio", () => {
     );
     expect(audio01.gospel).toBe(
       "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho010826.mp3"
+    );
+    expect(audio01.singedPsalm).toBe(
+      "/r2-storage/salmos-cantados/agosto26/salmos010826.mp3"
     );
     expect(audio01.secondReading).toBeUndefined();
 
@@ -46,6 +52,9 @@ describe("liturgy-audio", () => {
     );
     expect(audio02.gospel).toBe(
       "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho020826.mp3"
+    );
+    expect(audio02.singedPsalm).toBe(
+      "/r2-storage/salmos-cantados/agosto26/salmos020826.mp3"
     );
   });
 });

@@ -58,11 +58,9 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/julho26/evangelho${formattedDate}.mp3`
         };
 
-        // Configuração para o Salmo Cantado
-        if (dayNum >= 13 && dayNum <= 26) {
+        // Configuração para o Salmo Cantado (áudios disponíveis de 13 a 31 de julho)
+        if (dayNum >= 13 && dayNum <= 31) {
           audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmos${formattedDate}.mp3`;
-        } else if (dayNum >= 5 && dayNum <= 12) {
-          audio.singedPsalm = `/r2-storage/salmos-cantados/julho26/salmo${formattedDate}.mp3`;
         }
 
         // Apenas dias 5, 12, 19 e 26 têm segunda leitura no R2 (domingos)
@@ -79,7 +77,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
 
         const audio: LiturgyReadingsAudio = {
           firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura${formattedDate}.mp3`,
-          gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`
+          gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`,
+          singedPsalm: `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
         };
 
         // Apenas 02/08 tem segunda leitura (domingo)
