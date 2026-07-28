@@ -6,6 +6,7 @@ export interface NovenaDay {
   reflection: string;
   prayer: string;
   audioUrl?: string;
+  duration?: string;
 }
 
 export interface Novena {
@@ -55,6 +56,7 @@ function buildSagradoCoracaoDays(): NovenaDay[] {
     reflection: "",
     prayer: SAGRADO_CORACAO_PRAYER,
     audioUrl: "https://pub-21852f9bf53947ed985e54ec1a2bd8a2.r2.dev/Novena%20ao%20Sagrado%20Cora%C3%A7%C3%A3o%20de%20Jesus.mp3",
+    duration: "04:31",
   }));
 }
 
@@ -220,12 +222,15 @@ function buildNossaSenhoraBomRemedioDays(): NovenaDay[] {
     },
   ];
 
-  return daysData.map((d) => ({
+  const durations = ["05:45", "05:25", "05:16", "05:14", "05:14", "05:12", "05:09", "05:35", "05:33"];
+
+  return daysData.map((d, index) => ({
     day: d.day,
     title: d.title,
     reflection: d.reflection,
     prayer: NOSSA_SENHORA_BOM_REMEDIO_PRAYER,
     audioUrl: `https://pub-21852f9bf53947ed985e54ec1a2bd8a2.r2.dev/nossa%20senhora%20bom%20remedio/bomremediodia${d.day}.mp3`,
+    duration: durations[index] || "05:00",
   }));
 }
 

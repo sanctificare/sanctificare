@@ -851,7 +851,7 @@ export default function NovenaDetails() {
                         <div className="flex items-center gap-1.5">
                           {isDone && <CheckCircle2 size={12} className="text-emerald-600 shrink-0" />}
                           {isDayLocked && <Lock size={10} className="text-amber-500 shrink-0" />}
-                          <span className="text-[9px] text-muted-foreground">05:00</span>
+                          <span className="text-[9px] text-muted-foreground">{dayItem.duration || "05:00"}</span>
                         </div>
                       </div>
                       <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">
