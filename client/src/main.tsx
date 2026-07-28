@@ -371,6 +371,7 @@ if (typeof window !== "undefined" && isMobileApp()) {
         const token = url.searchParams.get("token");
         const csrf = url.searchParams.get("csrf");
         const uInfo = url.searchParams.get("u_info");
+        const destination = `${url.pathname || "/dashboard"}${url.search || ""}${url.hash || ""}`;
         
         if (token) {
           setStoredSessionToken(token);
@@ -388,9 +389,13 @@ if (typeof window !== "undefined" && isMobileApp()) {
           if (isMobileApp()) {
             sessionStorage.setItem('__cap_app_started', '1');
           }
-          const destination = `${url.pathname || "/dashboard"}${url.search || ""}${url.hash || ""}`;
           window.location.replace(destination);
+          return;
         }
+
+        // Support route-only deep links (without OAuth token), e.g.
+        // sanctificare://callback/degraus-de-perfeicao.
+        window.location.replace(destination);
       }
     } catch (e) {
       console.error("[DeepLink] Error handling URL:", e);

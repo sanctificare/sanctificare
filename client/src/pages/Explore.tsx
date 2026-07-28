@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
-import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Search, Compass } from "lucide-react";
-
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+import { Search, Compass, Lock } from "lucide-react";
+import { openRouteInApp } from "@/lib/deepLink";
 
 type ExploreCard = {
   href: string;
@@ -13,6 +11,7 @@ type ExploreCard = {
   desc: string;
   image: string;
   overlay: string;
+  publicPreview?: boolean;
   category: "Devocional" | "Estudo" | "Práticas" | "Comunidade";
 };
 
@@ -24,7 +23,7 @@ const exploreCards: ExploreCard[] = [
   { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.webp", overlay: "oklch(0.36 0.15 20 / 0.60)", category: "Devocional" },
   { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.webp", overlay: "oklch(0.50 0.10 85 / 0.56)", category: "Práticas" },
   { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.webp", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
-  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
+  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", publicPreview: true, category: "Estudo" },
   { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
   { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.webp", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
   { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.webp", overlay: "oklch(0.30 0.10 190 / 0.60)", category: "Comunidade" },
@@ -51,7 +50,7 @@ export function filterExploreCards(cards: ExploreCard[], search: string, selecte
 }
 
 export default function Explore() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -78,6 +77,25 @@ export default function Explore() {
           <p className="text-sm text-muted-foreground max-w-xl">
             Acesse todas as orações, leituras, acompanhamentos e ferramentas disponíveis para nutrir sua fé e perseverança.
           </p>
+
+          {!isAuthenticated && (
+            <div className="mt-4 max-w-3xl rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 px-4 py-3 shadow-sm">
+              <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)]">
+                Você está no modo de visita. Alguns conteúdos exigem login, mas o caminho
+                <span className="font-semibold"> Degraus de Perfeição </span>
+                já está disponível com prévia gratuita.
+              </p>
+              <div className="mt-2 flex items-center gap-3">
+                <button
+                  onClick={() => openRouteInApp("/explore")}
+                  className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline"
+                >
+                  Abrir no app
+                </button>
+                <span className="text-[10px] text-muted-foreground">Se o app não abrir, você seguirá no web.</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Search & Filter Bar */}
@@ -118,28 +136,41 @@ export default function Explore() {
         {/* Cards Grid */}
         {filteredCards.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 animate-fade-in">
-            {filteredCards.map(({ href, label, desc, image, overlay }) => (
-              <Link key={href} href={href}>
-                <div className="cover-card aspect-square group cursor-pointer border border-border/20 shadow-sm hover:shadow-lg transition-all duration-300">
-                  <img
-                    src={image}
-                    alt={label}
-                    className="cover-card-image"
-                    loading="lazy"
-                  />
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `linear-gradient(to top, oklch(0.10 0.03 260 / 0.86) 0%, ${overlay} 56%, oklch(0.10 0.02 260 / 0.12) 100%)`,
-                    }}
-                  />
-                  <div className="cover-card-content">
-                    <p className="cover-card-title">{label}</p>
-                    <p className="cover-card-desc hidden sm:line-clamp-2">{desc}</p>
+            {filteredCards.map(({ href, label, desc, image, overlay, publicPreview }) => {
+              const isLocked = !isAuthenticated && !publicPreview;
+              const targetHref = isLocked ? getLoginUrl(href) : href;
+
+              return (
+                <Link key={href} href={targetHref}>
+                  <div className="cover-card aspect-square group cursor-pointer border border-border/20 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <img
+                      src={image}
+                      alt={label}
+                      className="cover-card-image"
+                      loading="lazy"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(to top, oklch(0.10 0.03 260 / 0.86) 0%, ${overlay} 56%, oklch(0.10 0.02 260 / 0.12) 100%)`,
+                      }}
+                    />
+                    <div className="cover-card-content">
+                      {isLocked && (
+                        <span className="mb-1 inline-flex items-center gap-1 rounded-full border border-white/40 bg-black/35 px-2 py-0.5 text-[10px] font-semibold text-white">
+                          <Lock className="h-3 w-3" />
+                          Entrar para abrir
+                        </span>
+                      )}
+                      <p className="cover-card-title">{label}</p>
+                      <p className="cover-card-desc hidden sm:line-clamp-2">
+                        {isLocked ? "Disponível no app com login" : desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12">

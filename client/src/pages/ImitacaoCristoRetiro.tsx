@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { shareText } from "@/lib/share";
+import { openRouteInApp } from "@/lib/deepLink";
 import ShareModal from "@/components/ShareModal";
 import QuoteCardModal from "@/components/QuoteCardModal";
 import RetiroCompletionModal from "@/components/RetiroCompletionModal";
@@ -379,6 +380,13 @@ export default function ImitacaoCristoRetiro() {
                     {isAuthenticated
                       ? "Iniciar Teste Grátis de 14 Dias"
                       : "Entrar e Testar Grátis"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => openRouteInApp("/degraus-de-perfeicao/imitacao-de-cristo")}
+                    className="w-full border-amber-500/35 bg-transparent text-amber-300 hover:bg-amber-500/10 hover:text-amber-200 font-bold text-xs sm:text-sm uppercase tracking-wider h-11 rounded-xl"
+                  >
+                    Abrir no app
                   </Button>
                   <p className="text-[10px] text-slate-400">
                     14 dias grátis, depois {selectedPlan === "annual" ? "R$ 129,00/ano" : "R$ 14,90/mês"}. Cancele quando quiser.

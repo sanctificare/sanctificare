@@ -114,10 +114,6 @@ function ProtectedDashboardRoute(props: any) {
   return <ProtectedRoute component={Dashboard} {...props} />;
 }
 
-function ProtectedExploreRoute(props: any) {
-  return <ProtectedRoute component={Explore} {...props} />;
-}
-
 function ProtectedPrayersRoute(props: any) {
   return <ProtectedRoute component={Prayers} {...props} />;
 }
@@ -180,18 +176,6 @@ function ProtectedVideosRoute(props: any) {
   return <ProtectedRoute component={VideosBiblicos} {...props} />;
 }
 
-function ProtectedDegrausRoute(props: any) {
-  return <ProtectedRoute component={DegrausPerfeicao} {...props} />;
-}
-
-function ProtectedImitacaoCristoRoute(props: any) {
-  return <ProtectedRoute component={ImitacaoCristoRetiro} {...props} />;
-}
-
-function ProtectedFiloteiaRoute(props: any) {
-  return <ProtectedRoute component={FiloteiaRetiro} {...props} />;
-}
-
 function ProtectedPrayerDetailRoute(props: any) {
   return <ProtectedRoute component={PrayerDetail} {...props} />;
 }
@@ -230,7 +214,7 @@ function Router() {
         <Route path="/" component={isMobileApp() && !loading && !isAuthenticated ? Login : Home} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={ProtectedDashboardRoute} />
-        <Route path="/explore" component={ProtectedExploreRoute} />
+        <Route path="/explore" component={Explore} />
         <Route path="/oracoes" component={ProtectedPrayersRoute} />
         <Route path="/rosario" component={ProtectedRosaryRoute} />
         <Route path="/liturgia" component={ProtectedLiturgyRoute} />
@@ -248,9 +232,9 @@ function Router() {
         <Route path="/plano-diario" component={ProtectedDailyPlanRoute} />
 
         <Route path="/videos" component={ProtectedVideosRoute} />
-  <Route path="/degraus-de-perfeicao" component={ProtectedDegrausRoute} />
-  <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ProtectedImitacaoCristoRoute} />
-  <Route path="/degraus-de-perfeicao/filoteia" component={ProtectedFiloteiaRoute} />
+        <Route path="/degraus-de-perfeicao" component={DegrausPerfeicao} />
+        <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ImitacaoCristoRetiro} />
+        <Route path="/degraus-de-perfeicao/filoteia" component={FiloteiaRetiro} />
         <Route path="/oracao/:id" component={ProtectedPrayerDetailRoute} />
         <Route path="/premium" component={PremiumRoute} />
         <Route path="/premium/sucesso" component={PremiumSucessoRoute} />

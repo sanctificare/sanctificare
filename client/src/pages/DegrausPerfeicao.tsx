@@ -1,6 +1,9 @@
 import { BookMarked, BookOpen, Heart, Sparkles, ArrowRight, Lock } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { getLoginUrl } from "@/const";
+import { openRouteInApp } from "@/lib/deepLink";
 
 type DegrauCard = {
   category: string;
@@ -65,6 +68,8 @@ const DEGRAVS: DegrauCard[] = [
 ];
 
 export default function DegrausPerfeicao() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)] pb-12 relative overflow-hidden">
       {/* Pattern background */}
@@ -82,6 +87,30 @@ export default function DegrausPerfeicao() {
           <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto md:mx-0">
             Acompanhe os maiores clássicos da espiritualidade católica estruturados para a sua santidade no cotidiano.
           </p>
+
+          {!isAuthenticated && (
+            <div className="mt-4 rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 px-4 py-3 shadow-sm max-w-2xl">
+              <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)]">
+                Modo visitante: você pode iniciar gratuitamente o Dia 1 dos retiros disponíveis.
+                Para progresso completo e histórico, entre no app.
+              </p>
+              <div className="mt-2">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => openRouteInApp("/degraus-de-perfeicao")}
+                    className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline"
+                  >
+                    Abrir no app
+                  </button>
+                  <Link href={getLoginUrl("/degraus-de-perfeicao")}>
+                    <button className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline">
+                      Entrar para liberar jornada completa
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </header>
 
         <section className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-3xl mx-auto" aria-label="Obras espirituais">
@@ -120,7 +149,7 @@ export default function DegrausPerfeicao() {
                     {hasRoute ? (
                       <Button size="sm" className="w-full bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-white font-semibold transition-all duration-200 shadow-sm flex items-center justify-center gap-1.5 group/btn h-8 text-xs">
                         <BookOpen size={14} />
-                        Iniciar Caminhada
+                        {isAuthenticated ? "Iniciar Caminhada" : "Ver Prévia Gratuita"}
                         <ArrowRight size={12} className="group-hover/btn:translate-x-0.5 transition-transform" />
                       </Button>
                     ) : (
@@ -148,4 +177,4 @@ export default function DegrausPerfeicao() {
       </main>
     </div>
   );
-}
+}
