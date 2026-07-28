@@ -11,7 +11,6 @@ type ExploreCard = {
   desc: string;
   image: string;
   overlay: string;
-  publicPreview?: boolean;
   category: "Devocional" | "Estudo" | "Práticas" | "Comunidade";
 };
 
@@ -23,13 +22,15 @@ const exploreCards: ExploreCard[] = [
   { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações com guia", image: "/assets/dashboard/via-sacra.webp", overlay: "oklch(0.36 0.15 20 / 0.60)", category: "Devocional" },
   { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", image: "/assets/dashboard/vela-virtual.webp", overlay: "oklch(0.50 0.10 85 / 0.56)", category: "Práticas" },
   { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.webp", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
-  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", publicPreview: true, category: "Estudo" },
+  { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
   { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
   { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.webp", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
   { href: "/intencoes", label: "Intenções", desc: "Ore com a comunidade", image: "/assets/dashboard/intencoes.webp", overlay: "oklch(0.30 0.10 190 / 0.60)", category: "Comunidade" },
   { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.webp", overlay: "oklch(0.40 0.15 80 / 0.60)", category: "Estudo" },
   { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
 ];
+
+const AUTH_REQUIRED_PATHS = new Set(["/plano-diario", "/intencoes"]);
 
 export function filterExploreCards(cards: ExploreCard[], search: string, selectedCategory: string | null): ExploreCard[] {
   const normalizedSearch = search.trim().toLowerCase();
@@ -81,9 +82,8 @@ export default function Explore() {
           {!isAuthenticated && (
             <div className="mt-4 max-w-3xl rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 px-4 py-3 shadow-sm">
               <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)]">
-                Você está no modo de visita. Alguns conteúdos exigem login, mas o caminho
-                <span className="font-semibold"> Degraus de Perfeição </span>
-                já está disponível com prévia gratuita.
+                Você está no modo de visita. Quase todo o conteúdo já pode ser explorado sem login.
+                Recursos pessoais e de comunidade continuam protegidos.
               </p>
               <div className="mt-2 flex items-center gap-3">
                 <button
@@ -136,8 +136,8 @@ export default function Explore() {
         {/* Cards Grid */}
         {filteredCards.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 animate-fade-in">
-            {filteredCards.map(({ href, label, desc, image, overlay, publicPreview }) => {
-              const isLocked = !isAuthenticated && !publicPreview;
+            {filteredCards.map(({ href, label, desc, image, overlay }) => {
+              const isLocked = !isAuthenticated && AUTH_REQUIRED_PATHS.has(href);
               const targetHref = isLocked ? getLoginUrl(href) : href;
 
               return (
