@@ -1,4 +1,4 @@
-import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken, isMobileApp } from "@/const";
+import { clearStoredAuthTokens, getLoginUrl, getApiBaseUrl, getStoredSessionToken, getStoredCsrfToken, isMobileApp } from "@/const";
 import { useCallback, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
@@ -45,7 +45,19 @@ function readCachedRuntimeUser() {
 
 async function fetchMe() {
   const base = getApiBaseUrl();
-  const res = await fetch(`${base}/api/auth/me`, { credentials: "include" });
+  const headers = new Headers();
+  const sessionToken = getStoredSessionToken();
+  if (sessionToken) {
+    headers.set("Authorization", `Bearer ${sessionToken}`);
+  }
+  const csrfToken = getStoredCsrfToken();
+  if (csrfToken) {
+    headers.set("x-csrf-token", csrfToken);
+  }
+  if (isMobileApp()) {
+    headers.set("X-Sanctificare-Client", "native");
+  }
+  const res = await fetch(`${base}/api/auth/me`, { headers, credentials: "include" });
   if (!res.ok) {
     throw new Error("Failed to fetch user");
   }

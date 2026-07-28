@@ -223,20 +223,34 @@ const trpcClient = trpc.createClient({
       url: "/api/trpc",
       transformer: superjson,
       fetch(input, init) {
-        let targetInput = input;
-        if (typeof targetInput === "string") {
-          if (targetInput.startsWith("/")) {
-            targetInput = `${getApiBaseUrl()}${targetInput}`;
-          } else if (
-            targetInput.startsWith("http://localhost/") ||
-            targetInput.startsWith("capacitor://localhost/")
-          ) {
-            targetInput = targetInput.replace(
-              /^(http|capacitor):\/\/localhost/,
-              getApiBaseUrl()
-            );
-          }
+        let targetInput: RequestInfo | URL = input;
+        let urlString =
+          typeof targetInput === "string"
+            ? targetInput
+            : targetInput instanceof URL
+            ? targetInput.toString()
+            : targetInput instanceof Request
+            ? targetInput.url
+            : String(targetInput);
+
+        if (urlString.startsWith("/")) {
+          urlString = `${getApiBaseUrl()}${urlString}`;
+        } else if (
+          urlString.startsWith("http://localhost/") ||
+          urlString.startsWith("capacitor://localhost/")
+        ) {
+          urlString = urlString.replace(
+            /^(http|capacitor):\/\/localhost/,
+            getApiBaseUrl()
+          );
         }
+
+        if (targetInput instanceof Request) {
+          targetInput = new Request(urlString, targetInput);
+        } else {
+          targetInput = urlString;
+        }
+
         return window.fetch(targetInput, {
           ...(init ?? {}),
           headers: (() => {
@@ -248,6 +262,9 @@ const trpcClient = trpc.createClient({
             const sessionToken = getStoredSessionToken();
             if (sessionToken) {
               headers.set("Authorization", `Bearer ${sessionToken}`);
+            }
+            if (isMobileApp()) {
+              headers.set("X-Sanctificare-Client", "native");
             }
             return headers;
           })(),

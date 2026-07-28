@@ -192,6 +192,10 @@ async function startServer() {
     const isCsrfExemptPath =
       req.path === "/api/scheduled/fetchLiturgia" ||
       req.path === "/api/auth/logout" ||
+      req.path === "/api/auth/register" ||
+      req.path === "/api/auth/login" ||
+      req.path === "/api/auth/forgot-password" ||
+      req.path === "/api/auth/reset-password" ||
       req.path === "/api/stripe/webhook";
 
     if (!isUnsafeMethod || !hasSessionCookie || isCsrfExemptPath) {

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken } from "@/const";
+import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken, getStoredCsrfToken, getStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
@@ -20,6 +20,14 @@ async function performLogin(input: any) {
   const headers = new Headers({ "Content-Type": "application/json" });
   if (isMobileApp()) {
     headers.set("X-Sanctificare-Client", "native");
+  }
+  const csrfToken = getStoredCsrfToken();
+  if (csrfToken) {
+    headers.set("x-csrf-token", csrfToken);
+  }
+  const sessionToken = getStoredSessionToken();
+  if (sessionToken) {
+    headers.set("Authorization", `Bearer ${sessionToken}`);
   }
   const res = await fetch(`${base}/api/auth/login`, {
     method: "POST",
@@ -40,6 +48,14 @@ async function performRegister(input: any) {
   if (isMobileApp()) {
     headers.set("X-Sanctificare-Client", "native");
   }
+  const csrfToken = getStoredCsrfToken();
+  if (csrfToken) {
+    headers.set("x-csrf-token", csrfToken);
+  }
+  const sessionToken = getStoredSessionToken();
+  if (sessionToken) {
+    headers.set("Authorization", `Bearer ${sessionToken}`);
+  }
   const res = await fetch(`${base}/api/auth/register`, {
     method: "POST",
     headers,
@@ -55,9 +71,21 @@ async function performRegister(input: any) {
 
 async function performForgotPassword(input: any) {
   const base = getApiBaseUrl();
+  const headers = new Headers({ "Content-Type": "application/json" });
+  if (isMobileApp()) {
+    headers.set("X-Sanctificare-Client", "native");
+  }
+  const csrfToken = getStoredCsrfToken();
+  if (csrfToken) {
+    headers.set("x-csrf-token", csrfToken);
+  }
+  const sessionToken = getStoredSessionToken();
+  if (sessionToken) {
+    headers.set("Authorization", `Bearer ${sessionToken}`);
+  }
   const res = await fetch(`${base}/api/auth/forgot-password`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(input),
     credentials: "include",
   });
