@@ -56,6 +56,11 @@ import {
   toggleUserPremiumStatus,
   getAdminRegistrationGrowth,
   getDb,
+  getSpiritualJourneyProgress,
+  upsertSpiritualJourneyProgress,
+  getSpiritualJourneyJournal,
+  upsertSpiritualJourneyJournal,
+  deleteSpiritualJourneyJournal,
 } from "./db";
 import { subscriptions } from "../drizzle/schema";
 import { eq, and, isNotNull } from "drizzle-orm";
@@ -325,6 +330,72 @@ export const appRouter = router({
             message: getPublicTrpcErrorMessage(err, "Falha ao enviar notificações."),
           });
         }
+      }),
+  }),
+
+  journeys: router({
+    getProgress: protectedProcedure
+      .input(z.object({ journeyId: z.string() }))
+      .query(async ({ ctx, input }) => {
+        return getSpiritualJourneyProgress(ctx.user.id, input.journeyId);
+      }),
+
+    saveProgress: protectedProcedure
+      .input(
+        z.object({
+          journeyId: z.string(),
+          startedAt: z.string(),
+          expectedEndAt: z.string(),
+          lastAccessedDay: z.number().int().optional(),
+          completedDays: z.array(z.number().int()).optional(),
+          currentStreak: z.number().int().optional(),
+          chosenPenance: z.string().optional(),
+          reminderTime: z.string().optional(),
+          status: z.string().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return upsertSpiritualJourneyProgress(ctx.user.id, input.journeyId, {
+          startedAt: input.startedAt,
+          expectedEndAt: input.expectedEndAt,
+          lastAccessedDay: input.lastAccessedDay,
+          completedDays: input.completedDays,
+          currentStreak: input.currentStreak,
+          chosenPenance: input.chosenPenance,
+          reminderTime: input.reminderTime,
+          status: input.status,
+        });
+      }),
+
+    getJournal: protectedProcedure
+      .input(z.object({ journeyId: z.string(), dayNumber: z.number().int() }))
+      .query(async ({ ctx, input }) => {
+        return getSpiritualJourneyJournal(ctx.user.id, input.journeyId, input.dayNumber);
+      }),
+
+    saveJournal: protectedProcedure
+      .input(
+        z.object({
+          journeyId: z.string(),
+          dayNumber: z.number().int(),
+          content: z.string(),
+          isFavorite: z.boolean().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return upsertSpiritualJourneyJournal(
+          ctx.user.id,
+          input.journeyId,
+          input.dayNumber,
+          input.content,
+          input.isFavorite ?? false
+        );
+      }),
+
+    deleteJournal: protectedProcedure
+      .input(z.object({ journeyId: z.string(), dayNumber: z.number().int() }))
+      .mutation(async ({ ctx, input }) => {
+        return deleteSpiritualJourneyJournal(ctx.user.id, input.journeyId, input.dayNumber);
       }),
   }),
 

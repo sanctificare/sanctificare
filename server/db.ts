@@ -23,6 +23,10 @@ import {
   passwordResetTokens,
   pushDevices,
   userState,
+  spiritualJourneys,
+  spiritualJourneyDays,
+  spiritualJourneyProgress,
+  spiritualJourneyJournals,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -1974,3 +1978,144 @@ export async function getAdminRegistrationGrowth() {
 
   return result;
 }
+
+export async function getSpiritualJourneyProgress(userId: number, journeyId: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db
+    .select()
+    .from(spiritualJourneyProgress)
+    .where(and(eq(spiritualJourneyProgress.userId, userId), eq(spiritualJourneyProgress.journeyId, journeyId)))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function upsertSpiritualJourneyProgress(
+  userId: number,
+  journeyId: string,
+  data: {
+    startedAt: string;
+    expectedEndAt: string;
+    lastAccessedDay?: number;
+    completedDays?: number[];
+    currentStreak?: number;
+    chosenPenance?: string;
+    reminderTime?: string;
+    status?: string;
+  }
+) {
+  const db = await getDb();
+  if (!db) return null;
+  const existing = await getSpiritualJourneyProgress(userId, journeyId);
+  if (existing) {
+    const updated = await db
+      .update(spiritualJourneyProgress)
+      .set({
+        startedAt: data.startedAt,
+        expectedEndAt: data.expectedEndAt,
+        lastAccessedDay: data.lastAccessedDay ?? existing.lastAccessedDay,
+        completedDays: data.completedDays ?? existing.completedDays,
+        currentStreak: data.currentStreak ?? existing.currentStreak,
+        chosenPenance: data.chosenPenance !== undefined ? data.chosenPenance : existing.chosenPenance,
+        reminderTime: data.reminderTime !== undefined ? data.reminderTime : existing.reminderTime,
+        status: data.status ?? existing.status,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(spiritualJourneyProgress.userId, userId), eq(spiritualJourneyProgress.journeyId, journeyId)))
+      .returning();
+    return updated[0] ?? null;
+  } else {
+    const inserted = await db
+      .insert(spiritualJourneyProgress)
+      .values({
+        userId,
+        journeyId,
+        startedAt: data.startedAt,
+        expectedEndAt: data.expectedEndAt,
+        lastAccessedDay: data.lastAccessedDay ?? 1,
+        completedDays: data.completedDays ?? [],
+        currentStreak: data.currentStreak ?? 0,
+        chosenPenance: data.chosenPenance ?? null,
+        reminderTime: data.reminderTime ?? "20:00",
+        status: data.status ?? "active",
+      })
+      .returning();
+    return inserted[0] ?? null;
+  }
+}
+
+export async function getSpiritualJourneyJournal(userId: number, journeyId: string, dayNumber: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db
+    .select()
+    .from(spiritualJourneyJournals)
+    .where(
+      and(
+        eq(spiritualJourneyJournals.userId, userId),
+        eq(spiritualJourneyJournals.journeyId, journeyId),
+        eq(spiritualJourneyJournals.dayNumber, dayNumber)
+      )
+    )
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function upsertSpiritualJourneyJournal(
+  userId: number,
+  journeyId: string,
+  dayNumber: number,
+  content: string,
+  isFavorite: boolean = false
+) {
+  const db = await getDb();
+  if (!db) return null;
+  const existing = await getSpiritualJourneyJournal(userId, journeyId, dayNumber);
+  if (existing) {
+    const updated = await db
+      .update(spiritualJourneyJournals)
+      .set({
+        content,
+        isFavorite,
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(spiritualJourneyJournals.userId, userId),
+          eq(spiritualJourneyJournals.journeyId, journeyId),
+          eq(spiritualJourneyJournals.dayNumber, dayNumber)
+        )
+      )
+      .returning();
+    return updated[0] ?? null;
+  } else {
+    const inserted = await db
+      .insert(spiritualJourneyJournals)
+      .values({
+        userId,
+        journeyId,
+        dayNumber,
+        content,
+        isPrivate: true,
+        isFavorite,
+      })
+      .returning();
+    return inserted[0] ?? null;
+  }
+}
+
+export async function deleteSpiritualJourneyJournal(userId: number, journeyId: string, dayNumber: number) {
+  const db = await getDb();
+  if (!db) return false;
+  await db
+    .delete(spiritualJourneyJournals)
+    .where(
+      and(
+        eq(spiritualJourneyJournals.userId, userId),
+        eq(spiritualJourneyJournals.journeyId, journeyId),
+        eq(spiritualJourneyJournals.dayNumber, dayNumber)
+      )
+    );
+  return true;
+}
+
