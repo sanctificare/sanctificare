@@ -123,6 +123,20 @@ function getStepProgressRank(step: Step): number {
   return TOTAL_PROGRESS_UNITS;
 }
 
+const GUEST_ROSARY_PREVIEW_MAX_STEP: Step = { type: "ave_maria_initial", count: 3 };
+
+function getGuestPreviewLimitRank(): number {
+  return getStepProgressRank(GUEST_ROSARY_PREVIEW_MAX_STEP);
+}
+
+function isStepBeyondGuestPreview(step: Step): boolean {
+  return getStepProgressRank(step) > getGuestPreviewLimitRank();
+}
+
+function clampGuestPreviewStep(step: Step): Step {
+  return isStepBeyondGuestPreview(step) ? GUEST_ROSARY_PREVIEW_MAX_STEP : step;
+}
+
 export default function RosaryGuided() {
   const { isAuthenticated, loading } = useAuth();
   const [selectedKey, setSelectedKey] = useState<keyof typeof ROSARY_MYSTERIES>(getTodayMystery());
@@ -139,6 +153,9 @@ export default function RosaryGuided() {
   }, [selectedKey]);
 
   const mysteries = ROSARY_MYSTERIES[selectedKey];
+  const isGuestPreview = !isAuthenticated;
+  const guestPreviewLimitRank = getGuestPreviewLimitRank();
+  const isGuestPreviewLocked = isGuestPreview && getStepProgressRank(step) >= guestPreviewLimitRank;
 
   const getNextStep = (current: Step): Step => {
     if (current.type === "intro") return { type: "pai_nosso_initial" };
@@ -294,6 +311,12 @@ export default function RosaryGuided() {
 
   const handleAudioTrackEnd = () => {
     const nextStep = getNextStep(step);
+    if (isGuestPreview && isStepBeyondGuestPreview(nextStep)) {
+      setStep(GUEST_ROSARY_PREVIEW_MAX_STEP);
+      setAutoRosaryActive(false);
+      setShowAudio(false);
+      return;
+    }
     const nextTrackIndex = getAudioTrackIndexForStep(nextStep);
     // Batch both updates so AudioPlayer receives the new URL in a single render
     setStep(nextStep);
@@ -323,11 +346,12 @@ export default function RosaryGuided() {
   };
 
   const handleSelectStep = (nextStep: Step) => {
-    setStep(nextStep);
+    const allowedStep = isGuestPreview ? clampGuestPreviewStep(nextStep) : nextStep;
+    setStep(allowedStep);
 
     if (!showAudio) return;
 
-    const nextAudioTrack = getAudioTrackIndexForStep(nextStep);
+    const nextAudioTrack = getAudioTrackIndexForStep(allowedStep);
     if (nextAudioTrack >= 0) {
       setCurrentAudioTrack(nextAudioTrack);
       return;
@@ -611,7 +635,10 @@ export default function RosaryGuided() {
             <Button
               variant="default"
               className="flex-1 font-semibold text-xs xs:text-sm md:text-sm lg:text-sm xl:text-base h-11 xs:h-12 md:h-9 lg:h-10 xl:h-10 bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)]"
-              onClick={() => setStep((currentStep) => getNextStep(currentStep))}
+              onClick={() => setStep((currentStep) => {
+                const nextStep = getNextStep(currentStep);
+                return isGuestPreview ? clampGuestPreviewStep(nextStep) : nextStep;
+              })}
             >
               Próximo <ChevronRight size={14} className="ml-1" />
             </Button>
@@ -626,6 +653,34 @@ export default function RosaryGuided() {
             <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
           </div>
         )}
+
+        {isGuestPreview && (
+          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.75_0.12_75/0.24)] bg-[oklch(0.22_0.07_260/0.92)] p-4 md:p-5 lg:p-6 text-white shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 w-9 h-9 rounded-full bg-[oklch(0.75_0.12_75/0.16)] flex items-center justify-center shrink-0">
+                <span className="text-[oklch(0.82_0.10_80)] font-bold text-sm">+</span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] xs:text-xs font-semibold uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)] mb-1">
+                  Prévia pública
+                </p>
+                <h3 className="font-display text-lg md:text-xl font-bold mb-2">
+                  Continue o Rosário completo no app
+                </h3>
+                <p className="text-sm md:text-base text-[oklch(0.85_0.02_260)] leading-relaxed mb-4">
+                  Você já pode rezar a abertura do terço e as primeiras orações. Para seguir com os mistérios, entre na sua conta.
+                </p>
+                {isGuestPreviewLocked && (
+                  <a href={getLoginUrl()}>
+                    <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
+                      Entrar para rezar completo
+                    </Button>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     );
   };
@@ -634,19 +689,6 @@ export default function RosaryGuided() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para rezar o Santo Rosário no app.</p>
-          <a href={getLoginUrl()}><Button>Entrar</Button></a>
-        </div>
       </div>
     );
   }
