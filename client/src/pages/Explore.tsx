@@ -23,6 +23,7 @@ const exploreCards: ExploreCard[] = [
   { href: "/musica-sacra", label: "Música Sacra", desc: "Meditação e contemplação", image: "/assets/dashboard/musica-sacra.webp", overlay: "oklch(0.34 0.10 300 / 0.58)", category: "Práticas" },
   { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", desc: "Clássicos para a vida espiritual", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },
   { href: "/novenas", label: "Novenas", desc: "Jornadas de 9 dias de devoção", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.28 0.08 260 / 0.60)", category: "Devocional" },
+  { href: "/quaresma-sao-miguel", label: "Quaresma de São Miguel", desc: "40 dias de oração e combate espiritual", image: "/assets/dashboard/novenas.webp", overlay: "oklch(0.30 0.10 55 / 0.62)", category: "Devocional" },
   { href: "/videos", label: "Vídeos", desc: "Histórias e passagens com IA", image: "/assets/dashboard/videos.webp", overlay: "oklch(0.40 0.12 15 / 0.60)", category: "Estudo" },
   { href: "/liturgia", label: "Liturgia", desc: "Leituras e salmo do dia", image: "/assets/dashboard/liturgia.webp", overlay: "oklch(0.40 0.15 80 / 0.60)", category: "Estudo" },
   { href: "/biblia", label: "Bíblia Sagrada", desc: "Os 73 livros das Escrituras", image: "/assets/dashboard/biblia.webp", overlay: "oklch(0.35 0.10 40 / 0.60)", category: "Estudo" },

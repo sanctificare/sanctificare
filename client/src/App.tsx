@@ -71,6 +71,7 @@ const FiloteiaRetiro = lazyWithPreload(() => import("./pages/FiloteiaRetiro"));
 const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
 const ApoieMissao = lazyWithPreload(() => import("./pages/ApoieMissao"));
+const SaintMichaelLent = lazyWithPreload(() => import("./pages/SaintMichaelLent"));
 
 
 // Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
@@ -92,6 +93,7 @@ const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] 
   FiloteiaRetiro,
   Premium,
   PremiumSucesso,
+  SaintMichaelLent,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
@@ -177,6 +179,7 @@ function Router() {
         <Route path="/biblia" component={Bible} />
         <Route path="/novenas" component={Novenas} />
         <Route path="/novenas/:slug" component={NovenaDetails} />
+        <Route path="/quaresma-sao-miguel" component={SaintMichaelLent} />
         <Route path="/intencoes" component={ProtectedIntentionsRoute} />
         <Route path="/perfil" component={ProtectedProfileRoute} />
         <Route path="/profile" component={ProtectedProfileRoute} />

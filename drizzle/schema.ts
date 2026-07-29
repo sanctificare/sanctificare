@@ -259,6 +259,72 @@ export const lectioJournal = pgTable(
 export type LectioJournal = typeof lectioJournal.$inferSelect;
 export type InsertLectioJournal = typeof lectioJournal.$inferInsert;
 
+// Jornadas espirituais, independentes do catálogo de novenas.
+export const spiritualJourneys = pgTable("spiritual_journeys", {
+  id: varchar("id", { length: 80 }).primaryKey(),
+  title: varchar("title", { length: 180 }).notNull(),
+  description: text("description").notNull(),
+  image: text("image"),
+  totalDays: integer("totalDays").notNull(),
+  traditionalStartMonth: integer("traditionalStartMonth"),
+  traditionalStartDay: integer("traditionalStartDay"),
+  traditionalEndMonth: integer("traditionalEndMonth"),
+  traditionalEndDay: integer("traditionalEndDay"),
+  allowsCustomStart: boolean("allowsCustomStart").default(true).notNull(),
+  status: varchar("status", { length: 32 }).default("published").notNull(),
+  category: varchar("category", { length: 64 }).notNull(),
+  accessType: varchar("accessType", { length: 32 }).default("traditional-free").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export const spiritualJourneyDays = pgTable("spiritual_journey_days", {
+  id: serial("id").primaryKey(),
+  journeyId: varchar("journeyId", { length: 80 }).references(() => spiritualJourneys.id, { onDelete: "cascade" }).notNull(),
+  dayNumber: integer("dayNumber").notNull(),
+  title: varchar("title", { length: 180 }).notNull(),
+  theme: text("theme"),
+  traditionalContent: jsonb("traditionalContent").$type<Record<string, unknown>>(),
+  scripture: jsonb("scripture").$type<Record<string, string>>(),
+  meditation: text("meditation"),
+  audioUrl: text("audioUrl"),
+  virtue: varchar("virtue", { length: 120 }),
+  purpose: text("purpose"),
+  suggestedPenance: text("suggestedPenance"),
+  examination: jsonb("examination").$type<string[]>(),
+  saintQuote: text("saintQuote"),
+  complementaryPrayer: text("complementaryPrayer"),
+  freeContent: jsonb("freeContent").$type<Record<string, unknown>>(),
+  premiumContent: jsonb("premiumContent").$type<Record<string, unknown>>(),
+}, (table) => ({ journeyDayUnique: uniqueIndex("spiritual_journey_day_uq").on(table.journeyId, table.dayNumber) }));
+
+export const spiritualJourneyProgress = pgTable("spiritual_journey_progress", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  journeyId: varchar("journeyId", { length: 80 }).references(() => spiritualJourneys.id, { onDelete: "cascade" }).notNull(),
+  startedAt: varchar("startedAt", { length: 10 }).notNull(),
+  expectedEndAt: varchar("expectedEndAt", { length: 10 }).notNull(),
+  lastAccessedDay: integer("lastAccessedDay").default(1).notNull(),
+  completedDays: jsonb("completedDays").$type<number[]>().default([]).notNull(),
+  currentStreak: integer("currentStreak").default(0).notNull(),
+  chosenPenance: text("chosenPenance"),
+  reminderTime: varchar("reminderTime", { length: 5 }),
+  status: varchar("status", { length: 32 }).default("active").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+}, (table) => ({ userJourneyUnique: uniqueIndex("spiritual_journey_progress_user_uq").on(table.userId, table.journeyId) }));
+
+export const spiritualJourneyJournals = pgTable("spiritual_journey_journals", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  journeyId: varchar("journeyId", { length: 80 }).references(() => spiritualJourneys.id, { onDelete: "cascade" }).notNull(),
+  dayNumber: integer("dayNumber").notNull(),
+  content: text("content").notNull(),
+  isPrivate: boolean("isPrivate").default(true).notNull(),
+  isFavorite: boolean("isFavorite").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+}, (table) => ({ userJourneyDayUnique: uniqueIndex("spiritual_journey_journal_user_day_uq").on(table.userId, table.journeyId, table.dayNumber) }));
+
 export const candleTypeEnum = pgEnum("candle_type", ["intencao", "defuntos", "agradecimento", "adoracao"]);
 
 export const virtualCandles = pgTable(

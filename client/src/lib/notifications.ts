@@ -9,6 +9,7 @@ const DAILY_REMINDER_ID = 1001;
 const ANGELUS_12_ID = 1002;
 const ANGELUS_18_ID = 1003;
 const NOVENA_REMINDER_ID = 1004;
+const SAINT_MICHAEL_LENT_REMINDER_ID = 1005;
 
 function parseTime(time: string): { hour: number; minute: number } {
   const [hoursStr, minutesStr] = (time || "18:00").split(":");
@@ -186,6 +187,28 @@ export async function cancelNovenaReminder(): Promise<void> {
     });
   } catch (err) {
     console.warn("[notifications] cancelNovena error:", err);
+  }
+}
+
+/** Schedules the daily reminder for the Quaresma de São Miguel Arcanjo. */
+export async function scheduleSaintMichaelLentReminder(time: string): Promise<void> {
+  if (!isMobileApp()) return;
+  const { hour, minute } = parseTime(time);
+  try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
+    await ensureAndroidNotificationChannel();
+    await LocalNotifications.cancel({ notifications: [{ id: SAINT_MICHAEL_LENT_REMINDER_ID }] });
+    await LocalNotifications.schedule({
+      notifications: [{
+        id: SAINT_MICHAEL_LENT_REMINDER_ID,
+        title: "Quaresma de São Miguel - Sanctificare",
+        body: "Reserve este momento para sua oração e caminhada com São Miguel Arcanjo.",
+        ...ANDROID_LOCAL_NOTIFICATION_OPTIONS,
+        schedule: { on: { hour, minute }, allowWhileIdle: true, repeats: true },
+      }],
+    });
+  } catch (err) {
+    console.warn("[notifications] scheduleSaintMichaelLent error:", err);
   }
 }
 
