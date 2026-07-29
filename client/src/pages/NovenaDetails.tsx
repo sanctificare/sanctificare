@@ -13,6 +13,7 @@ import { Heart } from "@/components/HeartIcon";
 import { toast } from "sonner";
 import { getNovenaArt } from "@/lib/cardArt";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
+import PublicNovenaDetails from "@/components/PublicNovenaDetails";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const PROGRESS_KEY = "sanctificare.novenas.progress.v1";
@@ -199,7 +200,7 @@ export default function NovenaDetails() {
   // Resolve audio URL
   useEffect(() => {
     let active = true;
-    if (currentDayContent?.audioUrl && !isLocked) {
+    if (isAuthenticated && currentDayContent?.audioUrl && !isLocked) {
       resolveR2Redirect(currentDayContent.audioUrl).then((url) => {
         if (active) setPlayingUrl(url);
       });
@@ -212,7 +213,7 @@ export default function NovenaDetails() {
     return () => {
       active = false;
     };
-  }, [currentDayContent?.audioUrl, isLocked]);
+  }, [currentDayContent?.audioUrl, isAuthenticated, isLocked]);
 
   // Audio event listeners
   useEffect(() => {
@@ -433,23 +434,14 @@ export default function NovenaDetails() {
     return splitCommonPrayers(currentDayContent.prayer);
   }, [currentDayContent, selectedNovena?.id]);
 
+  if (!isAuthenticated && selectedNovena) {
+    return <PublicNovenaDetails novena={selectedNovena} path={getNovenaPath(selectedNovena)} />;
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para acompanhar esta novena e seus dias de oração.</p>
-          <a href={getLoginUrl()}><Button>Entrar</Button></a>
-        </div>
       </div>
     );
   }

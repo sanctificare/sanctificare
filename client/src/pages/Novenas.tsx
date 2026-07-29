@@ -1,14 +1,12 @@
 import { useState, useMemo } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { applyImageFallback, getLoginUrl } from "@/const";
+import { applyImageFallback } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { NOVENAS, getNovenaPath } from "@/data/novenas";
 import { Link } from "wouter";
 import { getNovenaArt } from "@/lib/cardArt";
 import { NOVENA_PROGRESS_STORAGE_KEY, ProgressMap, buildNovenasInProgressItems, parseNovenaProgress } from "@/lib/novenaProgress";
-
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
 function readProgress(): ProgressMap {
   if (typeof window === "undefined") return {};
@@ -74,7 +72,7 @@ export default function Novenas() {
   const faithNovenas = NOVENAS;
 
   const renderNovenaCard = (novena: typeof NOVENAS[number]) => {
-    const done = progress[novena.id]?.length ?? 0;
+    const done = isAuthenticated ? progress[novena.id]?.length ?? 0 : 0;
     const total = novena.days.length;
     const isComplete = done >= total && done > 0;
     const art = getNovenaArt(novena.id);
@@ -114,27 +112,6 @@ export default function Novenas() {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para percorrer as novenas e seus dias de oração.</p>
-          <a href={getLoginUrl()}><Button>Entrar</Button></a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
@@ -150,7 +127,7 @@ export default function Novenas() {
         </div>
 
         {/* Jornada de oracao */}
-        {stats.totalDays > 0 && (
+        {isAuthenticated && stats.totalDays > 0 && (
           <div className="mb-8 animate-fade-in rounded-2xl border border-[oklch(0.72_0.10_75/0.30)] bg-gradient-to-r from-[oklch(0.97_0.02_82)] to-white dark:from-stone-900 dark:to-stone-950 p-5 shadow-sm">
             <h2 className="text-xs font-bold uppercase tracking-widest text-[oklch(0.55_0.06_260)] mb-4">
               📿 Sua jornada de oração
@@ -178,7 +155,7 @@ export default function Novenas() {
         )}
 
         {/* Novenas em Andamento */}
-        {activeNovenas.length > 0 && (
+        {isAuthenticated && activeNovenas.length > 0 && (
           <div className="mb-10 animate-fade-in">
             <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
