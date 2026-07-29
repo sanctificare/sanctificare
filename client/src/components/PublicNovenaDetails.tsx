@@ -2,7 +2,7 @@ import { getLoginUrl } from "@/const";
 import { getNovenaArt } from "@/lib/cardArt";
 import { openRouteInApp } from "@/lib/deepLink";
 import type { Novena } from "@/data/novenas";
-import { Check, ChevronRight, Lock, Play } from "lucide-react";
+import { Check, ChevronRight, Play } from "lucide-react";
 
 type PublicNovenaDetailsProps = {
   novena: Novena;
@@ -32,14 +32,8 @@ export default function PublicNovenaDetails({ novena, path }: PublicNovenaDetail
             className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-black px-5 text-base font-bold text-white transition-colors hover:bg-black/80"
           >
             <Play className="h-4 w-4 fill-current" />
-            Iniciar no app
+            Iniciar novena
           </button>
-          <a
-            href={getLoginUrl(path)}
-            className="mt-3 flex h-11 w-full items-center justify-center rounded-full border border-black/15 text-sm font-semibold text-black transition-colors hover:bg-black/5"
-          >
-            Entrar para acompanhar
-          </a>
           <p className="mt-4 text-center text-xs text-muted-foreground">Acompanhe os nove dias e salve seu progresso no app.</p>
         </section>
 
@@ -64,12 +58,16 @@ export default function PublicNovenaDetails({ novena, path }: PublicNovenaDetail
                     <p className="mt-1 text-xs">Dia {day.day} · {day.duration ?? "oração guiada"}</p>
                   </div>
                   {isPreview ? (
-                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white" aria-label="Prévia disponível no app">
+                    <a
+                      href={getLoginUrl(path)}
+                      className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black text-white transition-transform hover:scale-105"
+                      aria-label="Entrar para iniciar a novena"
+                    >
                       <Play className="h-3.5 w-3.5 fill-current" />
-                    </span>
+                    </a>
                   ) : (
-                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center" aria-label="Disponível no app">
-                      <Lock className="h-4 w-4" />
+                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black/15 text-white" aria-label="Sessão desativada">
+                      <Play className="h-3.5 w-3.5 fill-current" />
                     </span>
                   )}
                 </li>
