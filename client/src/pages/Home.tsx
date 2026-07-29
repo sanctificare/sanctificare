@@ -2,25 +2,23 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, isMobileApp } from "@/const";
 import { Button } from "@/components/ui/button";
 import LoadingOverlay from "@/components/ui/LoadingOverlay";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { BookOpen, Users, Crown, Star,
   ChevronRight, Shield,
-  Calendar, ArrowRight, Compass, Check,
-  Volume2, MessageSquare, Search, Lock,
+  ArrowRight, Compass, Check,
+  MessageSquare, Lock,
   ChevronDown, ChevronUp, Play, Pause
 } from "lucide-react";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
 import { RosaryIcon } from "@/components/RosaryIcon";
-import { Heart } from "@/components/HeartIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
 
 const HERO_IMG = "/assets/sanctificare-hero.webp";
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
-const ROSARY_IMG = "/assets/sanctificare-rosary.webp";
 
 const features = [
   {
@@ -66,60 +64,6 @@ const features = [
     bg: "bg-[oklch(0.40_0.12_150/0.08)]",
   },
 ];
-
-const plans = [
-  {
-    name: "Gratuito",
-    price: "R$ 0",
-    period: "para sempre",
-    features: [
-      "Orações básicas (Pai Nosso, Ave Maria, Glória)",
-      "Liturgia do Dia completa",
-      "Bíblia Sagrada completa (73 livros)",
-      "Mural de intenções da comunidade",
-      "Histórico de orações (últimos 7 dias)",
-    ],
-    cta: "Começar Gratuitamente",
-    highlight: false,
-    badge: "Acesso Completo",
-    url: "/login?tab=cadastrar",
-  },
-  {
-    name: "Premium Mensal",
-    price: "R$ 14,90",
-    period: "por mês",
-    features: [
-      "Tudo do caminho gratuito",
-      "Rosário e Terço guiados por áudio",
-      "Novenas e Meditações exclusivas",
-      "Histórico espiritual ilimitado",
-      "Sem anúncios ou interrupções",
-      "Suporte prioritário",
-    ],
-    cta: "Experimentar 14 Dias Grátis",
-    highlight: false,
-    url: "/login?tab=cadastrar&plan=monthly",
-  },
-  {
-    name: "Premium Anual",
-    price: "R$ 10,75",
-    period: "por mês*",
-    badge: "Economize 27%",
-    note: "*Cobrado anualmente (R$ 129,00/ano)",
-    features: [
-      "Tudo do acesso mensal",
-      "Equivalente a 3 meses sem custo adicional",
-      "Acesso antecipado a novos áudios",
-      "Meditações exclusivas para tempos fortes (Quaresma/Advento)",
-      "Histórico espiritual completo vitalício",
-    ],
-    cta: "Escolher Plano Anual",
-    highlight: true,
-    url: "/login?tab=cadastrar&plan=annual",
-  },
-];
-
-
 
 const paths = [
   {
@@ -180,59 +124,6 @@ const faqs = [
 ];
 
 // Utilizando as listas centralizadas dailyRoutine e trendingPrayers do prayersCatalog
-
-function AnimatedCounter({ value, duration = 2000, suffix = "" }: { value: number; duration?: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const elementRef = useRef<HTMLSpanElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) observer.unobserve(elementRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let start = 0;
-    const end = value;
-    const totalSteps = 50;
-    const stepTime = duration / totalSteps;
-    const increment = end / totalSteps;
-
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, stepTime);
-
-    return () => clearInterval(timer);
-  }, [isVisible, value, duration]);
-
-  return (
-    <span ref={elementRef} className="stat-counter font-display font-bold">
-      {count.toLocaleString()}{suffix}
-    </span>
-  );
-}
 
 export default function Home() {
   const { isAuthenticated, loading } = useAuth();
@@ -334,14 +225,11 @@ export default function Home() {
             </div>
             
             <div className="flex items-center justify-end gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
-              <a href="#recursos" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
-                Recursos
+              <a href="#explorar-oracoes" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
+                Orações
               </a>
-              <a href="#como-funciona" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
-                Como Funciona
-              </a>
-              <a href="#planos" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
-                Planos
+              <a href="#perguntas" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
+                Perguntas
               </a>
               <Link href="/login?tab=entrar" className="text-xs sm:text-sm font-semibold text-[oklch(0.80_0.02_260)] hover:text-white transition-colors whitespace-nowrap">
                 Entrar
@@ -689,467 +577,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How It Works (Como Funciona) */}
-      <section id="como-funciona" className="py-24 bg-[oklch(0.15_0.04_260)] text-white relative border-t border-[oklch(0.75_0.12_75/0.15)]">
-        <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
-        <div className="container relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16 reveal">
-            <div className="divider-gold mb-6">
-              <span className="font-display text-xs tracking-widest text-[oklch(0.82_0.10_80)] uppercase font-bold px-4">
-                Simplicidade
-              </span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
-              Sua Jornada em 3 Passos Simples
-            </h2>
-            <p className="font-serif text-lg text-[oklch(0.80_0.02_260)]">
-              Desenhado para ser livre de distrações, ajudando você a focar inteiramente no essencial: sua oração e relacionamento com Deus.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto relative">
-            
-            {/* Step 1 */}
-            <div className="relative flex flex-col items-center text-center px-4 reveal [animation-delay:0.1s]">
-              {/* Connector line for desktop */}
-              <div className="hidden md:block step-connector" />
-              <div className="step-number bg-[oklch(0.22_0.07_260)] text-[oklch(0.82_0.10_80)] border border-[oklch(0.75_0.12_75/0.4)] shadow-gold mb-6">
-                I
-              </div>
-              <h3 className="font-display text-lg font-bold text-[oklch(0.88_0.08_80)] mb-3">
-                Crie Sua Conta Gratuita
-              </h3>
-              <p className="text-sm text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Entre instantaneamente sem precisar de cartão ou dados financeiros. Acesso imediato às ferramentas de oração.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="relative flex flex-col items-center text-center px-4 reveal [animation-delay:0.2s]">
-              {/* Connector line for desktop */}
-              <div className="hidden md:block step-connector" />
-              <div className="step-number bg-[oklch(0.22_0.07_260)] text-[oklch(0.82_0.10_80)] border border-[oklch(0.75_0.12_75/0.4)] shadow-gold mb-6">
-                II
-              </div>
-              <h3 className="font-display text-lg font-bold text-[oklch(0.88_0.08_80)] mb-3">
-                Escolha Sua Prática do Dia
-              </h3>
-              <p className="text-sm text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Reze o Rosário interativo, acompanhe as leituras da Liturgia do Dia ou medite nos Salmos e Escrituras.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="relative flex flex-col items-center text-center px-4 reveal [animation-delay:0.3s]">
-              <div className="step-number bg-[oklch(0.22_0.07_260)] text-[oklch(0.82_0.10_80)] border border-[oklch(0.75_0.12_75/0.4)] shadow-gold mb-6">
-                III
-              </div>
-              <h3 className="font-display text-lg font-bold text-[oklch(0.88_0.08_80)] mb-3">
-                Crie Constância Espiritual
-              </h3>
-              <p className="text-sm text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Registre suas orações diárias automaticamente, construindo um hábito de oração e recolhimento sustentável.
-              </p>
-            </div>
-
-          </div>
-
-          <div className="text-center mt-12 reveal">
-            <Link href={getLoginUrl()}>
-              <Button
-                size="lg"
-                className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] hover:scale-[1.03] transition-all px-8 py-6 rounded-xl font-bold font-display tracking-wide shadow-gold"
-              >
-                Começar Minha Devoção Agora
-              </Button>
-            </Link>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Showcases of functionalities (Alternating Sections) */}
-      <section id="recursos" className="py-24 bg-[oklch(0.18_0.05_260)] text-white relative overflow-hidden border-t border-[oklch(0.75_0.12_75/0.2)]">
-        <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
-        <div className="container space-y-32 relative z-10">
-
-          {/* Showcase 1: Rosário */}
-          <div className="showcase-row items-center">
-            <div className="reveal-left space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 bg-[oklch(0.55_0.14_15/0.2)] border border-[oklch(0.55_0.14_15/0.4)] rounded-lg px-3 py-1 text-[oklch(0.85_0.14_15)] text-xs font-bold uppercase tracking-wider">
-                Rosário Interativo
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Silencie Sua Mente e Reze o Santo Rosário
-              </h2>
-              <p className="font-serif text-lg text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Desenvolvemos uma experiência de terço digital interativo que favorece a concentração e o recolhimento profundo. Acompanhe meditações contemplativas e teológicas para cada mistério de forma fluida.
-              </p>
-              <ul className="space-y-3 pt-2">
-                {["Mistérios Gozosos, Dolorosos, Gloriosos e Luminosos", "Contador de Ave-Marias vibratório e visual de fácil uso", "Textos completos baseados nas Sagradas Escrituras", "Disponível a qualquer momento do dia para sua devoção"].map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[oklch(0.85_0.02_260)]">
-                    <Check size={16} className="text-[oklch(0.75_0.12_75)] flex-shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <a href="/login?tab=cadastrar" className="inline-flex items-center text-sm font-bold text-[oklch(0.82_0.10_80)] hover:text-white group">
-                  Experimentar Santo Rosário Grátis
-                  <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </div>
-            
-            <div className="reveal-right flex justify-center">
-              <div className="relative w-full max-w-md">
-                <div className="absolute inset-0 bg-[oklch(0.75_0.12_75/0.2)] rounded-2xl blur-xl scale-95" />
-                <img
-                  src={ROSARY_IMG}
-                  alt="Santo Rosário Guiado"
-                  className="relative rounded-2xl shadow-2xl border border-[oklch(0.75_0.12_75/0.3)] w-full object-cover aspect-video hover:scale-[1.02] transition-transform duration-300"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Showcase 2: Liturgia */}
-          <div className="showcase-row showcase-row--reverse items-center">
-            <div className="reveal-left flex justify-center">
-              {/* Mockup screen structure */}
-              <div className="relative w-full max-w-sm bg-[oklch(0.22_0.07_260)] border border-[oklch(0.75_0.12_75/0.25)] rounded-2xl shadow-2xl p-5 text-left text-white">
-                <div className="flex justify-between items-center border-b border-[oklch(0.75_0.12_75/0.15)] pb-3 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-[oklch(0.75_0.12_75)]" />
-                    <span className="font-display text-xs font-bold uppercase text-[oklch(0.82_0.10_80)]">Liturgia Diária</span>
-                  </div>
-                  <span className="text-[10px] text-neutral-300 bg-[oklch(0.75_0.12_75/0.15)] rounded-full px-2.5 py-0.5">Hoje</span>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-[10px] text-[oklch(0.75_0.12_75)] font-bold uppercase tracking-wider">Primeira Leitura</span>
-                    <h4 className="text-xs font-bold text-white mt-0.5">Atos dos Apóstolos (At 12, 1-11)</h4>
-                  </div>
-
-                  <div className="border-l-2 border-[oklch(0.75_0.12_75)] pl-3">
-                    <span className="text-[10px] text-[oklch(0.75_0.12_75)] font-bold uppercase tracking-wider">Evangelho do Dia</span>
-                    <h4 className="text-xs font-bold text-white mt-0.5">Segundo São Mateus (Mt 16, 13-19)</h4>
-                    <p className="text-[11px] text-[oklch(0.80_0.02_260)] font-serif italic mt-1.5 leading-relaxed">
-                      "Tu és o Cristo, o Filho do Deus vivo. E Jesus lhe disse: Bem-aventurado és tu, Simão Barjonas..."
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between bg-[oklch(0.15_0.04_260)] border border-[oklch(0.75_0.12_75/0.15)] rounded-xl p-2.5 shadow-sm">
-                    <div className="flex items-center gap-2">
-                      <Volume2 size={14} className="text-[oklch(0.75_0.12_75)]" />
-                      <span className="text-[10px] font-semibold text-neutral-200">Reflexão em Áudio</span>
-                    </div>
-                    <span className="text-[9px] bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.82_0.10_80)] font-bold px-2 py-0.5 rounded">4 min</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="reveal-right space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 bg-[oklch(0.65_0.14_70/0.2)] border border-[oklch(0.65_0.14_70/0.4)] rounded-lg px-3 py-1 text-[oklch(0.85_0.14_70)] text-xs font-bold uppercase tracking-wider">
-                Liturgia do Dia
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Edifique Sua Rotina com a Liturgia do Dia
-              </h2>
-              <p className="font-serif text-lg text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Acompanhe as leituras litúrgicas oficiais da Igreja em união com a liturgia universal. Tenha acesso à primeira leitura, salmo, Evangelho do dia e reflexões espirituais escritas para nutrir sua alma todos os dias.
-              </p>
-              <ul className="space-y-3 pt-2">
-                {["Calendário litúrgico oficial da Igreja Católica", "Reflexões espirituais exclusivas para meditar o Evangelho", "Leitura focada e sóbria que favorece o recolhimento", "Acesso diário 100% gratuito"].map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[oklch(0.85_0.02_260)]">
-                    <Check size={16} className="text-[oklch(0.75_0.12_75)] flex-shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <a href="/login?tab=cadastrar" className="inline-flex items-center text-sm font-bold text-[oklch(0.82_0.10_80)] hover:text-white group">
-                  Acessar Liturgia Diária Grátis
-                  <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Showcase 3: Bíblia */}
-          <div className="showcase-row items-center">
-            <div className="reveal-left space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 bg-[oklch(0.40_0.10_260/0.2)] border border-[oklch(0.75_0.12_75/0.3)] rounded-lg px-3 py-1 text-[oklch(0.82_0.10_80)] text-xs font-bold uppercase tracking-wider">
-                Bíblia Sagrada
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Sua Leitura Bíblica Sem Distrações ou Anúncios
-              </h2>
-              <p className="font-serif text-lg text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Explore todos os 73 livros das Sagradas Escrituras Católicas em uma interface perfeitamente limpa e minimalista. Encontre versículos e capítulos instantaneamente com nossa ferramenta de busca rápida.
-              </p>
-              <ul className="space-y-3 pt-2">
-                {["Traduzido conforme os textos litúrgicos oficiais", "Busca rápida e integrada de termos e passagens", "Tipografia e design pensados para leitura noturna confortável", "Inclui todos os livros deuterocanônicos"].map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[oklch(0.85_0.02_260)]">
-                    <Check size={16} className="text-[oklch(0.75_0.12_75)] flex-shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <a href="/login?tab=cadastrar" className="inline-flex items-center text-sm font-bold text-[oklch(0.82_0.10_80)] hover:text-white group">
-                  Abrir a Bíblia Sagrada Grátis
-                  <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </div>
-
-            <div className="reveal-right flex justify-center">
-              <div className="relative w-full max-w-sm bg-[oklch(0.22_0.07_260)] border border-[oklch(0.75_0.12_75/0.25)] rounded-2xl shadow-2xl p-5 text-left text-white">
-                <div className="flex justify-between items-center pb-3 border-b border-[oklch(0.75_0.12_75/0.15)] mb-4">
-                  <div className="flex items-center gap-1 bg-[oklch(0.75_0.12_75/0.15)] rounded-md px-2 py-1">
-                    <span className="text-[10px] font-bold text-[oklch(0.82_0.10_80)]">Salmos 23</span>
-                  </div>
-                  <div className="relative flex-1 max-w-[150px] ml-4">
-                    <Search size={10} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400" />
-                    <input 
-                      type="text" 
-                      placeholder="Buscar..." 
-                      disabled 
-                      className="w-full text-[9px] bg-[oklch(0.15_0.04_260)] border border-[oklch(0.75_0.12_75/0.15)] rounded-md pl-6 pr-2 py-1 text-neutral-400" 
-                    />
-                  </div>
-                </div>
-
-                <div className="font-serif text-xs leading-relaxed text-[oklch(0.85_0.02_260)] max-h-[160px] overflow-y-hidden space-y-3">
-                  <p>
-                    <span className="font-sans text-[8px] font-bold text-[oklch(0.75_0.12_75)] mr-1">1</span>
-                    O Senhor é o meu pastor, nada me faltará.
-                  </p>
-                  <p>
-                    <span className="font-sans text-[8px] font-bold text-[oklch(0.75_0.12_75)] mr-1">2</span>
-                    Deitar-me faz em verdes pastos, guia-me mansamente a águas tranquilas.
-                  </p>
-                  <p>
-                    <span className="font-sans text-[8px] font-bold text-[oklch(0.75_0.12_75)] mr-1">3</span>
-                    Refrigera a minha alma; guia-me pelas veredas da justiça, por amor do seu nome.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Showcase 4: Mural de Intenções */}
-          <div className="showcase-row showcase-row--reverse items-center">
-            <div className="reveal-left flex justify-center">
-              <div className="relative w-full max-w-sm space-y-3">
-                
-                {/* Mock Intentions Cards */}
-                <div className="bg-[oklch(0.22_0.07_260)] border border-[oklch(0.75_0.12_75/0.25)] rounded-xl p-4 text-left shadow-2xl text-white">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Antônio R.</span>
-                    <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full px-2 py-0.5 font-bold">Urgente</span>
-                  </div>
-                  <p className="text-xs text-[oklch(0.88_0.02_260)] font-serif leading-relaxed">
-                    "Peço orações pela cirurgia de coração do meu pai, Sr. Antônio. Que Deus guie as mãos dos médicos."
-                  </p>
-                  <div className="flex justify-between items-center mt-3 pt-3 border-t border-[oklch(0.75_0.12_75/0.15)]">
-                    <div className="flex items-center gap-1 text-[10px] text-[oklch(0.80_0.02_260)] font-bold">
-                      <Heart size={12} className="fill-[oklch(0.75_0.12_75)] text-[oklch(0.75_0.12_75)]" />
-                      <span>28 pessoas rezando</span>
-                    </div>
-                    <span className="text-[9px] bg-[oklch(0.75_0.12_75)] text-[oklch(0.15_0.02_260)] font-bold px-2.5 py-1 rounded-md">Rezar Junto</span>
-                  </div>
-                </div>
-
-                <div className="bg-[oklch(0.22_0.07_260/0.7)] border border-[oklch(0.75_0.12_75/0.15)] rounded-xl p-4 text-left shadow-xl text-white opacity-90">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] text-neutral-400 font-bold">Juliana M.</span>
-                  </div>
-                  <p className="text-xs text-[oklch(0.80_0.02_260)] font-serif leading-relaxed">
-                    "Agradeço pela graça alcançada da aprovação no concurso. Deus seja louvado!"
-                  </p>
-                  <div className="flex justify-between items-center mt-3 pt-3 border-t border-[oklch(0.75_0.12_75/0.1)]">
-                    <div className="flex items-center gap-1 text-[10px] text-neutral-400">
-                      <Heart size={12} className="fill-neutral-500 text-neutral-500" />
-                      <span>42 pessoas rezando</span>
-                    </div>
-                    <span className="text-[9px] bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.82_0.10_80)] font-bold px-2.5 py-1 rounded-md">Rezar Junto</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div className="reveal-right space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 bg-[oklch(0.45_0.12_200/0.2)] border border-[oklch(0.45_0.12_200/0.4)] rounded-lg px-3 py-1 text-[oklch(0.70_0.14_200)] text-xs font-bold uppercase tracking-wider">
-                Mural de Intenções
-              </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Nunca Reze Sozinho: Intercessão e Comunidade
-              </h2>
-              <p className="font-serif text-lg text-[oklch(0.80_0.02_260)] leading-relaxed">
-                Apresente suas dores, preces e agradecimentos ao Senhor no mural de intenções. Reze pelas necessidades dos seus irmãos e sinta o consolo espiritual de saber que existem pessoas orando por você em tempo real.
-              </p>
-              <ul className="space-y-3 pt-2">
-                {["Publique intenções de forma pública ou anônima", "Acompanhe o contador de fiéis intercedendo por você", "Seja notificado quando um irmão rezar pela sua causa", "Crie correntes de novenas comunitárias focadas"].map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[oklch(0.85_0.02_260)]">
-                    <Check size={16} className="text-[oklch(0.75_0.12_75)] flex-shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <a href="/login?tab=cadastrar" className="inline-flex items-center text-sm font-bold text-[oklch(0.82_0.10_80)] hover:text-white group">
-                  Pedir Oração à Comunidade
-                  <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* Counters / Stats Section (Full Width Dark Navy) */}
-      <section className="py-20 bg-[oklch(0.22_0.07_260)] border-y border-[oklch(0.75_0.12_75/0.25)] relative overflow-hidden text-white">
-        <div className="absolute inset-0 bg-pattern-cross opacity-10" />
-        
-        <div className="container relative">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center">
-            
-            <div className="reveal">
-              <div className="flex justify-center items-baseline">
-                <AnimatedCounter value={50} suffix="+" />
-              </div>
-              <p className="text-xs md:text-sm text-[oklch(0.80_0.02_260)] font-display uppercase tracking-wider font-semibold mt-2">
-                Orações Guiadas
-              </p>
-            </div>
-
-            <div className="reveal [animation-delay:0.1s]">
-              <div className="flex justify-center items-baseline">
-                <AnimatedCounter value={73} />
-              </div>
-              <p className="text-xs md:text-sm text-[oklch(0.80_0.02_260)] font-display uppercase tracking-wider font-semibold mt-2">
-                Livros Bíblicos
-              </p>
-            </div>
-
-            <div className="reveal [animation-delay:0.2s]">
-              <div className="flex justify-center items-baseline">
-                <AnimatedCounter value={10} suffix="k+" />
-              </div>
-              <p className="text-xs md:text-sm text-[oklch(0.80_0.02_260)] font-display uppercase tracking-wider font-semibold mt-2">
-                Intenções Partilhadas
-              </p>
-            </div>
-
-            <div className="reveal [animation-delay:0.3s]">
-              <div className="flex justify-center items-baseline">
-                <AnimatedCounter value={365} />
-              </div>
-              <p className="text-xs md:text-sm text-[oklch(0.80_0.02_260)] font-display uppercase tracking-wider font-semibold mt-2">
-                Liturgias Diárias
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-
-
-
-
-      {/* Planos Section */}
-      <section id="planos" className="py-24 bg-[oklch(0.15_0.04_260)] text-white relative border-t border-[oklch(0.75_0.12_75/0.2)]">
-        <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
-        <div className="container relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16 reveal">
-            <div className="divider-gold mb-6">
-              <span className="font-display text-xs tracking-widest text-[oklch(0.82_0.10_80)] uppercase font-bold px-4">
-                Devoção
-              </span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
-              Escolha Sua Caminhada
-            </h2>
-            <p className="font-serif text-lg text-[oklch(0.80_0.02_260)]">
-              Acesso gratuito completo para sempre. Caso sinta o chamado para se aprofundar na fé, assine o plano Premium.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
-            {plans.map((plan, idx) => (
-              <div
-                key={plan.name}
-                className={`relative rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between reveal ${
-                  plan.highlight
-                    ? "bg-gradient-to-b from-[oklch(0.25_0.08_260)] via-[oklch(0.22_0.07_260)] to-[oklch(0.18_0.05_260)] border-2 border-[oklch(0.75_0.12_75)] shadow-gold md:scale-105 z-10 text-white"
-                    : "bg-[oklch(0.22_0.07_260/0.8)] backdrop-blur-md border-[oklch(0.75_0.12_75/0.25)] hover:border-[oklch(0.75_0.12_75/0.5)] hover:shadow-xl text-white"
-                }`}
-                style={{ animationDelay: `${idx * 0.1}s` }}
-              >
-                {plan.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="badge-premium shadow-md">{plan.badge}</span>
-                  </div>
-                )}
-
-                <div>
-                  <div className="mb-6">
-                    <h3 className={`font-display text-lg font-bold mb-2 ${plan.highlight ? "text-[oklch(0.88_0.08_80)]" : "text-white"}`}>
-                      {plan.name}
-                    </h3>
-                    <div className="flex items-baseline gap-1">
-                      <span className="font-display text-4xl font-bold text-white">
-                        {plan.price}
-                      </span>
-                      <span className="text-sm text-[oklch(0.80_0.02_260)]">
-                        /{plan.period}
-                      </span>
-                    </div>
-                    {plan.note && (
-                      <p className="text-[10px] text-neutral-400 mt-1 italic">{plan.note}</p>
-                    )}
-                  </div>
-
-                  <ul className="space-y-4 mb-8">
-                    {plan.features.map((f) => (
-                      <li key={f} className="flex items-start gap-3 text-left">
-                        <div className="w-5 h-5 rounded-full bg-[oklch(0.75_0.12_75/0.2)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check size={12} className="text-[oklch(0.75_0.12_75)]" />
-                        </div>
-                        <span className="text-sm text-[oklch(0.85_0.02_260)]">
-                          {f}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <a href={plan.url} className="mt-auto block w-full">
-                  <Button
-                    className={`w-full py-6 font-bold font-display rounded-xl text-sm transition-transform hover:scale-[1.02] ${
-                      plan.highlight
-                        ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] shadow-gold"
-                        : "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] shadow-md"
-                    }`}
-                  >
-                    {plan.cta}
-                  </Button>
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
-      <section className="py-24 bg-[oklch(0.12_0.03_260)] text-white relative border-t border-[oklch(0.75_0.12_75/0.2)]">
+      <section id="perguntas" className="py-24 bg-[oklch(0.12_0.03_260)] text-white relative border-t border-[oklch(0.75_0.12_75/0.2)]">
         <div className="absolute inset-0 bg-pattern-cross opacity-10 pointer-events-none" />
         <div className="container relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -1253,9 +682,8 @@ export default function Home() {
             </div>
 
             <div className="md:col-span-4 flex justify-center md:justify-end gap-6 text-sm">
-              <a href="#recursos" className="hover:text-white transition-colors">Recursos</a>
-              <a href="#como-funciona" className="hover:text-white transition-colors">Como funciona</a>
-              <a href="#planos" className="hover:text-white transition-colors">Planos</a>
+              <a href="#explorar-oracoes" className="hover:text-white transition-colors">Orações</a>
+              <a href="#perguntas" className="hover:text-white transition-colors">Perguntas</a>
             </div>
 
           </div>
