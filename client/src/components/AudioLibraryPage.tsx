@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { applyImageFallback, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { Headphones, Clock, Play, Lock, Crown, type LucideIcon } from "lucide-react";
+import { Headphones, Clock, Play, Lock, type LucideIcon } from "lucide-react";
 import AudioPlayer from "@/components/AudioPlayer";
 import {
   formatTrackDuration,
@@ -24,6 +23,8 @@ interface AudioLibraryPageProps {
   icon: LucideIcon;
   collections: AudioCollection[];
   authPrompt: string;
+  guestPlayableTrackIds?: string[];
+  guestNotice?: string;
 }
 
 export default function AudioLibraryPage({
@@ -33,8 +34,10 @@ export default function AudioLibraryPage({
   icon: Icon,
   collections,
   authPrompt,
+  guestPlayableTrackIds = [],
+  guestNotice,
 }: AudioLibraryPageProps) {
-  const { isAuthenticated, loading, user } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
 
   const isPremium = useMemo(() => {
@@ -46,6 +49,20 @@ export default function AudioLibraryPage({
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
+  const guestPlayableTrackSet = useMemo(
+    () => new Set(guestPlayableTrackIds),
+    [guestPlayableTrackIds]
+  );
+  const hasGuestPreview = guestPlayableTrackSet.size > 0;
+
+  const firstGuestPlayableTrackId = useMemo(() => {
+    for (const collection of collections) {
+      const found = collection.tracks.find((track) => guestPlayableTrackSet.has(track.id));
+      if (found) return found.id;
+    }
+    return "";
+  }, [collections, guestPlayableTrackSet]);
+
   const firstTrackId = useMemo(
     () => collections[0]?.tracks[0]?.id ?? "",
     [collections]
@@ -53,13 +70,20 @@ export default function AudioLibraryPage({
   const [selectedTrackId, setSelectedTrackId] = useState<string>(firstTrackId);
   const [shouldAutoPlay, setShouldAutoPlay] = useState(false);
 
-  const selectedTrack: AudioMeditationTrack | undefined = useMemo(() => {
+  const effectiveSelectedTrackId =
+    !isAuthenticated && hasGuestPreview
+      ? guestPlayableTrackSet.has(selectedTrackId)
+        ? selectedTrackId
+        : firstGuestPlayableTrackId
+      : selectedTrackId;
+
+  const effectiveSelectedTrack: AudioMeditationTrack | undefined = useMemo(() => {
     for (const collection of collections) {
-      const found = collection.tracks.find((t) => t.id === selectedTrackId);
+      const found = collection.tracks.find((t) => t.id === effectiveSelectedTrackId);
       if (found) return found;
     }
-    return collections[0]?.tracks[0];
-  }, [collections, selectedTrackId]);
+    return undefined;
+  }, [collections, effectiveSelectedTrackId]);
 
   if (loading) {
     return (
@@ -73,7 +97,7 @@ export default function AudioLibraryPage({
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !hasGuestPreview) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -96,7 +120,7 @@ export default function AudioLibraryPage({
     );
   }
 
-  const trackReady = isAudioTrackReady(selectedTrack);
+  const trackReady = isAudioTrackReady(effectiveSelectedTrack);
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
@@ -114,10 +138,15 @@ export default function AudioLibraryPage({
               {title}
             </h1>
             <p className="font-serif text-muted-foreground">{subtitle}</p>
+            {!isAuthenticated && hasGuestPreview && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                {guestNotice ?? "Duas faixas estão disponíveis para escuta sem login."}
+              </p>
+            )}
           </div>
 
           {/* Player em destaque (somente placeholder de gravação pendente) */}
-          {selectedTrack && !trackReady && (
+          {effectiveSelectedTrack && !trackReady && (
             <div className="mb-8 rounded-xl border border-[oklch(0.22_0.07_260/0.15)] bg-white p-6 animate-fade-in">
               <div className="flex items-center gap-2 mb-2">
                 <Headphones
@@ -125,11 +154,11 @@ export default function AudioLibraryPage({
                   className="text-[oklch(0.65_0.12_70)]"
                 />
                 <p className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)]">
-                  {selectedTrack.title}
+                  {effectiveSelectedTrack.title}
                 </p>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
-                {selectedTrack.description}
+                {effectiveSelectedTrack.description}
               </p>
               <div className="rounded-lg bg-[oklch(0.22_0.07_260/0.03)] border border-[oklch(0.22_0.07_260/0.1)] p-3">
                 <p className="text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-wide mb-1">
@@ -170,14 +199,20 @@ export default function AudioLibraryPage({
 
                 <div className="space-y-3">
                   {collection.tracks.map((track) => {
-                    const active = track.id === selectedTrackId;
-                    const isLocked = track.premium && !isPremium;
+                    const active = track.id === effectiveSelectedTrackId;
+                    const isLocked = isAuthenticated
+                      ? !!(track.premium && !isPremium)
+                      : !guestPlayableTrackSet.has(track.id);
                     return (
                       <button
                         key={track.id}
                         onClick={() => {
                           if (isLocked) {
-                            setIsUpgradeModalOpen(true);
+                            if (isAuthenticated) {
+                              setIsUpgradeModalOpen(true);
+                            } else {
+                              window.location.href = getLoginUrl();
+                            }
                             return;
                           }
                           setSelectedTrackId(track.id);
@@ -281,13 +316,13 @@ export default function AudioLibraryPage({
       </main>
 
       {/* Player flutuante fixado na parte inferior da tela */}
-      {selectedTrack && trackReady && (!selectedTrack.premium || isPremium) && (
+      {effectiveSelectedTrack && trackReady && (!effectiveSelectedTrack.premium || isPremium || !isAuthenticated) && (
         <div className="fixed bottom-4 left-4 right-4 md:left-8 md:right-8 z-50 flex justify-center pointer-events-none animate-fade-in">
           <div className="w-full max-w-4xl pointer-events-auto">
             <AudioPlayer
-              audioUrl={selectedTrack.audioUrl}
-              title={selectedTrack.title}
-              description={selectedTrack.description}
+              audioUrl={effectiveSelectedTrack.audioUrl}
+              title={effectiveSelectedTrack.title}
+              description={effectiveSelectedTrack.description}
               autoPlay={shouldAutoPlay}
             />
           </div>
