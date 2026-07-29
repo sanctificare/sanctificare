@@ -228,6 +228,9 @@ export default function Home() {
               <a href="#explorar-oracoes" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
                 Orações
               </a>
+              <a href="https://sanctificare.app/explore" target="_blank" rel="noopener noreferrer" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
+                Explorar
+              </a>
               <a href="#perguntas" className="hidden md:block text-sm text-[oklch(0.80_0.02_260)] hover:text-[oklch(0.88_0.08_80)] transition-colors">
                 Perguntas
               </a>
