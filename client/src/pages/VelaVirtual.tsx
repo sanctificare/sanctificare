@@ -289,21 +289,6 @@ export default function VelaVirtual() {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center max-w-sm px-6">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para rezar no espaço da Vela Virtual.</p>
-          <a href={getLoginUrl()}>
-            <Button className="bg-[oklch(0.22_0.07_260)] text-white">Entrar</Button>
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className={`min-h-screen text-white transition-colors duration-700 ${selectedAmbience.pageClass}`}
@@ -518,6 +503,11 @@ export default function VelaVirtual() {
                       <Button
                         type="button"
                         onClick={async () => {
+                          if (!isAuthenticated) {
+                            window.location.assign(getLoginUrl());
+                            return;
+                          }
+
                           const trimmedIntention = newIntention.trim();
 
                           setPrivateCandleIntention(trimmedIntention);
