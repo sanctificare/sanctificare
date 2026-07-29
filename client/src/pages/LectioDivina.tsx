@@ -591,31 +591,6 @@ mas livrai-nos do Mal. Amém!`,
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img
-            src={LOGO_IMG}
-            alt="Sanctificare"
-            className="w-16 h-16 rounded-full mx-auto mb-4"
-          />
-          <h2 className="font-display text-2xl font-bold mb-2">
-            Acesso Restrito
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            Entre para praticar a Lectio Divina.
-          </p>
-          <a href={getLoginUrl()}>
-            <Button className="bg-[oklch(0.22_0.07_260)] text-white">
-              Entrar
-            </Button>
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   const currentTrack = guidedTracks[currentAudioTrack];
   const currentStepKey = currentTrack?.stepKey;
   const stepsSeq = ["intro", "lectio", "meditatio", "oratio", "contemplatio", "actio", "conclusion"] as const;
