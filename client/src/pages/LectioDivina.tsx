@@ -149,6 +149,7 @@ export default function LectioDivina() {
   const [currentAudioTrack, setCurrentAudioTrack] = useState<number>(0);
   const [autoGuidedActive, setAutoGuidedActive] = useState<boolean>(false);
   const [showGuidedAudio, setShowGuidedAudio] = useState<boolean>(false);
+  const [isGuestPreviewLocked, setIsGuestPreviewLocked] = useState<boolean>(false);
   const [completed, setCompleted] = useState<boolean>(false);
   const [replayingReading, setReplayingReading] = useState<boolean>(false);
 
@@ -334,6 +335,7 @@ export default function LectioDivina() {
   // Guided Mode Handlers
   const handleStartGuidedSession = () => {
     setCurrentAudioTrack(0);
+    setIsGuestPreviewLocked(false);
     setReplayingReading(false);
     setCompleted(false); // Reset completion state for the new session
     setShowGuidedAudio(true);
@@ -342,6 +344,7 @@ export default function LectioDivina() {
 
   const handleStopGuidedSession = () => {
     setAutoGuidedActive(false);
+    setIsGuestPreviewLocked(false);
     setReplayingReading(false);
     setShowGuidedAudio(false);
   };
@@ -357,6 +360,13 @@ export default function LectioDivina() {
   };
 
   const handleGuidedTrackEnd = () => {
+    const currentTrack = guidedTracks[currentAudioTrack];
+    if (!isAuthenticated && currentTrack?.id === "sinal-cruz") {
+      setAutoGuidedActive(false);
+      setIsGuestPreviewLocked(true);
+      return;
+    }
+
     if (currentAudioTrack < guidedTracks.length - 1) {
       setCurrentAudioTrack((prev) => prev + 1);
     } else {
@@ -881,7 +891,7 @@ mas livrai-nos do Mal. Amém!`,
               </div>
 
               {/* Guided Player */}
-              {currentTrack && (
+              {currentTrack && !isGuestPreviewLocked && (
                 <div className="w-full animate-fade-in mb-6">
                   <AudioPlayer
                     audioUrl={replayingReading && readingTrack ? readingTrack.audioUrl : currentTrack.audioUrl}
@@ -896,6 +906,25 @@ mas livrai-nos do Mal. Amém!`,
                     onTrackError={replayingReading ? handleReadingReplayError : handleGuidedTrackError}
                     onPlayStateChange={setSessionIsPlaying}
                   />
+                </div>
+              )}
+
+              {isGuestPreviewLocked && (
+                <div className="w-full mb-6 rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.22_0.07_260/0.92)] p-5 text-left shadow-lg animate-fade-in">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.82_0.10_80)] mb-2">
+                    Prévia concluída
+                  </p>
+                  <h3 className="font-display text-xl font-bold text-white mb-2">
+                    Continue sua Lectio Divina no app
+                  </h3>
+                  <p className="text-sm text-white/75 leading-relaxed mb-4">
+                    A introdução e o Sinal da Cruz foram concluídos. Entre para seguir com a Palavra, a meditação e os demais passos da oração.
+                  </p>
+                  <a href={getLoginUrl()}>
+                    <Button className="bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-[oklch(0.15_0.02_260)] font-semibold">
+                      Entrar para continuar
+                    </Button>
+                  </a>
                 </div>
               )}
 
