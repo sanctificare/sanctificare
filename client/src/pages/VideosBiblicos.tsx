@@ -17,6 +17,7 @@ import { UpgradeDialog } from "@/components/UpgradeDialog";
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const BUNNY_LIBRARY_ID = import.meta.env.VITE_BUNNY_LIBRARY_ID || "";
 const TRUSTED_BUNNY_ORIGINS = new Set(["https://iframe.mediadelivery.net"]);
+const GUEST_PLAYABLE_VIDEO_ID = BIBLE_VIDEOS[0]?.id ?? "";
 
 function VerticalVideoSkeleton() {
   return (
@@ -171,6 +172,7 @@ function VerticalVideoCard({
 function HorizontalVideoCard({
   video,
   isVideoLocked,
+  lockedActionLabel,
   isFavorited,
   onToggleFavorite,
   onShare,
@@ -179,6 +181,7 @@ function HorizontalVideoCard({
 }: {
   video: BibleVideo;
   isVideoLocked: boolean;
+  lockedActionLabel: string;
   isFavorited: boolean;
   onToggleFavorite: (e: React.MouseEvent) => void;
   onShare: (e: React.MouseEvent) => void;
@@ -301,7 +304,7 @@ function HorizontalVideoCard({
           {isVideoLocked ? (
             <>
               <Lock size={13} className="mr-1.5" />
-              Desbloquear com Premium
+              {lockedActionLabel}
             </>
           ) : (
             <>
@@ -388,6 +391,11 @@ export default function VideosBiblicos() {
      subscription.status === "past_due");
   const subLoading = false;
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const isVideoLocked = (video: BibleVideo) =>
+    !isAuthenticated
+      ? video.id !== GUEST_PLAYABLE_VIDEO_ID
+      : video.premium && !isPremium;
+  const lockedActionLabel = isAuthenticated ? "Desbloquear com Premium" : "Entrar para assistir";
 
   // Extract categories dynamically and add Favorites pill
   const categories = useMemo(() => {
@@ -577,7 +585,12 @@ export default function VideosBiblicos() {
   }, [loading, subLoading]);
 
   const handlePlayVideo = async (video: BibleVideo) => {
-    if (video.premium && !isPremium) {
+    if (!isAuthenticated && video.id !== GUEST_PLAYABLE_VIDEO_ID) {
+      window.location.assign(getLoginUrl());
+      return;
+    }
+
+    if (isAuthenticated && video.premium && !isPremium) {
       setIsUpgradeModalOpen(true);
       return;
     }
@@ -606,19 +619,6 @@ export default function VideosBiblicos() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain animate-pulse" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para contemplar os vídeos com IA.</p>
-          <a href={getLoginUrl()}><Button>Entrar</Button></a>
-        </div>
       </div>
     );
   }
@@ -830,7 +830,7 @@ export default function VideosBiblicos() {
                     <VerticalVideoCard
                       key={video.id}
                       video={video}
-                      isVideoLocked={video.premium && !isPremium}
+                      isVideoLocked={isVideoLocked(video)}
                       isFavorited={favorites.includes(video.id)}
                       onToggleFavorite={(e) => handleToggleFavorite(video.id, e)}
                       onShare={(e) => handleShareVideo(video, e)}
@@ -861,7 +861,8 @@ export default function VideosBiblicos() {
                     <HorizontalVideoCard
                       key={video.id}
                       video={video}
-                      isVideoLocked={video.premium && !isPremium}
+                      isVideoLocked={isVideoLocked(video)}
+                      lockedActionLabel={lockedActionLabel}
                       isFavorited={favorites.includes(video.id)}
                       onToggleFavorite={(e) => handleToggleFavorite(video.id, e)}
                       onShare={(e) => handleShareVideo(video, e)}
@@ -884,7 +885,7 @@ export default function VideosBiblicos() {
                 <VerticalVideoCard
                   key={video.id}
                   video={video}
-                  isVideoLocked={video.premium && !isPremium}
+                  isVideoLocked={isVideoLocked(video)}
                   isFavorited={favorites.includes(video.id)}
                   onToggleFavorite={(e) => handleToggleFavorite(video.id, e)}
                   onShare={(e) => handleShareVideo(video, e)}
@@ -905,7 +906,8 @@ export default function VideosBiblicos() {
                 <HorizontalVideoCard
                   key={video.id}
                   video={video}
-                  isVideoLocked={video.premium && !isPremium}
+                  isVideoLocked={isVideoLocked(video)}
+                  lockedActionLabel={lockedActionLabel}
                   isFavorited={favorites.includes(video.id)}
                   onToggleFavorite={(e) => handleToggleFavorite(video.id, e)}
                   onShare={(e) => handleShareVideo(video, e)}
