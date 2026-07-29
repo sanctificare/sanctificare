@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 import { Cross } from "@/components/CrossIcon";
 import { VIA_SACRA_STATIONS } from "@/data/via-sacra";
+import PublicViaSacraDetails from "@/components/PublicViaSacraDetails";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 
@@ -171,22 +171,7 @@ export default function ViaSacra() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <img
-            src={LOGO_IMG}
-            alt="Sanctificare"
-            className="w-16 h-16 rounded-full mx-auto mb-4"
-          />
-          <h2 className="font-display text-2xl font-bold mb-2">Acesso Restrito</h2>
-          <p className="text-muted-foreground mb-6">Entre para rezar a Via-Sacra.</p>
-          <a href={getLoginUrl()}>
-            <Button className="bg-[oklch(0.22_0.07_260)] text-white">Entrar</Button>
-          </a>
-        </div>
-      </div>
-    );
+    return <PublicViaSacraDetails stations={VIA_SACRA_STATIONS} path="/via-sacra" />;
   }
 
   return (
