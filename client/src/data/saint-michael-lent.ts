@@ -318,5 +318,672 @@ Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desân
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
+    {
+      number: 3,
+      title: "Dia 3",
+      theme: "O Escudo da Fé (O Combate contra as Dúvidas e a Incredulidade)",
+      scripture: {
+        reference: "Efésios 6, 16",
+        text: "Em todas as circunstâncias, empenhai o escudo da fé, com o qual podereis apagar todos os dardos inflamados do Maligno.",
+        explanation: "O escudo da fé protege o coração dos pensamentos soprados pelo inimigo para semear desconfiança em relação ao amor, à providência e ao perdão de Deus. Com o escudo levantado pela oração constante, os dardos da dúvida perdem sua força.",
+      },
+      meditation: `Irmão e irmã na fé, no terceiro dia da Quaresma de São Miguel Arcanjo, somos chamados a fortificar nossa fé diante das tempestades da vida. O demônio ataca a inteligência e o coração espalhando o veneno da dúvida: faz-nos duvidar da misericórdia de Deus após uma queda, duvidar do cuidado divino na doença ou no desemprego, e duvidar de que o Senhor escuta nossas preces.
+
+São Miguel Arcanjo é o protótipo da fé inabalável. Quando Lúcifer e os anjos rebeldes duvidaram da sabedoria e do plano de Deus, Miguel se levantou não por força própria, mas ancorado na certeza absoluta da grandeza do Senhor. Sua resposta ao demônio foi a própria afirmação de fé: 'Quem é como Deus?'.
+
+Em nossa caminhada diária, ter fé não significa ausência de trevas ou sentimentos de aridez, mas a decisão firme da vontade em aderir à Verdade revelada por Cristo e preservada pela Santa Igreja. Quando a dúvida bater à porta da sua alma, não discuta com a tentação; erga o escudo da fé, faça um ato de entrega e confie totalmente nos desígnios do Pai.`,
+      virtue: "Fé Viva e Inabalável",
+      purpose: "Fazer atos explícitos de fé ('Senhor, eu creio, mas aumentai a minha fé!') ao longo do dia, especialmente diante de apreensões.",
+      suggestedPenance: "Abster-se de reclamações ou conversas fúteis e fazer 3 atos de fé durante o dia.",
+      spiritualExercise: "Em um momento de recolhimento, de joelhos se possível, reze devagar o Credo e ofereça sua mente para ser iluminada pela luz de Cristo.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1814",
+            text: "A fé é a virtude teologal pela qual cremos em Deus e em tudo o que Ele nos disse e revelou, e que a Santa Igreja nos propõe para crer, porque Ele é a própria verdade.",
+          },
+          {
+            code: "CIC §162",
+            text: "A fé é um dom gratuito que Deus faz ao homem. Podemos perder este dom inestimável; para viver, crescer e perseverar na fé até o fim, devemos alimentá-la com a Palavra de Deus e a oração.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "A fé é a luz da alma, a porta da vida e o fundamento da salvação eterna.",
+            source: "Homilias sobre o Evangelho de São Mateus",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "Crer é um ato da inteligência que assente à verdade divina por imperativo da vontade movida por Deus mediante a graça.",
+          },
+          {
+            author: "São Bernardo de Claraval",
+            text: "A fé não é uma opinião incerta, mas uma certeza firme que habita no fundo do coração pelo Espírito Santo.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "A fé é um encontro pessoal com Jesus Cristo que transforma a existência e nos concede o olhar com o qual Deus vê a realidade.",
+          },
+        ],
+      },
+      deliveryPrayer: `Feche suavemente os olhos e coloque a mão sobre a Sagrada Escritura ou sobre o coração.
+
+São Miguel Arcanjo, Príncipe da Milícia Celeste e Defensor da Fé Católica, vinde em meu auxílio. Apagai com o vosso escudo brilhante todos os dardos inflamados da dúvida, do ceticismo e da insegurança espiritual que tentam perturbar a minha alma.
+
+Alcançai-me do Senhor uma fé viva, operante pela caridade e inabalável nas provações. Que eu caminhe firme, não por vista humana, mas pela certeza de que Deus nunca falha. São Miguel, guardai minha fé até o meu último suspiro. Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Deixei que a dúvida ou o ceticismo esfriassem meu fervor na oração e nos sacramentos?",
+        "Procurei alimentar minha fé com boas leituras e a palavra de Deus, ou alimentei a mente com distrações mundanas?",
+        "Diante de dificuldades, confiei na Providência divina ou me deixei levar pelo desespero secular?",
+      ],
+      saintQuote: "A fé é a garantia das coisas que se esperam e a certeza das realidades que não se vêem. - São Paulo Apóstolo",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Tenha fé e confiança; não se preocupe com o amanhã, pois o mesmo Pai Celestial que cuida de você hoje cuidará de você amanhã.",
+          source: "Cartas Espirituais",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "A fé é crer no que não vês; e a recompensa desta fé é ver o que crês.",
+          source: "Sermões",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "Para a alma que caminha na fé, a própria escuridão se torna guia segura para a união com Deus.",
+          source: "Subida do Monte Carmelo",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Uma fé viva não se assusta com as secas espirituais, porque sabe que o Sol da Justiça continua brilhando atrás das nuvens.",
+          source: "Introdução à Vida Devota",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 4,
+      title: "Dia 4",
+      theme: "O Gládio da Verdade (O Combate contra a Mentira e a Fofoca)",
+      scripture: {
+        reference: "Salmo 141 (140), 3 / Efésios 4, 25",
+        text: "Ponde, Senhor, uma guarda à minha boca, e guardai a porta dos meus lábios! Por isso, renunciai à mentira e falai a verdade cada um ao seu próximo, pois somos membros uns dos outros.",
+        explanation: "A língua humana pode ser instrumento de bênção ou de destruição. O demônio é chamado por Cristo de 'pai da mentira'. Guardar os lábios da fofoca, da maledicência e do engano é uma das armas fundamentais no combate espiritual sob o comando de São Miguel.",
+      },
+      meditation: `Irmão e irmã na fé, no quarto dia de nossa Quaresma de São Miguel Arcanjo, voltamos o nosso olhar para a vigilância das palavras. Quantas vezes a paz das famílias, das comunidades e do próprio coração é destruída por murmurações, julgamentos precipitados, mentiras 'sociais' ou comentários maldosos a respeito dos irmãos.
+
+Jesus nos ensina que do coração procede a boca. A mentira e a fofoca são sementes do maligno, que busca semear a divisão e o rancor entre os filhos de Deus. São Miguel Arcanjo é o porta-estandarte da Verdade Divina. Onde reina a mentira, aí está o espírito das trevas; onde reina a verdade dita com caridade, aí está a presença dos Santos Anjos.
+
+Combater a mentira exige coragem para assumir os próprios erros, moderação ao falar dos outros e a santa decisão de guardar silêncio quando a palavra não for para edificar. Hoje, peça a São Miguel a graça de purificar a sua linguagem e tornar suas palavras fonte de luz, consolo e verdade.`,
+      virtue: "Veracidade e Pureza de Lábios",
+      purpose: "Não falar mal de ninguém durante todo o dia e elogiar com sinceridade uma qualidade de alguém com quem tenho dificuldade de conviver.",
+      suggestedPenance: "Guardar silêncio sobre os defeitos alheios e evitar qualquer exagero ou mentira nas conversas do dia.",
+      spiritualExercise: "Fazer uma pausa de silêncio de 10 minutos antes da oração da noite para examinar as palavras ditas ao longo do dia e pedir perdão por qualquer leviandade.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2467",
+            text: "O homem busca naturalmente a verdade. É tenazmente obrigado a aderir à verdade e a ordenar toda a sua vida segundo as exigências da verdade.",
+          },
+          {
+            code: "CIC §2477",
+            text: "O respeito pela reputação das pessoas proíbe qualquer atitude e palavra capazes de lhes causar um dano injusto: a detração e a calúnia.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Gregório Nazianzeno",
+            text: "A palavra é o espelho da alma: como é o homem, assim é a sua palavra.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A mentira é um vício oposto à veracidade. Todo engano nas palavras fere a justiça e a ordem devida nas relações humanas.",
+          },
+          {
+            author: "São Francisco de Sales",
+            text: "A língua do murmurador é como um dardo envenenado que fere três pessoas ao mesmo tempo: quem fala, quem escuta e aquele de quem se fala.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Francisco",
+            text: "A fofoca é um terrorismo de palavras. Quem fofoca mata a reputação do irmão e destrói a comunhão da Igreja.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, guerreiro da Verdade Altíssima, purificai a minha boca e o meu coração. Bani da minha vida toda mentira, engano, falsidade e o hábito destrutivo de falar dos defeitos dos outros.
+
+Alcançai-me a graça da honestidade interior e da mansidão nas palavras. Que a minha língua seja usada apenas para louvar a Deus, defender a fé e semear a paz no meu lar e no meu trabalho. São Miguel Arcanjo, arcanjo da verdade, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Falei mal de alguém ou divulguei fatos desnecessários sobre a vida de um irmão?",
+        "Usei de mentiras, meias-verdades ou exagero para me defender ou me beneficiar?",
+        "Consenti em ouvir conversas maldosas e fofocas sem defender a reputação do ausente?",
+      ],
+      saintQuote: "A verdade vos libertará. - Jesus Cristo (João 8, 32)",
+      saintQuotesList: [
+        {
+          author: "São Bento de Nursia",
+          quote: "Não dar testemunho falso; não murmurar; não falar mal de ninguém e pôr a guarda da boca no falar.",
+          source: "Regra de São Bento",
+        },
+        {
+          author: "São Felipe Neri",
+          quote: "Falar mal do próximo é como espalhar penas ao vento: é impossível depois recolhê-las todas.",
+          source: "Máximas Espirituais",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "A calúnia é uma flecha de três pontas: fere o caluniador, quem a ouve e aquele que é caluniado.",
+          source: "Sermões",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Quem guarda a sua boca guarda a sua alma de muitas aflições e amarguras.",
+          source: "A Prática do Amor a Jesus Cristo",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 5,
+      title: "Dia 5",
+      theme: "A Castidade da Alma e do Corpo (O Combate contra a Luxúria e a Impureza)",
+      scripture: {
+        reference: "1 Coríntios 6, 19-20 / Mateus 5, 8",
+        text: "Bem-aventurados os puros de coração, porque verão a Deus. Acaso não sabeis que o vosso corpo é templo do Espírito Santo, que habita em vós? Glorificai, pois, a Deus no vosso corpo!",
+        explanation: "A castidade é a vitória do amor verdadeiro sobre o egoísmo e a concupiscência. O corpo humano é sacrário do Espírito Santo, e São Miguel nos auxilia a guardar os sentidos e a imaginação de todas as contaminações do mundo.",
+      },
+      meditation: `Irmão e irmã na fé, no quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a beleza da pureza de coração e da santa castidade. Em um mundo saturado de erotismo, pornografia e desordens morais, manter a alma e os sentidos puros tornou-se um ato heroico de combate espiritual.
+
+São Miguel Arcanjo é o guardião da pureza angélica. Os anjos contemplam a face Imaculada de Deus e não consentem com nada que seja desordenado. A impureza obscurece a inteligência, paralisa a vida de oração, destrói os relacionamentos e arrasta a alma para a tristeza egocêntrica.
+
+O combate pela castidade não é apenas uma renúncia negativa, mas uma afirmação positiva do amor sublime. Exige a custódia dos olhos (evitando olhar imagens e vídeos impróprios), a modéstia no vestir e no falar, e a imediata rejeição dos pensamentos impuros. Se você caiu ou se sente tentado nesta área, não desespere: peça o auxílio de São Miguel e corra para o sacramento da Confissão.`,
+      virtue: "Castidade e Modéstia de Sentidos",
+      purpose: "Fazer a custódia dos olhos no celular e na internet hoje, evitando visualizar imagens, vídeos ou conteúdos sugestivos.",
+      suggestedPenance: "Oferecer um jejum de telas (redes sociais/entretenimento fútil) durante metade do dia pela pureza das famílias.",
+      spiritualExercise: "Rezar um Mistério do Terço (ou 3 Ave-Marias) de joelhos, pedindo a Nossa Senhora Rainha dos Anjos e a São Miguel a graça da castidade nos pensamentos, olhares e ações.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2337",
+            text: "A castidade significa a integração bem-sucedida da sexualidade na pessoa e, portanto, a unidade interior do homem no seu ser corporal e espiritual.",
+          },
+          {
+            code: "CIC §2520",
+            text: "O combate pela pureza envolve a modéstia, que guarda a intimidade da pessoa e recusa desvendar o que deve permanecer oculto.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "A castidade faz do homem terrestre um anjo do céu; ela ilumina a mente para ver a Deus.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A luxúria enfraquece a razão e gera a cegueira da alma, enquanto a pureza conserva a clareza do julgamento moral.",
+          },
+          {
+            author: "Santo Afonso Maria de Ligório",
+            text: "Nas tentações contra a pureza, a melhor vitória é a fuga imediata e o recurso à oração à Virgem Santíssima.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "São João Paulo II",
+            text: "O corpo humano traz em si a marca do mistério da criação e da redenção. Ele deve ser tratado com profundo respeito e santidade.",
+          },
+        ],
+      },
+      deliveryPrayer: `Ó São Miguel Arcanjo, guarda imaculado do trono de Deus, defendei a pureza dos meus pensamentos, dos meus olhos e do meu corpo. Afastai de mim todo espírito de luxúria, sensualidade e contaminação do mundo.
+
+Cercai-me com as vossas asas de luz e obtende-me da Virgem Maria a graça de um coração puro, humilde e transparente. Que o meu corpo permaneça digno de ser templo do Espírito Santo. São Miguel, defensor da santidade, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Consenti em pensamentos, olhares ou desejos impuros ao longo do dia?",
+        "Consumi imagens, conteúdos na internet ou conversas que ferem a modéstia e a castidade?",
+        "Recorri prontamente à oração ao sentir a tentação ou brinquei com a ocasião de pecado?",
+      ],
+      saintQuote: "Bem-aventurados os puros de coração, porque verão a Deus. - Jesus Cristo (Mateus 5, 8)",
+      saintQuotesList: [
+        {
+          author: "São Domingos Sávio",
+          quote: "A morte, mas não o pecado! A pureza é a flor mais preciosa da alma.",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A modéstia é a guardiã da castidade. Quem não cuida dos olhares dificilmente guardará o coração.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A castidade é o lírio das virtudes; torna os homens semelhantes aos anjos no céu.",
+        },
+        {
+          author: "São João Bosco",
+          quote: "Queridos jovens, guardai a santa pureza, pois ela é a chave para a alegria verdadeira e para o amor de Deus.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 6,
+      title: "Dia 6",
+      theme: "O Desapego dos Bens Terrenos (O Combate contra a Avareza e a Ganância)",
+      scripture: {
+        reference: "Mateus 6, 19-21",
+        text: "Não ajunteis tesouros na terra, onde a traça e a ferrugem roem e onde os ladrões escavam e roubam. Ajunteis tesouros no céu... pois onde estiver o teu tesouro, aí estará também o teu coração.",
+        explanation: "O apego desordenado ao dinheiro, aos bens materiais e ao conforto egoísta escraviza a alma. São Miguel nos ensina a colocar o tesouro da graça divina acima de todas as riquezas passageiras.",
+      },
+      meditation: `Irmão e irmã na fé, no sexto dia de nossa caminhada devocional, meditamos sobre o combate contra a avareza e o apego desordenado às coisas materiais. O dinheiro e os bens deste mundo foram criados para servir ao sustento honesto e à caridade; contudo, quando o coração humano se prende às posses, transforma o ouro em um ídolo que ocupa o lugar de Deus.
+
+São Miguel Arcanjo é o administrador dos bens celestes. Ele sabe que a verdadeira riqueza não consiste no que acumulamos, mas no amor e na graça que oferecemos a Deus e aos irmãos. A ganância gera ansiedade, inveja, injustiça e endurecimento de coração diante dos necessitados.
+
+Ser desapegado não significa desprezar o trabalho ou a providência, mas viver com espírito de pobreza evangélica: usar do mundo como se não usasse, partilhar com alegria o que se tem e confiar que o Pai Celestial cuida de nós. Hoje, examine o seu coração: onde está o seu tesouro? O que você precisa desapegar para ser verdadeiramente livre em Deus?`,
+      virtue: "Generosidade e Pobreza de Espírito",
+      purpose: "Fazer uma doação, esmola ou gesto concreto de ajuda material a alguém necessitado ou a uma obra da Igreja.",
+      suggestedPenance: "Renunciar a uma compra supérflua ou gasto desnecessário no dia de hoje e destinar o valor à caridade.",
+      spiritualExercise: "Separar roupas, livros ou objetos que você não usa mais e doá-los com alegria a quem precisa.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2536",
+            text: "O décimo mandamento proíbe a ganância e o desejo de uma apropriação imoderada dos bens terrestres; proíbe a avareza desmedida, nascida da paixão desordenada pelas riquezas.",
+          },
+          {
+            code: "CIC §2545",
+            text: "Todos os fiéis devem orientar retamente os seus afetos, para que não sejam impedidos de buscar a caridade perfeita pelo uso das coisas do mundo.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Basílio Magno",
+            text: "O pão que guardas em excesso pertence ao faminto; o manto que penduras no teu armário pertence ao nu.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A avareza é um pecado contra a justiça e a caridade, pois faz o homem amar os bens materiais mais do que a Deus e ao próximo.",
+          },
+          {
+            author: "São Francisco de Assis",
+            text: "Possuir bens sem partilhar é perder o tesouro do Céu. A santa pobreza é o caminho da perfeita liberdade do espírito.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Leão XIII",
+            text: "Os bens materiais são dados por Deus para a utilidade comum. Quem recebeu mais riquezas tem a obrigação moral de usá-las para o bem dos necessitados.",
+          },
+        ],
+      },
+      deliveryPrayer: `Glorioso São Miguel Arcanjo, libertai o meu coração de todo apego ganancioso ao dinheiro, aos bens e aos confortos deste mundo. Ensinai-me a buscar em primeiro lugar o Reino de Deus e a Sua justiça.
+
+Concedei-me um coração generoso para partilhar com os necessitados e uma alma desapegada de todas as coisas passageiras. Que o meu único tesouro seja a graça de Cristo e a amizade com os Santos Anjos. São Miguel, nosso protetor, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Fui avarento, egoísta ou apegado demais ao dinheiro e às minhas posses no dia de hoje?",
+        "Senti ansiedade desmedida com relação aos bens materiais, duvidando da Providência divina?",
+        "Deixei de praticar a caridade ou ajudei quem necessitava com má vontade ou avareza?",
+      ],
+      saintQuote: "Onde estiver o teu tesouro, aí estará também o teu coração. - Jesus Cristo (Mateus 6, 21)",
+      saintQuotesList: [
+        {
+          author: "São Francisco de Assis",
+          quote: "Lembre-se de que quando você deixar este mundo, não poderá levar nada do que recebeu, mas apenas o que deu.",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Deus não precisa do teu dinheiro, mas o teu irmão faminto precisa. Dando ao pobre, dás a Deus.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "O avarento é como um porco que só é útil depois de morto. O generoso já vive a alegria do Céu na terra.",
+        },
+        {
+          author: "São João Crisóstomo",
+          quote: "Não ser ganancioso é uma grande riqueza; ser generoso é a coroa das virtudes cristãs.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 7,
+      title: "Dia 7",
+      theme: "A Doçura do Perdão (O Combate contra a Ira, o Rancor e a Vingança)",
+      scripture: {
+        reference: "Colossenses 3, 12-13 / Mateus 6, 14-15",
+        text: "Suportai-vos uns aos outros e perdoai-vos mutuamente, caso alguém tenha motivo de queixa contra o outro. Assim como o Senhor vos perdoou, assim fazei vós também. Se perdoardes aos homens as suas ofensas, o vosso Pai Celestial também vos perdoará.",
+        explanation: "O rancor e a ira mantêm a alma acorrentada ao passado e abrem brechas devastadoras para a ação do demônio. O perdão cristão não é um sentimento, mas uma decisão de libertar o devedor e confiar a justiça a Deus.",
+      },
+      meditation: `Irmão e irmã na fé, no sétimo dia de nossa Quaresma de São Miguel Arcanjo, enfrentamos uma das batalhas mais decisivas do coração humano: a vitória do perdão sobre a ira, o ressentimento e a vingança. Quem guarda rancor bebe um veneno esperando que o outro morra.
+
+O demônio alimenta a mágoa relembrando constantemente as ofensas recebidas, os julgamentos injustos e as feridas do passado. Ele sabe que uma alma ressentida não consegue rezar com verdade o Pai-Nosso ('perdoai-nos as nossas ofensas assim como nós perdoamos...').
+
+São Miguel Arcanjo é o guardião da paz divina. Ele nos ensina que a verdadeira grandeza não está em revidar os golpes ou guardar ressentimentos, mas em imitar o Imaculado Coração de Jesus no alto da Cruz, quando pediu: 'Pai, perdoa-lhes, eles não sabem o que fazem'. Perdoar não significa fingir que o mal não existiu, mas entregar a dor a Cristo e desejar a salvação daquele que nos feriu. Peça hoje a São Miguel a graça de arrancar todas as raízes de amargura da sua alma.`,
+      virtue: "Mansidão, Misericórdia e Perdão",
+      purpose: "Rezar um Pai-Nosso com intenção amorosa por uma pessoa que me magoou ou com quem tenho ressentimento.",
+      suggestedPenance: "Guardar silêncio diante de uma provocação ou impaciência, oferecendo o incômodo pela paz da família.",
+      spiritualExercise: "Escrever o nome de pessoas a quem preciso perdoar e, diante de uma imagem de Cristo Crucificado, declarar: 'Em Nome de Jesus e com o auxílio de São Miguel, eu te perdoo de coração'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2843",
+            text: "A recusa de perdoar aos nossos irmãos fecha o nosso coração; a sua dureza torna-o impermeável ao amor misericordioso do Pai.",
+          },
+          {
+            code: "CIC §2302",
+            text: "A ira é um desejo de vingança. Desejar a vingança para o mal de quem se deve punir é ilícito; mas é louvável impor uma reparação para a correção dos vícios e a conservação da justiça.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "Nada nos torna tão semelhantes a Deus quanto a disposição de perdoar os que nos ofenderam.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "O perdão das ofensas é uma obra de misericórdia espiritual superior a dar bens materiais, pois cura a alma da divisão e da amargura.",
+          },
+          {
+            author: "São Francisco de Sales",
+            text: "Um só ato de perdão dito com o coração vale mais do que muitos dias de jejum e grandes mortificações.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "São João Paulo II",
+            text: "Não há paz sem perdão. O perdão é a chave para curar as feridas da história e dos relacionamentos humanos.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Príncipe da Paz e guerreiro da Caridade Divina, vinde em auxílio do meu coração ferido. Arrancai do meu peito toda raiz de rancor, ira, amargura, ressentimento e desejo de vingança.
+
+Concedei-me a santa mansidão do Coração de Jesus para perdoar a todos os que me magoaram, caluniaram ou injustiçaram. Que a minha alma seja libertada do peso do passado pela força do perdão evangélico. São Miguel, defensor da paz, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Guardei raiva, ressentimento ou desejo de vingança contra alguém no dia de hoje?",
+        "Recusei-me a perdoar ou alimentei pensamentos de amargura lembrando ofensas passadas?",
+        "Reagi com agressividade, ironia ou ira verbal diante de uma contrariedade no lar ou no trabalho?",
+      ],
+      saintQuote: "Perdoai e sereis perdoados. - Jesus Cristo (Lucas 6, 37)",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Perdoe a todos de coração; o perdão é o perfume que a flor exala sobre o calcanhar que a esmagou.",
+        },
+        {
+          author: "Santa Faustina Kowalska",
+          quote: "Se a alma não praticar a misericórdia e o perdão, não alcançará a misericórdia de Deus no dia do julgamento.",
+        },
+        {
+          author: "São Josemaría Escrivá",
+          quote: "Não guardes ressentimentos na alma: perdoa imediatamente e esquece o mal, vencendo o mal com o bem.",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "Onde há caridade e sabedoria, não há temor nem ignorância. Onde há paciência e humildade, não há ira nem perturbação.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 8,
+      title: "Dia 8",
+      theme: "O Amor Fraterno e Caridade (O Combate contra a Inveja e os Juízos Temerários)",
+      scripture: {
+        reference: "1 Coríntios 13, 4-7 / Tiago 3, 16",
+        text: "A caridade é paciente, a caridade é prestativa. Não é invejosa, não se ostenta, não se incha de orgulho... Pois onde há inveja e espírito de discórdia, aí há perturbação e toda espécie de maus atos.",
+        explanation: "A inveja é o desgosto pelo bem do próximo e a alegria secreta com o seu mal. É o pecado que fez o demônio cair do Céu. A caridade fraterna é a marca registrada dos discípulos de Cristo e a maior arma contra as divisões.",
+      },
+      meditation: `Irmão e irmã na fé, no oitavo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o mandamento novo da caridade e o combate contra o pecado capital da inveja. A inveja foi a porta pela qual a morte entrou no mundo: o diabo teve inveja da dignidade do homem e da glória de Deus.
+
+Quando nos entristecemos com o sucesso, os dons ou a felicidade do irmão, estamos permitindo que o veneno da serpente contamine a nossa alma. A inveja nos impede de amar, gera julgamentos temerários e destrói o dom da comunhão na família e na Igreja.
+
+São Miguel Arcanjo e a corte dos anjos fiéis vivem em perfeita harmonia e alegria com as virtudes uns dos outros. No Céu, o bem de um anjo é a alegria de todos os outros. Aprenda com os anjos a alegrar-se sinceramente com as bênçãos e os talentos do seu próximo. Hoje, peça a São Miguel a graça de substituir todo olhar invejoso por um olhar de benevolência, gratidão e amor fraterno.`,
+      virtue: "Caridade Fraterna e Benevolência",
+      purpose: "Agradecer a Deus em oração pelo bem, talento ou conquista de alguém de quem costumo sentir inveja ou rivalidade.",
+      suggestedPenance: "Prestar um serviço humilde e discreto em casa ou no trabalho sem esperar agradecimento.",
+      spiritualExercise: "Fazer um elogio sincero e encorajador a uma pessoa com quem sinto concorrência ou rivalidade.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2539",
+            text: "A inveja é um pecado capital. Designa a tristeza experimentada diante do bem do próximo e o desejo imoderado de se apossar dele, mesmo injustamente.",
+          },
+          {
+            code: "CIC §1823",
+            text: "Jesus faz da caridade o mandamento novo. Amando os seus até o fim, manifesta o amor do Pai que Ele mesmo recebe.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Basílio Magno",
+            text: "Como a ferrugem consome o ferro, assim a inveja consome a alma que a abriga.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A inveja se opõe diretamente à caridade, pela qual nos alegramos com o bem do próximo como se fosse nosso próprio bem.",
+          },
+          {
+            author: "São Gregório Magno",
+            text: "Da inveja nascem a mágoa, a murmuração, a calúnia, a alegria na adversidade do próximo e o desgosto na sua prosperidade.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "A caridade é o coração da Igreja e da vida cristã. Sem o amor fraterno, todas as nossas obras e orações perdem o valor diante de Deus.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Príncipe do Amor e da Harmonia Celeste, expulsai da minha alma todo germe de inveja, ciúme, rivalidade e julgamento temerário.
+
+Alcançai-me a graça de ver o meu próximo com os olhos misericordiosos de Cristo. Que eu me alegre sinceramente com os dons e as vitórias dos meus irmãos, reconhecendo que todas as bênçãos vêm da infinita bondade do Pai. São Miguel, protetor da caridade, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Senti inveja, ciúme ou incômodo diante do sucesso, bens ou virtudes de alguém hoje?",
+        "Alegrei-me secretamente com o erro, o sofrimento ou o fracasso de outra pessoa?",
+        "Pratiquei a caridade fraterna com paciência ou fui frio e indiferente com os meus familiares e colegas?",
+      ],
+      saintQuote: "Nisto todos conhecerão que sois meus discípulos: se vos amardes uns aos outros. - Jesus Cristo (João 13, 35)",
+      saintQuotesList: [
+        {
+          author: "São João da Cruz",
+          quote: "No anoitecer da vida, seremos examinados sobre o amor.",
+        },
+        {
+          author: "São Vicente de Paulo",
+          quote: "A caridade é o paraíso das almas e o vínculo da perfeição; onde há amor verdadeiro, Deus aí habita.",
+        },
+        {
+          author: "Santa Teresinha do Menino Jesus",
+          quote: "Compreendi que a caridade não deve ficar encerrada no fundo do coração; deve iluminar a todos.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Querubins e serafins amam a Deus acima de tudo, mas os homens têm o privilégio de amar a Deus amando o próximo.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 9,
+      title: "Dia 9",
+      theme: "A Temperança nas Palavras e Ações (O Combate contra a Gula e os Excessos)",
+      scripture: {
+        reference: "1 Coríntios 10, 31 / Filipenses 3, 19",
+        text: "Quer comais, quer bebais ou façais qualquer outra coisa, fazei tudo para a glória de Deus. Não façais do ventre o vosso deus, mas vivei com sobriedade.",
+        explanation: "A gula e a falta de domínio próprio nos apetites corporais escravizam o espírito e enfraquecem a vontade para o combate da virtude. A temperança restabelece a ordem justa na alma.",
+      },
+      meditation: `Irmão e irmã na fé, no nono dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a virtude cardinal da temperança e o combate contra a gula e os excessos sensíveis. Em uma sociedade consumista que incentiva a satisfação imediata de todos os desejos, aprender a dizer 'não' ao próprio corpo é um sinal de maturidade espiritual.
+
+A gula não consiste apenas no excesso de comida ou bebida, mas na busca desordenada do prazer sensível, na impaciência nas refeições, no apego ao luxo culinário e na incapacidade de suportar a menor privação corporal. Uma alma que não domina a sua boca e o seu estômago dificilmente dominará os seus olhos, sua língua e suas paixões.
+
+São Miguel Arcanjo nos convida à sobriedade dos filhos de Deus. O jejum e a abstinência praticados com amor não depreciam o corpo, mas purificam os sentidos, tornam a oração mais fervorosa e libertam a vontade das amarras da carne. Hoje, ofereça ao Senhor o domínio dos seus apetites para que o seu espírito possa voar livre em direção ao Céu.`,
+      virtue: "Temperança e Sobriedade",
+      purpose: "Fazer uma mortificação corporal discreta nas refeições hoje: deixar de comer algo que gosto ou não repetir o prato.",
+      suggestedPenance: "Abster-se de refrigerantes, doces ou petiscos durante o dia de hoje, oferecendo o sacrifício pela santificação dos sacerdotes.",
+      spiritualExercise: "Fazer uma pausa de oração antes das refeições, abençoando os alimentos e dando graças a Deus pelo pão de cada dia.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1809",
+            text: "A temperança é a virtude moral que modera a atração dos prazeres e assegura o domínio da vontade sobre os instintos.",
+          },
+          {
+            code: "CIC §2043",
+            text: "O quarto mandamento da Igreja (jejuar e abster-se de carne) assegura os tempos de ascese e de penitência que nos preparam para as festas litúrgicas.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "O jejum é o alimento da alma, o fortalecimento da mente e a destruição dos maus pensamentos.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A gula embota o sentido espiritual e inclina o homem à preguiça e à imoralidade, enquanto a sobriedade eleva a mente à contemplação.",
+          },
+          {
+            author: "São Bernardo de Claraval",
+            text: "Aquele que controla a gula abre a porta para todas as outras virtudes entrarem em seu coração.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa São Paulo VI",
+            text: "A penitência corporal é uma exigência permanente da vida cristã para reprimir os impulsos da natureza decaída e viver no Espírito.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Príncipe da Pureza e da Ordem Divina, ajudai-me a ter autodomínio e sobriedade em todas as coisas. Libertai a minha alma de toda escravidão da gula, dos excessos e da busca desordenada de prazeres sensíveis.
+
+Fortalecei a minha vontade para praticar o jejum e a mortificação com alegria e amor a Cristo. Que o meu corpo seja sempre um instrumento dócil ao serviço do Espírito Santo. São Miguel, guerreiro da sobriedade, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Cedi à gula, comendo ou bebendo em excesso por pura busca de prazer?",
+        "Fui impaciente, exigente ou reclamei das refeições preparadas em casa?",
+        "Consegui manter a mortificação e o jejum oferecidos ao Senhor ou desisti ao primeiro sinal de incômodo?",
+      ],
+      saintQuote: "O Reino de Deus não é comida nem bebida, mas justiça, paz e alegria no Espírito Santo. - São Paulo (Romanos 14, 17)",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A mortificação dos sentidos e da boca é o caminho mais curto para unir a alma a Deus na oração.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "O diabo não tem medo de um estômago cheio, mas treme diante do cristão que sabe jejuar e orar.",
+        },
+        {
+          author: "Santa Teresa d'Ávila",
+          quote: "Não sejamos escravos do nosso corpo; o corpo deve servir à alma para alcançar a vida eterna.",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "Devemos ser severos com o nosso irmão jumento (o corpo), mas cheios de amor pela alma remida por Cristo.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 10,
+      title: "Dia 10",
+      theme: "A Santa Esperança e Confiança Divina (O Combate contra a Ansiedade e o Desespero)",
+      scripture: {
+        reference: "Filipenses 4, 6-7 / Salmo 27 (26), 1",
+        text: "Não vos inquieteis com coisa alguma; mas em todas as circunstâncias apresentai os vossos pedidos a Deus pela oração e pela súplica, acompanhadas de ação de graças. E a paz de Deus... guardará os vossos corações.",
+        explanation: "A ansiedade sufocante e a perturbação da mente nascem da tentativa de carregar o futuro sem Deus. A esperança teologal nos dá a certeza inabalável de que o Pai provê tudo para a salvação dos Seus filhos.",
+      },
+      meditation: `Irmão e irmã na fé, no décimo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o dom da esperança cristã e o combate contra a ansiedade sufocante, as preocupações excessivas e o desespero. Quantas noites mal dormidas e corações aflitos porque tentamos controlar o amanhã com nossas próprias forças limitadas!
+
+O demônio aproveita-se das incertezas da vida — problemas financeiros, enfermidades, futuro dos filhos ou crises da sociedade — para plantar o pânico e a desconfiança na Providência divina. Uma alma perturbada pela ansiedade perde a paz, a alegria e a capacidade de escutar a voz de Deus no silêncio.
+
+São Miguel Arcanjo é o mensageiro da paz e da vitória de Deus. Ele nos recorda que o Altíssimo está no trono e governa o universo com sabedoria, amor e poder misericordioso. Nada acontece sem a permissão ou vontade permissiva do Pai. Quando as ondas do mar da vida se levantarem, não olhe para a tempestade; invoque São Miguel, entregue o seu futuro a Deus e descanse sob o manto da Providência Divina.`,
+      virtue: "Esperança Teologal e Confiança na Providência",
+      purpose: "Entregar verbalmente a Deus uma preocupação que tira a minha paz e rezar a jaculatória: 'Jesus, eu confio em Vós!' sempre que a ansiedade voltar.",
+      suggestedPenance: "Evitar consultar notícias sensacionalistas ou checar o celular compulsivamente para acalmar a mente na paz de Cristo.",
+      spiritualExercise: "Fazer uma lista de 5 bênçãos reais que Deus já concedeu na sua vida e dar graças de todo o coração.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1817",
+            text: "A esperança é a virtude teologal pela qual desejamos o Reino dos Céus e a Vida Eterna como nossa felicidade, pondo nossa confiança nas promessas de Cristo.",
+          },
+          {
+            code: "CIC §305",
+            text: "Jesus pede um abandono filial à Providência do Pai Celeste, que cuida até das menores necessidades dos Seus filhos.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Santo Agostinho",
+            text: "Fizeste-nos, Senhor, para Ti, e o nosso coração permanecerá inquieto enquanto não descansar em Ti.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "A esperança apoia-se na omnipotência e na misericórdia de Deus; por isso, para quem confia no Senhor, nada é impossível.",
+          },
+          {
+            author: "São Francisco de Sales",
+            text: "Não antecipes os males de amanhã. O mesmo Pai que cuida de ti hoje, cuidará de ti amanhã e sempre.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "Quem tem esperança vive de modo diferente; foi-lhe dada uma vida nova pela certeza de que a história está nas mãos de Deus.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, poderoso defensor e anjo da Paz Divina, afastai do meu coração toda a ansiedade sufocante, o medo do futuro, a agitação interior e o desespero.
+
+Ensina-me a abandonar a minha vida, a minha família e todas as minhas preocupações nas mãos amorosas do Pai Celestial. Revesti-me com o escudo da santa esperança para caminhar em paz, sabendo que Deus tudo provê. São Miguel, anjo da esperança, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Deixei-me dominar pela ansiedade, impaciência ou agitação por causa dos problemas do amanhã?",
+        "Duvidei do amor ou da Providência de Deus diante de uma dificuldade ou incerteza?",
+        "Procurei a paz de espírito na oração e nos sacramentos ou em distrações mundanas?",
+      ],
+      saintQuote: "O Senhor é minha luz e minha salvação: de quem terei medo? - Salmo 27 (26), 1",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Reze, espere e não se preocupe. A preocupação é inútil. Deus é misericordioso e ouvirá a sua oração.",
+        },
+        {
+          author: "Santa Teresa d'Ávila",
+          quote: "Nada te perturbe, nada te espante; tudo passa, Deus não muda. A paciência tudo alcança; quem a Deus tem, nada lhe falta.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Não temas o que possa acontecer amanhã; o mesmo Pai Eterno que cuida de ti hoje cuidará de ti amanhã.",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "Quem confia plenamente em Deus não teme as tempestades deste mundo, pois sua ancoragem está no Céu.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
   ],
 };
