@@ -2745,5 +2745,865 @@ Infundi no meu coração a paz e a alegria profunda do Espírito Santo, que não
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
+    {
+      number: 31,
+      title: "Dia 31",
+      theme: "A Armadura de Deus e o Combate Espiritual (O Combate contra as Forças das Trevas)",
+      scripture: {
+        reference: "Efésios 6, 10-18 / 1 Pedro 5, 8-9",
+        text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do diabo... Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades.",
+        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Epístola aos Efésios, o Apóstolo São Paulo é apresentado como o estratega divino que descreve a armadura do soldado de Cristo. Crisóstomo explica que a nossa guerra nesta terra não é contra criaturas humanas, mas contra os espíritos malignos da astúcia e do orgulho; por isso, armas terrenas de nada valem: precisamos do cinturão da verdade, da couraça da justiça, do escudo da fé e do capacete da salvação.
+
+São Jerônimo, em seus Comentários Paulinos, ensina que a espada do Espírito é a própria Palavra de Deus meditada e colocada em prática. O Santo Doutor adverte que um soldado que entra no campo de batalha sem o seu escudo da fé ou sem a vigilância da oração torna-se presa fácil para as flechas inflamadas do adversário.
+
+São Bernardo de Claraval recorda que São Miguel Arcanjo é o comandante do exército celestial que nos ensina a empunhar as armas divinas com destreza e intrepidez. Sob a proteção de São Miguel —, o fiel aprende a manter a guarda espiritual em todos os momentos da vida, sabendo que a vitória final já pertence a Deus.`,
+      },
+      meditation: `No trigésimo primeiro dia de nossa Quaresma de São Miguel Arcanjo, entramos na última dezena desta santa caminhada devocional. A Palavra de Deus nos lembra com clareza: a nossa vida sobre a terra é uma guerra espiritual ininterrupta.
+
+O demônio não dorme nem descansa; ele ronda como um leão a rugir, procurando a quem devorar. Mas não devemos ter medo! Deus não nos deixou desarmados no combate: deu-nos os Sacramentos, a oração, a intercessão de Nossa Senhora e a custódia invencível dos Santos Anjos.
+
+São Miguel Arcanjo é o Supremo Comandante dos Exércitos do Senhor. Ele nos convida a vestir diariamente a Armadura de Deus: a verdade, a justiça, a fé viva e o uso da Palavra Sagrada. Peça hoje a São Miguel a coragem de um verdadeiro soldado de Cristo, que não se acovarda nem desiste diante das investidas do inimigo.`,
+      virtue: "Vigilância Espiritual, Fortaleza na Fé e Armadura de Deus",
+      purpose: "Rezar a Oração de São Miguel Arcanjo de Papa Leão XIII com os braços estendidos ou de joelhos pela manhã.",
+      suggestedPenance: "Fazer uma mortificação dos sentidos, evitando olhar notícias sensacionalistas ou fofocas no dia de hoje.",
+      spiritualExercise: "Ler pausadamente Efésios 6, 10-18 e consagrar cada membro do seu corpo a Deus como instrumento de justiça e paz.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §409",
+            text: "A situação dramática do mundo que 'jaz sob o poder do Maligno' faz da vida do homem um combate espiritual. Este combate dura toda a vida.",
+          },
+          {
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela Cruz. Não há santidade sem renúncia e sem combate espiritual.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "O cristão que entra no campo de batalha sem a oração é como um soldado que corre nu para o meio das espadas.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Jerônimo",
+            text: "Empunha a espada da Palavra de Deus em todas as tuas tentações; o diabo foge da alma que medita as Escrituras.",
+          },
+          {
+            author: "São Bernardo de Claraval",
+            text: "São Miguel Arcanjo é o escudo invencível dos fiéis; com ele à frente, nenhum exército infernal pode prevalecer.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Francisco",
+            text: "O combate espiritual não é uma metáfora, é uma realidade. Devemos estar vigilantes e armados com a Palavra de Deus.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, General das Milícias Celestiais, revesti a minha alma com a santa Armadura de Deus.
+
+Defendei-me contra as ciladas, obsessões e flechas inflamadas do maligno. Concedei-me a fortaleza invencível na fé para perseverar no combate espiritual até a vitória final no Céu. São Miguel, nosso protetor na luta, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Fui negligente na vigilância espiritual, deixando a minha alma desarmada sem oração no início do dia?",
+        "Cedi ao medo ou à acovardia diante das tentações e pressões do ambiente?",
+        "Recorri com frequência à proteção de São Miguel Arcanjo nos momentos de perigo moral?",
+      ],
+      saintQuote: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do diabo. - Efésios 6, 11",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A vida do cristão é uma luta diária; não baixes a tua guarda enquanto estiveres nesta terra.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "O diabo só ataca as almas que querem sair do pecado e seguir a Cristo; alegra-te se és tentado, pois é sinal de combate vivo.",
+        },
+        {
+          author: "São Josemaría Escrivá",
+          quote: "Não há vitória sem luta; veste a armadura da fé e vai à frente sem temor.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A oração fervorosa é o escudo que desvia todos os dardos inflamados do inimigo.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 32,
+      title: "Dia 32",
+      theme: "A Prática do Jejum e da Mortificação dos Sentidos (O Combate contra os Desejos Desordenados da Carne)",
+      scripture: {
+        reference: "Mateus 6, 16-18 / 1 Coríntios 9, 27",
+        text: "Quando jejuardes, não tomeis um ar sombrio como os hipócritas... Esbofeteio o meu corpo e o subjugo, para que não aconteça que, tendo pregado aos outros, venha eu próprio a ser reprovado.",
+        explanation: `Nas célebres Homilias de São Basílio Magno sobre o Jejum, a prática da mortificação é aclamada como a muralha protetora da alma e o alimento do espírito. São Basílio ensina que o jejum foi a primeira lei dada ao homem no Paraíso e que a ausência de sobriedade abriu a porta para o pecado de Adão. O jejum enfraquece as paixões desordenadas da carne e eleva os pensamentos até o Trono de Deus.
+
+Papa São Leão Magno, em seus Sermões Quaresmais, explica que o jejum do corpo de nada vale se não vier acompanhado do jejum da língua — abstendo-se de fofocas e calúnias — e do jejum das paixões egoístas. O Santo Papa exorta que a verdadeira mortificação purifica a visão espiritual e nos torna solícitos para com os necessitados.
+
+São João Maria Vianney (Cura d'Ars) recorda em seus sermões que certos demônios de impureza e desespero apenas são expulsos mediante a oração e o jejum perseverante. Sob a guarda de São Miguel Arcanjo — que vive na perfeita sobriedade dos espíritos puros —, o fiel oferece a sua mortificação em reparação pelos pecados e pelo bem da Santa Igreja.`,
+      },
+      meditation: `No trigésimo segundo dia de nossa caminhada, a Igreja nos recorda a necessidade indispensável do jejum e da mortificação dos sentidos. Numa cultura hedonista que prega a satisfação imediata de todos os apetites, a mortificação cristã é um ato revolucionário de amor a Deus.
+
+Quem não sabe dizer 'não' ao seu corpo nas coisas lícitas (como um alimento saboroso ou o uso da internet) jamais saberá dizer 'não' ao diabo nas coisas ilícitas. A mortificação não é desprezo pelo corpo, mas o reestabelecimento do domínio do espírito sobre a matéria.
+
+São Miguel Arcanjo é o modelo de sobriedade espiritual. Ele nos ensina a jejuar de coração humilde e alegre, sem ostentação. Peça hoje a São Miguel a graça de subjugar as suas paixões desordenadas, oferecendo a sua mortificação em reparação pelos pecados do mundo e pela santificação da sua família.`,
+      virtue: "Sobriedade, Mortificação dos Sentidos e Automínio",
+      purpose: "Fazer um jejum parcial ou abstinência de um alimento de que muito gosta (café, doces, refrigerante ou carne) no dia de hoje.",
+      suggestedPenance: "Manter a custódia dos olhos, evitando olhar para vitrines, telas ou imagens que alimentem a vaidade ou a curiosidade.",
+      spiritualExercise: "Oferecer todo o cansaço ou fome do dia em silêncio a Deus, rezando: 'Senhor, aceitai esta pequena penitência pela conversão dos pecadores'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1434",
+            text: "A penitência interior do cristão pode ter expressões muito variadas. A Escritura e os Padres insistem sobretudo em três formas: o jejum, a oração, a esmola.",
+          },
+          {
+            code: "CIC §2043",
+            text: "O quarto mandamento da Igreja ('Jejuar e abster-se de carne quando manda a Santa Mãe Igreja') assegura os tempos de ascese e de preparação para as festas litúrgicas.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Basílio Magno",
+            text: "O jejum gera profetas, fortalece os fortes, instrui os legisladores; o jejum é o baluarte da alma e o companheiro dos anjos.",
+          },
+        ],
+        doctors: [
+          {
+            author: "Papa São Leão Magno",
+            text: "A abstinência do corpo fortifica a mente. Purifica a carne e acende no coração a chama da caridade divina.",
+          },
+          {
+            author: "São João Maria Vianney",
+            text: "O diabo não teme nada tanto quanto uma alma que une a oração fervorosa ao jejum constante.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Paulo VI",
+            text: "A mortificação cristã é a resposta do amor ao mistério do sofrimento da Cruz de Nosso Senhor Jesus Cristo.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Espelho de Sobriedade e Pureza, ensinai-me a mortificar as minhas paixões e desejos desordenados.
+
+Concedei-me a força de domar o meu corpo e os meus sentidos através da santa penitência e do jejum. Que o meu espírito se eleve livre para amar a Deus e servir ao próximo. São Miguel, mestre da ascese cristã, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Fui guloso, intemperante ou busquei a satisfação desordenada dos meus apetites sensíveis hoje?",
+        "Deixei de praticar a mortificação dos meus sentidos por preguiça ou amor-próprio?",
+        "Queixei-me ou exibi-me quando fiz uma pequena penitência ou jejum?",
+      ],
+      saintQuote: "Esbofeteio o meu corpo e o subjugo. - 1 Coríntios 9, 27",
+      saintQuotesList: [
+        {
+          author: "São Basílio Magno",
+          quote: "O jejum eleva a mente ao Céu e faz da alma uma morada digna dos Anjos.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "Sem a mortificação, a oração torna-se morna e desprovida de asas para subir a Deus.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A mortificação dos sentidos é o portão de entrada para a paz interior e o recolhimento.",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Oferece o teu corpo como sacrifício vivo e santo a Deus através da sobriedade cotidiana.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 33,
+      title: "Dia 33",
+      theme: "A Fidelidade à Palavra de Deus (O Combate contra as Falsas Doutrinas e Ideologias do Mundo)",
+      scripture: {
+        reference: "2 Timóteo 3, 16-17 / Salmo 119 (118), 105",
+        text: "Toda a Escritura é inspirada por Deus e útil para ensinar, para repreender, para corrigir, para educar na justiça... Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho.",
+        explanation: `Nas cartas e homilias de São Jerônimo, tradutor da Vulgata Sagrada, é formulada a célebre máxima: 'Ignorar as Escrituras é ignorar a Cristo'. O Doutor Máximo ensina que a Palavra de Deus escrita e preservada pela Tradição da Santa Igreja Católica é a luz infalível que dissipa as trevas dos erros humanos e nos revela a Vontade do Pai Celestial.
+
+Santo Agostinho, em seus Tratados sobre os Salmos, ensina que ler a Sagrada Escritura é ouvir o próprio Deus nos falar interiormente. O Bispo de Hipona adverte contra a presunção de interpretar as Escrituras fora do Magistério vivo da Igreja, lembrando que os heresiarcas caíram no erro por quererem adaptar a Palavra de Deus aos seus próprios desejos em vez de converterem o coração à Verdade.
+
+São João Crisóstomo exorta em suas Homilias que a leitura diária da Bíblia fortalece a alma contra os ataques do demônio, servindo como alimento espiritual insubstituível. Sob o gládio da verdade de São Miguel Arcanjo —, o cristão atinge o trigésimo terceiro dia de Quaresma renovando o seu amor apaixonado pela Palavra de Deus e pela doutrina católica.`,
+      },
+      meditation: `No trigésimo terceiro dia de nossa Quaresma de São Miguel Arcanjo, contemplamos a beleza e a autoridade divina da Sagrada Escritura e da Doutrina Católica. Num mundo confuso, relativista e repleto de ideologias enganosas, a Palavra de Deus é o farol seguro que guia os nossos passos para a eternidade.
+
+Ignorar as Escrituras é ignorar o próprio Jesus Cristo. Se não alimentarmos a nossa mente com a Bíblia e com o Catecismo da Igreja Católica, seremos facilmente levados por qualquer vento de falsa doutrina ou por opiniões humanas passageiras.
+
+São Miguel Arcanjo é o defensor da Doutrina Eterna. Ele nos convida a ler a Bíblia diariamente com reverência, oração e em comunhão com o Magistério da Igreja. Peça hoje a São Miguel a graça do amor sagrado pela Palavra de Deus e pela fidelidade incondicional à verdade revelar por Cristo.`,
+      virtue: "Amor à Sagrada Escritura e Fidelidade à Doutrina Católica",
+      purpose: "Ler e meditar um capítulo completo dos Evangelhos no dia de hoje (ex: São Mateus cap. 5, 6 ou 7).",
+      suggestedPenance: "Renunciar a conteúdos de opinião duvidosa ou modas ideológicas mundanas para dedicar tempo ao estudo do Catecismo.",
+      spiritualExercise: "Fazer a *Lectio Divina* (Leitura Orante da Bíblia) durante 15 minutos em silêncio diante do Crucifixo.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §104",
+            text: "Na Sagrada Escritura, a Igreja encontra continuamente o seu alimento e a sua força, porque nela não acolhe apenas uma palavra humana, mas o que ela é verdadeiramente: a Palavra de Deus.",
+          },
+          {
+            code: "CIC §133",
+            text: "A Igreja exorta com veemência todos os fiéis à leitura frequente das divinas Escrituras. 'Ignorar as Escrituras é ignorar a Cristo'.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Jerônimo",
+            text: "Ama a leitura das Sagradas Escrituras e a sabedoria divina te amará; guarda a Palavra de Deus na tua mente e ela guardará o teu coração.",
+          },
+        ],
+        doctors: [
+          {
+            author: "Santo Agostinho",
+            text: "A tua oração é o teu falar com Deus; a tua leitura da Bíblia é Deus a falar contigo.",
+          },
+          {
+            author: "São Tomás de Aquino",
+            text: "A Sagrada Escritura é a regra infalível da fé católica, dada por Deus para iluminar a razão humana.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "A Lectio Divina abre a alma para o encontro pessoal com o Cristo Vivo que nos fala no texto sagrado.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Guarda da Verdade Eterna, infundi na minha alma um amor ardente e veneração pela Sagrada Escritura e pela Doutrina Católica.
+
+Preservai a minha mente de todos os erros, heresias e ideologias enganosas do mundo. Que a Palavra de Deus seja a lâmpada constante dos meus passos e a força da minha vida. São Miguel, defensor da Fé, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Deixei de ler a Sagrada Escritura ou o Catecismo da Igreja por preguiça ou desinteresse espiritual?",
+        "Aceitei ideologias ou opiniões mundanas contrárias aos ensinamentos da Santa Igreja Católica?",
+        "Meditei a Palavra de Deus com oração e atitude de escuta humilde no meu dia?",
+      ],
+      saintQuote: "Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho. - Salmo 119 (118), 105",
+      saintQuotesList: [
+        {
+          author: "São Jerônimo",
+          quote: "Ignorar as Escrituras é ignorar a Cristo.",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Lê a Bíblia e o Catecismo; a alma que não se alimenta da Verdade cai na fraqueza moral.",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Eu não creria no Evangelho se a autoridade da Igreja Católica não me movesse a isso.",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "A Palavra de Deus é o pão da alma que dá força ao peregrino a caminho da Pátria Celestial.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 34,
+      title: "Dia 34",
+      theme: "A Devoção aos Santos Anjos da Guarda (O Combate contra a Solidão Espiritual e o Isolamento)",
+      scripture: {
+        reference: "Salmo 91 (90), 11-12 / Mateus 18, 10",
+        text: "Pois ele dará ordens aos seus anjos a teu respeito, para que te guardem em todos os teus caminhos... Os seus anjos no céu veem sem cessar a face de meu Pai que está nos céus.",
+        explanation: `Nas Homilias de São Bernardo de Claraval sobre o Salmo 90, o Doutor Melífluo pronuncia palavras imortais sobre a devoção ao Anjo da Guarda: 'Respeita a sua presença, sê-lhe grato pela sua benevolência, confia na sua proteção! Jamais estás só, mesmo que estejas no mais escuro dos desertos; o teu Anjo da Guarda está ao teu lado'. São Bernardo ensina que o Anjo da Guarda é um companheiro fiel dado por Deus para nos defender nas tentações e guiar os nossos passos ao Céu.
+
+São João Maria Vianney (Cura d'Ars), em seus Sermões sobre os Espíritos Celestiais, recorda a eficácia de invocar o Anjo da Guarda nos momentos de perigo moral e físico. O santo padre dizia que o nosso Anjo da Guarda reza por nós quando dormimos e apresenta as nossas humildes intenções diante do Trono da Santíssima Trindade.
+
+São Basílio Magno, em seus Tratados Teológicos, lembra que cada fiel tem ao seu lado um Anjo como protetor e pastor para o conduzir à vida eterna. Sob o comando supremo de São Miguel Arcanjo — Príncipe de toda a Milícia Angélica —, o cristão aprende a cultivar uma amizade diária e respeitosa com o seu Santo Anjo da Guarda.`,
+      },
+      meditation: `No trigésimo quarto dia de nossa Quaresma de São Miguel Arcanjo, celebramos a presença amorosa e fiel do nosso Santo Anjo da Guarda. Num mundo onde tantos se sentem sós, abandonados ou incompreendidos, a fé católica nos revela que nunca estamos sozinhos!
+
+Desde o instante da nossa concepção até o momento do nosso último suspiro, Deus nos concedeu um amigo celestial, sábio, poderoso e santo, cujo único desejo é nos ver salvos no Céu.
+
+São Miguel Arcanjo é o Príncipe de todos os Anjos da Guarda. Ele nos encoraja a conversar diariamente com o nosso Anjo, a pedir os seus conselhos nas decisões e a respeitar a sua presença santa abstendo-nos do pecado. Peça hoje a São Miguel que fortaleça a sua união e gratidão ao seu Anjo da Guarda.`,
+      virtue: "Devoção ao Anjo da Guarda, Respeito à Presença Angélica e Confiança",
+      purpose: "Rezar a oração do 'Santo Anjo do Senhor' 3 vezes hoje (pela manhã, à tarde e à noite) com atenção profunda.",
+      suggestedPenance: "Cumprimentar e pedir a bênção espiritual do Anjo da Guarda das pessoas com quem se encontrar hoje.",
+      spiritualExercise: "Fazer um momento de silêncio e pedir desculpas ao seu Anjo da Guarda pelas vezes em que ofendeu a sua presença santa com pensamentos ou atos ruins.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §336",
+            text: "Desde o seu início até à hora da morte, a vida humana é cercada pela sua proteção e pela sua intercessão. 'Cada fiel tem ao seu lado um anjo como protetor e pastor para o conduzir à vida'.",
+          },
+          {
+            code: "CIC §329",
+            text: "Os Anjos são servidores e mensageiros de Deus. 'Sendo criaturas puramente espirituais, têm inteligência e vontade: são criaturas pessoais e imortais'.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São Bernardo de Claraval",
+            text: "Respeita a presença do teu Anjo, sê-lhe grato pela sua benevolência, confia na sua proteção. Jamais estás só!",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "O Anjo da Guarda é designado por Deus para guiar o homem pelo caminho da salvação e afastar os perigos do corpo e da alma.",
+          },
+          {
+            author: "São Basílio Magno",
+            text: "Nenhum fiel duvide da presença do seu Anjo; ele é o guarda invisível e poderoso da tua alma.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Francisco",
+            text: "O Anjo da Guarda não é uma doutrina imaginária, é um companheiro de viagem que Deus colocou ao nosso lado.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Príncipe e Chefe da Milícia Angélica, abençoai o meu Santo Anjo da Guarda e fortalecei a nossa santa amizade.
+
+Ensinai-me a respeitar a presença do meu Anjo protetor, escutando as suas santas inspirações e confiando no seu patrocínio em todas as provações. São Miguel e todos os Anjos da Guarda, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Esqueci-me da presença constante do meu Anjo da Guarda no dia de hoje?",
+        "Fiz algo que pudesse entristecer a presença santa do meu Anjo protetor?",
+        "Invoquei o auxílio do meu Anjo da Guarda nas tentações e dificuldades?",
+      ],
+      saintQuote: "Ele dará ordens aos seus anjos a teu respeito, para que te guardem. - Salmo 91 (90), 11",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Invoca o teu Anjo da Guarda nas horas de aflição; ele te consolará e te dará forças.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "Se tivéssemos olhos para ver o nosso Anjo da Guarda, ficaríamos deslumbrados com a sua beleza e amor por nós.",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "Anda com grande reverência onde quer que estejas, pois o teu Anjo da Guarda te contempla.",
+        },
+        {
+          author: "São Josemaría Escrivá",
+          quote: "Ganha a amizade do teu Anjo da Guarda; ele é o teu melhor aliado no combate espiritual.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 35,
+      title: "Dia 35",
+      theme: "O Santo Zelo pela Salvação das Almas (O Combate contra a Indiferença Espiritual pelo Próximo)",
+      scripture: {
+        reference: "Tiago 5, 19-20 / 1 Coríntios 9, 22",
+        text: "Aquele que fizer voltar um pecador do seu caminho errado salvará a sua alma da morte e cobrirá uma multidão de pecados... Fiz-me tudo para todos, a fim de salvar alguns a todo custo.",
+        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Salvação dos Próximos, o grande Patriarca declara que nada revela tanto a autenticidade da fé cristã quanto o zelo ardente pela salvação dos irmãos. Crisóstomo chega a dizer que um cristão que não se preocupa com a salvação dos outros é um membro atrofiado no Corpo Místico de Cristo, pois quem encontrou o tesouro da graça quer partilhá-lo com toda a humanidade.
+
+São Francisco Xavier, nas suas cartas apostólicas e sermões missionários, exclamava com lágrimas no coração que multidões de almas caíam no inferno por falta de quem lhes pregasse o Evangelho e lhes ensinasse os caminhos da salvação. O grande missionário exortava os fiéis a oferecerem orações, sacrifícios e testemunho de vida para resgatar os pecadores longe de Deus.
+
+São João Bosco, cujo lema era 'Dá-me almas e tira o resto' (Da mihi animas, caetera tolle), ensinava que a salvação de uma única alma vale mais do que todos os impérios da terra. Sob a intercessão de São Miguel Arcanjo — defensor e condutor das almas ao Paraíso —, o fiel é chamado a despertar para o zelo apostólico e rezar diariamente pela conversão dos pecadores.`,
+      },
+      meditation: `No trigésimo quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o santo zelo pela salvação das almas e o combate contra a frieza e a indiferença espiritual pelo nosso próximo. Quantas almas ao nosso redor — amigos, familiares, colegas — vivem afastadas dos sacramentos, cegas pelo pecado e correndo o risco da perdição eterna!
+
+Se amamos a Deus e ao próximo, não podemos ficar indiferentes à salvação das almas. Cada alma custou o Sangue Precioso de Jesus Cristo na Cruz!
+
+São Miguel Arcanjo é o defensor das almas e o encarregado de introduzi-las no Paraíso. Ele nos convida a sermos apóstolos no cotidiano: rezando, oferecendo pequenos sacrifícios e dando bom testemunho de fé. Peça hoje a São Miguel um coração ardente de zelo apostólico, para que você seja um instrumento da graça de Deus na vida daqueles que o cercam.`,
+      virtue: "Santo Zelo Apostólico, Caridade Espiritual e Oração pelos Pecadores",
+      purpose: "Oferecer um rosário ou uma hora de adoração expressamente pela conversão de um familiar ou amigo afastado de Deus.",
+      suggestedPenance: "Renunciar a uma conversa fútil para dar um conselho amigo ou convidar alguém a voltar à Igreja e aos Sacramentos.",
+      spiritualExercise: "Rezar a Oração de Nossa Senhora de Fátima: 'Ó meu Jesus, perdoai-nos, livrai-nos do fogo do inferno, levai as almas todas para o Céu e socorrei principalmente as que mais precisarem'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §851",
+            text: "O motivo da atividade missionária provém do amor de Deus por todos os homens... É o próprio amor de Cristo que impulsiona a Igreja a anunciar a verdade que salva.",
+          },
+          {
+            code: "CIC §1822",
+            text: "A caridade é a virtude teologal pela qual amamos a Deus sobre todas as coisas e ao próximo como a nós mesmos por amor de Deus.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "Nada há mais frio do que um cristão que não se preocupa com a salvação dos seus irmãos.",
+          },
+        ],
+        doctors: [
+          {
+            author: "Santo Afonso Maria de Ligório",
+            text: "Quem salva uma alma assegura a sua própria salvação eterna, pois a caridade cobre uma multidão de pecados.",
+          },
+          {
+            author: "São João Bosco",
+            text: "Da mihi animas, caetera tolle: Dá-me almas, Senhor, e tira todo o resto!",
+          },
+        ],
+        magisterium: [
+          {
+            author: "São João Paulo II",
+            text: "A nova evangelização exige cristãos apaixonados por Cristo e cheios de zelo pela salvação dos homens do nosso tempo.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Condutor das Almas ao Paraíso, infundi no meu coração um ardoroso e incansável zelo pela salvação dos pecadores.
+
+Que eu não viva indiferente à perdição dos meus irmãos, mas ofereça orações, sacrifícios e testemunho para resgatá-los para Cristo. São Miguel, defensor das almas, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Fui indiferente à situação espiritual dos meus familiares ou amigos que vivem longe de Deus?",
+        "Deixei de rezar ou oferecer sacrifícios pela conversão dos pecadores no dia de hoje?",
+        "Tive vergonha de convidar alguém para a Santa Missa ou Confissão?",
+      ],
+      saintQuote: "Aquele que fizer voltar um pecador do seu caminho errado salvará a sua alma da morte. - Tiago 5, 20",
+      saintQuotesList: [
+        {
+          author: "São Francisco Xavier",
+          quote: "Quantas almas se perdem por falta de quem as ame e reze pela sua conversão!",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Oferece o teu sofrimento e as tuas orações pelas almas dos pecadores; é a maior obra de caridade.",
+        },
+        {
+          author: "São João Bosco",
+          quote: "Trabalhemos para salvar as almas dos jovens; no Céu teremos a recompensa eterna.",
+        },
+        {
+          author: "Santa Teresa de Ávila",
+          quote: "Daria mil vidas para salvar uma única alma da perdição eterna.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 36,
+      title: "Dia 36",
+      theme: "A Adoração Eucarística e a Vida de Graça (O Combate contra a Desatenção na Santa Missa)",
+      scripture: {
+        reference: "João 6, 51.54-56 / 1 Coríntios 11, 26-29",
+        text: "Eu sou o pão vivo descido do céu. Se alguém comer deste pão viverá eternamente... Quem come a minha carne e bebe o meu sangue tem a vida eterna, e eu o ressuscitarei no último dia.",
+        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Santíssima Eucaristia, o altar do sacrifício é apresentado como o próprio Calvário tornado presente, ao redor do qual multidões de Santos Anjos se prostram em adoração tremenda e reverente. O Crisóstomo adverte severamente sobre o perigo de assistir à Santa Missa com distração, conversas fúteis ou na desgraça do pecado mortal, lembrando que na Eucaristia recebemos o próprio Deus Vivo.
+
+São Tomás de Aquino, nos seus Hinos Eucarísticos e Sermões sobre o Corpo do Senhor, ensina que a Eucaristia é o ápice da vida cristã e o maior de todos os milagres do amor de Cristo. O Doutor Angélico explica que a Comunhão Eucarística feita com o coração puro aumenta a graça santificante, perdoa os pecados veniais e fortalece a alma contra os dardos do demônio.
+
+São Tarcísio e os Mártires de Abitina testemunharam com o próprio sangue que 'sem a Eucaristia não podemos viver'. Sob a adoração profunda de São Miguel Arcanjo — que apresenta o incenso das orações diante do Trono Celestial —, o cristão é exortado a participar da Santa Missa com fervor renovado e modéstia no coração.`,
+      },
+      meditation: `No trigésimo sexto dia de nossa Quaresma de São Miguel Arcanjo, prostramo-nos em adoração diante do Mistério Inefável da Santíssima Eucaristia. Na Hostia Consagrada está presente real, verdadeira e substancialmente o Corpo, o Sangue, a Alma e a Divindade de Nosso Senhor Jesus Cristo!
+
+Como tratamos a Santa Missa e a Sagrada Comunhão? Quantas vezes nos aproximamos do Altar sem o devido recolhimento, distraídos ou sem o devido exame de consciência!
+
+São Miguel Arcanjo e os anjos da corte celeste adoram a Jesus Eucarístico com santo temor e profundo amor no Sacrário. Peça hoje a São Miguel a graça de um fervor renovado para com o Santíssimo Sacramento, aproximando-se da Comunhão sempre com a alma pura e o coração inflamado de amor.`,
+      virtue: "Fervor Eucarístico, Adoração e Santo Temor",
+      purpose: "Fazer uma visita ao Santíssimo Sacramento hoje na igreja mais próxima para 15 minutos de adoração em silêncio.",
+      suggestedPenance: "Manter o silêncio e o recolhimento total dentro da igreja antes e depois da Santa Missa.",
+      spiritualExercise: "Rezar devagar o ato de fé eucarística: 'Meu Deus, eu creio, adoro, espero e amo-Vos; peço-Vos perdão para os que não creem, não adoram, não esperam e não Vos amam'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1324",
+            text: "A Eucaristia é 'fonte e ponto culminante de toda a vida cristã'. Os restantes sacramentos estão-lhe vinculados e a ela se ordenam.",
+          },
+          {
+            code: "CIC §1385",
+            text: "Para responder a este convite, devemos preparar-nos para este momento tão grande e tão sagrado. Aquele que tiver consciência de ter cometido um pecado mortal deve receber o sacramento da Reconciliação antes de se aproximar da Comunhão.",
+          },
+        ],
+        fathers: [
+          {
+            author: "São João Crisóstomo",
+            text: "Quando vires o Altar e o sacerdote oferecendo o Sacrifício, pensa que os Anjos estão ali prostrados em adoradora reverência.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Tomás de Aquino",
+            text: "Nenhum outro sacramento é mais salutar do que a Eucaristia; por ele os pecados são purificados e as virtudes aumentadas na alma.",
+          },
+          {
+            author: "Santo Afonso Maria de Ligório",
+            text: "A adoração ao Santíssimo Sacramento é a maior das devoções depois dos sacramentos e a mais cara a Deus.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "São João Paulo II",
+            text: "A Igreja vive da Eucaristia. Este mistério é o coração pulsante do Corpo Místico de Cristo.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Anjo da Adoração Eucarística, ensinai-me a adorar a Nosso Senhor Jesus Cristo presente no Santíssimo Sacramento com o mesmo ardor dos Serafins.
+
+Concedei-me a graça de me aproximar da Sagrada Comunhão com a alma pura, contrita e cheia de amor santo. Guardai o meu coração contra qualquer desatenção no Altar. São Miguel, adorador de Cristo Eucarístico, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Participei da Santa Missa com distração, olhar disperso ou conversas fúteis?",
+        "Comunguei sem a devida preparação espiritual ou correndo o risco de estar em pecado mortal?",
+        "Fiz atos de adoração e agradecimento a Jesus no Santíssimo Sacramento hoje?",
+      ],
+      saintQuote: "Eu sou o pão vivo descido do céu. Se alguém comer deste pão viverá eternamente. - João 6, 51",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Seria mais fácil para o mundo existir sem o sol do que sem a Santa Missa.",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "Adoro te devote, latens Deitas: Adoro-Vos com devoção, ó Deus escondido sob as espécies do Pão!",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "Quando comungamos, sentimos algo de extraordinário: uma paz e um amor que não são desta terra.",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "Pasmada a humanidade, trema o mundo inteiro e exulte o Céu quando sobre o altar está o Corpo de Cristo!",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 37,
+      title: "Dia 37",
+      theme: "O Dom da Paz de Cristo na Hora da Provação (O Combate contra o Medo do Futuro e a Ansiedade)",
+      scripture: {
+        reference: "João 14, 27 / Mateus 6, 31-34",
+        text: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize... Não vos preocupeis com o dia de amanhã.",
+        explanation: `Nas célebres Homilias de São Francisco de Sales sobre a Divina Providência, a ansiedade excessiva e a agonia pelo amanhã são denunciadas como tentações sutis que roubam a paz da alma e paralisam a confiança no Pai Celestial. O Bispo de Genebra ensina que Deus, que cuida das aves do céu e veste os lírios do campo, jamais abandonará uma alma que se entrega com filial abandono em Suas mãos.
+
+Santo Agostinho, em seus Tratados sobre os Salmos, exclama que a paz de Cristo não significa a ausência de tempestades externas, mas o repouso do coração fundamentado na rocha da fé. Agostinho exorta que enquanto o mundo busca a paz na riqueza, nos prazeres e nas garantias humanas, o cristão encontra a sua paz inabalável na certeza de ser amado e guardado por Deus.
+
+São Padre Pio de Pietrelcina repetia constantemente aos seus filhos espirituais: 'Reza, espera e não te preocupes. A ansiedade não serve para nada; Deus é misericordioso e escutará a tua oração'. Sob o escudo de São Miguel Arcanjo —, o fiel atinge a reta final da Quaresma entregando todas as suas preocupações e medos nas mãos onipotentes de Deus.`,
+      },
+      meditation: `No trigésimo sétimo dia de nossa Quaresma de São Miguel Arcanjo, a Palavra de Nosso Senhor Jesus Cristo vem trazer o remédio divino para as nossas angústias: 'Deixo-vos a paz, a minha paz vos dou!'. Como o medo do futuro, a ansiedade financeira e o temor da doença roubam a alegria e a serenidade dos nossos dias!
+
+A ansiedade nasce da ilusão de querer controlar o que não está ao nosso alcance, esquecendo-nos de que o Pai Celestial cuida de nós com amor infinito. De que adianta perturbar a mente com o dia de amanhã? A cada dia basta o seu cuidado.
+
+São Miguel Arcanjo é o guardião da paz das almas. Ele nos ensina a descansar na Providência Divina e a depositar toda confiança no Senhor. Peça hoje a São Miguel a graça de banir todo o medo e ansiedade, acolhendo a paz profunda que só Cristo pode dar ao coração fiel.`,
+      virtue: "Paz Interior, Confiança na Providência e Abandono em Deus",
+      purpose: "Entregar expressamente a Deus uma preocupação concreta sobre o futuro no dia de hoje, dizendo: 'Senhor, cuidai Vós disso!'.",
+      suggestedPenance: "Renunciar a pesquisar compulsivamente sobre problemas futuros ou notícias alarmantes na internet.",
+      spiritualExercise: "Fazer uma pausa de recolhimento de 10 minutos à tarde, repetindo pausadamente a frase: 'O Senhor é o meu pastor, nada me faltará'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §305",
+            text: "Jesus pede um abandono filial à Providência do Pai Celeste, que cuida das mais pequenas necessidades dos seus filhos.",
+          },
+          {
+            code: "CIC §2305",
+            text: "A paz terrena é imagem e fruto da paz de Cristo... Ela é a 'tranquilidade da ordem' fundada na justiça e na caridade.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Santo Agostinho",
+            text: "O nosso coração permanece inquieto enquanto não repousar em Ti, ó meu Deus!",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Francisco de Sales",
+            text: "Não te preocupes com o que acontecerá amanhã; o mesmo Pai Eterno que cuida de ti hoje cuidará de ti amanhã e sempre.",
+          },
+          {
+            author: "São João da Cruz",
+            text: "Na tempestade, mantém o teu coração em paz e confiança em Deus; a perturbação é o vento do inimigo.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "Quem confia em Deus não tem medo do futuro; a esperança cristã é a ancoragem da alma no Céu.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Anjo da Paz Divina, afugentai do meu coração todo o medo do futuro, ansiedade e perturbação da mente.
+
+Ensinai-me a descansar com inteira confiança nos braços da Divina Providência. Que a paz de Cristo reine em minha alma e na minha família em todos os momentos. São Miguel, guardião da paz, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Permiti que a ansiedade, preocupação com o futuro ou medo tirassem a minha paz interior hoje?",
+        "Esqueci-me de que Deus cuida da minha vida com amor de Pai diante dos imprevistos?",
+        "Busquei consolo na oração e na Palavra de Deus quando me senti angustiado?",
+      ],
+      saintQuote: "Deixo-vos a paz, a minha paz vos dou; não se turbe o vosso coração. - João 14, 27",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Reza, espera e não te preocupes. A ansiedade é inútil; confia na bondade de Deus.",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Não antecipes os males de amanhã; o Senhor te dará a graça necessária para cada dia.",
+        },
+        {
+          author: "Santa Teresa de Ávila",
+          quote: "Nada te perturbe, nada te espante; tudo passa, Deus não muda. A paciência tudo alcança.",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Deixa o teu passado à misericórdia de Deus, o teu presente ao Seu amor e o teu futuro à Sua Providência.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 38,
+      title: "Dia 38",
+      theme: "A Purificação da Memória e o Perdão das Mágoas Passadas (O Combate contra o Amargor de Antigas Feridas)",
+      scripture: {
+        reference: "Colossenses 3, 12-13 / Efésios 4, 31-32",
+        text: "Suportai-vos uns aos outros e perdoai-vos mutuamente, se alguém tiver queixa contra outro. Como o Senhor vos perdoou, assim fazei vós também... Toda a amargura, aspereza e ira sejam tiradas do meio de vós.",
+        explanation: `Nas Homilias de Santo Agostinho sobre o Perdão das Ofensas, a memória ressentida é comparada a uma ferida aberta que a alma se recusa a curar, alimentando a dor de fatos passados e renovando continuamente o veneno do rancor. O Bispo de Hipona ensina que guardar mágoas antigas é como beber veneno esperando que o outro morra; o perdão libertador limpa a memória e restaura a saúde espiritual da alma.
+
+São João Crisóstomo, em seus Sermões sobre a Caridade, exorta os fiéis a perdoarem do fundo do coração todas as injustiças sofridas ao longo da vida. O Crisóstomo lembra que no Pai-Nosso rezamos: 'Perdoai-nos as nossas ofensas assim como nós perdoamos a quem nos tem ofendido'; portanto, quem se recusa a perdoar ao irmão fecha a porta do Céu para si mesmo no dia do Juízo.
+
+São João da Cruz, em seus tratados místicos, ensina a necessidade da purificação da memória para alcançar a união com Deus. Sob a cura reluzente de São Miguel Arcanjo — anjo da paz e da retidão —, o fiel é convidado a perdoar velhas mágoas de infância, família ou relacionamentos passados, deixando a luz de Cristo lavar toda dor acumulada.`,
+      },
+      meditation: `No trigésimo oitavo dia de nossa Quaresma de São Miguel Arcanjo, a graça de Deus nos convida a uma profunda purificação da memória e ao perdão definitivo de antigas feridas. Como é pesado carregar a bagagem de mágoas do passado, ressentimentos familiares e lembranças de injustiças sofridas há anos!
+
+Guardar ressentimentos é acorrentar a própria alma ao passado. O perdão não é um sentimento sensível, é uma decisão da vontade em libertar o ofensor e entregar toda a dor no Altar de Deus.
+
+São Miguel Arcanjo vem com a sua espada de luz cortar as correntes do rancor e da amargura antiga. Ele nos ensina que o perdão traz a cura interior e abre espaço para a alegria do Espírito Santo. Peça hoje a São Miguel a coragem de perdoar a todos os que o feriram, purificando a sua memória no Sangue de Jesus.`,
+      virtue: "Perdão Definitivo, Purificação da Memória e Libertação",
+      purpose: "Fazer uma oração de perdão sincero nomeando uma por uma as pessoas do passado que lhe causaram feridas ou prejuízos.",
+      suggestedPenance: "Destruir ou descartar lembranças ou objetos do passado que sirvam para alimentar ressentimentos ou mágoas antigas.",
+      spiritualExercise: "Diante da imagem de Cristo Crucificado, declarar: 'Senhor, por Vossa Graça, eu perdoo a fulano de todo o meu coração e entrego o meu passado em Vossas mãos'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2843",
+            text: "O perdão e a reconciliação não dependem do sentimento de carinho, mas da intenção de perdoar no coração. 'O perdão é a condição do perdão divino'.",
+          },
+          {
+            code: "CIC §1460",
+            text: "A satisfação ou penitência serve para reparar o dano causado e curar as feridas espirituais deixadas pelo pecado na memória e na alma.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Santo Agostinho",
+            text: "Queres libertar a tua alma? Perdoa de coração a quem te ofendeu e a paz de Deus reinará na tua memória.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São João da Cruz",
+            text: "Purifica a tua memória de todas as imagens e mágoas passadas para seres habitado unicamente por Deus.",
+          },
+          {
+            author: "São Francisco de Sales",
+            text: "O perdão sincero tira a amargura da alma e restaura a doce paz da caridade nas relações humanas.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "São João Paulo II",
+            text: "Não há paz sem justiça, não há justiça sem perdão. O perdão é a força divina que cura o passado.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Libertador das Almas, cortai com a vossa espada celestial todas as correntes de ressentimento, mágoa e amargura do meu passado.
+
+Purificai a minha memória no Sangue Precioso de Nosso Senhor Jesus Cristo. Concedei-me a graça de perdoar de todo o coração a quem me feriu, vivendo na santa liberdade dos filhos de Deus. São Miguel, libertador das almas, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Alimentei mágoas, lembranças ressentidas ou amarguras sobre fatos do meu passado hoje?",
+        "Recusei-me a perdoar sinceramente alguém que me causou prejuízos ou ofensas?",
+        "Pedi a Deus a graça da cura interior e da libertação do ressentimento?",
+      ],
+      saintQuote: "Como o Senhor vos perdoou, assim fazei vós também. - Colossenses 3, 13",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "O perdão oferecido a quem nos feriu abre as portas do Céu para a nossa própria alma.",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Se não perdoares ao teu irmão, a tua própria oração se transforma em condenação diante de Deus.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "O coração que perdoa é o altar preferido onde Deus gosta de habitar.",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "É perdoando que somos perdoados; é morrendo que ressuscitamos para a Vida Eterna.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 39,
+      title: "Dia 39",
+      theme: "A Preparação para a Hora da Morte e o Juízo (O Combate contra o Esquecimento da Eternidade)",
+      scripture: {
+        reference: "Hebreus 9, 27 / Lucas 12, 35-40",
+        text: "Está determinado que os homens morram uma só vez, e depois disto vem o julgamento... Estejai preparados, porque na hora em que não pensais virá o Filho do Homem.",
+        explanation: `No clássico tratado de Santo Afonso Maria de Ligório (Preparações para a Morte), a meditação diária sobre os Novíssimos — Morte, Juízo, Inferno e Paraíso — é apresentada como a maior mestra da sabedoria cristã. Santo Afonso ensina que pensar na morte não gera tristeza ou desespero, mas desapego santo dos bens mundanos, fervor nos sacramentos e urgência na conversão do coração.
+
+São João Maria Vianney (Cura d'Ars), em seus Sermões sobre o Juízo Particular, recordava que no instante da morte as ilusões do mundo desaparecerão: os elogios das criaturas, as riquezas e as vaidades de nada valerão; valerão unicamente as boas obras feitas na graça santificante e o amor dedicado a Deus e ao próximo.
+
+São Gregório Magno ensina que São Miguel Arcanjo é o psicopompo da Igreja — o anjo incumbido por Deus de receber as almas dos fiéis no momento da morte e de defendê-las contra os últimos ataques do diabo no tribunal do Juízo. Na véspera do encerramento de nossa jornada devocional, o cristão pede a São Miguel a graça insubstituível de uma santa morte na amizade com Deus.`,
+      },
+      meditation: `No trigésimo nono dia de nossa Quaresma de São Miguel Arcanjo, na véspera da grande conclusão dos 40 dias, voltamos a nossa atenção para a realidade suprema e inevitável da nossa existência: a hora da morte e o Juízo Particular.
+
+Esta vida terrena é um sopro passageiro, uma preparação para a eternidade. Um dia, a nossa caminhada nesta terra chegará ao fim e seremos apresentados diante do Trono de Deus para prestar contas de cada pensamento, palavra, ação e omissão.
+
+São Miguel Arcanjo é o advogado defensor dos fiéis no tribunal do Juízo e o protetor na hora da morte. Ele combate os demônios que tentam desesperar a alma no seu último suspiro. Peça hoje a São Miguel a suprema graça de uma boa e santa morte, vivido na graça santificante, munido dos sacramentos da Santa Igreja e abençoado pela Virgem Maria.`,
+      virtue: "Lembrança da Eternidade, Preparação para a Morte e Fervor",
+      purpose: "Rezar uma dezena do Terço pedindo a graça da boa morte para si, para seus familiares e para todos os agonizantes de hoje.",
+      suggestedPenance: "Meditar durante 5 minutos sobre a fragilidade da vida presente e a vaidade das coisas que passam.",
+      spiritualExercise: "Fazer um ato solene de contrição e repetir com fervor: 'São Miguel Arcanjo, defendei-me na hora da minha morte e recebei a minha alma!'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §1021",
+            text: "A morte põe fim à vida do homem como tempo aberto à aceitação ou rejeição da graça divina manifestada em Cristo.",
+          },
+          {
+            code: "CIC §1022",
+            text: "Cada homem recebe na sua alma imortal a retribuição eterna no seu juízo particular, que refere a sua vida a Cristo, quer através duma purificação, quer para entrar imediatamente na felicidade do céu.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Santo Agostinho",
+            text: "Vive de tal modo a tua vida presente que não tenhas medo de comparecer diante de Deus no dia do Juízo.",
+          },
+        ],
+        doctors: [
+          {
+            author: "Santo Afonso Maria de Ligório",
+            text: "A hora da morte é o momento decisivo da eternidade. Quem vive na amizade com Deus não teme a morte, mas deseja o Céu.",
+          },
+          {
+            author: "São João Maria Vianney",
+            text: "São Miguel Arcanjo é o protetor compassivo que assiste os fiéis no momento de deixar este mundo.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Bento XVI",
+            text: "A esperança da vida eterna dá sentido e luz a todas as tribulações e cruzes da nossa existência terrena.",
+          },
+        ],
+      },
+      deliveryPrayer: `São Miguel Arcanjo, Protetor na Hora da Morte e Advogado no Juízo, vinde em meu auxílio no momento supremo em que a minha alma deixar este mundo.
+
+Defendei-me contra as últimas arremetidas do dragão infernal e conduzi a minha alma à presença gloriosa da Santíssima Trindade. São Miguel, nosso amparo na hora da morte, rogai por nós! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Vivi o meu dia lembrando-me de que um dia prestarei contas de tudo diante de Deus no Juízo?",
+        "Tive vergonha ou medo desordenado de pensar na eternidade e na santidade da morte cristã?",
+        "Pedi a graça de morrer na graça de Deus e munido dos Santos Sacramentos?",
+      ],
+      saintQuote: "Estejai preparados, porque na hora em que não pensais virá o Filho do Homem. - Lucas 12, 40",
+      saintQuotesList: [
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Uma vida santa é a melhor preparação para uma morte abençoada na paz do Senhor.",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Não temas a morte se vives na graça de Deus; a morte é apenas a porta de entrada para a Pátria Celestial.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "No momento da morte saberemos quanto Deus nos amou e quanto valeu a pena ter sofrido por Ele.",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "Louvado sejas, meu Senhor, por nossa irmã a morte corporal, da qual homem algum pode escapar!",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
+    {
+      number: 40,
+      title: "Dia 40",
+      theme: "O Triunfo de São Miguel Arcanjo e a Consagração Definitiva (A Vitória da Fé e a Glória do Céu)",
+      scripture: {
+        reference: "Apocalipse 12, 7-12 / 2 Timóteo 4, 7-8",
+        text: "Houve uma batalha no céu: Miguel e os seus anjos batalhavam contra o dragão... E ele foi precipitado, o grande dragão, a antiga serpente... Eles o venceram pelo sangue do Cordeiro.",
+        explanation: `Nas célebres Homilias do Papa São Leão Magno e de São João Crisóstomo sobre o Livro do Apocalipse, a vitória do Arcanjo São Miguel sobre Lúcifer é aclamada como a grande profecia e garantia do triunfo definitivo da Igreja e dos fiéis sobre as forças do mal. São Leão Magno proclama que o brado de São Miguel — 'Quem é como Deus?' — ressoa por toda a eternidade como a vitória do amor e da humildade sobre a soberba e a rebelião infernal.
+
+São Bernardo de Claraval, em seu sermão de encerramento da Quaresma de São Miguel, convida toda a Igreja a dar graças a Deus pelas vitórias espirituais alcançadas ao longo desses 40 dias de oração, jejum e combate. O Doutor Melífluo ensina que a Quaresma termina, mas o combate da vida cristã continua; por isso, a alma deve permanecer unida a São Miguel até o dia em que for introduzida na glória eterna do Céu.
+
+Neste quadragésimo e último dia de nossa abençoada Quaresma, renovamos a nossa consagração total a São Miguel Arcanjo, à Santíssima Virgem Maria e a Nosso Senhor Jesus Cristo. Com o coração transbordante de alegria e vitória, proclamamos juntamente com todas as milícias celestes: 'Quem é como Deus? Ninguém como Deus!'`,
+      },
+      meditation: `Alcançamos, pela graça de Deus, o quadragésimo e último dia de nossa Quaresma de São Miguel Arcanjo! Foram 40 dias de recolhimento, oração, mortificação, exames de consciência e aprendizado na escola dos Anjos e dos Santos.
+
+Olhando para trás, podemos ver quantas graças, luzes e vitórias espirituais o Senhor nos concedeu por intermédio do Glorioso São Miguel. Aprendemos a combater a soberba, o orgulho, a preguiça, a mágoa e o pecado, revestindo-nos das virtudes da fé, humildade, pureza e caridade.
+
+Mas o encerramento desta Quaresma não é um fim, é um novo começo! Continuemos firmes no caminho da santidade, fieis à oração diária, aos Sacramentos e à devoção a São Miguel Arcanjo. Que o brado vitorioso — 'Quem é como Deus?' — permaneça gravado para sempre em nossas almas como o nosso lema de vida até a eternidade!`,
+      virtue: "Perseverança Final, Consagração Definitiva e Triunfo da Fé",
+      purpose: "Fazer solenemente a Consagração Pessoal e Familiar a São Miguel Arcanjo diante de uma imagem do Arcanjo ou Crucifixo no dia de hoje.",
+      suggestedPenance: "Celebrar com profunda gratidão e alegria este dia de conclusão da Quaresma, fazendo uma boa refeição em família ou um ato de festa espiritual.",
+      spiritualExercise: "Rezar o Cântico de Ação de Graças (*Te Deum*) ou a Ladainha de São Miguel Arcanjo, proclamando 3 vezes com fervor: 'Quem é como Deus? Ninguém como Deus!'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §335",
+            text: "Na liturgia celeste, a Igreja une-se aos anjos para adorar o Deus três vezes Santo; invoca a sua assistência e celebra a memória de São Miguel Arcanjo e de todas as milícias celestes.",
+          },
+          {
+            code: "CIC §2854",
+            text: "Ao pedir a libertação do Maligno, a Igreja pede também a libertação de todos os males presentes, passados e futuros, dos quais ele é autor ou instigador.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Papa São Leão Magno",
+            text: "O brado de São Miguel 'Quis ut Deus?' é a bandeira vitoriosa que humilha o orgulho de Satanás e exalta a soberania do Criador.",
+          },
+        ],
+        doctors: [
+          {
+            author: "São Bernardo de Claraval",
+            text: "Demos graças a Deus por São Miguel Arcanjo, nosso defensor no combate e nosso guia para o Reino dos Céus.",
+          },
+          {
+            author: "Santo Afonso Maria de Ligório",
+            text: "São Miguel Arcanjo recompensará com graças abundantes no Céu todos os que o honraram com fervor nesta terra.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa Leão XIII",
+            text: "São Miguel Arcanjo, defendei-nos no combate; sede o nosso refúgio contra as maldades e ciladas do demônio!",
+          },
+        ],
+      },
+      deliveryPrayer: `Ó Gloriosíssimo São Miguel Arcanjo, Príncipe da Milícia Celeste e Defensor Vitorioso das Almas, eu Vos dou infinitas graças por me haverdes acompanhado e protegido ao longo destes 40 dias de Quaresma.
+
+Consagro-vos hoje para sempre a minha alma, o meu corpo, a minha família e toda a minha vida. Sede o meu protetor constante contra as ciladas do inimigo, o meu guia na vida de oração e o meu defensor na hora da minha morte. Que o Vosso brado sagrado — 'QUEM É COMO DEUS?' — ecoe em meu coração até a glória eterna do Céu! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
+      examination: [
+        "Agradeci a Deus e a São Miguel Arcanjo pelas graças e vitórias espirituais alcançadas ao longo desta Quaresma de 40 dias?",
+        "Renovei meu compromisso de continuar firme na oração, vida sacramental e virtudes após o fim desta jornada?",
+        "Fiz com devoção sincera a minha Consagração Pessoal e Familiar a São Miguel Arcanjo?",
+      ],
+      saintQuote: "Houve uma batalha no céu: Miguel e os seus anjos batalhavam contra o dragão. - Apocalipse 12, 7",
+      saintQuotesList: [
+        {
+          author: "Papa Leão XIII",
+          quote: "São Miguel Arcanjo, precipitai no inferno a Satanás e a todos os espíritos malignos que vagam pelo mundo para perder as almas. Amém!",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Que São Miguel Arcanjo te defenda, te proteja e ilumine o teu caminho de santidade até o Céu.",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "Quem é devoto de São Miguel Arcanjo experimentará o seu socorro invencível em todas as batalhas da vida.",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "Quem é como Deus? Ninguém como Deus! Eis o brado vitorioso que faz tremer os infernos e alegra os Anjos do Céu.",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
+    },
   ],
 };
