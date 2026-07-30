@@ -201,26 +201,89 @@ export function PrayerReader({
   );
 }
 
-export function PrayerAudioPlayer() {
+export function PrayerAudioPlayer({ title = "Áudio da Oração Tradicional de São Miguel Arcanjo" }: { title?: string }) {
   const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [speed, setSpeed] = useState<"1x" | "1.25x" | "1.5x">("1x");
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (playing) {
+      timer = setInterval(() => {
+        setProgress((prev) => (prev >= 100 ? 0 : prev + 1));
+      }, 300);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [playing]);
+
+  const toggleSpeed = () => {
+    setSpeed((s) => (s === "1x" ? "1.25x" : s === "1.25x" ? "1.5x" : "1x"));
+  };
+
+  const formatTime = (percentage: number) => {
+    const totalSecs = 225; // 3:45 total
+    const currentSecs = Math.floor((percentage / 100) * totalSecs);
+    const mins = Math.floor(currentSecs / 60);
+    const secs = currentSecs % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
   return (
-    <div className="mx-4 sm:mx-6 mb-6 flex items-center justify-between rounded-lg border border-border bg-muted/40 p-3 text-xs sm:text-sm text-muted-foreground">
-      <div className="flex items-center gap-3">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setPlaying(!playing)}
-          aria-label="Reproduzir áudio da oração"
-          className="h-8 w-8 rounded-full border-amber-600/40 text-amber-700 dark:text-amber-300"
-        >
-          {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        </Button>
-        <div className="flex items-center gap-1.5 font-medium text-foreground">
-          <Volume2 className="h-4 w-4 text-amber-600" />
-          <span>Áudio da oração tradicional (Acompanhamento em áudio)</span>
+    <div className="mx-4 sm:mx-6 mb-6 rounded-xl border border-amber-500/30 bg-background/95 backdrop-blur-md p-4 shadow-md space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Button
+            size="icon"
+            onClick={() => setPlaying(!playing)}
+            aria-label="Reproduzir áudio da oração"
+            className="h-10 w-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-transform active:scale-95"
+          >
+            {playing ? <Pause className="h-5 w-5 fill-white" /> : <Play className="h-5 w-5 fill-white ml-0.5" />}
+          </Button>
+
+          <div>
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              <Volume2 className="h-3.5 w-3.5" />
+              <span>Acompanhamento em Áudio (Gratuito)</span>
+            </div>
+            <p className="text-xs sm:text-sm font-semibold text-foreground line-clamp-1 mt-0.5">{title}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={toggleSpeed}
+            className="h-7 px-2 text-xs font-mono border-amber-600/30 text-amber-700 dark:text-amber-300"
+          >
+            {speed}
+          </Button>
+
+          {playing && (
+            <div className="flex items-center gap-0.5 h-4 px-1" aria-label="Áudio reproduzindo">
+              <span className="w-1 h-full bg-amber-600 animate-pulse rounded-full" style={{ animationDelay: "0ms" }} />
+              <span className="w-1 h-3/4 bg-amber-500 animate-pulse rounded-full" style={{ animationDelay: "150ms" }} />
+              <span className="w-1 h-full bg-amber-600 animate-pulse rounded-full" style={{ animationDelay: "300ms" }} />
+            </div>
+          )}
         </div>
       </div>
-      <span className="text-xs text-muted-foreground">Disponibilizado gratuitamente</span>
+
+      <div className="space-y-1">
+        <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted cursor-pointer">
+          <div
+            className="h-full rounded-full bg-amber-600 transition-all duration-150"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="flex justify-between text-[10px] font-mono text-muted-foreground">
+          <span>{formatTime(progress)}</span>
+          <span>3:45</span>
+        </div>
+      </div>
     </div>
   );
 }
