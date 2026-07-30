@@ -232,24 +232,91 @@ Enviai o Vosso Arcanjo São Miguel para defender o meu coração neste combate. 
     {
       number: 2,
       title: "Dia 2",
-      theme: "Revesti-vos da armadura de Deus",
+      theme: "Revesti-vos da Armadura de Deus (O Combate contra a Acídia e o Desânimo)",
       scripture: {
-        reference: "Efésios 6,11",
-        text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do demônio.",
-        explanation: "São Paulo utiliza a imagem militar da armadura romana para explicar as armas espirituais do cristão: a verdade por cinturão, a justiça por couraça, a fé por escudo e a Palavra de Deus como espada.",
+        reference: "Efésios 6, 11-17",
+        text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do demônio. Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades, contra os dominadores deste mundo tenebroso, contra os espíritos malignos espalhados pelos ares. Por isso, empenhai as armas de Deus, para que possais resistir no dia mau e, depois de ter vencido tudo, permanecer inabaláveis.",
+        explanation: "A guerra espiritual do cristão não é travada com violência humana, mas com a graça divina. O Apóstolo São Paulo nos exorta a tomar a couraça da justiça, o capacete da salvação, o escudo da fé e a espada do Espírito, que é a Palavra de Deus. Sob a proteção de São Miguel, general das milícias celestes, aprendemos que o demônio ataca pela tibieza e pelo desânimo. Revestir-se da armadura divina significa viver vigilante na graça santificante.",
       },
-      meditation: "A fortaleza cristã não é dureza de coração, mas perseverança serena em Deus. São Paulo convida-nos a vestir a armadura que o Senhor oferece: verdade, justiça, fé e oração. Nas dificuldades deste dia, não lute sozinho; invoque São Miguel e permaneça firme na graça.",
-      virtue: "Fortaleza",
-      purpose: "Diante de cada dificuldade, rezar: “São Miguel Arcanjo, defendei-nos no combate”.",
-      suggestedPenance: "Evitar murmurações e reclamações durante o dia.",
-      spiritualExercise: "Sempre que sentir impaciência ou vontade de reclamar, faça uma pausa respirando fundo e pronunciando internamente a oração a São Miguel.",
+      meditation: `Irmão e irmã na fé, no segundo dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama à vigilância das armas espirituais. Muitas vezes iniciamos nossa caminhada com grande entusiasmo, mas logo ao primeiro sinal de cansaço ou contrariedade, sentimos o peso da tentação e a sutil paralisia da acídia — a preguiça da alma e a tibieza espiritual.
+
+O inimigo de nossas almas busca nos desarmar retirando nossa esperança e nossa constante união com Deus. Ele não precisa nos derrubar de uma só vez; basta nos fazer murmurar diante dos pequenos sacrifícios diários, ceder ao desânimo e abandonar a frequência aos sacramentos e à oração diária.
+
+São Miguel Arcanjo é o grande estrategista do Céu. Ele não combate com armas terrenas, mas com a contemplação da Glória de Deus e com uma fidelidade inabalável. Quando invocamos o Arcanjo São Miguel no meio de nossas lutas cotidianas, seu brado nos recorda que nenhuma força das trevas pode prevalecer sobre aquele que está revestido da graça de Cristo. Não consinta com os pensamentos de derrota. Erga a cabeça, renove a sua fé e vista hoje a armadura da perseverança.`,
+      virtue: "Fortaleza (Combate contra a Acídia e o Desânimo)",
+      purpose: "Evitar murmurações e reclamações durante todo o dia, oferecendo cada contrariedade com alegria por amor a Cristo.",
+      suggestedPenance: "Evitar murmurações e reclamações durante todo o dia, oferecendo cada contrariedade com um sorriso por amor a Cristo.",
+      spiritualExercise: "Sempre que sentir impaciência, cansaço ou vontade de reclamar durante o dia, faça uma pausa, respire fundo e reze internamente 3 vezes: 'São Miguel Arcanjo, defendei-me e fortalecei minha fé'.",
+      churchTradition: {
+        cic: [
+          {
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
+          },
+          {
+            code: "CIC §2728",
+            text: "O combate de oração deve enfrentar aquilo que experimentamos como nossas falhas: o desânimo diante de nossas aridez e tibieza, e a tristeza de não termos dado tudo ao Senhor.",
+          },
+        ],
+        fathers: [
+          {
+            author: "Santo Inácio de Antioquia",
+            text: "Permanecei firmes como a bigorna sob os golpes do martelo. É próprio do grande atleta receber golpes e vencer.",
+            source: "Carta a São Policarpo",
+          },
+        ],
+        doctors: [
+          {
+            author: "São João da Cruz",
+            text: "A alma que caminha no amor de Deus não se cansa nem se enfada nas dificuldades; encontra sua força no silêncio da esperança.",
+          },
+          {
+            author: "São Padre Pio de Pietrelcina",
+            text: "A oração é a melhor arma que possuímos; ela é uma chave que abre o coração de Deus. Não desanimeis se a luta for árdua.",
+          },
+        ],
+        magisterium: [
+          {
+            author: "Papa São Leão Magno",
+            text: "O combate espiritual é inevitável aos filhos de Deus. Ninguém pode alcançar a vitória se recusar entrar no combate das virtudes contra os vícios.",
+          },
+        ],
+      },
+      deliveryPrayer: `Feche suavemente os olhos. Coloque a mão sobre o peito e respire fundo na presença de Deus.
+
+São Miguel Arcanjo, invencível defensor da Igreja, eis-me aqui diante de vós no segundo dia deste santo combate. Entrego em vossas mãos toda a minha fraqueza, a minha tibieza e a tentação de desanimar diante das cruzes de cada dia.
+
+Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desânimo. Revesti a minha alma com a couraça da fé e o escudo da verdade. Que diante de qualquer cilada do adversário, eu possa clamar com confiança: São Miguel Arcanjo, defendei-nos no combate! Amém.`,
+      familyConsecration: "Ó Grande São Miguel Arcanjo, príncipe e chefe das legiões angélicas, penetrado do sentimento de vossa grandeza, de vossa, bondade e vosso poder, em presença da adorável Santíssima Trindade, da Virgem Maria e toda a corte celeste, venho hoje consagrar minha família a vós. Quero, com minha família, vos honrar e invocar fielmente. Recebei-nos sob vossa especial proteção e dignai-vos desde então velar sobre os nossos interesses espirituais e temporais. Conservai entre nós a perfeita união do espírito dos corações e do amor familiar. Defendei-nos contra o ataque inimigo, preservai-nos de todo mal e, particularmente, da desgraça de ofender a Deus. Que por nossos cuidados, devotados e vigilantes, cheguemos todos à felicidade eterna. Dignai-vos, grande São Miguel Arcanjo, reunir todos os membros de nossa família. Amém.",
       examination: [
-        "De que dificuldade tenho fugido em vez de entregá-la a Deus?",
-        "Minhas palavras hoje foram de esperança ou de murmuração?",
-        "Tenho recorrido à oração antes de reagir às contrariedades?",
+        "Murmurei ou reclamei das cruzes e deveres ordinários do meu dia?",
+        "Cedi ao desânimo ou à preguiça na hora da oração e das minhas obrigações?",
+        "Busquei a força de Deus nos momentos de tentação ou tentei lutar apenas com minhas próprias forças?",
       ],
-      saintQuote: "A medida do amor é amar sem medida. - São Bernardo de Claraval",
-      complementaryPrayer: "Príncipe da milícia celeste, fortalecei-me nas provações. Que eu me revista da fé e responda às dificuldades com confiança, silêncio e perseverança. Amém.",
+      saintQuote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus. - São Padre Pio de Pietrelcina",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus. Deveis falar a Jesus também com o coração, além de com os lábios.",
+          source: "Cartas Espirituais",
+        },
+        {
+          author: "São João Maria Vianney (Cura d'Ars)",
+          quote: "O demônio não teme as almas mornas, mas treme diante daquela que reza com perseverança e vive revestida da graça de Deus.",
+          source: "Sermões do Cura d'Ars",
+        },
+        {
+          author: "Santa Teresa d'Ávila",
+          quote: "Determinação, e determinada determinação de nunca parar até alcançar a fonte da água viva, venha o que vier, custe o que custar.",
+          source: "Caminho de Perfeição",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "Nas dificuldades e securas espirituais, mantenha a alma em paz e confiança; Deus combate por aqueles que n'Ele esperam.",
+          source: "Ditos de Luz e Amor",
+        },
+      ],
+      complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
   ],
 };
