@@ -596,10 +596,10 @@ export default function SaintMichaelLent() {
                     </div>
                   </div>
 
-                  {/* Passos 1 a 8: Orações Tradicionais & Consagrações */}
+                  {/* Passos 1 a 7: Orações Tradicionais & Consagração Solene */}
                   <div className="space-y-4">
                     <h3 className="font-serif text-lg font-bold text-foreground flex items-center gap-1.5 border-b border-border pb-2">
-                      <ShieldCheck size={18} className="text-amber-600" /> Passos 1 a 8 • Orações Tradicionais e Consagrações
+                      <ShieldCheck size={18} className="text-amber-600" /> Passos 1 a 7 • Orações Tradicionais e Consagração Solene
                     </h3>
                     <div className="space-y-3">
                       {SAINT_MICHAEL_TRADITIONAL_PRAYERS.map((prayer) => (
@@ -774,6 +774,18 @@ export default function SaintMichaelLent() {
                       ))}
                     </ul>
                   </div>
+
+                  {/* 8. Consagração da Família a São Miguel Arcanjo */}
+                  {currentDayData.familyConsecration && (
+                    <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 space-y-2 border-t border-border">
+                      <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
+                        8. Consagração da Família a São Miguel Arcanjo
+                      </h3>
+                      <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
+                        {currentDayData.familyConsecration}
+                      </p>
+                    </div>
+                  )}
 
                   {/* 17. Oração Conclusiva */}
                   <div className="rounded-xl border-2 border-amber-600/40 bg-amber-500/10 p-5 space-y-2">
