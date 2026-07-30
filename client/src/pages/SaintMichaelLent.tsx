@@ -582,7 +582,7 @@ export default function SaintMichaelLent() {
                     </div>
 
                     <div className="flex items-center gap-1 bg-muted p-1 rounded-lg text-xs font-serif">
-                      <span className="px-2 text-muted-foreground">Fonte:</span>
+                      <span className="px-2 text-muted-foreground">Tamanho do texto:</span>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -596,60 +596,16 @@ export default function SaintMichaelLent() {
                     </div>
                   </div>
 
-                  {/* Leitura Bíblica */}
-                  <div className="rounded-xl border-l-4 border-amber-600 bg-amber-500/10 p-5 space-y-2">
-                    <p className="font-serif font-bold text-amber-800 dark:text-amber-300 text-sm flex items-center gap-1.5">
-                      <BookOpen size={16} /> Sagrada Escritura — {currentDayData.scripture.reference}
-                    </p>
-                    <p className={`font-serif italic leading-relaxed text-foreground ${fontSize}`}>
-                      "{currentDayData.scripture.text}"
-                    </p>
-                    {currentDayData.scripture.explanation && (
-                      <p className="text-xs font-serif text-muted-foreground pt-1 border-t border-amber-600/20">
-                        <strong>Explicação Bíblica: </strong>
-                        {currentDayData.scripture.explanation}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Meditação Teológica */}
-                  <div className="space-y-2">
-                    <h3 className="font-serif text-lg font-bold text-foreground">Meditação do Dia</h3>
-                    <p className={`font-serif leading-relaxed text-muted-foreground ${fontSize} whitespace-pre-line`}>
-                      {currentDayData.meditation}
-                    </p>
-                  </div>
-
-                  {/* Virtude e Propósito */}
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-xl border border-border p-4 bg-muted/20">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
-                        Virtude a Cultivar
-                      </span>
-                      <p className="font-serif text-lg font-bold text-foreground mt-0.5">
-                        {currentDayData.virtue}
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border p-4 bg-muted/20">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
-                        Propósito Concreto
-                      </span>
-                      <p className="font-serif text-sm font-semibold text-foreground mt-0.5">
-                        {currentDayData.purpose}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Orações Tradicionais Completas */}
-                  <div className="space-y-4 pt-2">
-                    <h3 className="font-serif text-lg font-bold text-foreground flex items-center gap-1.5">
-                      <ShieldCheck size={18} className="text-amber-600" /> Orações Tradicionais Preservadas
+                  {/* Passos 1 a 8: Orações Tradicionais & Consagrações */}
+                  <div className="space-y-4">
+                    <h3 className="font-serif text-lg font-bold text-foreground flex items-center gap-1.5 border-b border-border pb-2">
+                      <ShieldCheck size={18} className="text-amber-600" /> Passos 1 a 8 • Orações Tradicionais e Consagrações
                     </h3>
                     <div className="space-y-3">
-                      {SAINT_MICHAEL_TRADITIONAL_PRAYERS.map((prayer, idx) => (
+                      {SAINT_MICHAEL_TRADITIONAL_PRAYERS.map((prayer) => (
                         <div key={prayer.title} className="rounded-xl border border-border bg-card p-4 space-y-2">
                           <h4 className="font-serif font-bold text-sm text-amber-700 dark:text-amber-400">
-                            {idx + 1}. {prayer.title}
+                            {prayer.title}
                           </h4>
                           <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
                             {prayer.content}
@@ -659,17 +615,174 @@ export default function SaintMichaelLent() {
                     </div>
                   </div>
 
-                  {/* Exame de Consciência */}
+                  {/* 9. Penitência para hoje */}
+                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
+                      9. Penitência para hoje
+                    </span>
+                    <p className={`font-serif font-semibold italic text-foreground ${fontSize}`}>
+                      "{currentDayData.suggestedPenance}"
+                    </p>
+                  </div>
+
+                  {/* 10. Reflexão Bíblica */}
+                  <div className="rounded-xl border-l-4 border-amber-600 bg-amber-500/10 p-5 space-y-3">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400 font-serif">
+                      10. Reflexão Bíblica
+                    </span>
+                    <p className="font-serif font-bold text-amber-800 dark:text-amber-300 text-sm flex items-center gap-1.5">
+                      <BookOpen size={16} /> Referência: {currentDayData.scripture.reference}
+                    </p>
+                    <p className={`font-serif italic leading-relaxed text-foreground ${fontSize}`}>
+                      "{currentDayData.scripture.text}"
+                    </p>
+                    {currentDayData.scripture.explanation && (
+                      <p className="text-xs font-serif text-muted-foreground pt-2 border-t border-amber-600/20 leading-relaxed">
+                        {currentDayData.scripture.explanation}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* 11. Reflexão do dia (Meditação) */}
                   <div className="space-y-2 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">Exame de Consciência</h3>
-                    <ul className="space-y-1.5 font-serif text-sm text-muted-foreground">
-                      {currentDayData.examination.map((q) => (
-                        <li key={q} className="flex items-start gap-2">
-                          <span className="text-amber-600 font-bold">•</span>
-                          <span>{q}</span>
+                    <h3 className="font-serif text-lg font-bold text-foreground">11. Reflexão do Dia</h3>
+                    <p className={`font-serif leading-relaxed text-muted-foreground ${fontSize} whitespace-pre-line`}>
+                      {currentDayData.meditation}
+                    </p>
+                  </div>
+
+                  {/* 12. Fundamentação na Tradição da Igreja (Se disponível no dia) */}
+                  {currentDayData.churchTradition && (
+                    <div className="space-y-3 pt-2 border-t border-border">
+                      <h3 className="font-serif text-lg font-bold text-foreground">12. Fundamentação na Tradição da Igreja</h3>
+                      
+                      {currentDayData.churchTradition.cic && (
+                        <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-2">
+                          <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                            • Catecismo da Igreja Católica
+                          </h4>
+                          {currentDayData.churchTradition.cic.map((item) => (
+                            <p key={item.code} className={`font-serif text-muted-foreground ${fontSize}`}>
+                              <strong>{item.code}: </strong>"{item.text}"
+                            </p>
+                          ))}
+                        </div>
+                      )}
+
+                      {currentDayData.churchTradition.fathers && (
+                        <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-2">
+                          <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                            • Padres da Igreja
+                          </h4>
+                          {currentDayData.churchTradition.fathers.map((item, idx) => (
+                            <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
+                              <strong>{item.author}: </strong>"{item.text}"{item.source ? ` (${item.source})` : ""}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+
+                      {currentDayData.churchTradition.doctors && (
+                        <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-2">
+                          <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                            • Doutores da Igreja
+                          </h4>
+                          {currentDayData.churchTradition.doctors.map((item, idx) => (
+                            <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
+                              <strong>{item.author}: </strong>"{item.text}"
+                            </p>
+                          ))}
+                        </div>
+                      )}
+
+                      {currentDayData.churchTradition.magisterium && (
+                        <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-2">
+                          <h4 className="font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                            • Magistério
+                          </h4>
+                          {currentDayData.churchTradition.magisterium.map((item, idx) => (
+                            <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
+                              <strong>{item.author}: </strong>"{item.text}"
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 13. Oração: Entrega a São Miguel */}
+                  {currentDayData.deliveryPrayer && (
+                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3 border-t border-border">
+                      <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
+                        13. Oração: Entrega a São Miguel
+                      </h3>
+                      <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
+                        {currentDayData.deliveryPrayer}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 14. Exercício Espiritual */}
+                  <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
+                      14. Exercício Espiritual
+                    </span>
+                    <p className={`font-serif leading-relaxed text-foreground ${fontSize}`}>
+                      "{currentDayData.spiritualExercise}"
+                    </p>
+                  </div>
+
+                  {/* 15. Citações dos Santos */}
+                  <div className="space-y-3 pt-2 border-t border-border">
+                    <h3 className="font-serif text-lg font-bold text-foreground">15. Citações dos Santos</h3>
+                    {currentDayData.saintQuotesList ? (
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {currentDayData.saintQuotesList.map((sq, idx) => (
+                          <div key={idx} className="rounded-xl border border-border bg-card p-4 space-y-1.5">
+                            <span className="text-xs font-serif font-bold text-amber-700 dark:text-amber-400">
+                              {idx + 1}. {sq.author}
+                            </span>
+                            <p className="font-serif text-xs italic text-muted-foreground leading-relaxed">
+                              "{sq.quote}"
+                            </p>
+                            {sq.source && (
+                              <p className="text-[10px] font-serif text-muted-foreground/80">
+                                ({sq.source})
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-xl border border-border bg-card p-4">
+                        <p className={`font-serif italic text-muted-foreground ${fontSize}`}>
+                          "{currentDayData.saintQuote}"
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 16. Exame de Consciência (3 Perguntas Diárias) */}
+                  <div className="space-y-2 pt-2 border-t border-border">
+                    <h3 className="font-serif text-lg font-bold text-foreground">16. Exame de Consciência (3 Perguntas Diárias)</h3>
+                    <ul className="space-y-2 font-serif text-sm text-muted-foreground">
+                      {currentDayData.examination.map((q, idx) => (
+                        <li key={idx} className="flex items-start gap-2 bg-muted/20 p-2.5 rounded-lg border border-border">
+                          <span className="text-amber-600 font-bold font-mono">{idx + 1}.</span>
+                          <span className={fontSize}>{q}</span>
                         </li>
                       ))}
                     </ul>
+                  </div>
+
+                  {/* 17. Oração Conclusiva */}
+                  <div className="rounded-xl border-2 border-amber-600/40 bg-amber-500/10 p-5 space-y-2">
+                    <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
+                      17. Oração Final
+                    </h3>
+                    <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
+                      {currentDayData.complementaryPrayer}
+                    </p>
                   </div>
 
                   {/* Diário Espiritual Privado */}
