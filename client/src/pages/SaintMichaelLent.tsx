@@ -6,11 +6,10 @@ import {
   Minus,
   Plus,
   ShieldCheck,
-  CheckCircle2,
   Calendar,
   Sparkles,
   ArrowRight,
-  BookOpen,
+  Cross,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -290,74 +289,74 @@ export default function SaintMichaelLent() {
   const currentJournalText = state.journals[state.selectedDay] ?? "";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.012_85)] pb-16 dark:bg-background">
-      <main className="container max-w-4xl space-y-6 px-4 py-6 sm:py-8">
+    <div className="min-h-screen bg-[#FAF7EE] dark:bg-[#13110E] text-[#2C251A] dark:text-[#E6DCC5] pb-20 font-serif">
+      <main className="container max-w-4xl space-y-7 px-4 py-7 sm:py-9">
         <Link
           href="/explore"
-          className="inline-flex items-center gap-1 text-sm font-medium text-amber-700 dark:text-amber-400 hover:underline"
+          className="inline-flex items-center gap-1.5 text-sm font-serif font-bold text-[#7A0C0C] dark:text-[#E5C158] hover:underline"
         >
-          <ChevronLeft size={16} /> Voltar para explorar
+          <ChevronLeft size={18} /> Voltar para explorar
         </Link>
 
-        {/* Tela de Apresentação Header */}
+        {/* Option B Editorial Header */}
         <JourneyHeader
           title={SAINT_MICHAEL_LENT.title}
-          subtitle="40 dias de oração, penitência e combate espiritual sob a intercessão de São Miguel Arcanjo."
+          subtitle="Quarenta dias de oração, penitência e combate espiritual sob a intercessão de São Miguel Arcanjo."
           image={SAINT_MICHAEL_LENT.image}
         />
 
-        {/* Seleção do Período Inicial */}
+        {/* Seleção do Período Inicial (Option B Styling) */}
         {!state.startDate ? (
-          <section className="rounded-xl border border-border bg-card p-6 sm:p-8 space-y-6 shadow-sm">
-            <div className="space-y-2 border-b border-border pb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4" /> Apresentação da Devoção
+          <section className="rounded-2xl border-2 border-[#D4AF37]/50 bg-[#F3EDDC] dark:bg-[#1C1813] p-6 sm:p-9 space-y-6 shadow-md">
+            <div className="space-y-2 border-b border-[#D4AF37]/30 pb-4">
+              <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+                <Cross className="h-4 w-4 text-[#D4AF37]" /> Apresentação da Devoção Católica
               </span>
-              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
                 Inicie sua Jornada Espiritual de 40 Dias
               </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                A Quaresma de São Miguel Arcanjo é uma tradição secular de preparação e combate espiritual. O período tradicional inicia-se na Festa da Assunção de Nossa Senhora (<strong>15 de agosto</strong>) e se encerra na Festa dos Santos Arcanjos (<strong>29 de setembro</strong>). No entanto, você também pode iniciar em qualquer época do ano.
+              <p className="text-sm sm:text-base text-[#5C503D] dark:text-[#A0927C] leading-relaxed">
+                A Quaresma de São Miguel Arcanjo é uma venerável tradição secular de preparação e combate espiritual. O período tradicional inicia-se na Festa da Assunção de Nossa Senhora (<strong>15 de agosto</strong>) e culmina na Festa dos Santos Arcanjos (<strong>29 de setembro</strong>). Você também pode iniciar em qualquer outra época do ano.
               </p>
             </div>
 
-            <div className="space-y-3">
-              <p className="text-sm font-semibold text-foreground">Escolha quando deseja iniciar:</p>
+            <div className="space-y-4">
+              <p className="text-sm font-bold text-[#7A0C0C] dark:text-[#E5C158]">Selecione a data de início da sua Quaresma:</p>
               <div className="grid gap-3 sm:grid-cols-3">
                 <Button
                   variant="outline"
                   onClick={() => chooseStart(getTraditionalStartDateIso())}
-                  className="h-auto flex-col items-start p-4 text-left border-amber-600/30 hover:bg-amber-50 dark:hover:bg-amber-950/40"
+                  className="h-auto flex-col items-start p-4 text-left border-[#D4AF37]/50 bg-[#FAF7EE] hover:bg-[#EAE0C8] font-serif"
                 >
-                  <span className="font-semibold text-amber-800 dark:text-amber-300 text-xs uppercase tracking-wider">
+                  <span className="font-bold text-[#7A0C0C] dark:text-[#E5C158] text-xs uppercase tracking-wider">
                     Período Tradicional
                   </span>
-                  <span className="text-sm font-bold mt-1 text-foreground">15/08 a 29/09</span>
-                  <span className="text-xs text-muted-foreground mt-1">Data tradicional da Igreja</span>
+                  <span className="text-base font-bold mt-1 text-[#2C251A] dark:text-[#FDFBF7]">15/08 a 29/09</span>
+                  <span className="text-xs text-muted-foreground mt-1">Data histórica da Igreja</span>
                 </Button>
 
                 <Button
                   onClick={() => chooseStart(todayIso())}
-                  className="h-auto flex-col items-start p-4 text-left bg-amber-700 hover:bg-amber-800 text-white shadow-sm"
+                  className="h-auto flex-col items-start p-4 text-left bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-serif shadow-md border border-[#D4AF37]/40"
                 >
-                  <span className="font-semibold text-amber-200 text-xs uppercase tracking-wider">Início Imediato</span>
-                  <span className="text-sm font-bold mt-1">Começar Hoje</span>
-                  <span className="text-xs text-amber-100/80 mt-1">Calcular 40 dias a partir de hoje</span>
+                  <span className="font-bold text-[#E5C158] text-xs uppercase tracking-wider">Início Imediato</span>
+                  <span className="text-base font-bold mt-1">Começar Hoje</span>
+                  <span className="text-xs text-[#E6DCC5] mt-1">Calcular 40 dias a partir de hoje</span>
                 </Button>
 
-                <label className="flex flex-col justify-between rounded-lg border border-border bg-background p-4 cursor-pointer hover:bg-muted/50 transition-all">
+                <label className="flex flex-col justify-between rounded-lg border border-[#D4AF37]/50 bg-[#FAF7EE] dark:bg-[#161411] p-4 cursor-pointer hover:bg-[#EAE0C8] transition-all font-serif">
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
-                      <CalendarDays className="h-3.5 w-3.5" /> Selecionar outra data
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1">
+                      <CalendarDays className="h-3.5 w-3.5 text-[#D4AF37]" /> Selecionar outra data
                     </span>
-                    <span className="text-xs text-muted-foreground mt-1 block">Escolha uma data no calendário</span>
+                    <span className="text-xs text-muted-foreground mt-1 block">Escolha no calendário</span>
                   </div>
                   <Input
                     type="date"
                     min="2020-01-01"
                     max="2100-12-31"
                     onChange={(event) => event.target.value && chooseStart(event.target.value)}
-                    className="mt-2 text-xs border-border bg-card shadow-none"
+                    className="mt-2 text-xs border-[#D4AF37]/30 bg-[#F3EDDC] dark:bg-[#28241D] shadow-none"
                   />
                 </label>
               </div>
@@ -365,13 +364,13 @@ export default function SaintMichaelLent() {
           </section>
         ) : (
           <>
-            {/* Informações da Jornada Ativa */}
-            <section className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm space-y-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5 text-amber-600" /> Período da Jornada
+            {/* Informações da Jornada Ativa (Option B) */}
+            <section className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-1">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+                  <Calendar className="h-4 w-4 text-[#D4AF37]" /> Período Sagrado da Quaresma
                 </span>
-                <p className="text-sm font-bold text-foreground">
+                <p className="text-base font-bold text-[#2C251A] dark:text-[#FDFBF7]">
                   {formatDateBr(state.startDate)} a {formatDateBr(completionDateIso)}
                 </p>
                 <p className="text-xs text-muted-foreground">40 dias de oração calculados automaticamente.</p>
@@ -384,6 +383,9 @@ export default function SaintMichaelLent() {
                 }
               />
             </section>
+
+            {/* Built-In Cathedral Audio Player (Option B Feature) */}
+            <PrayerAudioPlayer title={`Áudio da Oração — Dia ${state.selectedDay}: ${day.theme}`} />
 
             {/* Progresso & Calendário dos 40 Dias */}
             <JourneyProgress
@@ -400,9 +402,9 @@ export default function SaintMichaelLent() {
 
             {/* Botão de Retomada / Próximo Dia Disponível */}
             {nextAvailableDay !== state.selectedDay && (
-              <div className="flex items-center justify-between rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
-                <div className="flex items-center gap-2 text-sm text-foreground">
-                  <Sparkles className="h-4 w-4 text-amber-600" />
+              <div className="flex items-center justify-between rounded-xl border-2 border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#1E1A14] p-5 shadow-sm">
+                <div className="flex items-center gap-2 text-sm text-[#7A0C0C] dark:text-[#E5C158] font-bold">
+                  <Sparkles className="h-4 w-4 text-[#D4AF37]" />
                   <span>
                     Próximo dia pendente na jornada: <strong>Dia {nextAvailableDay}</strong>
                   </span>
@@ -410,7 +412,7 @@ export default function SaintMichaelLent() {
                 <Button
                   size="sm"
                   onClick={() => selectDay(nextAvailableDay)}
-                  className="bg-amber-700 hover:bg-amber-800 text-white gap-1 text-xs"
+                  className="font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold gap-1.5 text-xs shadow-sm"
                 >
                   <span>Continuar Jornada</span>
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -418,24 +420,24 @@ export default function SaintMichaelLent() {
               </div>
             )}
 
-            {/* ETAPA 1 — PREPARAÇÃO */}
-            <section className="rounded-xl border border-border bg-card p-5 sm:p-6 space-y-4 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+            {/* ETAPA 1 — PREPARAÇÃO (Option B Style) */}
+            <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-6 sm:p-7 space-y-5 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D4AF37]/20 pb-4">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
                     Etapa 1 — Preparação para a Oração
                   </span>
-                  <h2 className="font-display mt-1 text-2xl font-bold text-foreground">
+                  <h2 className="font-serif mt-1 text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
                     Dia {state.selectedDay}: {day.theme}
                   </h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-muted-foreground mt-0.5 font-serif">
                     {formatDateBr(calculateEndDateIso(state.startDate, state.selectedDay))}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center rounded-lg border border-border bg-background p-1 text-xs">
-                    <span className="px-2 text-muted-foreground font-medium">Fonte:</span>
+                  <div className="flex items-center rounded-lg border border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#28241D] p-1 text-xs">
+                    <span className="px-2 text-muted-foreground font-bold">Fonte:</span>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -445,7 +447,7 @@ export default function SaintMichaelLent() {
                         )
                       }
                       aria-label="Ajustar tamanho da fonte"
-                      className="h-7 w-7"
+                      className="h-7 w-7 text-[#7A0C0C] dark:text-[#E5C158]"
                     >
                       {fontSize === "text-lg" ? <Minus size={14} /> : <Plus size={14} />}
                     </Button>
@@ -454,29 +456,31 @@ export default function SaintMichaelLent() {
                     onClick={() =>
                       document.getElementById("traditional-prayers-section")?.scrollIntoView({ behavior: "smooth" })
                     }
-                    className="bg-amber-700 hover:bg-amber-800 text-white font-medium"
+                    className="font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold shadow-sm"
                   >
                     Iniciar a Oração
                   </Button>
                 </div>
               </div>
 
-              <div className="rounded-lg bg-amber-500/10 p-4 border border-amber-600/20 text-xs sm:text-sm text-foreground leading-relaxed">
-                <p className="font-semibold text-amber-900 dark:text-amber-200">Orientação de Preparação:</p>
-                <p className="mt-1 text-muted-foreground">
-                  Recolha seu coração na presença do Senhor. Se possível, acenda uma vela benta como sinal de fé e mantenha uma postura devota de combate espiritual.
+              <div className="rounded-lg bg-[#F5EFE0] dark:bg-[#221E18] p-5 border border-[#D4AF37]/30 text-xs sm:text-sm leading-relaxed text-[#2C251A] dark:text-[#E6DCC5]">
+                <p className="font-bold text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+                  <span>✦</span> Orientação para o Ambiente Sagrado:
+                </p>
+                <p className="mt-1 text-[#5C503D] dark:text-[#A0927C]">
+                  Recolha seu coração na presença de Deus. Se possível, acenda uma vela benta como sinal de fé e mantenha uma atitude de profunda entrega e combate espiritual.
                 </p>
               </div>
 
               <div className="pt-2">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <label className="block text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
                   Minha Penitência Escolhida para a Jornada:
                 </label>
                 <Input
                   value={state.penance}
                   onChange={(event) => updateState({ penance: event.target.value })}
-                  placeholder="Ex.: renunciar a doces, evitar murmurações, oferecer jejum na quarta e sexta..."
-                  className="mt-1.5 text-sm"
+                  placeholder="Ex.: renunciar a satisfações, evitar reclamações, jejum nas quartas e sextas..."
+                  className="mt-1.5 text-sm border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#28241D] text-[#2C251A] dark:text-[#E6DCC5]"
                 />
               </div>
             </section>
@@ -485,7 +489,7 @@ export default function SaintMichaelLent() {
             <DailyThemeCard day={day} />
             <ScriptureCard day={day} />
 
-            {/* ETAPA 2 — ORAÇÕES TRADICIONAIS GRATUITAS */}
+            {/* ETAPA 2 — ORAÇÕES TRADICIONAL GRATUITAS */}
             <div id="traditional-prayers-section" className="scroll-mt-6">
               <TraditionalPrayerSection>
                 <PrayerReader
@@ -494,17 +498,16 @@ export default function SaintMichaelLent() {
                   onNext={markComplete}
                   onOpenDistractionFree={() => setDistractionFreeOpen(true)}
                 />
-                <PrayerAudioPlayer />
               </TraditionalPrayerSection>
             </div>
 
             {/* Oração de Consagração a São Miguel (Exibida no Dia 40) */}
             {state.selectedDay === 40 && (
-              <section className="rounded-xl border border-amber-600 bg-amber-500/10 p-6 space-y-3 shadow-md">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
-                  <ShieldCheck className="h-4 w-4" /> Consagração a São Miguel Arcanjo (Dia 40)
+              <section className="rounded-2xl border-2 border-[#D4AF37] bg-[#F5EFE0] dark:bg-[#1F1B15] p-7 space-y-4 shadow-md">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+                  <ShieldCheck className="h-5 w-5 text-[#D4AF37]" /> Oração de Consagração a São Miguel Arcanjo (Dia 40)
                 </span>
-                <p className="whitespace-pre-line font-serif text-base sm:text-lg leading-relaxed text-foreground italic">
+                <p className="whitespace-pre-line font-serif text-base sm:text-xl leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] italic">
                   {SAINT_MICHAEL_CONSECRATION}
                 </p>
               </section>
@@ -530,13 +533,13 @@ export default function SaintMichaelLent() {
                   onJournalDelete={handleJournalDelete}
                 />
               ) : (
-                <div className="space-y-4">
-                  <section className="rounded-xl border border-amber-500/30 bg-card p-6 sm:p-8 text-center space-y-3 shadow-sm">
-                    <Flame className="mx-auto h-8 w-8 text-amber-600" />
-                    <h2 className="font-display text-2xl font-bold text-foreground">
+                <div className="space-y-5">
+                  <section className="rounded-2xl border-2 border-[#D4AF37]/50 bg-[#FAF7EE] dark:bg-[#1A1814] p-7 sm:p-9 text-center space-y-3 shadow-md">
+                    <Flame className="mx-auto h-9 w-9 text-[#7A0C0C] dark:text-[#E5C158]" />
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#7A0C0C] dark:text-[#E5C158]">
                       Você concluiu a oração tradicional de hoje.
                     </h2>
-                    <p className="font-serif text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
+                    <p className="font-serif text-[#5C503D] dark:text-[#A0927C] text-base sm:text-lg max-w-xl mx-auto italic">
                       Permaneça mais alguns minutos com Deus e aprofunde esta jornada espiritual.
                     </p>
                   </section>
@@ -557,7 +560,7 @@ export default function SaintMichaelLent() {
           </>
         )}
 
-        {/* Modal de Leitura Sem Distrações */}
+        {/* Modal de Leitura Sem Distrações (Option B Manuscript) */}
         <DistractionFreeModal
           open={distractionFreeOpen}
           onOpenChange={setDistractionFreeOpen}

@@ -12,9 +12,9 @@ import {
   Sparkles,
   ShieldCheck,
   Maximize2,
-  Minimize2,
   RotateCcw,
   Volume2,
+  Cross,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,18 +23,56 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { UpgradeDialog } from "@/components/UpgradeDialog";
 import type { JourneyDay } from "@/data/saint-michael-lent";
 
+/* Helper to convert numbers to Roman numerals for Option B classical manuscript feel */
+function toRoman(num: number): string {
+  const lookup: Record<string, number> = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  };
+  let roman = "";
+  for (const i in lookup) {
+    while (num >= lookup[i]) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman;
+}
+
 export function JourneyHeader({ title, subtitle, image }: { title: string; subtitle: string; image: string }) {
   return (
-    <header className="relative overflow-hidden rounded-xl border border-[oklch(0.7_0.1_75/0.28)] bg-[oklch(0.22_0.07_260)] text-white shadow-lg">
-      <img src={image} alt="São Miguel Arcanjo" className="absolute inset-0 h-full w-full object-cover opacity-25" />
-      <div className="relative p-6 sm:p-8">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold text-amber-300 backdrop-blur-sm">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          <span>Jornada Espiritual • 40 Dias</span>
+    <header className="relative overflow-hidden rounded-2xl border-2 border-[#D4AF37]/50 bg-[#2A0808] text-[#FDFBF7] shadow-xl">
+      {/* Background Sacred Art with subtle gold gradient overlay */}
+      <img src={image} alt="São Miguel Arcanjo" className="absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-luminosity" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1C0505] via-[#2A0808]/70 to-transparent" />
+      
+      <div className="relative p-6 sm:p-9 space-y-3 text-center sm:text-left">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/40 bg-[#1C0505]/80 px-3.5 py-1 text-xs font-serif font-semibold tracking-wider text-[#E5C158] backdrop-blur-md shadow-sm">
+          <Cross className="h-3.5 w-3.5 text-[#D4AF37]" />
+          <span>Devocional Católico • Jornada de 40 Dias</span>
+          <span className="text-[#D4AF37]">✦</span>
         </div>
-        <h1 className="font-display mt-3 text-3xl font-bold sm:text-4xl tracking-tight">{title}</h1>
-        <p className="mt-2 max-w-2xl font-serif text-sm sm:text-base text-slate-200 leading-relaxed">{subtitle}</p>
+        <h1 className="font-serif mt-2 text-3xl sm:text-5xl font-bold tracking-tight text-[#FDFBF7] drop-shadow-md">
+          {title}
+        </h1>
+        <p className="max-w-2xl font-serif text-sm sm:text-base text-[#E6DCC5] leading-relaxed italic">
+          "{subtitle}"
+        </p>
       </div>
+      
+      {/* Decorative Gold Leaf Bottom Border */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-[#D4AF37]/20 via-[#D4AF37] to-[#D4AF37]/20" />
     </header>
   );
 }
@@ -42,19 +80,19 @@ export function JourneyHeader({ title, subtitle, image }: { title: string; subti
 export function JourneyProgress({ completed, total, streak }: { completed: number; total: number; streak: number }) {
   const percent = Math.round((completed / total) * 100);
   return (
-    <section className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-        <span className="font-semibold text-foreground">
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-serif">
+        <span className="font-bold text-[#7A0C0C] dark:text-[#E5C158] text-base">
           {completed} de {total} dias concluídos ({percent}%)
         </span>
-        <span className="inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-400">
-          <Sparkles className="h-4 w-4" />
-          Sequência atual: {streak} {streak === 1 ? "dia" : "dias"}
+        <span className="inline-flex items-center gap-1.5 font-semibold text-[#8B0000] dark:text-[#D4AF37]">
+          <Sparkles className="h-4 w-4 text-[#D4AF37]" />
+          Sequência ininterrupta: {streak} {streak === 1 ? "dia" : "dias"}
         </span>
       </div>
-      <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-muted">
+      <div className="mt-2 h-3 w-full overflow-hidden rounded-full border border-[#D4AF37]/30 bg-[#EFE8D6] dark:bg-[#28241D] p-0.5">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-600 to-amber-500 transition-all duration-500"
+          className="h-full rounded-full bg-gradient-to-r from-[#8B0000] via-[#A81818] to-[#D4AF37] transition-all duration-500 shadow-inner"
           style={{ width: `${percent}%` }}
         />
       </div>
@@ -72,15 +110,18 @@ export function JourneyCalendar({
   onSelect: (day: number) => void;
 }) {
   return (
-    <section aria-label="Calendário da jornada" className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Calendário da Jornada (40 Dias)</p>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Concluído</span>
-          <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[oklch(0.22_0.07_260)]" /> Selecionado</span>
+    <section aria-label="Calendário da jornada" className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-3">
+      <div className="flex items-center justify-between border-b border-[#D4AF37]/20 pb-2">
+        <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+          <span>✦</span> Calendário da Quaresma (40 Dias)
+        </p>
+        <div className="flex items-center gap-4 text-xs font-serif text-muted-foreground">
+          <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded-full bg-[#1B5E20]" /> Concluído</span>
+          <span className="flex items-center gap-1"><span className="h-2.5 w-2.5 rounded-full bg-[#7A0C0C]" /> Selecionado</span>
         </div>
       </div>
-      <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-1.5 sm:gap-2">
+
+      <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 pt-1">
         {Array.from({ length: 40 }, (_, index) => index + 1).map((day) => {
           const isDone = completed.includes(day);
           const isSelected = day === selectedDay;
@@ -88,15 +129,15 @@ export function JourneyCalendar({
             <button
               key={day}
               onClick={() => onSelect(day)}
-              className={`aspect-square rounded-lg text-xs font-semibold transition-all flex flex-col items-center justify-center ${
+              className={`aspect-square rounded-lg font-serif text-xs font-bold transition-all flex flex-col items-center justify-center border ${
                 isSelected
-                  ? "bg-[oklch(0.22_0.07_260)] text-white shadow-md ring-2 ring-amber-400"
+                  ? "bg-[#7A0C0C] text-[#FDFBF7] border-[#D4AF37] shadow-md ring-2 ring-[#D4AF37]/50 scale-105"
                   : isDone
-                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-200 hover:bg-emerald-200 dark:hover:bg-emerald-900"
-                  : "bg-muted/70 text-muted-foreground hover:bg-muted"
+                  ? "bg-[#E8F5E9] text-[#1B5E20] border-[#A5D6A7] dark:bg-[#1B5E20]/30 dark:text-[#81C784] dark:border-[#2E7D32]"
+                  : "bg-[#F3EDDC] text-[#5C503D] border-[#E2D8C3] dark:bg-[#242019] dark:text-[#A0927C] dark:border-[#383126] hover:bg-[#EAE0C8]"
               }`}
             >
-              {isDone ? <Check className="h-4 w-4 stroke-[2.5]" /> : <span>{day}</span>}
+              {isDone ? <Check className="h-4 w-4 stroke-[3]" /> : <span>{day}</span>}
             </button>
           );
         })}
@@ -107,14 +148,16 @@ export function JourneyCalendar({
 
 export function TraditionalPrayerSection({ children }: { children: React.ReactNode }) {
   return (
-    <section className="rounded-xl overflow-hidden border border-amber-500/30 bg-card shadow-sm">
-      <div className="border-b border-amber-500/20 bg-amber-50/70 dark:bg-amber-950/30 px-5 py-4 flex flex-wrap items-center justify-between gap-2">
+    <section className="rounded-xl overflow-hidden border-2 border-[#D4AF37]/50 bg-[#FAF7EE] dark:bg-[#1A1814] shadow-md">
+      {/* Option B Gold & Burgundy Header Banner */}
+      <div className="border-b border-[#D4AF37]/30 bg-gradient-to-r from-[#7A0C0C] via-[#8B0000] to-[#7A0C0C] px-5 py-4 text-[#FDFBF7] flex flex-wrap items-center justify-between gap-2 shadow-sm">
         <div>
-          <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
-            <ShieldCheck className="h-4 w-4" /> Devoção Tradicional — acesso gratuito
+          <span className="inline-flex items-center gap-1.5 text-xs font-serif font-bold uppercase tracking-widest text-[#E5C158]">
+            <ShieldCheck className="h-4 w-4 text-[#D4AF37]" /> Devoção Tradicional — Acesso Gratuito
           </span>
-          <p className="mt-0.5 text-xs text-muted-foreground">Orações seculares preservadas integralmente para todos os fiéis.</p>
+          <p className="mt-0.5 text-xs font-serif text-[#E6DCC5]">Orações históricas mantidas integralmente sem alterações.</p>
         </div>
+        <span className="text-[#D4AF37] font-serif text-lg">✦</span>
       </div>
       {children}
     </section>
@@ -135,11 +178,16 @@ export function PrayerReader({
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="p-4 sm:p-6 space-y-4">
-      <div className="flex items-center justify-between gap-2 pb-2 border-b border-border text-xs text-muted-foreground">
-        <span>Passo {activeStep + 1} de {prayers.length}: {prayers[activeStep].title}</span>
-        <Button variant="outline" size="sm" onClick={onOpenDistractionFree} className="h-8 gap-1 text-xs">
-          <Maximize2 className="h-3.5 w-3.5" /> Modo Sem Distrações
+    <div className="p-5 sm:p-7 space-y-5">
+      <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#D4AF37]/20 text-xs font-serif text-[#7A0C0C] dark:text-[#E5C158]">
+        <span className="font-bold">Passo {activeStep + 1} de {prayers.length}: {prayers[activeStep].title}</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onOpenDistractionFree}
+          className="h-8 gap-1.5 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC]/60 hover:bg-[#EAE0C8]"
+        >
+          <Maximize2 className="h-3.5 w-3.5" /> Leitura Sem Distrações
         </Button>
       </div>
 
@@ -153,33 +201,39 @@ export function PrayerReader({
             if (!isNaN(idx)) setActiveStep(idx);
           }
         }}
-        className="w-full"
+        className="w-full space-y-3"
       >
         {prayers.map((prayer, index) => (
-          <AccordionItem key={prayer.title} value={`prayer-${index}`} className="border-border">
-            <AccordionTrigger className="text-left font-display font-medium text-sm sm:text-base hover:no-underline py-3">
-              <span className="flex items-center gap-2">
-                <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
-                  index === activeStep ? "bg-amber-600 text-white" : "bg-muted text-muted-foreground"
+          <AccordionItem
+            key={prayer.title}
+            value={`prayer-${index}`}
+            className="rounded-lg border border-[#D4AF37]/30 bg-[#F5EFE0]/60 dark:bg-[#221E18] px-4 shadow-2xs overflow-hidden"
+          >
+            <AccordionTrigger className="text-left font-serif font-bold text-sm sm:text-base hover:no-underline py-3.5 text-[#7A0C0C] dark:text-[#E5C158]">
+              <span className="flex items-center gap-3">
+                <span className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-serif font-bold border ${
+                  index === activeStep
+                    ? "bg-[#7A0C0C] text-[#FDFBF7] border-[#D4AF37]"
+                    : "bg-[#E8DFC8] text-[#5C503D] border-[#D4AF37]/30 dark:bg-[#2D271F] dark:text-[#A0927C]"
                 }`}>
-                  {index + 1}
+                  {toRoman(index + 1)}
                 </span>
                 {prayer.title}
               </span>
             </AccordionTrigger>
-            <AccordionContent className={`${fontSize} whitespace-pre-line font-serif leading-relaxed text-foreground bg-muted/20 p-4 rounded-lg border border-border/50`}>
+            <AccordionContent className={`${fontSize} whitespace-pre-line font-serif leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] bg-[#FAF7EE] dark:bg-[#1A1814] p-5 rounded-md border border-[#D4AF37]/20 my-2 shadow-inner`}>
               {prayer.content}
             </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-border">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-[#D4AF37]/20">
         <Button
           variant="outline"
           disabled={activeStep === 0}
           onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
-          className="w-full sm:w-auto text-xs"
+          className="w-full sm:w-auto font-serif text-xs border-[#D4AF37]/40 text-[#5C503D] dark:text-[#A0927C]"
         >
           Oração Anterior
         </Button>
@@ -187,12 +241,15 @@ export function PrayerReader({
         {activeStep < prayers.length - 1 ? (
           <Button
             onClick={() => setActiveStep((prev) => Math.min(prayers.length - 1, prev + 1))}
-            className="w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-medium"
+            className="w-full sm:w-auto font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold shadow-md border border-[#D4AF37]/40"
           >
             Próxima Oração
           </Button>
         ) : (
-          <Button onClick={onNext} className="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-semibold">
+          <Button
+            onClick={onNext}
+            className="w-full sm:w-auto font-serif bg-[#1B5E20] hover:bg-[#144718] text-[#FDFBF7] font-bold shadow-md border border-[#81C784]/40"
+          >
             Concluir Devoção Tradicional
           </Button>
         )}
@@ -201,10 +258,12 @@ export function PrayerReader({
   );
 }
 
+/* Option B Cathedral Style Built-In Audio Player */
 export function PrayerAudioPlayer({ title = "Áudio da Oração Tradicional de São Miguel Arcanjo" }: { title?: string }) {
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [speed, setSpeed] = useState<"1x" | "1.25x" | "1.5x">("1x");
+  const [mode, setMode] = useState<"narrada" | "silencio">("narrada");
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -231,55 +290,73 @@ export function PrayerAudioPlayer({ title = "Áudio da Oração Tradicional de S
   };
 
   return (
-    <div className="mx-4 sm:mx-6 mb-6 rounded-xl border border-amber-500/30 bg-background/95 backdrop-blur-md p-4 shadow-md space-y-3">
-      <div className="flex items-center justify-between gap-3">
+    <div className="mx-4 sm:mx-6 mb-6 rounded-xl border-2 border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#1E1B15] p-5 shadow-md space-y-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#D4AF37]/20 pb-3">
         <div className="flex items-center gap-3">
           <Button
             size="icon"
             onClick={() => setPlaying(!playing)}
             aria-label="Reproduzir áudio da oração"
-            className="h-10 w-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-transform active:scale-95"
+            className="h-11 w-11 rounded-full bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] border-2 border-[#D4AF37] shadow-md transition-transform active:scale-95 shrink-0"
           >
-            {playing ? <Pause className="h-5 w-5 fill-white" /> : <Play className="h-5 w-5 fill-white ml-0.5" />}
+            {playing ? <Pause className="h-5 w-5 fill-[#FDFBF7]" /> : <Play className="h-5 w-5 fill-[#FDFBF7] ml-0.5" />}
           </Button>
 
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
-              <Volume2 className="h-3.5 w-3.5" />
-              <span>Acompanhamento em Áudio (Gratuito)</span>
+            <div className="flex items-center gap-1.5 text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
+              <Volume2 className="h-4 w-4 text-[#D4AF37]" />
+              <span>Player Católico — Acompanhamento em Áudio</span>
             </div>
-            <p className="text-xs sm:text-sm font-semibold text-foreground line-clamp-1 mt-0.5">{title}</p>
+            <p className="text-xs sm:text-sm font-serif font-bold text-[#2C251A] dark:text-[#E6DCC5] line-clamp-1 mt-0.5">
+              {title}
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-center">
+          {/* Mode Selector Toggle: Voz Narrada vs Silêncio Contemplativo */}
+          <div className="flex items-center rounded-lg border border-[#D4AF37]/30 bg-[#E8DFC8] dark:bg-[#28241D] p-0.5 text-xs font-serif">
+            <button
+              onClick={() => setMode("narrada")}
+              className={`px-2.5 py-1 rounded-md transition-all ${
+                mode === "narrada"
+                  ? "bg-[#7A0C0C] text-[#FDFBF7] font-bold shadow-2xs"
+                  : "text-[#5C503D] dark:text-[#A0927C]"
+              }`}
+            >
+              Voz Narrada
+            </button>
+            <button
+              onClick={() => setMode("silencio")}
+              className={`px-2.5 py-1 rounded-md transition-all ${
+                mode === "silencio"
+                  ? "bg-[#7A0C0C] text-[#FDFBF7] font-bold shadow-2xs"
+                  : "text-[#5C503D] dark:text-[#A0927C]"
+              }`}
+            >
+              Silêncio
+            </button>
+          </div>
+
           <Button
             variant="outline"
             size="sm"
             onClick={toggleSpeed}
-            className="h-7 px-2 text-xs font-mono border-amber-600/30 text-amber-700 dark:text-amber-300"
+            className="h-8 px-2.5 font-mono text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#E8DFC8]/50"
           >
             {speed}
           </Button>
-
-          {playing && (
-            <div className="flex items-center gap-0.5 h-4 px-1" aria-label="Áudio reproduzindo">
-              <span className="w-1 h-full bg-amber-600 animate-pulse rounded-full" style={{ animationDelay: "0ms" }} />
-              <span className="w-1 h-3/4 bg-amber-500 animate-pulse rounded-full" style={{ animationDelay: "150ms" }} />
-              <span className="w-1 h-full bg-amber-600 animate-pulse rounded-full" style={{ animationDelay: "300ms" }} />
-            </div>
-          )}
         </div>
       </div>
 
       <div className="space-y-1">
-        <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted cursor-pointer">
+        <div className="relative h-2.5 w-full overflow-hidden rounded-full border border-[#D4AF37]/30 bg-[#E8DFC8] dark:bg-[#2A251D] cursor-pointer">
           <div
-            className="h-full rounded-full bg-amber-600 transition-all duration-150"
+            className="h-full rounded-full bg-gradient-to-r from-[#7A0C0C] to-[#D4AF37] transition-all duration-150"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="flex justify-between text-[10px] font-mono text-muted-foreground">
+        <div className="flex justify-between text-[11px] font-mono text-[#5C503D] dark:text-[#A0927C]">
           <span>{formatTime(progress)}</span>
           <span>3:45</span>
         </div>
@@ -290,27 +367,31 @@ export function PrayerAudioPlayer({ title = "Áudio da Oração Tradicional de S
 
 export function DailyThemeCard({ day }: { day: JourneyDay }) {
   return (
-    <section className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">Tema Espiritual do Dia {day.number}</p>
-      <h2 className="font-display mt-1 text-2xl font-bold text-foreground sm:text-3xl">{day.theme}</h2>
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 sm:p-7 shadow-sm text-center sm:text-left space-y-1">
+      <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center justify-center sm:justify-start gap-1">
+        <span>✦</span> Tema Espiritual do Dia {day.number}
+      </p>
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
+        {day.theme}
+      </h2>
     </section>
   );
 }
 
 export function ScriptureCard({ day }: { day: JourneyDay }) {
   return (
-    <section className="rounded-xl border-l-4 border-amber-600 bg-amber-500/5 p-5 sm:p-6 space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-2">
-          <BookOpen className="h-4 w-4" /> Palavra de Deus — {day.scripture.reference}
+    <section className="rounded-xl border-l-4 border-[#7A0C0C] border-y border-r border-[#D4AF37]/30 bg-[#F5EFE0]/80 dark:bg-[#221E18] p-5 sm:p-7 space-y-3 shadow-2xs">
+      <div className="flex items-center justify-between border-b border-[#D4AF37]/20 pb-2">
+        <p className="font-serif font-bold text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-2 text-sm sm:text-base">
+          <BookOpen className="h-4 w-4 text-[#D4AF37]" /> Sagrada Escritura — {day.scripture.reference}
         </p>
       </div>
-      <p className="font-serif text-base sm:text-lg italic leading-relaxed text-foreground">
+      <p className="font-serif text-base sm:text-xl italic leading-relaxed text-[#2C251A] dark:text-[#E6DCC5]">
         "{day.scripture.text}"
       </p>
       {day.scripture.explanation && (
-        <div className="pt-2 border-t border-amber-600/20 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          <strong className="text-foreground">Explicação Bíblica: </strong>
+        <div className="pt-2 border-t border-[#D4AF37]/20 text-xs sm:text-sm font-serif text-[#5C503D] dark:text-[#A0927C] leading-relaxed">
+          <strong className="text-[#7A0C0C] dark:text-[#E5C158]">Exegese & Meditação Bíblica: </strong>
           {day.scripture.explanation}
         </div>
       )}
@@ -321,21 +402,21 @@ export function ScriptureCard({ day }: { day: JourneyDay }) {
 export function MeditationCard({ day }: { day: JourneyDay }) {
   const [playing, setPlaying] = useState(false);
   return (
-    <section className="rounded-xl border border-border bg-card p-5 sm:p-6 space-y-4 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="font-display text-xl font-bold text-foreground">Meditação Escrita</h3>
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 sm:p-7 space-y-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#D4AF37]/20 pb-3">
+        <h3 className="font-serif text-xl font-bold text-[#7A0C0C] dark:text-[#E5C158]">Meditação Teológica</h3>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setPlaying(!playing)}
-          className="gap-2 text-xs border-amber-600/30 text-amber-700 dark:text-amber-300"
+          className="gap-2 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC]"
         >
           {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           <Headphones className="h-3.5 w-3.5" />
-          <span>{playing ? "Pausar Narração" : "Ouvir Meditação Narrada"}</span>
+          <span>{playing ? "Pausar Meditação Narrada" : "Ouvir Meditação Narrada"}</span>
         </Button>
       </div>
-      <p className="font-serif leading-relaxed text-muted-foreground text-sm sm:text-base whitespace-pre-line">
+      <p className="font-serif leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] text-base sm:text-lg whitespace-pre-line">
         {day.meditation}
       </p>
     </section>
@@ -344,50 +425,52 @@ export function MeditationCard({ day }: { day: JourneyDay }) {
 
 export function VirtueCard({ day }: { day: JourneyDay }) {
   return (
-    <section className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Virtude do Dia</p>
-      <p className="mt-1 font-display text-xl font-bold text-amber-700 dark:text-amber-400">{day.virtue}</p>
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-1">
+      <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">Virtude a Cultivar</p>
+      <p className="font-serif text-2xl font-bold text-[#8B0000] dark:text-[#D4AF37]">{day.virtue}</p>
     </section>
   );
 }
 
 export function DailyPurposeCard({ day }: { day: JourneyDay }) {
   return (
-    <section className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Propósito Concreto</p>
-      <p className="mt-1 text-sm leading-relaxed font-medium text-foreground">{day.purpose}</p>
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-1">
+      <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">Propósito Prático Concreto</p>
+      <p className="font-serif text-base font-semibold leading-relaxed text-[#2C251A] dark:text-[#E6DCC5]">{day.purpose}</p>
     </section>
   );
 }
 
 export function PenanceCard({ text }: { text: string }) {
   return (
-    <section className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sugestão de Penitência</p>
-      <p className="mt-1 text-sm leading-relaxed text-foreground">{text}</p>
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-1">
+      <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">Sugestão de Mortificação & Penitência</p>
+      <p className="font-serif text-sm sm:text-base leading-relaxed text-[#2C251A] dark:text-[#E6DCC5]">{text}</p>
     </section>
   );
 }
 
 export function SpiritualExerciseCard({ text }: { text: string }) {
   return (
-    <section className="rounded-xl border border-amber-600/20 bg-amber-50/50 dark:bg-amber-950/20 p-4 sm:p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wider text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
-        <Sparkles className="h-3.5 w-3.5" /> Exercício Espiritual
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#F5EFE0]/80 dark:bg-[#221E18] p-5 shadow-sm space-y-1">
+      <p className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
+        <Sparkles className="h-3.5 w-3.5 text-[#D4AF37]" /> Exercício de Recolhimento Espiritual
       </p>
-      <p className="mt-1 text-sm leading-relaxed text-foreground font-serif">{text}</p>
+      <p className="font-serif text-sm sm:text-base leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] italic">{text}</p>
     </section>
   );
 }
 
 export function ExaminationOfConscience({ questions }: { questions: string[] }) {
   return (
-    <section className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-sm">
-      <h3 className="font-display text-xl font-bold text-foreground">Exame de Consciência</h3>
-      <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+    <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 sm:p-7 shadow-sm space-y-3">
+      <h3 className="font-serif text-xl font-bold text-[#7A0C0C] dark:text-[#E5C158] border-b border-[#D4AF37]/20 pb-2">
+        Exame de Consciência Diário
+      </h3>
+      <ul className="space-y-2.5 font-serif text-sm sm:text-base text-[#2C251A] dark:text-[#E6DCC5]">
         {questions.map((question) => (
-          <li key={question} className="flex items-start gap-2">
-            <span className="text-amber-600 font-bold">•</span>
+          <li key={question} className="flex items-start gap-2.5">
+            <span className="text-[#D4AF37] font-bold">✦</span>
             <span>{question}</span>
           </li>
         ))}
@@ -396,6 +479,7 @@ export function ExaminationOfConscience({ questions }: { questions: string[] }) 
   );
 }
 
+/* Option B Leather Notebook Styled Spiritual Journal */
 export function SpiritualJournal({
   value,
   onSave,
@@ -409,25 +493,27 @@ export function SpiritualJournal({
   useEffect(() => setText(value), [value]);
 
   return (
-    <section className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-sm space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="font-display text-xl font-bold text-foreground">Diário Espiritual</h3>
-        <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground font-medium">
-          Privado
+    <section className="rounded-xl border-2 border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#1C1813] p-5 sm:p-7 shadow-md space-y-3">
+      <div className="flex items-center justify-between border-b border-[#D4AF37]/30 pb-3">
+        <h3 className="font-serif text-xl font-bold text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-2">
+          <span>⚜</span> Diário Espiritual Pessoal
+        </h3>
+        <span className="rounded-full border border-[#D4AF37]/40 bg-[#E8DFC8] dark:bg-[#28241D] px-3 py-0.5 font-serif text-xs text-[#5C503D] dark:text-[#A0927C] font-bold">
+          Estritamente Privado
         </span>
       </div>
-      <p className="text-xs text-muted-foreground">
-        Guarde aqui o que o Senhor suscitou em seu coração nesta oração. Suas anotações são inteiramente privadas.
+      <p className="text-xs font-serif text-[#5C503D] dark:text-[#A0927C]">
+        Anote as graças, moções e desígnios que o Espírito Santo soprou em sua alma durante a oração.
       </p>
       <Textarea
         value={text}
         onChange={(event) => setText(event.target.value)}
-        placeholder="Escreva suas reflexões, inspirações e propósitos de hoje..."
-        className="min-h-32 font-serif text-sm"
+        placeholder="Escreva aqui suas reflexões mais íntimas..."
+        className="min-h-36 font-serif text-base border-[#D4AF37]/30 bg-[#FAF7EE] dark:bg-[#14120F] text-[#2C251A] dark:text-[#E6DCC5] shadow-inner focus:ring-2 focus:ring-[#D4AF37]"
       />
-      <div className="flex items-center gap-2 pt-1">
-        <Button onClick={() => onSave(text)} size="sm" className="bg-amber-700 hover:bg-amber-800 text-white">
-          Salvar Anotação
+      <div className="flex items-center gap-3 pt-1">
+        <Button onClick={() => onSave(text)} size="sm" className="font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold shadow-sm">
+          Salvar Anotação no Diário
         </Button>
         {value && (
           <Button
@@ -437,7 +523,7 @@ export function SpiritualJournal({
               setText("");
               onDelete();
             }}
-            className="text-xs text-red-600 hover:text-red-700 dark:text-red-400"
+            className="font-serif text-xs border-[#D4AF37]/40 text-red-700 dark:text-red-400"
           >
             Excluir
           </Button>
@@ -482,26 +568,26 @@ export function SilenceTimer() {
   };
 
   return (
-    <div className="rounded-xl border border-amber-600/30 bg-amber-500/10 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="rounded-xl border border-[#D4AF37]/40 bg-[#F5EFE0] dark:bg-[#1E1B15] p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
       <div className="flex items-center gap-3">
-        <div className="rounded-full bg-amber-600/20 p-2.5 text-amber-700 dark:text-amber-300">
+        <div className="rounded-full border border-[#D4AF37] bg-[#7A0C0C] p-2.5 text-[#FDFBF7]">
           <Timer className="h-5 w-5" />
         </div>
         <div>
-          <p className="font-semibold text-sm text-foreground">Cronômetro de Silêncio Contemplativo</p>
-          <p className="text-xs text-muted-foreground">Permaneça em recolhimento e oração silenciosa com Deus.</p>
+          <p className="font-serif font-bold text-sm text-[#7A0C0C] dark:text-[#E5C158]">Cronômetro de Silêncio Contemplativo</p>
+          <p className="text-xs font-serif text-[#5C503D] dark:text-[#A0927C]">Permaneça em recolhimento silencioso na presença do Senhor.</p>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         {seconds !== null ? (
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xl font-bold text-amber-700 dark:text-amber-300">{formatTime(seconds)}</span>
+            <span className="font-mono text-xl font-bold text-[#7A0C0C] dark:text-[#E5C158]">{formatTime(seconds)}</span>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsActive(!isActive)}
-              className="text-xs"
+              className="text-xs border-[#D4AF37]/40"
             >
               {isActive ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
             </Button>
@@ -510,14 +596,14 @@ export function SilenceTimer() {
             </Button>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5">
-            <Button variant="outline" size="sm" onClick={() => startTimer(1)} className="text-xs h-8">
+          <div className="flex items-center gap-2 font-serif">
+            <Button variant="outline" size="sm" onClick={() => startTimer(1)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
               1 min
             </Button>
-            <Button variant="outline" size="sm" onClick={() => startTimer(3)} className="text-xs h-8">
+            <Button variant="outline" size="sm" onClick={() => startTimer(3)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
               3 min
             </Button>
-            <Button variant="outline" size="sm" onClick={() => startTimer(5)} className="text-xs h-8">
+            <Button variant="outline" size="sm" onClick={() => startTimer(5)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
               5 min
             </Button>
           </div>
@@ -527,6 +613,7 @@ export function SilenceTimer() {
   );
 }
 
+/* Option B High-End Gold Parchment Premium Section */
 export function PremiumDepthSection({
   day,
   journal,
@@ -541,13 +628,13 @@ export function PremiumDepthSection({
   const [favorite, setFavorite] = useState(false);
 
   return (
-    <section className="space-y-6 rounded-xl border border-amber-500/40 bg-card p-5 sm:p-7 shadow-md">
-      <div className="flex items-start justify-between gap-4 border-b border-border pb-4">
+    <section className="space-y-6 rounded-2xl border-2 border-[#D4AF37] bg-[#FAF7EE] dark:bg-[#161411] p-6 sm:p-8 shadow-xl">
+      <div className="flex items-start justify-between gap-4 border-b border-[#D4AF37]/30 pb-4">
         <div>
-          <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-            <Crown className="h-4 w-4" /> Aprofundamento Espiritual — Sanctificare Premium
+          <span className="inline-flex items-center gap-1.5 text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
+            <Crown className="h-4 w-4 text-[#D4AF37]" /> Aprofundamento Espiritual — Sanctificare Premium
           </span>
-          <h2 className="font-display mt-1 text-2xl font-bold text-foreground">
+          <h2 className="font-serif mt-1.5 text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
             Dia {day.number}: {day.theme}
           </h2>
         </div>
@@ -556,9 +643,9 @@ export function PremiumDepthSection({
           size="icon"
           onClick={() => setFavorite(!favorite)}
           aria-label="Favoritar conteúdo"
-          className="text-muted-foreground hover:text-red-500"
+          className="text-[#5C503D] hover:text-red-600"
         >
-          <Heart className={favorite ? "fill-red-500 text-red-500" : ""} size={20} />
+          <Heart className={favorite ? "fill-red-600 text-red-600" : ""} size={22} />
         </Button>
       </div>
 
@@ -579,14 +666,17 @@ export function PremiumDepthSection({
 
       <SpiritualJournal value={journal} onSave={onJournalSave} onDelete={onJournalDelete} />
 
-      <section className="rounded-xl border border-border bg-muted/30 p-5 space-y-3">
-        <h3 className="font-display text-xl font-bold text-foreground">Oração Final Complementar</h3>
-        <p className="whitespace-pre-line font-serif leading-relaxed text-muted-foreground text-sm sm:text-base">
+      {/* Illuminated Saint Quote & Complementary Prayer Card */}
+      <section className="rounded-xl border border-[#D4AF37]/50 bg-[#F3EDDC] dark:bg-[#1E1A14] p-6 space-y-4 shadow-sm">
+        <h3 className="font-serif text-xl font-bold text-[#7A0C0C] dark:text-[#E5C158] border-b border-[#D4AF37]/20 pb-2">
+          Oração Final Complementar
+        </h3>
+        <p className="whitespace-pre-line font-serif leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] text-base sm:text-lg">
           {day.complementaryPrayer}
         </p>
-        <p className="mt-3 text-xs sm:text-sm italic text-amber-700 dark:text-amber-300 font-serif border-t border-border/50 pt-2">
-          {day.saintQuote}
-        </p>
+        <div className="mt-4 pt-3 border-t border-[#D4AF37]/30 text-sm font-serif italic text-[#7A0C0C] dark:text-[#E5C158]">
+          ✦ {day.saintQuote}
+        </div>
       </section>
 
       <SilenceTimer />
@@ -606,30 +696,30 @@ export function CompletionScreen({
   onDepth: () => void;
 }) {
   return (
-    <section className="rounded-xl border border-emerald-400 bg-emerald-50/80 dark:border-emerald-800 dark:bg-emerald-950/40 p-6 sm:p-8 text-center shadow-sm">
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
-        <Check className="h-6 w-6 stroke-[3]" />
+    <section className="rounded-2xl border-2 border-[#A5D6A7] bg-[#E8F5E9] dark:border-[#2E7D32] dark:bg-[#142916] p-7 text-center shadow-md space-y-3">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#1B5E20] text-[#FDFBF7] border-2 border-[#A5D6A7] shadow-sm">
+        <Check className="h-7 w-7 stroke-[3]" />
       </div>
-      <h2 className="font-display mt-3 text-2xl font-bold text-emerald-900 dark:text-emerald-100">
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1B5E20] dark:text-[#A5D6A7]">
         Dia Concluído
       </h2>
-      <p className="mt-1 text-sm font-medium text-emerald-800 dark:text-emerald-300">
+      <p className="font-serif text-base font-semibold text-[#2E7D32] dark:text-[#C8E6C9]">
         A devoção tradicional foi realizada integralmente.
       </p>
-      <p className="mt-2 text-xs text-muted-foreground">
+      <p className="font-serif text-xs text-muted-foreground">
         Progresso total na jornada: <strong className="text-foreground">{completed} de {total} dias</strong>
       </p>
 
       <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
-        <Button onClick={onFinish} className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold">
+        <Button onClick={onFinish} className="font-serif bg-[#1B5E20] hover:bg-[#144718] text-[#FDFBF7] font-bold px-6 shadow-sm">
           Finalizar por Hoje
         </Button>
         <Button
           variant="outline"
           onClick={onDepth}
-          className="border-amber-600/40 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/50 font-medium"
+          className="font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] hover:bg-[#F3EDDC] font-bold px-6"
         >
-          <Crown className="mr-2 h-4 w-4 text-amber-600" />
+          <Crown className="mr-2 h-4 w-4 text-[#D4AF37]" />
           Aprofundar a Oração de Hoje
         </Button>
       </div>
@@ -639,16 +729,16 @@ export function CompletionScreen({
 
 export function ReminderSettings({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   return (
-    <label className="flex items-center justify-between rounded-xl border border-border bg-card p-4 text-sm shadow-sm">
+    <label className="flex items-center justify-between rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-4 text-sm font-serif shadow-sm">
       <div>
-        <span className="block font-semibold text-foreground">Lembrete Diário de Oração</span>
-        <span className="text-xs text-muted-foreground">Receba uma notificação no horário de sua preferência.</span>
+        <span className="block font-bold text-[#7A0C0C] dark:text-[#E5C158]">Lembrete Diário de Oração</span>
+        <span className="text-xs text-muted-foreground">Receba um sinal no horário de sua escolha.</span>
       </div>
       <input
         type="time"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="rounded-md border border-border bg-background px-3 py-1 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+        className="rounded-md border border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#28241D] px-3 py-1 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
       />
     </label>
   );
@@ -658,23 +748,23 @@ export function SubscriptionOffer() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <section className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6 shadow-sm space-y-3">
-        <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-semibold text-sm">
-          <Crown className="h-5 w-5" />
+      <section className="rounded-xl border-2 border-[#D4AF37]/50 bg-[#F5EFE0] dark:bg-[#1E1A14] p-6 shadow-md space-y-3 font-serif">
+        <div className="flex items-center gap-2 text-[#7A0C0C] dark:text-[#E5C158] font-bold text-sm">
+          <Crown className="h-5 w-5 text-[#D4AF37]" />
           <span>Sanctificare Premium</span>
         </div>
-        <h3 className="font-display text-xl font-bold text-foreground">
+        <h3 className="text-xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
           Aprofunde esta experiência com o Sanctificare Premium
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          A devoção tradicional permanece gratuita para todos os fiéis. O Premium oferece meditações diárias, áudios contemplativos, exercícios de virtude e exames de consciência para quem deseja trilhar uma caminhada de aprofundamento.
+          A devoção tradicional permanece totalmente gratuita para todos os fiéis. O Premium oferece meditações diárias, áudios contemplativos, exercícios de virtude e exames de consciência para quem deseja trilhar uma caminhada de aprofundamento espiritual.
         </p>
         <Button
           variant="outline"
           onClick={() => setOpen(true)}
-          className="mt-2 border-amber-600/40 text-amber-800 dark:text-amber-300 hover:bg-amber-500/10 font-medium"
+          className="mt-2 font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] hover:bg-[#F3EDDC] font-bold"
         >
-          <Lock className="mr-2 h-4 w-4 text-amber-600" />
+          <Lock className="mr-2 h-4 w-4 text-[#D4AF37]" />
           Conhecer o Aprofundamento Espiritual
         </Button>
       </section>
@@ -703,37 +793,40 @@ export function DistractionFreeModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-6 overflow-hidden bg-background text-foreground border-amber-500/30">
-        <DialogHeader className="flex flex-row items-center justify-between border-b border-border pb-3">
+      <DialogContent className="max-w-4xl h-[90vh] flex flex-col p-7 overflow-hidden bg-[#FAF7EE] dark:bg-[#161411] text-[#2C251A] dark:text-[#E6DCC5] border-2 border-[#D4AF37]">
+        <DialogHeader className="flex flex-row items-center justify-between border-b border-[#D4AF37]/30 pb-4">
           <div>
-            <span className="text-xs uppercase font-semibold text-amber-600 tracking-wider">Modo de Leitura Sem Distrações</span>
-            <DialogTitle className="font-display text-lg font-bold">
-              {index + 1}. {prayers[index]?.title}
+            <span className="text-xs uppercase font-serif font-bold text-[#7A0C0C] dark:text-[#E5C158] tracking-widest">
+              ✦ Leitura Sacra Sem Distrações
+            </span>
+            <DialogTitle className="font-serif text-xl font-bold mt-0.5">
+              {toRoman(index + 1)}. {prayers[index]?.title}
             </DialogTitle>
           </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto py-6 px-2 sm:px-4">
-          <p className={`${fontSize} whitespace-pre-line font-serif leading-relaxed text-foreground max-w-2xl mx-auto`}>
+        <div className="flex-1 overflow-y-auto py-6 px-4">
+          <p className={`${fontSize} whitespace-pre-line font-serif leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] max-w-2xl mx-auto`}>
             {prayers[index]?.content}
           </p>
         </div>
 
-        <div className="flex items-center justify-between border-t border-border pt-4 text-xs">
+        <div className="flex items-center justify-between border-t border-[#D4AF37]/30 pt-4 text-xs font-serif">
           <Button
             variant="outline"
             disabled={index === 0}
             onClick={() => setIndex((i) => Math.max(0, i - 1))}
+            className="border-[#D4AF37]/40"
           >
             Anterior
           </Button>
-          <span className="text-muted-foreground font-medium">
+          <span className="text-[#5C503D] dark:text-[#A0927C] font-bold">
             {index + 1} de {prayers.length}
           </span>
           <Button
             disabled={index === prayers.length - 1}
             onClick={() => setIndex((i) => Math.min(prayers.length - 1, i + 1))}
-            className="bg-amber-700 hover:bg-amber-800 text-white"
+            className="bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold"
           >
             Próxima Oração
           </Button>
