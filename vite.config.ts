@@ -1,9 +1,8 @@
 import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { defineConfig } from "vite";
 
 const isProd = process.env.NODE_ENV === "production";
 const plugins = [react(), tailwindcss(), ...(isProd ? [] : [jsxLocPlugin()])];
@@ -29,7 +28,19 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            return "vendor-v2";
+            if (id.includes("react") || id.includes("wouter")) {
+              return "vendor-react";
+            }
+            if (id.includes("@radix-ui") || id.includes("lucide-react")) {
+              return "vendor-ui";
+            }
+            if (id.includes("@trpc") || id.includes("@tanstack")) {
+              return "vendor-query";
+            }
+            if (id.includes("firebase")) {
+              return "vendor-firebase";
+            }
+            return "vendor-core";
           }
         },
       },
