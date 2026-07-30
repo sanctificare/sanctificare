@@ -20,6 +20,7 @@ import {
   Check,
   CalendarDays,
   Flame,
+  ShieldCheck,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
