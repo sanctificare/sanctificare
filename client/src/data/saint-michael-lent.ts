@@ -141,11 +141,11 @@ export const SAINT_MICHAEL_LENT: SpiritualJourney = {
       scripture: {
         reference: "Apocalipse 12, 7-9",
         text: "Houve então uma batalha no céu: Miguel e seus anjos guerrearam contra o Dragão. O Dragão lutou juntamente com os seus anjos, mas não prevaleceu; e já não houve lugar para eles no céu.",
-        explanation: `No plano original da criação, os anjos foram provados na sua liberdade e no seu amor ao Criador. O Dragão representa a soberba angelical, a pretensão de autossuficiência e a rejeição da soberania de Deus. O nome Miguel (Mi-ka-El) não é apenas um nome próprio, mas uma pergunta teológica vibrante de vitória divina: "Quem é como Deus?".
+        explanation: `Nas célebres homilias dos Padres da Igreja, o combate celestial de Apocalipse 12 é contemplado como a vitória da humildade divina sobre a soberba das criaturas. Santo Agostinho, em seus sermões sobre a Cidade de Deus, ensina que Lúcifer caiu no abismo não por fraqueza física, mas por se embriagar com a própria beleza e proferir o audacioso 'Non serviam' (Não servirei), recusando-se a adorar o mistério do Deus encarnado.
 
-Com este brado de humildade radical e adoração pura, São Miguel derrotou a soberba do anjo rebelde que ousou dizer "Não servirei" (Non serviam). O combate retratado em Apocalipse 12 é o protótipo eterno de nossa batalha diária contra o orgulho e a autoexaltação que nos afastam da presença viva do Pai.
+Diante dessa rebelião de vaidade, o Arcanjo São Miguel levantou-se com o brado 'Mi-ka-El' (Quem é como Deus?), frase que São João Crisóstomo descreve em suas homilias como o raio de verdade que despedaçou a ilusão do orgulho demoníaco. Miguel não combateu fundado em mérito ou força própria, mas na absoluta aniquilação do próprio eu diante da soberania de Deus.
 
-Ao contemplarmos esta passagem bíblica, somos chamados a imitar a atitude dos Santos Anjos. Reconhecer a nossa pequenez diante da majestade de Deus não é humilhação estéril, mas a chave que abre as portas para a verdadeira liberdade e santidade cristã.`,
+São Bernardo de Claraval, em seus sermões quaresmais, exorta os fiéis a compreenderem que a verdadeira grandeza da alma consiste em fazer-se pequena. Quando o orgulho tenta reinar em nosso coração através da autossuficiência e dos julgamentos aos irmãos, o exemplo dos Padres nos convida a revestir o espírito com a resposta de Miguel, lembrando que Deus resiste aos soberbos, mas dá Sua graça aos humildes.`,
       },
       meditation: `Irmão e irmã na fé, ao iniciarmos esta Quaresma de São Miguel Arcanjo, convido você a olhar honestamente para o seu coração. Como devotos, muitas vezes trazemos feridas profundas escondidas sob a aparência de piedade. Queremos fazer a vontade de Deus, mas quantas vezes exigimos, no fundo, que Deus faça a nossa vontade?
 
@@ -240,11 +240,11 @@ Enviai o Vosso Arcanjo São Miguel para defender o meu coração neste combate. 
       scripture: {
         reference: "Efésios 6, 11-17",
         text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do demônio. Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades, contra os dominadores deste mundo tenebroso, contra os espíritos malignos espalhados pelos ares. Por isso, empenhai as armas de Deus, para que possais resistir no dia mau e, depois de ter vencido tudo, permanecer inabaláveis.",
-        explanation: `A guerra espiritual travada pelo cristão não é realizada com violência humana ou forças carnais, mas com a graça onipotente de Deus. O Apóstolo São Paulo nos exorta a tomar a couraça da justiça, o capacete da salvação, o escudo da fé e a espada do Espírito, que é a Palavra viva de Deus.
+        explanation: `Nas Homilias de São João Crisóstomo sobre a Epístola aos Efésios, o santo doutor da Igreja explica que a 'Armadura de Deus' é o próprio Cristo que nos reveste na batalha diária contra as potestades invisíveis. O Crisóstomo adverte que o demônio não combate como um soldado visível, mas lança os dardos da acídia, da preguiça espiritual e do desânimo para nos fazer depor as armas do fervor e da oração.
 
-Sob a proteção soberana de São Miguel Arcanjo, general das milícias celestes, aprendemos que o demônio costuma atacar sutilmente pela tibieza, pelo cansaço e pela paralisia do desânimo. Revestir-se da armadura divina significa viver vigilante na graça santificante e alimentar a alma com os sacramentos da Igreja.
+São Jerônimo, em seus comentários às cartas paulinas, enfatiza que o capacete da salvação e o escudo da fé não são enfeites ornamentais, mas defesas indispensáveis para os atletas da fé. De acordo com os escritos dos Santos Padres, a aridez da alma e o cansaço do combate não devem ser motivo de desespero, mas oportunidade de provar a fidelidade do soldado sob a bandeira de São Miguel Arcanjo.
 
-Diante das adversidades do dia a dia, a Palavra nos convida a permanecer inabaláveis, sabendo que a vitória final pertence ao Senhor. Não combatemos sozinhos: os exércitos angélicos batalham ao nosso lado contra as potências das trevas.`,
+Em um de seus sermões sobre a vida de ascese, São Bernardo de Claraval nos recorda que o inimigo só vence a alma que voluntariamente abandona o posto de guarda. Invocar a São Miguel enquanto nos revestimos da palavra de Deus e dos sacramentos nos garante a força necessária para resistir no dia mau e perseverar inabaláveis até a vitória final.`,
       },
       meditation: `Irmão e irmã na fé, no segundo dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama à vigilância das armas espirituais. Muitas vezes iniciamos nossa caminhada com grande entusiasmo, mas logo ao primeiro sinal de cansaço ou contrariedade, sentimos o peso da tentação e a sutil paralisia da acídia — a preguiça da alma e a tibieza espiritual.
 
@@ -333,11 +333,11 @@ Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desân
       scripture: {
         reference: "Efésios 6, 16",
         text: "Em todas as circunstâncias, empenhai o escudo da fé, com o qual podereis apagar todos os dardos inflamados do Maligno.",
-        explanation: `O escudo da fé é a proteção indispensável para guardar o coração humano das investidas sopradas pelo adversário das nossas almas. O inimigo busca semear pensamentos de dúvida, ceticismo e desconfiança em relação à misericórdia, à providência e às promessas de Cristo.
+        explanation: `Nos Sermões de Papa São Leão Magno, o escudo da fé é apresentado como a muralha inexpugnável da alma católica diante de todas as tempestades provocadas pelas heresias e tentações de dúvida. O santo Papa ensina que o inimigo sopra sutilmente a incredulidade para desestabilizar os alicerces da oração e fazer a alma duvidar da misericórdia e da providência de Deus.
 
-Quando levantamos o escudo da fé através da oração perseverante e do recolhimento, os dardos inflamados da incerteza perdem inteiramente o seu poder destrutivo. A fé teologal não se baseia em sentimentos passageiros, mas na adesão firme da inteligência à Verdade divina revelada.
+Santo Agostinho, em seus Tratados sobre o Evangelho de São João, exorta que a fé não consiste em entender para crer, mas em crer para compreender. Quando o coração humano atravessa momentos de aridez e incerteza, o Bispo de Hipona recorda que o escudo da fé deve ser empunhado com decisão firme da vontade, ancorando o espírito na autoridade infalível da Palavra de Deus e no magistério dos Apóstolos.
 
-São Miguel Arcanjo nos ensina a permanecer inabaláveis mesmo nas horas de aridez espiritual e escuridão exterior. Quem se apoia na palavra de Deus com confiança filial jamais será confundido pelas tempestades da vida.`,
+Nas Instruções Espirituais dos Padres do Deserto, a tentação da dúvida é descrita como uma flecha inflamada do Maligno destinada a provocar o pânico espiritual. Sob a proteção de São Miguel, que contemplava continuamente a glória divina, o fiel aprende a erguer a oração confiante e a permanecer inabalável na certeza de que a Verdade Divina jamais falha.`,
       },
       meditation: `Irmão e irmã na fé, no terceiro dia da Quaresma de São Miguel Arcanjo, somos chamados a fortificar nossa fé diante das tempestades da vida. O demônio ataca a inteligência e o coração espalhando o veneno da dúvida: faz-nos duvidar da misericórdia de Deus após uma queda, duvidar do cuidado divino na doença ou no desemprego, e duvidar de que o Senhor escuta nossas preces.
 
@@ -426,11 +426,11 @@ Alcançai-me do Senhor uma fé viva, operante pela caridade e inabalável nas pr
       scripture: {
         reference: "Salmo 141 (140), 3 / Efésios 4, 25",
         text: "Ponde, Senhor, uma guarda à minha boca, e guardai a porta dos meus lábios! Por isso, renunciai à mentira e falai a verdade cada um ao seu próximo, pois somos membros uns dos outros.",
-        explanation: `A língua humana possui o imenso poder de edificar ou de destruir vidas e reputações. Jesus chama o demônio de 'pai da mentira', pois é através do engano, da fofoca e da calúnia que as trevas semeiam discórdia nos lares, comunidades e corações.
+        explanation: `Nos célebres Sermões de São João Maria Vianney, o Cura d'Ars, o vício da mentira e da fofoca é severamente denunciado como a linguagem própria do demônio, a quem o próprio Cristo chamou de 'pai da mentira'. O santo Cura ensinava ao seu povo que a maledicência é como um veneno lançado na fonte da comunidade, destruindo as almas de quem fala, de quem escuta e daquele de quem se fala.
 
-O salmista e o apóstolo São Paulo pedem uma guarda divina para a boca, exortando os fiéis a renunciar a toda mentira e a cultivar a veracidade nas palavras. Guardar a língua dos comentários maldosos e da maledicência é um ato fundamental de caridade e maturidade espiritual.
+São Francisco de Sales, em seus Sermões sobre a Custódia da Língua, compara as palavras murmuradoras e caluniosas a flechas de fogo espalhadas ao vento. Os Padres da Igreja, como São João Crisóstomo, recordam que a boca do cristão foi santificada para receber o Corpo de Cristo na Eucaristia e, portanto, jamais deveria ser usada como instrumento de falsidade, engano ou humilhação do próximo.
 
-São Miguel Arcanjo, porta-estandarte da Verdade Altíssima, inspira-nos a usar a palavra para louvar a Deus e transmitir consolo aos irmãos. Uma alma que domina a sua linguagem guarda a sua consciência na perfeita paz de Cristo.`,
+Pedir ao Senhor que ponha uma guarda à nossa boca, como ensina o Salmista, significa clamar pela pureza que procede do Espírito Santo. Sob a espada reluzente da verdade de São Miguel Arcanjo, a alma é convidada a banir todo engano e a cultivar o silêncio respeitoso ou a palavra de bênção que pacifica e edifica os corações.`,
       },
       meditation: `Irmão e irmã na fé, no quarto dia de nossa Quaresma de São Miguel Arcanjo, voltamos o nosso olhar para a vigilância das palavras. Quantas vezes a paz das famílias, das comunidades e do próprio coração é destruída por murmurações, julgamentos precipitados, mentiras 'sociais' ou comentários maldosos a respeito dos irmãos.
 
@@ -516,11 +516,11 @@ Alcançai-me a graça da honestidade interior e da mansidão nas palavras. Que a
       scripture: {
         reference: "1 Coríntios 6, 19-20 / Mateus 5, 8",
         text: "Bem-aventurados os puros de coração, porque verão a Deus. Acaso não sabeis que o vosso corpo é templo do Espírito Santo, que habita em vós? Glorificai, pois, a Deus no vosso corpo!",
-        explanation: `A virtude da castidade é a celebração do amor autêntico e a vitória da graça sobre a concupiscência e o egoísmo. A Sagrada Escritura nos recorda solenemente que o nosso corpo é templo e habitação do Espírito Santo, devendo ser guardado com profundo respeito e santidade.
+        explanation: `Nas Homilias de São João Crisóstomo sobre a Primeira Carta aos Coríntios, o santo Doutor da Igreja declara que violar a pureza do corpo é dessagrar o próprio templo vivo de Deus. O Crisóstomo explica aos fiéis que, pelo Batismo e pela Eucaristia, a carne humana foi unida de modo inefável a Cristo, tornando a impureza e a luxúria um sacrilégio profanador contra o Espírito Santo que habita na alma.
 
-Os puros de coração recebem a promessa de contemplar a Deus. São Miguel Arcanjo, espelho de pureza angélica, nos ensina a rejeitar prontamente as tentações da luxúria, da pornografia e de todas as contaminações morais propostas pelo mundo contemporâneo.
+Santo Afonso Maria de Ligório, em seus escritos e sermões morais, adverte que as tentações contra a castidade são as mais frequentes e perigosas no combate espiritual. O santo bispo enfatiza a doutrina dos Padres da Igreja de que a vitória sobre a carne não se alcança dialogando com a tentação, mas através da fuga imediata das ocasiões de pecado e da guarda rigorosa dos olhos e dos pensamentos.
 
-O combate pela pureza exige a custódia vigilante dos olhos, a modéstia no comportamento e o recurso frequente ao sacramento da Confissão. Preservar o corpo e a mente puros é preparar o coração para ser um sacrário vivo do Amor Divino.`,
+São Jerônimo, em seus sermões aos monásticos, exortava que a castidade eleva o homem mortal à dignidade dos Anjos. Invocando o auxílio protetor de São Miguel Arcanjo — guardião da santidade celeste —, o cristão encontra a fortaleza necessária para desviar o olhar do mal, cultivar a modéstia e manter a sua vida como um sacrário imaculado para o Senhor.`,
       },
       meditation: `Irmão e irmã na fé, no quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a beleza da pureza de coração e da santa castidade. Em um mundo saturado de erotismo, pornografia e desordens morais, manter a alma e os sentidos puros tornou-se um ato heroico de combate espiritual.
 
@@ -602,11 +602,11 @@ Cercai-me com as vossas asas de luz e obtende-me da Virgem Maria a graça de um 
       scripture: {
         reference: "Mateus 6, 19-21",
         text: "Não ajunteis tesouros na terra, onde a traça e a ferrugem roem e onde os ladrões escavam e roubam. Ajunteis tesouros no céu... pois onde estiver o teu tesouro, aí estará também o teu coração.",
-        explanation: `O apego desordenado ao dinheiro, aos bens materiais e ao conforto egoísta escraviza a alma e endurece o coração humano. Nosso Senhor Jesus Cristo nos alerta categoricamente sobre a fragilidade dos tesouros terrenos e nos convida a acumular bens eternos no Céu.
+        explanation: `Nas contundentes Homilias de São Basílio Magno sobre a Avareza, o grande Pai da Igreja adverte que o acúmulo egoísta de bens materiais é uma espoliação do direito dos pobres. São Basílio ensina em seus sermões que o pão guardado em excesso nos armários pertence ao faminto, as vestes acumuladas pertencem ao nu e o ouro enterrado por ganância é o direito negado ao necessitado.
 
-Onde está o nosso tesouro, aí estará inevitavelmente o nosso coração. São Miguel Arcanjo, administrador dos bens celestes, ensina-nos a viver com espírito de pobreza evangélica, usando os recursos materiais com justiça, responsabilidade e generosidade para com os necessitados.
+São João Crisóstomo, em seus Sermões sobre a parábola do Rico e de Lázaro, explica que o dinheiro não é mau em sua natureza, mas o apego desordenado e o idolatrar as riquezas tornam o coração cego, insensível e incapaz de amar. O tesouro terreno está sujeito à ferrugem e à traça dos anos; apenas a caridade e a graça divina permanecem incorruptíveis na eternidade.
 
-A avareza gera ansiedade e desconfiança na Providência divina, enquanto o desapego sincero traz a verdadeira liberdade interior. Ao partilhar o que temos com alegria, abrimos espaço para que a riqueza insondável da graça de Deus transborde em nossa existência.`,
+São Francisco de Assis, inspirado pela tradição patrística, chamava a santa pobreza de 'caminho da liberdade angélica'. Sob a intercessão de São Miguel Arcanjo — administrador dos bens eternos do Céu —, o cristão aprende a desapegar-se do supérfluo, a confiar totalmente na Providência do Pai Celestial e a usar as riquezas deste mundo para construir um tesouro eterno no Reino dos Céus.`,
       },
       meditation: `Irmão e irmã na fé, no sexto dia de nossa caminhada devocional, meditamos sobre o combate contra a avareza e o apego desordenado às coisas materiais. O dinheiro e os bens deste mundo foram criados para servir ao sustento honesto e à caridade; contudo, quando o coração humano se prende às posses, transforma o ouro em um ídolo que ocupa o lugar de Deus.
 
@@ -688,11 +688,11 @@ Concedei-me um coração generoso para partilhar com os necessitados e uma alma 
       scripture: {
         reference: "Colossenses 3, 12-13 / Mateus 6, 14-15",
         text: "Suportai-vos uns aos outros e perdoai-vos mutuamente, caso alguém tenha motivo de queixa contra o outro. Assim como o Senhor vos perdoou, assim fazei vós também. Se perdoardes aos homens as suas ofensas, o vosso Pai Celestial também vos perdoará.",
-        explanation: `O rancor, a ira e o desejo de vingança mantêm a alma aprisionada ao passado e abrem brechas profundas para a ação do maligno. A Palavra de Deus exorta os fiéis a perdoarem mutuamente com generosidade, assim como o Senhor nos perdoou incondicionalmente na Cruz.
+        explanation: `Nos Sermões de Santo Agostinho sobre o Pai-Nosso, o Bispo de Hipona enfatiza a gravidade da cláusula 'perdoai-nos as nossas ofensas assim como nós perdoamos'. Agostinho adverte que o cristão que guarda rancor e recusa perdoar ao irmão está, na verdade, pronunciando uma maldição contra si mesmo ao rezar a oração do Senhor, fechando a porta da misericórdia divina para o seu próprio julgamento.
 
-O perdão cristão não depende de sentimentos humanos ou da mudança da outra pessoa; é uma decisão consciente da vontade motivada pela graça divina. Perdoar é entregar a dor e a reparação nas mãos de Deus, libertando o devedor e curando a própria alma.
+São João Crisóstomo, em suas Homilias sobre o Evangelho de São Mateus, ensina que a ira e o desejo de vingança transformam a alma humana em uma morada de demônios. O grande pregador de Antioquia recorda que Cristo perdoou a Seus algozes no alto do Calvário, deixando o exemplo supremo de que o perdão não é um sentimento frágil, mas a vitória heroica da graça sobre o orgulho ferido.
 
-São Miguel Arcanjo, príncipe da paz e da misericórdia, auxilia-nos a superar as amarguras e a imitar o Imaculado Coração de Jesus. A alma que perdoa de coração abre o caminho para receber o perdão e a paz celestial.`,
+São Bernardo de Claraval exorta em seus sermões que guardar mágoa é carregar um cadáver no próprio peito. Sob o comando de São Miguel Arcanjo — Príncipe da Paz de Cristo —, o fiel é encorajado a cortar todas as raízes de amargura, desarmar os pensamentos de vingança e imitar a infinita misericórdia de Deus que a todos acolhe e perdoa.`,
       },
       meditation: `Irmão e irmã na fé, no sétimo dia de nossa Quaresma de São Miguel Arcanjo, enfrentamos uma das batalhas mais decisivas do coração humano: a vitória do perdão sobre a ira, o ressentimento e a vingança. Quem guarda rancor bebe um veneno esperando que o outro morra.
 
@@ -774,11 +774,11 @@ Concedei-me a santa mansidão do Coração de Jesus para perdoar a todos os que 
       scripture: {
         reference: "1 Coríntios 13, 4-7 / Tiago 3, 16",
         text: "A caridade é paciente, a caridade é prestativa. Não é invejosa, não se ostenta, não se incha de orgulho... Pois onde há inveja e espírito de discórdia, aí há perturbação e toda espécie de maus atos.",
-        explanation: `A caridade fraterna é o coração do Evangelho e o mandamento distintivo dos discípulos de Cristo. A inveja, por sua vez, é o pecado capital pelo qual o demônio trouxe a morte ao mundo: o desgosto pelo bem do próximo e o desejo de ver a ruína do irmão.
+        explanation: `No famoso Tratado de São Cipriano de Cartago sobre o Ciúme e a Inveja, o santo bispo e mártir explica que a inveja foi o primeiro pecado pelo qual o diabo destruiu a própria felicidade no Céu e arrastou a humanidade para a queda. Cipriano adverte que a inveja é um câncer invisível na alma: enquanto os outros vícios buscam algum prazer aparente, a inveja só sente prazer no sofrimento alheio e desgosto na alegria do irmão.
 
-A Sagrada Escritura ensina que a caridade é paciente, benigna e não se alegra com a injustiça, mas congratula-se com a verdade. São Miguel e as milícias celestes vivem em perfeita comunhão e rejubilam-se com a glória e as virtudes dos seus irmãos anjos.
+São Basílio Magno, em sua Homilia sobre a Inveja, compara o invejoso às aves de rapina que passam ao largo de prados floridos para pousar apenas na carniça. O Padre da Igreja ensina que a inveja corrói o coração como a ferrugem consome o ferro, impedindo a alma de saborear a doçura da caridade e a paz que procedem de Deus.
 
-Vencer a inveja e os julgamentos temerários exige uma constante purificação do olhar interior, aprendendo a valorizar os dons dos outros como se fossem nossos. Onde reina o amor fraterno sincero, aí se manifesta a vitória de Deus sobre o mal.`,
+São João da Cruz e Santo Tomás de Aquino lembram em seus sermões que no Céu os Anjos não sentem ciúmes das diversas ordens e glórias uns dos outros, mas alegram-se perfeitamente no bem comum. Sob o olhar de São Miguel Arcanjo, o cristão é chamado a purificar a mente, celebrando com gratidão sincera as virtudes e conquistas do próximo como um dom do próprio Pai Celestial.`,
       },
       meditation: `Irmão e irmã na fé, no oitavo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o mandamento novo da caridade e o combate contra o pecado capital da inveja. A inveja foi a porta pela qual a morte entrou no mundo: o diabo teve inveja da dignidade do homem e da glória de Deus.
 
@@ -860,11 +860,11 @@ Alcançai-me a graça de ver o meu próximo com os olhos misericordiosos de Cris
       scripture: {
         reference: "1 Coríntios 10, 31 / Filipenses 3, 19",
         text: "Quer comais, quer bebais ou façais qualquer outra coisa, fazei tudo para a glória de Deus. Não façais do ventre o vosso deus, mas vivei com sobriedade.",
-        explanation: `A virtude da temperança e o autodomínio são essenciais para moderar as paixões sensíveis e direcionar todos os desejos corporais para a glória de Deus. O Apóstolo São Paulo nos exorta a viver com sobriedade, evitando fazer dos apetites carnais o nosso centro.
+        explanation: `Nas Homilias de São João Crisóstomo sobre a Sobriedade Cristã, o santo Doutor adverte que a gula e a falta de moderação nas necessidades físicas escravizam a alma e obnubilam a visão espiritual. O Crisóstomo ensina que um corpo saciado de apetites desordenados e sem disciplina torna-se pesado e incapaz de se elevar à oração e à contemplação dos mistérios divinos.
 
-A gula e a falta de disciplina enfraquecem a vontade da alma, tornando o espírito pesado e vulnerável às tentações do inimigo. A ascese, o jejum e a mortificação corporal praticados com amor não desvalorizam a matéria, mas reordenam a alma sob o domínio da razão iluminada pela fé.
+São Bernardo de Claraval, em seus Sermões Quaresmais, explica que a mortificação dos sentidos e o jejum praticados pela Igreja não têm a finalidade de castigar o corpo, mas de libertá-lo da tirania das paixões carnais. Quando moderamos os nossos apetites por amor a Deus, fortalecemos o espírito e abrimos espaço interior para que a graça do Espírito Santo guie a nossa inteligência e afeições.
 
-São Miguel Arcanjo, modelo de sobriedade e retidão, convida-nos a controlar os impulsos do corpo para nos dedicarmos à oração e ao serviço divino. A alma sóbria é forte no combate e livre para amar.`,
+Os Padres do Deserto, como São João Cassiano, ensinavam unanimemente que o combate contra a gula é a porta de entrada para todas as vitórias espirituais. Sob o patrocínio de São Miguel Arcanjo — exemplo perfeito de retidão e foco na glória de Deus —, o fiel é encorajado a viver com sobriedade, oferecendo cada refeição e mortificação para a santificação pessoal e salvação das almas.`,
       },
       meditation: `Irmão e irmã na fé, no nono dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a virtude cardinal da temperança e o combate contra a gula e os excessos sensíveis. Em uma sociedade consumista que incentiva a satisfação imediata de todos os desejos, aprender a dizer 'não' ao próprio corpo é um sinal de maturidade espiritual.
 
@@ -946,11 +946,11 @@ Fortalecei a minha vontade para praticar o jejum e a mortificação com alegria 
       scripture: {
         reference: "Filipenses 4, 6-7 / Salmo 27 (26), 1",
         text: "Não vos inquieteis com coisa alguma; mas em todas as circunstâncias apresentai os vossos pedidos a Deus pela oração e pela súplica, acompanhadas de ação de graças. E a paz de Deus... guardará os vossos corações.",
-        explanation: `A ansiedade sufocante, as preocupações excessivas e o desespero nascem da tentativa errônea de controlar o futuro com nossas próprias forças limitadas, esquecendo a paternidade amorosa de Deus. O Apóstolo São Paulo exorta a apresentar todas as petições a Deus através da oração cheia de confiança.
+        explanation: `Nos Sermões de Santo Agostinho sobre os Salmos, o grande Bispo de Hipona nos ensina que a ansiedade sufocante é o fruto amargo da alma que tenta colocar sua segurança nas coisas transitórias do mundo em vez de descansar no amor imutável de Deus. Agostinho exclama famosamente que o nosso coração permanece inquieto e perturbado até que encontre o seu verdadeiro descanso e refúgio na Providência do Pai Criador.
 
-A virtude teologal da esperança concede ao cristão a certeza inabalável de que a nossa vida e o universo estão sob o amparo da Providência divina. Nada sucede sem a permissão ou vontade de Deus, que faz todas as coisas concorrerem para o bem dos que O amam.
+São Francisco de Sales, em suas Cartas e Sermões sobre a Paz da Alma, exorta os fiéis a combaterem os sobressaltos da ansiedade abandonando o futuro nas mãos do Senhor. O Santo Bispo de Genebra ensina que o mesmo Pai Celestial que cuidou de nós no dia de hoje com tanta ternura proverá a graça necessária para o amanhã, tornando inútil e nociva a inquietação angustiada pelos males futuros.
 
-São Miguel Arcanjo, mensageiro da vitória divina, convida-nos a depositar os medos e inquietações aos pés do Senhor. Ao abandonarmos o amanhã na fidelidade de Cristo, experimentamos a paz que excede todo o entendimento humano.`,
+São Leão Magno, em seus Sermões de Natal e Páscoa, recorda que a esperança teologal é a âncora imóvel lançada dentro do Santuário Celeste. Sob a proteção gloriosa de São Miguel Arcanjo — o mensageiro da paz e da vitória final de Deus —, o cristão aprende a silenciar as tempestades da mente, invocando com fé o nome do Senhor e descansando na certeza de que Deus governa todas as coisas para o bem dos Seus amados.`,
       },
       meditation: `Irmão e irmã na fé, no décimo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o dom da esperança cristã e o combate contra a ansiedade sufocante, as preocupações excessivas e o desespero. Quantas noites mal dormidas e corações aflitos porque tentamos controlar o amanhã com nossas próprias forças limitadas!
 
