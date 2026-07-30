@@ -1,15 +1,25 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  CalendarDays,
-  ChevronLeft,
-  Flame,
-  Minus,
-  Plus,
-  ShieldCheck,
+  ArrowLeft,
+  CheckCircle2,
+  Lock,
+  Crown,
+  Headphones,
+  Play,
+  Pause,
+  RotateCcw,
+  Volume2,
+  VolumeX,
+  Share2,
+  Heart,
   Calendar,
   Sparkles,
-  ArrowRight,
-  Cross,
+  Minus,
+  Plus,
+  BookOpen,
+  Check,
+  CalendarDays,
+  Flame,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -18,27 +28,14 @@ import { trpc } from "@/lib/trpc";
 import { scheduleSaintMichaelLentReminder } from "@/lib/notifications";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { UpgradeDialog } from "@/components/UpgradeDialog";
 import {
   SAINT_MICHAEL_CONSECRATION,
   SAINT_MICHAEL_LENT,
   SAINT_MICHAEL_TRADITIONAL_PRAYERS,
+  type JourneyDay,
 } from "@/data/saint-michael-lent";
-import {
-  CompletionScreen,
-  DailyThemeCard,
-  DistractionFreeModal,
-  JourneyCalendar,
-  JourneyHeader,
-  JourneyProgress,
-  PenanceCard,
-  PremiumDepthSection,
-  PrayerAudioPlayer,
-  PrayerReader,
-  ReminderSettings,
-  ScriptureCard,
-  SubscriptionOffer,
-  TraditionalPrayerSection,
-} from "@/components/saint-michael/JourneyComponents";
 
 type JourneyState = {
   startDate: string;
@@ -49,7 +46,7 @@ type JourneyState = {
   journals: Record<number, string>;
 };
 
-const STORAGE_KEY = "sanctificare.journey.saint-michael.v2";
+const STORAGE_KEY = "sanctificare.journey.saint-michael.v3";
 const JOURNEY_ID = "quaresma-sao-miguel-arcanjo";
 
 function todayIso(): string {
@@ -86,10 +83,10 @@ function getTraditionalStartDateIso(): string {
 
 function defaultState(): JourneyState {
   return {
-    startDate: "",
+    startDate: getTraditionalStartDateIso(),
     completedDays: [],
     selectedDay: 1,
-    penance: "",
+    penance: "Oferecer minhas orações e mortificações pela conversão dos pecadores.",
     reminderTime: "20:00",
     journals: {},
   };
@@ -104,14 +101,21 @@ function loadLocalState(): JourneyState {
   }
 }
 
+function formatAudioTime(seconds: number): string {
+  if (isNaN(seconds) || seconds < 0) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
 export default function SaintMichaelLent() {
   const { isAuthenticated } = useAuth();
 
-  // Subscription status query
+  // Subscription Status Query
   const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
   const isPremium = !!subscription && ["active", "cancelled", "past_due"].includes(subscription.status);
 
-  // Backend sync queries/mutations
+  // Backend Sync
   const { data: serverProgress } = trpc.journeys.getProgress.useQuery(
     { journeyId: JOURNEY_ID },
     { enabled: isAuthenticated }
@@ -122,16 +126,42 @@ export default function SaintMichaelLent() {
   const deleteJournalMutation = trpc.journeys.deleteJournal.useMutation();
 
   const [state, setState] = useState<JourneyState>(loadLocalState);
-  const [showDepth, setShowDepth] = useState(false);
+  const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
-  const [distractionFreeOpen, setDistractionFreeOpen] = useState(false);
+  const pillNavRef = useRef<HTMLDivElement | null>(null);
+
+  // Audio Player State
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const duration = 315; // 5:15 simulated audio length
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Audio simulation timer
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setCurrentTime((prev) => {
+          if (prev >= duration) {
+            setIsPlaying(false);
+            return 0;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPlaying, duration]);
 
   // Sync server progress into local state when available
   useEffect(() => {
     if (serverProgress) {
       setState((prev) => ({
         ...prev,
-        startDate: serverProgress.startedAt || prev.startDate,
+        startDate: serverProgress.startedAt || prev.startDate || getTraditionalStartDateIso(),
         completedDays: (serverProgress.completedDays as number[]) || prev.completedDays,
         selectedDay: serverProgress.lastAccessedDay || prev.selectedDay,
         penance: serverProgress.chosenPenance || prev.penance,
@@ -140,7 +170,7 @@ export default function SaintMichaelLent() {
     }
   }, [serverProgress]);
 
-  // Persist local state whenever it changes
+  // Persist local state
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
@@ -165,409 +195,600 @@ export default function SaintMichaelLent() {
     });
   };
 
-  const day = useMemo(() => {
-    return (
-      SAINT_MICHAEL_LENT.days.find((item) => item.number === state.selectedDay) || {
-        number: state.selectedDay,
-        title: `Dia ${state.selectedDay}`,
-        theme: `Combate Espiritual e Oração — Dia ${state.selectedDay}`,
-        scripture: {
-          reference: "Efésios 6,12",
-          text: "Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades.",
-          explanation: "O combate do cristão se trava no terreno do espírito, exigindo vigilância e oração constante.",
-        },
-        meditation: `Neste ${state.selectedDay}º dia da Quaresma de São Miguel Arcanjo, renove a sua fé e confie na proteção dos santos anjos.`,
-        virtue: "Fidelidade",
-        purpose: "Rezar um Pai-Nosso e uma Ave-Maria pedindo a proteção de São Miguel para sua família.",
-        suggestedPenance: "Abstecer-se de comentários negativos e reclamações.",
-        spiritualExercise: "Fazer 3 minutos de silêncio ao meio-dia para colocar Deus no centro do seu trabalho.",
-        examination: [
-          "Tenho confiado na proteção de Deus nas minhas batalhas?",
-          "Fui fiel às minhas orações de hoje?",
-        ],
-        saintQuote: "Os anjos nos acompanham em cada passo do nosso caminho. - São João Crisóstomo",
-        complementaryPrayer:
-          "São Miguel Arcanjo, defendei-nos no combate para que não pereçamos no dia do supremo juízo. Amém.",
-      }
-    );
-  }, [state.selectedDay]);
+  const selectedDayNum = state.selectedDay;
 
-  const completionDateIso = useMemo(() => {
-    return state.startDate ? calculateEndDateIso(state.startDate, 40) : "";
-  }, [state.startDate]);
+  // Day data resolver (Dia 1 e Dia 2 completos, dias 3-40 estruturados)
+  const currentDayData: JourneyDay = useMemo(() => {
+    const found = SAINT_MICHAEL_LENT.days.find((d) => d.number === selectedDayNum);
+    if (found) return found;
+    return {
+      number: selectedDayNum,
+      title: `Dia ${selectedDayNum}`,
+      theme: `Combate Espiritual e Fidelidade — Dia ${selectedDayNum}`,
+      scripture: {
+        reference: "Efésios 6,12",
+        text: "Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades, contra os dominadores deste mundo tenebroso.",
+        explanation: "O combate do cristão se trava na interioridade da alma através da vigilância, oração e mortificação diária.",
+      },
+      meditation: `Neste ${selectedDayNum}º dia da Quaresma de São Miguel Arcanjo, invoque a luz dos Santos Anjos para vencer os maus pensamentos e renovar a caridade.`,
+      virtue: "Perseverança",
+      purpose: "Rezar o Terço de São Miguel ou um Pai-Nosso oferecendo pela santificação das famílias.",
+      suggestedPenance: "Renunciar a uma distração desnecessária no celular durante o dia.",
+      spiritualExercise: "Fazer uma pausa de recolhimento ao meio-dia e rezar a oração a São Miguel.",
+      examination: [
+        "Fui fiel aos meus deveres de oração hoje?",
+        "Conservei a paz de espírito diante das provações?",
+      ],
+      saintQuote: "São Miguel é o fiel defensor de todos aqueles que o invocam nas tentações. - São Padre Pio",
+      complementaryPrayer:
+        "São Miguel Arcanjo, defendei-nos no combate para que não pereçamos no dia do julgamento. Amém.",
+    };
+  }, [selectedDayNum]);
 
-  const isCurrentDayCompleted = state.completedDays.includes(state.selectedDay);
+  // Audio accessibility rule:
+  // Days 1, 2, 3: FREE AUDIO FOR ALL!
+  // Days 4 to 40: PREMIUM AUDIO ONLY
+  const isAudioLocked = selectedDayNum > 3 && !isPremium;
 
-  const nextAvailableDay = useMemo(() => {
-    for (let d = 1; d <= 40; d++) {
-      if (!state.completedDays.includes(d)) return d;
+  const isCurrentDayCompleted = state.completedDays.includes(selectedDayNum);
+
+  const toggleDayComplete = () => {
+    const isDone = state.completedDays.includes(selectedDayNum);
+    let nextCompleted: number[];
+    if (isDone) {
+      nextCompleted = state.completedDays.filter((d) => d !== selectedDayNum);
+      toast.info(`Dia ${selectedDayNum} desmarcado.`);
+    } else {
+      nextCompleted = [...state.completedDays, selectedDayNum].sort((a, b) => a - b);
+      toast.success(`Dia ${selectedDayNum} concluído com sucesso. Que São Miguel Arcanjo o guarde!`);
     }
-    return 40;
-  }, [state.completedDays]);
-
-  const streak = useMemo(() => {
-    let count = 0;
-    const sorted = [...state.completedDays].sort((a, b) => b - a);
-    for (const number of sorted) {
-      if (number === sorted[0] - count) count++;
-      else break;
-    }
-    return count;
-  }, [state.completedDays]);
-
-  const chooseStart = (date: string) => {
-    updateState({ startDate: date, selectedDay: 1 });
-    setShowDepth(false);
-    toast.success(`Jornada iniciada! Previsão de término: ${formatDateBr(calculateEndDateIso(date, 40))}`);
-  };
-
-  const markComplete = () => {
-    if (isCurrentDayCompleted) {
-      setShowDepth(true);
-      return;
-    }
-    const newCompleted = [...state.completedDays, state.selectedDay].sort((a, b) => a - b);
-    updateState({ completedDays: newCompleted });
+    updateState({ completedDays: nextCompleted });
 
     if (isAuthenticated) {
       saveProgressMutation.mutate({
         journeyId: JOURNEY_ID,
-        startedAt: state.startDate,
-        expectedEndAt: completionDateIso,
-        lastAccessedDay: state.selectedDay,
-        completedDays: newCompleted,
-        currentStreak: newCompleted.length,
+        startedAt: state.startDate || getTraditionalStartDateIso(),
+        expectedEndAt: calculateEndDateIso(state.startDate || getTraditionalStartDateIso(), 40),
+        lastAccessedDay: selectedDayNum,
+        completedDays: nextCompleted,
+        currentStreak: nextCompleted.length,
         chosenPenance: state.penance,
         reminderTime: state.reminderTime,
       });
     }
-
-    toast.success(`Dia ${state.selectedDay} concluído com sucesso. Que São Miguel Arcanjo o proteja!`);
   };
 
-  const selectDay = (number: number) => {
-    updateState({ selectedDay: number });
-    setShowDepth(false);
-    if (isAuthenticated && state.startDate) {
-      saveProgressMutation.mutate({
-        journeyId: JOURNEY_ID,
-        startedAt: state.startDate,
-        expectedEndAt: completionDateIso,
-        lastAccessedDay: number,
-        completedDays: state.completedDays,
-        chosenPenance: state.penance,
-        reminderTime: state.reminderTime,
-      });
+  const handleSelectDay = (dayNum: number) => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+    updateState({ selectedDay: dayNum });
+
+    // Scroll active pill into view on mobile
+    if (pillNavRef.current) {
+      const activePill = pillNavRef.current.querySelector('[data-active="true"]');
+      if (activePill) {
+        activePill.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
     }
   };
 
   const handleJournalSave = (text: string) => {
-    updateState({ journals: { ...state.journals, [state.selectedDay]: text } });
+    updateState({ journals: { ...state.journals, [selectedDayNum]: text } });
     if (isAuthenticated) {
       saveJournalMutation.mutate({
         journeyId: JOURNEY_ID,
-        dayNumber: state.selectedDay,
+        dayNumber: selectedDayNum,
         content: text,
       });
     }
-    toast.success("Sua anotação privada foi salva com segurança.");
+    toast.success("Sua anotação privada do diário foi salva.");
   };
 
   const handleJournalDelete = () => {
     const nextJournals = { ...state.journals };
-    delete nextJournals[state.selectedDay];
+    delete nextJournals[selectedDayNum];
     updateState({ journals: nextJournals });
     if (isAuthenticated) {
       deleteJournalMutation.mutate({
         journeyId: JOURNEY_ID,
-        dayNumber: state.selectedDay,
+        dayNumber: selectedDayNum,
       });
     }
     toast.success("Anotação excluída.");
   };
 
-  const currentJournalText = state.journals[state.selectedDay] ?? "";
+  const currentJournalText = state.journals[selectedDayNum] ?? "";
 
   return (
-    <div className="min-h-screen bg-[#FAF7EE] dark:bg-[#13110E] text-[#2C251A] dark:text-[#E6DCC5] pb-20 font-serif">
-      <main className="container max-w-4xl space-y-7 px-4 py-7 sm:py-9">
-        <Link
-          href="/explore"
-          className="inline-flex items-center gap-1.5 text-sm font-serif font-bold text-[#7A0C0C] dark:text-[#E5C158] hover:underline"
-        >
-          <ChevronLeft size={18} /> Voltar para explorar
-        </Link>
+    <div className="min-h-screen bg-[oklch(0.965_0.012_82)] dark:bg-[#12100E] relative overflow-hidden text-foreground">
+      {/* Background Sacred Gradients */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)] dark:opacity-20" />
+      
+      <main className="container px-4 sm:px-6 py-6 sm:py-8 relative z-10 max-w-6xl">
+        {/* Header Estilo Novenas */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-4">
+          <div>
+            <Link href="/explore">
+              <button className="mb-2 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] flex items-center gap-1">
+                <ArrowLeft size={16} /> Voltar ao catálogo de devocionais
+              </button>
+            </Link>
+            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+              Devocional • Jornada Espiritual de 40 Dias
+            </p>
+            <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-[oklch(0.22_0.07_260)] dark:text-amber-100 leading-tight break-words">
+              {SAINT_MICHAEL_LENT.title}
+            </h1>
+            <p className="font-serif text-xs sm:text-sm text-muted-foreground mt-0.5">
+              40 Dias de Oração, Penitência e Combate Espiritual • Início Tradicional em 15/08 (Assunção)
+            </p>
+          </div>
+        </div>
 
-        {/* Option B Editorial Header */}
-        <JourneyHeader
-          title={SAINT_MICHAEL_LENT.title}
-          subtitle="Quarenta dias de oração, penitência e combate espiritual sob a intercessão de São Miguel Arcanjo."
-          image={SAINT_MICHAEL_LENT.image}
-        />
+        {/* Mobile Quick Day Selector Bar (< lg screens) */}
+        <div className="block lg:hidden mb-5">
+          <div className="flex items-center justify-between mb-2 px-0.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+              Meditações (40 Dias)
+            </span>
+            <span className="text-[10px] font-medium text-muted-foreground">
+              Dia {selectedDayNum} de 40
+            </span>
+          </div>
+          <div
+            ref={pillNavRef}
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none snap-x -mx-4 px-4 sm:mx-0 sm:px-0"
+          >
+            {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
+              const active = dayNum === selectedDayNum;
+              const isDone = state.completedDays.includes(dayNum);
+              const isAudioLockedDay = dayNum > 3 && !isPremium;
 
-        {/* Seleção do Período Inicial (Option B Styling) */}
-        {!state.startDate ? (
-          <section className="rounded-2xl border-2 border-[#D4AF37]/50 bg-[#F3EDDC] dark:bg-[#1C1813] p-6 sm:p-9 space-y-6 shadow-md">
-            <div className="space-y-2 border-b border-[#D4AF37]/30 pb-4">
-              <span className="text-xs font-serif font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
-                <Cross className="h-4 w-4 text-[#D4AF37]" /> Apresentação da Devoção Católica
-              </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
-                Inicie sua Jornada Espiritual de 40 Dias
-              </h2>
-              <p className="text-sm sm:text-base text-[#5C503D] dark:text-[#A0927C] leading-relaxed">
-                A Quaresma de São Miguel Arcanjo é uma venerável tradição secular de preparação e combate espiritual. O período tradicional inicia-se na Festa da Assunção de Nossa Senhora (<strong>15 de agosto</strong>) e culmina na Festa dos Santos Arcanjos (<strong>29 de setembro</strong>). Você também pode iniciar em qualquer outra época do ano.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <p className="text-sm font-bold text-[#7A0C0C] dark:text-[#E5C158]">Selecione a data de início da sua Quaresma:</p>
-              <div className="grid gap-3 sm:grid-cols-3">
-                <Button
-                  variant="outline"
-                  onClick={() => chooseStart(getTraditionalStartDateIso())}
-                  className="h-auto flex-col items-start p-4 text-left border-[#D4AF37]/50 bg-[#FAF7EE] hover:bg-[#EAE0C8] font-serif"
+              return (
+                <button
+                  key={dayNum}
+                  data-active={active}
+                  onClick={() => handleSelectDay(dayNum)}
+                  className={`shrink-0 snap-start rounded-full px-3.5 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
+                    active
+                      ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
+                      : "bg-card text-foreground border-border hover:border-slate-300"
+                  }`}
                 >
-                  <span className="font-bold text-[#7A0C0C] dark:text-[#E5C158] text-xs uppercase tracking-wider">
-                    Período Tradicional
-                  </span>
-                  <span className="text-base font-bold mt-1 text-[#2C251A] dark:text-[#FDFBF7]">15/08 a 29/09</span>
-                  <span className="text-xs text-muted-foreground mt-1">Data histórica da Igreja</span>
-                </Button>
+                  <span>Dia {dayNum}</span>
+                  {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
+                  {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-                <Button
-                  onClick={() => chooseStart(todayIso())}
-                  className="h-auto flex-col items-start p-4 text-left bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-serif shadow-md border border-[#D4AF37]/40"
+        {/* Layout Principal em 2 Colunas (Exatamente como NovenaDetails) */}
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          
+          {/* Coluna Principal: Conteúdo de Áudio / Texto */}
+          <div
+            className={`rounded-2xl border transition-all duration-500 p-4 sm:p-6 shadow-xl ${
+              activeTab === "audio"
+                ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
+                : "bg-card border-border text-foreground shadow-md"
+            }`}
+          >
+            <div className="space-y-6">
+              {/* Seleção de Abas [ ÁUDIO | TEXTO ] */}
+              <div className="flex border-b border-white/10 dark:border-border/40 mb-6">
+                <button
+                  onClick={() => setActiveTab("audio")}
+                  className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 cursor-pointer ${
+                    activeTab === "audio"
+                      ? "border-amber-500 text-amber-500"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
                 >
-                  <span className="font-bold text-[#E5C158] text-xs uppercase tracking-wider">Início Imediato</span>
-                  <span className="text-base font-bold mt-1">Começar Hoje</span>
-                  <span className="text-xs text-[#E6DCC5] mt-1">Calcular 40 dias a partir de hoje</span>
-                </Button>
-
-                <label className="flex flex-col justify-between rounded-lg border border-[#D4AF37]/50 bg-[#FAF7EE] dark:bg-[#161411] p-4 cursor-pointer hover:bg-[#EAE0C8] transition-all font-serif">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1">
-                      <CalendarDays className="h-3.5 w-3.5 text-[#D4AF37]" /> Selecionar outra data
+                  <Headphones size={15} />
+                  <span>Áudio</span>
+                  {selectedDayNum <= 3 && (
+                    <span className="rounded-full bg-amber-500/20 text-amber-300 px-1.5 py-0.2 text-[9px] font-bold">
+                      Grátis
                     </span>
-                    <span className="text-xs text-muted-foreground mt-1 block">Escolha no calendário</span>
-                  </div>
-                  <Input
-                    type="date"
-                    min="2020-01-01"
-                    max="2100-12-31"
-                    onChange={(event) => event.target.value && chooseStart(event.target.value)}
-                    className="mt-2 text-xs border-[#D4AF37]/30 bg-[#F3EDDC] dark:bg-[#28241D] shadow-none"
-                  />
-                </label>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <>
-            {/* Informações da Jornada Ativa (Option B) */}
-            <section className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-5 shadow-sm space-y-1">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4 text-[#D4AF37]" /> Período Sagrado da Quaresma
-                </span>
-                <p className="text-base font-bold text-[#2C251A] dark:text-[#FDFBF7]">
-                  {formatDateBr(state.startDate)} a {formatDateBr(completionDateIso)}
-                </p>
-                <p className="text-xs text-muted-foreground">40 dias de oração calculados automaticamente.</p>
-              </div>
+                  )}
+                  {isPlaying && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                  )}
+                </button>
 
-              <PenanceCard
-                text={
-                  state.penance ||
-                  "Nenhuma penitência registrada. Defina sua oferta de mortificação para estes 40 dias."
-                }
-              />
-            </section>
-
-            {/* Built-In Cathedral Audio Player (Option B Feature) */}
-            <PrayerAudioPlayer title={`Áudio da Oração — Dia ${state.selectedDay}: ${day.theme}`} />
-
-            {/* Progresso & Calendário dos 40 Dias */}
-            <JourneyProgress
-              completed={state.completedDays.length}
-              total={SAINT_MICHAEL_LENT.totalDays}
-              streak={streak}
-            />
-
-            <JourneyCalendar
-              completed={state.completedDays}
-              selectedDay={state.selectedDay}
-              onSelect={selectDay}
-            />
-
-            {/* Botão de Retomada / Próximo Dia Disponível */}
-            {nextAvailableDay !== state.selectedDay && (
-              <div className="flex items-center justify-between rounded-xl border-2 border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#1E1A14] p-5 shadow-sm">
-                <div className="flex items-center gap-2 text-sm text-[#7A0C0C] dark:text-[#E5C158] font-bold">
-                  <Sparkles className="h-4 w-4 text-[#D4AF37]" />
-                  <span>
-                    Próximo dia pendente na jornada: <strong>Dia {nextAvailableDay}</strong>
-                  </span>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => selectDay(nextAvailableDay)}
-                  className="font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold gap-1.5 text-xs shadow-sm"
+                <button
+                  onClick={() => setActiveTab("text")}
+                  className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 cursor-pointer ${
+                    activeTab === "text"
+                      ? "border-amber-500 text-amber-600 dark:text-amber-400"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
                 >
-                  <span>Continuar Jornada</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <BookOpen size={15} />
+                  <span>Texto (100% Gratuito)</span>
+                </button>
+              </div>
+
+              {/* ABA ÁUDIO */}
+              {activeTab === "audio" && (
+                <div className="space-y-6 animate-fade-in">
+                  {/* Se o áudio estiver bloqueado (Dias 4-40 sem Premium) */}
+                  {isAudioLocked ? (
+                    <div className="py-12 text-center space-y-4">
+                      <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
+                        <Lock size={24} className="text-amber-400" />
+                      </div>
+                      <span className="text-xs uppercase tracking-widest font-bold text-amber-400">
+                        Dia {selectedDayNum} — Áudio Premium
+                      </span>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-white max-w-md mx-auto">
+                        O áudio dos Dias 4 a 40 é exclusivo para assinantes Sanctificare Premium
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                        Os 3 primeiros dias de áudio são gratuitos. O texto das orações tradicionais e a meditação do Dia {selectedDayNum} continuam <strong>100% gratuitos</strong> na aba <strong>TEXTO</strong>.
+                      </p>
+
+                      <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+                        <Button
+                          onClick={() => setActiveTab("text")}
+                          className="bg-amber-600 hover:bg-amber-700 text-white font-serif font-bold text-xs"
+                        >
+                          <BookOpen size={14} className="mr-1.5" /> Ler Texto Gratuito do Dia {selectedDayNum}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowUpgradeModal(true)}
+                          className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-serif font-bold text-xs"
+                        >
+                          <Crown size={14} className="mr-1.5 text-amber-400" /> Desbloquear Áudios Premium
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Cabeçalho do Dia */}
+                      <div className="text-center">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80 font-serif">
+                          Dia {selectedDayNum}
+                        </span>
+                        <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight">
+                          {currentDayData.theme}
+                        </h2>
+                      </div>
+
+                      {/* Intenção / Penitência – Box igual ao anexo */}
+                      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3.5 flex gap-2.5 items-start">
+                        <Heart size={14} className="text-amber-400 fill-amber-400/20 mt-0.5 shrink-0" />
+                        <div className="w-full">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] uppercase tracking-wider font-bold text-amber-300">
+                              Rezando Por / Penitência Escolhida:
+                            </span>
+                          </div>
+                          <p className="text-xs sm:text-sm font-serif italic text-amber-100/90 leading-normal mt-0.5">
+                            "{state.penance || "Registre sua penitência para acompanhar sua jornada."}"
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Visual de Capa com aura luminosa */}
+                      <div className="flex flex-col items-center justify-center my-6">
+                        <div className="relative w-40 h-40">
+                          <div
+                            className={`absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 blur-md transition-opacity duration-1000 ${
+                              isPlaying ? "opacity-90 animate-pulse" : "opacity-40"
+                            }`}
+                          />
+                          <img
+                            src={SAINT_MICHAEL_LENT.image}
+                            alt="São Miguel Arcanjo"
+                            className={`relative w-40 h-40 rounded-3xl object-cover z-10 border border-white/20 shadow-2xl transition-transform duration-500 ${
+                              isPlaying ? "scale-105" : "scale-100"
+                            }`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Controles de Áudio (Player estilo anexo) */}
+                      <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
+                        {/* Progress Bar & Seeker */}
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-[10px] text-slate-300 w-9 text-right font-mono">
+                            {formatAudioTime(currentTime)}
+                          </span>
+                          <input
+                            type="range"
+                            min={0}
+                            max={duration}
+                            step={1}
+                            value={currentTime}
+                            onChange={(e) => setCurrentTime(Number(e.target.value))}
+                            className="flex-1 h-1.5 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                          />
+                          <span className="text-[10px] text-slate-300 w-9 font-mono">
+                            -{formatAudioTime(duration - currentTime)}
+                          </span>
+                        </div>
+
+                        {/* Botões do Player */}
+                        <div className="flex items-center justify-center gap-5 pt-1">
+                          <button
+                            onClick={() => setCurrentTime(0)}
+                            className="text-slate-400 hover:text-white transition-colors"
+                            aria-label="Reiniciar"
+                          >
+                            <RotateCcw size={16} />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              if (navigator.share) {
+                                void navigator.share({
+                                  title: `Quaresma de São Miguel Arcanjo - Dia ${selectedDayNum}`,
+                                  text: `Estou rezando o Dia ${selectedDayNum} da Quaresma de São Miguel no Sanctificare!`,
+                                  url: window.location.href,
+                                });
+                              } else {
+                                toast.success("Link da oração copiado para a área de transferência!");
+                              }
+                            }}
+                            className="text-slate-400 hover:text-white transition-colors"
+                            aria-label="Compartilhar"
+                          >
+                            <Share2 size={16} />
+                          </button>
+
+                          {/* Play/Pause Gold Button */}
+                          <button
+                            onClick={() => setIsPlaying(!isPlaying)}
+                            className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-95"
+                            aria-label={isPlaying ? "Pausar" : "Reproduzir"}
+                          >
+                            {isPlaying ? (
+                              <Pause size={22} className="fill-slate-950" />
+                            ) : (
+                              <Play size={22} className="fill-slate-950 ml-0.5" />
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setIsMuted(!isMuted)}
+                            className="text-slate-400 hover:text-white transition-colors"
+                            aria-label="Mudo"
+                          >
+                            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* ABA TEXTO (100% Gratuita para todos os 40 dias) */}
+              {activeTab === "text" && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 font-serif">
+                        Devoção Tradicional Gratuitamente
+                      </span>
+                      <h2 className="font-serif text-xl sm:text-2xl font-bold text-foreground">
+                        Dia {selectedDayNum}: {currentDayData.theme}
+                      </h2>
+                    </div>
+
+                    <div className="flex items-center gap-1 bg-muted p-1 rounded-lg text-xs font-serif">
+                      <span className="px-2 text-muted-foreground">Fonte:</span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() =>
+                          setFontSize((s) => (s === "text-sm" ? "text-lg" : s === "text-base" ? "text-sm" : "text-base"))
+                        }
+                        className="h-7 w-7"
+                      >
+                        {fontSize === "text-lg" ? <Minus size={14} /> : <Plus size={14} />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Leitura Bíblica */}
+                  <div className="rounded-xl border-l-4 border-amber-600 bg-amber-500/10 p-5 space-y-2">
+                    <p className="font-serif font-bold text-amber-800 dark:text-amber-300 text-sm flex items-center gap-1.5">
+                      <BookOpen size={16} /> Sagrada Escritura — {currentDayData.scripture.reference}
+                    </p>
+                    <p className={`font-serif italic leading-relaxed text-foreground ${fontSize}`}>
+                      "{currentDayData.scripture.text}"
+                    </p>
+                    {currentDayData.scripture.explanation && (
+                      <p className="text-xs font-serif text-muted-foreground pt-1 border-t border-amber-600/20">
+                        <strong>Explicação Bíblica: </strong>
+                        {currentDayData.scripture.explanation}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Meditação Teológica */}
+                  <div className="space-y-2">
+                    <h3 className="font-serif text-lg font-bold text-foreground">Meditação do Dia</h3>
+                    <p className={`font-serif leading-relaxed text-muted-foreground ${fontSize} whitespace-pre-line`}>
+                      {currentDayData.meditation}
+                    </p>
+                  </div>
+
+                  {/* Virtude e Propósito */}
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-xl border border-border p-4 bg-muted/20">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
+                        Virtude a Cultivar
+                      </span>
+                      <p className="font-serif text-lg font-bold text-foreground mt-0.5">
+                        {currentDayData.virtue}
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border p-4 bg-muted/20">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
+                        Propósito Concreto
+                      </span>
+                      <p className="font-serif text-sm font-semibold text-foreground mt-0.5">
+                        {currentDayData.purpose}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Orações Tradicionais Completas */}
+                  <div className="space-y-4 pt-2">
+                    <h3 className="font-serif text-lg font-bold text-foreground flex items-center gap-1.5">
+                      <ShieldCheck size={18} className="text-amber-600" /> Orações Tradicionais Preservadas
+                    </h3>
+                    <div className="space-y-3">
+                      {SAINT_MICHAEL_TRADITIONAL_PRAYERS.map((prayer, idx) => (
+                        <div key={prayer.title} className="rounded-xl border border-border bg-card p-4 space-y-2">
+                          <h4 className="font-serif font-bold text-sm text-amber-700 dark:text-amber-400">
+                            {idx + 1}. {prayer.title}
+                          </h4>
+                          <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
+                            {prayer.content}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Exame de Consciência */}
+                  <div className="space-y-2 pt-2 border-t border-border">
+                    <h3 className="font-serif text-lg font-bold text-foreground">Exame de Consciência</h3>
+                    <ul className="space-y-1.5 font-serif text-sm text-muted-foreground">
+                      {currentDayData.examination.map((q) => (
+                        <li key={q} className="flex items-start gap-2">
+                          <span className="text-amber-600 font-bold">•</span>
+                          <span>{q}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Diário Espiritual Privado */}
+                  <div className="rounded-xl border border-border bg-muted/30 p-5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-serif text-lg font-bold text-foreground">Diário Espiritual</h3>
+                      <span className="text-[10px] font-bold text-muted-foreground bg-background px-2 py-0.5 rounded border border-border">
+                        Privado
+                      </span>
+                    </div>
+                    <Textarea
+                      value={currentJournalText}
+                      onChange={(e) => handleJournalSave(e.target.value)}
+                      placeholder="Guarde aqui o que o Senhor falou ao seu coração..."
+                      className="min-h-28 font-serif text-sm"
+                    />
+                    {currentJournalText && (
+                      <Button variant="ghost" size="sm" onClick={handleJournalDelete} className="text-xs text-red-600">
+                        Excluir Anotação
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Botão de Ação: Marcar Dia como Rezado (Igual ao anexo) */}
+              <div className="pt-4 border-t border-white/10 dark:border-border/40">
+                <Button
+                  onClick={toggleDayComplete}
+                  className={`w-full py-6 font-serif font-bold text-sm sm:text-base rounded-xl cursor-pointer transition-all shadow-md ${
+                    isCurrentDayCompleted
+                      ? "bg-emerald-700 hover:bg-emerald-800 text-white"
+                      : "bg-amber-500 hover:bg-amber-400 text-slate-950"
+                  }`}
+                >
+                  <CheckCircle2 className="mr-2 h-5 w-5" />
+                  {isCurrentDayCompleted ? `Dia ${selectedDayNum} Rezado` : `Marcar Dia ${selectedDayNum} como Rezado`}
                 </Button>
               </div>
-            )}
+            </div>
+          </div>
 
-            {/* ETAPA 1 — PREPARAÇÃO (Option B Style) */}
-            <section className="rounded-xl border border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-[#1A1814] p-6 sm:p-7 space-y-5 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#D4AF37]/20 pb-4">
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
-                    Etapa 1 — Preparação para a Oração
-                  </span>
-                  <h2 className="font-serif mt-1 text-2xl sm:text-3xl font-bold text-[#2C251A] dark:text-[#FDFBF7]">
-                    Dia {state.selectedDay}: {day.theme}
-                  </h2>
-                  <p className="text-xs text-muted-foreground mt-0.5 font-serif">
-                    {formatDateBr(calculateEndDateIso(state.startDate, state.selectedDay))}
-                  </p>
-                </div>
+          {/* Coluna Lateral: Lista de Meditações (40 Dias) - Idêntico ao Anexo */}
+          <div className="hidden lg:block space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-4 shadow-md space-y-3">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  Meditações (40 Dias)
+                </span>
+                <span className="text-xs font-serif text-muted-foreground font-semibold">
+                  {state.completedDays.length}/40 Concluídos
+                </span>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center rounded-lg border border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#28241D] p-1 text-xs">
-                    <span className="px-2 text-muted-foreground font-bold">Fonte:</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() =>
-                        setFontSize((size) =>
-                          size === "text-sm" ? "text-lg" : size === "text-base" ? "text-sm" : "text-base"
-                        )
-                      }
-                      aria-label="Ajustar tamanho da fonte"
-                      className="h-7 w-7 text-[#7A0C0C] dark:text-[#E5C158]"
+              {/* Scrollable List of 40 Days */}
+              <div className="space-y-2 max-h-[720px] overflow-y-auto pr-1">
+                {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
+                  const active = dayNum === selectedDayNum;
+                  const isDone = state.completedDays.includes(dayNum);
+                  const isAudioLockedDay = dayNum > 3 && !isPremium;
+
+                  const dayItem = SAINT_MICHAEL_LENT.days.find((d) => d.number === dayNum);
+                  const themeTitle = dayItem ? dayItem.theme : `Dia ${dayNum}: Combate Espiritual e Oração`;
+
+                  return (
+                    <button
+                      key={dayNum}
+                      onClick={() => handleSelectDay(dayNum)}
+                      className={`w-full text-left p-3 rounded-xl border transition-all flex items-start justify-between gap-3 cursor-pointer ${
+                        active
+                          ? "bg-[#FAF7EE] dark:bg-[#1C1813] border-amber-500 ring-2 ring-amber-500/30 shadow-sm"
+                          : "bg-muted/40 hover:bg-muted border-border"
+                      }`}
                     >
-                      {fontSize === "text-lg" ? <Minus size={14} /> : <Plus size={14} />}
-                    </Button>
-                  </div>
-                  <Button
-                    onClick={() =>
-                      document.getElementById("traditional-prayers-section")?.scrollIntoView({ behavior: "smooth" })
-                    }
-                    className="font-serif bg-[#7A0C0C] hover:bg-[#600909] text-[#FDFBF7] font-bold shadow-sm"
-                  >
-                    Iniciar a Oração
-                  </Button>
-                </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
+                            Meditação {dayNum}
+                          </span>
+                          {isDone && <CheckCircle2 size={12} className="text-emerald-600" />}
+                          {isAudioLockedDay && <Lock size={11} className="text-amber-500" />}
+                        </div>
+                        <p className={`text-xs font-serif font-bold leading-snug line-clamp-2 ${
+                          active ? "text-amber-900 dark:text-amber-100" : "text-foreground"
+                        }`}>
+                          Dia {dayNum}: {themeTitle}
+                        </p>
+                      </div>
+
+                      <span className="text-[10px] font-mono text-muted-foreground shrink-0 flex items-center gap-1 mt-0.5">
+                        <Headphones size={10} />
+                        05:15
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-
-              <div className="rounded-lg bg-[#F5EFE0] dark:bg-[#221E18] p-5 border border-[#D4AF37]/30 text-xs sm:text-sm leading-relaxed text-[#2C251A] dark:text-[#E6DCC5]">
-                <p className="font-bold text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
-                  <span>✦</span> Orientação para o Ambiente Sagrado:
-                </p>
-                <p className="mt-1 text-[#5C503D] dark:text-[#A0927C]">
-                  Recolha seu coração na presença de Deus. Se possível, acenda uma vela benta como sinal de fé e mantenha uma atitude de profunda entrega e combate espiritual.
-                </p>
-              </div>
-
-              <div className="pt-2">
-                <label className="block text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158]">
-                  Minha Penitência Escolhida para a Jornada:
-                </label>
-                <Input
-                  value={state.penance}
-                  onChange={(event) => updateState({ penance: event.target.value })}
-                  placeholder="Ex.: renunciar a satisfações, evitar reclamações, jejum nas quartas e sextas..."
-                  className="mt-1.5 text-sm border-[#D4AF37]/40 bg-[#F3EDDC] dark:bg-[#28241D] text-[#2C251A] dark:text-[#E6DCC5]"
-                />
-              </div>
-            </section>
-
-            {/* Tema & Leitura Bíblica */}
-            <DailyThemeCard day={day} />
-            <ScriptureCard day={day} />
-
-            {/* ETAPA 2 — ORAÇÕES TRADICIONAL GRATUITAS */}
-            <div id="traditional-prayers-section" className="scroll-mt-6">
-              <TraditionalPrayerSection>
-                <PrayerReader
-                  prayers={SAINT_MICHAEL_TRADITIONAL_PRAYERS}
-                  fontSize={fontSize}
-                  onNext={markComplete}
-                  onOpenDistractionFree={() => setDistractionFreeOpen(true)}
-                />
-              </TraditionalPrayerSection>
             </div>
 
-            {/* Oração de Consagração a São Miguel (Exibida no Dia 40) */}
-            {state.selectedDay === 40 && (
-              <section className="rounded-2xl border-2 border-[#D4AF37] bg-[#F5EFE0] dark:bg-[#1F1B15] p-7 space-y-4 shadow-md">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#7A0C0C] dark:text-[#E5C158] flex items-center gap-1.5">
-                  <ShieldCheck className="h-5 w-5 text-[#D4AF37]" /> Oração de Consagração a São Miguel Arcanjo (Dia 40)
-                </span>
-                <p className="whitespace-pre-line font-serif text-base sm:text-xl leading-relaxed text-[#2C251A] dark:text-[#E6DCC5] italic">
-                  {SAINT_MICHAEL_CONSECRATION}
-                </p>
-              </section>
-            )}
-
-            {/* ETAPA 3 — CONCLUSÃO DA DEVOÇÃO TRADICIONAL */}
-            {isCurrentDayCompleted && (
-              <CompletionScreen
-                completed={state.completedDays.length}
-                total={SAINT_MICHAEL_LENT.totalDays}
-                onFinish={() => toast.success("Seu progresso diário foi salvo com sucesso.")}
-                onDepth={() => setShowDepth(true)}
+            {/* Caixa de Ajuste da Penitência */}
+            <div className="rounded-2xl border border-border bg-card p-4 space-y-2 shadow-sm">
+              <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                Minha Penitência da Quaresma
+              </span>
+              <Input
+                value={state.penance}
+                onChange={(e) => updateState({ penance: e.target.value })}
+                placeholder="Ex.: mortificação das reclamações..."
+                className="text-xs font-serif"
               />
-            )}
-
-            {/* ETAPA 4 — CONTEÚDO PREMIUM / APROFUNDAMENTO ESPIRITUAL */}
-            {showDepth && (
-              isPremium ? (
-                <PremiumDepthSection
-                  day={day}
-                  journal={currentJournalText}
-                  onJournalSave={handleJournalSave}
-                  onJournalDelete={handleJournalDelete}
-                />
-              ) : (
-                <div className="space-y-5">
-                  <section className="rounded-2xl border-2 border-[#D4AF37]/50 bg-[#FAF7EE] dark:bg-[#1A1814] p-7 sm:p-9 text-center space-y-3 shadow-md">
-                    <Flame className="mx-auto h-9 w-9 text-[#7A0C0C] dark:text-[#E5C158]" />
-                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#7A0C0C] dark:text-[#E5C158]">
-                      Você concluiu a oração tradicional de hoje.
-                    </h2>
-                    <p className="font-serif text-[#5C503D] dark:text-[#A0927C] text-base sm:text-lg max-w-xl mx-auto italic">
-                      Permaneça mais alguns minutos com Deus e aprofunde esta jornada espiritual.
-                    </p>
-                  </section>
-                  <SubscriptionOffer />
-                </div>
-              )
-            )}
-
-            {/* Configurações de Lembrete Diário */}
-            <ReminderSettings
-              value={state.reminderTime}
-              onChange={(reminderTime) => {
-                updateState({ reminderTime });
-                void scheduleSaintMichaelLentReminder(reminderTime);
-                toast.success("Horário do lembrete diário salvo.");
-              }}
-            />
-          </>
-        )}
-
-        {/* Modal de Leitura Sem Distrações (Option B Manuscript) */}
-        <DistractionFreeModal
-          open={distractionFreeOpen}
-          onOpenChange={setDistractionFreeOpen}
-          prayers={SAINT_MICHAEL_TRADITIONAL_PRAYERS}
-          fontSize={fontSize}
-        />
+            </div>
+          </div>
+        </div>
       </main>
+
+      <UpgradeDialog
+        open={showUpgradeModal}
+        onOpenChange={setShowUpgradeModal}
+        description="Assine o Sanctificare Premium para desbloquear os áudios completos dos 40 dias da Quaresma de São Miguel Arcanjo."
+      />
     </div>
   );
 }
