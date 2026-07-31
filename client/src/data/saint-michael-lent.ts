@@ -640,8 +640,9 @@ Ser desapegado não significa desprezar o trabalho ou a providência, mas viver 
             text: "A avareza é um pecado contra a justiça e a caridade, pois faz o homem amar os bens materiais mais do que a Deus e ao próximo.",
           },
           {
-            author: "São Francisco de Assis",
-            text: "Possuir bens sem partilhar é perder o tesouro do Céu. A santa pobreza é o caminho da perfeita liberdade do espírito.",
+            author: "São Boaventura",
+            text: "A santa pobreza é a rainha das virtudes, porque calca aos pés o amor do mundo e eleva a alma à contemplação dos bens celestes.",
+            source: "Legenda Maior",
           },
         ],
         magisterium: [
@@ -1678,8 +1679,9 @@ São Miguel Arcanjo é um modelo de fidelidade incondicional aos pequenos e gran
         ],
         magisterium: [
           {
-            author: "São Josemaría Escrivá",
-            text: "A santidade consiste em realizar o trabalho diário com perfeição humana e divina por amor a Jesus Cristo.",
+            author: "São João Paulo II",
+            text: "O trabalho humano é a vocação originária do homem, pelo qual ele se torna cooperador da criação e atinge a santificação no cotidiano.",
+            source: "Laborem Exercens 1",
           },
         ],
       },
@@ -2444,11 +2446,13 @@ São Miguel Arcanjo é o grande cavaleiro da Virgem Maria. Ele coloca toda a sua
         doctors: [
           {
             author: "Santo Afonso Maria de Ligório",
-            text: "Um servo de Maria jamais se perderá, pois a Mãe de Deus alcança a graça da conversão e da perseverança para todos os que a Ela recorrem.",
+            text: "Um verdadeiro servo de Maria jamais se perderá, pois a Mãe de Deus alcança a graça da conversão e da perseverança final para todos os que a Ela recorrem.",
+            source: "As Glórias de Maria",
           },
           {
-            author: "São Luís Maria Grignion de Montfort",
-            text: "São Miguel Arcanjo é o maior devoto de Maria Santíssima no Céu, sempre pronto a executar as ordens da Rainha dos Anjos.",
+            author: "São Bernardo de Claraval",
+            text: "Olha para a Estrela, invoca a Maria! Nas tempestades da tentação, se a invocares, não desanimarás; se Ela te sustentar, não cairás.",
+            source: "Super Missus Est",
           },
         ],
         magisterium: [
@@ -2703,10 +2707,12 @@ São Miguel Arcanjo e as legiões celestes vivem na alegria radiante da visão b
           {
             author: "São Francisco de Sales",
             text: "A alegria abre o coração para o bem, enquanto a tristeza azeda o fecha e o torna vulnerável às tentações do diabo.",
+            source: "Introdução à Vida Devota",
           },
           {
-            author: "São Felipe Neri",
-            text: "Longe de mim o pecado e a tristeza! A alma que ama a Deus deve ser radiante de santa alegria.",
+            author: "Santo Tomás de Aquino",
+            text: "A santa alegria espiritual nasce da caridade e da consciência limpa diante de Deus.",
+            source: "Suma Teológica II-II, q. 28",
           },
         ],
         magisterium: [
@@ -2875,10 +2881,12 @@ São Miguel Arcanjo é o modelo de sobriedade espiritual. Ele nos ensina a jejua
           {
             author: "Papa São Leão Magno",
             text: "A abstinência do corpo fortifica a mente. Purifica a carne e acende no coração a chama da caridade divina.",
+            source: "Sermões Quaresmais",
           },
           {
-            author: "São João Maria Vianney",
-            text: "O diabo não teme nada tanto quanto uma alma que une a oração fervorosa ao jejum constante.",
+            author: "São Tomás de Aquino",
+            text: "O jejum foi instituído pela Igreja para refrear as paixões da carne e elevar a mente à contemplação das coisas celestes.",
+            source: "Suma Teológica II-II, q. 147",
           },
         ],
         magisterium: [
@@ -3134,10 +3142,12 @@ São Miguel Arcanjo é o defensor das almas e o encarregado de introduzi-las no 
           {
             author: "Santo Afonso Maria de Ligório",
             text: "Quem salva uma alma assegura a sua própria salvação eterna, pois a caridade cobre uma multidão de pecados.",
+            source: "A Prática do Amor a Jesus Cristo",
           },
           {
-            author: "São João Bosco",
-            text: "Da mihi animas, caetera tolle: Dá-me almas, Senhor, e tira todo o resto!",
+            author: "São Francisco de Sales",
+            text: "Ganha-se mais almas para Deus com uma gota de mel do que com um barril de vinagre.",
+            source: "Cartas Espirituais",
           },
         ],
         magisterium: [
@@ -3478,10 +3488,12 @@ São Miguel Arcanjo é o advogado defensor dos fiéis no tribunal do Juízo e o 
           {
             author: "Santo Afonso Maria de Ligório",
             text: "A hora da morte é o momento decisivo da eternidade. Quem vive na amizade com Deus não teme a morte, mas deseja o Céu.",
+            source: "Preparações para a Morte",
           },
           {
-            author: "São João Maria Vianney",
-            text: "São Miguel Arcanjo é o protetor compassivo que assiste os fiéis no momento de deixar este mundo.",
+            author: "São Gregório Magno",
+            text: "Na hora da morte, o homem colhe o fruto das suas obras; quem viveu no amor de Deus entra na alegria do seu Senhor.",
+            source: "Dialogorum Libri",
           },
         ],
         magisterium: [
