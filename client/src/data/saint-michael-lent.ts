@@ -162,11 +162,11 @@ Neste primeiro dia, não tenha medo de se apresentar diante do Senhor exatamente
         cic: [
           {
             code: "CIC §391-392",
-            text: "A Escritura atesta o impacto nefasto daquele que Jesus chama de 'homicida desde o princípio'... Este pecado consiste na escolha livre destes espíritos criados, que rejeitaram radical e irrevogavelmente a Deus e o seu Reino.",
+            text: "Esta 'queda' consiste na opção livre destes espíritos criados, que rejeitaram radical e irrevogavelmente a Deus e o seu Reino.",
           },
           {
             code: "CIC §1850",
-            text: "O pecado é uma ofensa a Deus... É o amor de si mesmo até ao desprezo de Deus.",
+            text: "O pecado é uma ofensa a Deus: 'Contra ti, só contra ti pequei, o que é mau aos teus olhos eu fiz'. O pecado é assim 'o amor de si mesmo até ao desprezo de Deus'.",
           },
         ],
         fathers: [
@@ -1825,7 +1825,7 @@ São Miguel Arcanjo é o anjo da perseverança invencível. Ele permaneceu inaba
         cic: [
           {
             code: "CIC §2016",
-            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus Pai pelas boas obras realizadas com a Sua graça.",
+            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
           },
           {
             code: "CIC §162",
@@ -2083,7 +2083,7 @@ São Miguel Arcanjo é o mensageiro da compaixão e da verdade divina. Ele nos r
         cic: [
           {
             code: "CIC §1849",
-            text: "O pecado é uma ofensa a Deus... Mas a misericórdia de Deus é revelada plenamente no mistério do Redentor, que veio salvar o que estava perdido.",
+            text: "O pecado é uma falta contra a razão, a verdade, a reta consciência; é uma falha no amor verdadeiro para com Deus e para com o próximo... Foi definido como 'uma palavra, um ato ou um desejo contrários à Lei eterna'.",
           },
           {
             code: "CIC §1468",
@@ -2517,7 +2517,7 @@ São Miguel Arcanjo é o administrador dos bens de Deus e protetor dos necessita
           },
           {
             code: "CIC §2462",
-            text: "A doação aos pobres é um testemunho de caridade fraterna; é também uma prática de justiça que agrada a Deus.",
+            text: "A esmola dada aos pobres é um testemunho de caridade fraterna: é também uma prática de justiça que agrada a Deus.",
           },
         ],
         fathers: [
@@ -2689,7 +2689,7 @@ São Miguel Arcanjo e as legiões celestes vivem na alegria radiante da visão b
           },
           {
             code: "CIC §301",
-            text: "Com a criação, Deus não abandona a sua criatura a si mesma. Dá-lhe a cada momento a graça de existir e o dom da alegria na Sua presença.",
+            text: "Com a criação, Deus não abandona a sua criatura a si mesma. Dá-lhe a cada momento a graça de existir, de agir e de ser o termo para onde tende a sua vida.",
           },
         ],
         fathers: [
@@ -3287,7 +3287,7 @@ São Miguel Arcanjo é o guardião da paz das almas. Ele nos ensina a descansar 
         cic: [
           {
             code: "CIC §305",
-            text: "Jesus pede um abandono filial à Providência do Pai Celeste, que cuida das mais pequenas necessidades dos seus filhos.",
+            text: "Jesus pede um abandono filial à Providência do Pai Celestial, que cuida das mais pequenas necessidades dos Seus filhos.",
           },
           {
             code: "CIC §2305",
