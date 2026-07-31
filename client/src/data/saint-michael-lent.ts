@@ -141,15 +141,15 @@ export const SAINT_MICHAEL_LENT: SpiritualJourney = {
       scripture: {
         reference: "Apocalipse 12, 7-9",
         text: "Houve então uma batalha no céu: Miguel e seus anjos guerrearam contra o Dragão. O Dragão lutou juntamente com os seus anjos, mas não prevaleceu; e já não houve lugar para eles no céu.",
-        explanation: `Nas célebres homilias dos Padres da Igreja, o combate celestial de Apocalipse 12 é contemplado como a vitória da humildade divina sobre a soberba das criaturas. Santo Agostinho, em seus sermões sobre a Cidade de Deus, ensina que Lúcifer caiu no abismo não por fraqueza física, mas por se embriagar com a própria beleza e proferir o audacioso 'Non serviam' (Não servirei), recusando-se a adorar o mistério do Deus encarnado.
+        explanation: `Nas célebres homilias dos Padres da Igreja, o combate celestial de Apocalipse 12 é contemplado como a vitória da humildade divina sobre a soberba das criaturas. Os sermões da tradição patrística sobre a Cidade de Deus ensinam que Lúcifer caiu no abismo não por fraqueza física, mas por se embriagar com a própria beleza e proferir o audacioso 'Non serviam' (Não servirei), recusando-se a adorar o mistério do Deus encarnado.
 
-Diante dessa rebelião de vaidade, o Arcanjo São Miguel levantou-se com o brado 'Mi-ka-El' (Quem é como Deus?), frase que São João Crisóstomo descreve em suas homilias como o raio de verdade que despedaçou a ilusão do orgulho demoníaco. Miguel não combateu fundado em mérito ou força própria, mas na absoluta aniquilação do próprio eu diante da soberania de Deus.
+Diante dessa rebelião de vaidade, o Arcanjo São Miguel levantou-se com o brado 'Mi-ka-El' (Quem é como Deus?), frase que as homilias dos Padres da Igreja descrevem como o raio de verdade que despedaçou a ilusão do orgulho demoníaco. Miguel não combateu fundado em mérito ou força própria, mas na absoluta aniquilação do próprio eu diante da soberania de Deus.
 
-São Bernardo de Claraval, em seus sermões quaresmais, exorta os fiéis a compreenderem que a verdadeira grandeza da alma consiste em fazer-se pequena. Quando o orgulho tenta reinar em nosso coração através da autossuficiência e dos julgamentos aos irmãos, o exemplo dos Padres nos convida a revestir o espírito com a resposta de Miguel, lembrando que Deus resiste aos soberbos, mas dá Sua graça aos humildes.`,
+Os sermões quaresmais da tradição da Igreja exortam os fiéis a compreenderem que a verdadeira grandeza da alma consiste em fazer-se pequena. Quando o orgulho tenta reinar em nosso coração através da autossuficiência e dos julgamentos aos irmãos, o exemplo dos Padres nos convida a revestir o espírito com a resposta de Miguel, lembrando que Deus resiste aos soberbos, mas dá Sua graça aos humildes.`,
       },
       meditation: `Irmão e irmã na fé, ao iniciarmos esta Quaresma de São Miguel Arcanjo, convido você a olhar honestamente para o seu coração. Como devotos, muitas vezes trazemos feridas profundas escondidas sob a aparência de piedade. Queremos fazer a vontade de Deus, mas quantas vezes exigimos, no fundo, que Deus faça a nossa vontade?
 
-São Francisco de Assis, no ano de 1224, retirou-se para a solidão do Monte Alverne porque sabia que o inimigo ataca principalmente pela vaidade. Quando o meu eu tenta se colocar no centro, a vida se torna pesada, azeda e cheia de melindres. Quando ouço um conselho ou uma crítica, o meu orgulho imediatamente se levanta para se defender. Quando alguém não reconhece o meu valor ou o meu trabalho na família ou na comunidade, o amargor toma conta do meu espírito.
+A tradição da espiritualidade católica ensina a importância do recolhimento em solidão porque o inimigo ataca principalmente pela vaidade. Quando o meu eu tenta se colocar no centro, a vida se torna pesada, azeda e cheia de melindres. Quando ouço um conselho ou uma crítica, o meu orgulho imediatamente se levanta para se defender. Quando alguém não reconhece o meu valor ou o meu trabalho na família ou na comunidade, o amargor toma conta do meu espírito.
 
 O brado de São Miguel "Quem é como Deus?" não é um grito de arrogância triunfalista, mas um ato de amor sublime e desapego absoluto. Dizer "Quem é como Deus?" significa libertar-se da necessidade de controlar tudo, de impressionar os outros ou de guardar ressentimentos. Significa reconhecer com doçura: "Eu não sou Deus. Eu não posso salvar a mim mesmo. Eu preciso do meu Salvador e do auxílio dos Seus anjos."
 
@@ -240,11 +240,11 @@ Enviai o Vosso Arcanjo São Miguel para defender o meu coração neste combate. 
       scripture: {
         reference: "Efésios 6, 11-17",
         text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do demônio. Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades, contra os dominadores deste mundo tenebroso, contra os espíritos malignos espalhados pelos ares. Por isso, empenhai as armas de Deus, para que possais resistir no dia mau e, depois de ter vencido tudo, permanecer inabaláveis.",
-        explanation: `Nas Homilias de São João Crisóstomo sobre a Epístola aos Efésios, o santo doutor da Igreja explica que a 'Armadura de Deus' é o próprio Cristo que nos reveste na batalha diária contra as potestades invisíveis. O Crisóstomo adverte que o demônio não combate como um soldado visível, mas lança os dardos da acídia, da preguiça espiritual e do desânimo para nos fazer depor as armas do fervor e da oração.
+        explanation: `Nas homilias patrísticas sobre a Epístola aos Efésios, explica-se que a 'Armadura de Deus' é o próprio Cristo que nos reveste na batalha diária contra as potestades invisíveis. A tradição patrística adverte que o demônio não combate como um soldado visível, mas lança os dardos da acídia, da preguiça espiritual e do desânimo para nos fazer depor as armas do fervor e da oração.
 
-São Jerônimo, em seus comentários às cartas paulinas, enfatiza que o capacete da salvação e o escudo da fé não são enfeites ornamentais, mas defesas indispensáveis para os atletas da fé. De acordo com os escritos dos Santos Padres, a aridez da alma e o cansaço do combate não devem ser motivo de desespero, mas oportunidade de provar a fidelidade do soldado sob a bandeira de São Miguel Arcanjo.
+Os comentários patrísticos às cartas paulinas enfatizam que o capacete da salvação e o escudo da fé não são enfeites ornamentais, mas defesas indispensáveis para os atletas da fé. De acordo com os escritos dos Santos Padres, a aridez da alma e o cansaço do combate não devem ser motivo de desespero, mas oportunidade de provar a fidelidade do soldado sob a bandeira de São Miguel Arcanjo.
 
-Em um de seus sermões sobre a vida de ascese, São Bernardo de Claraval nos recorda que o inimigo só vence a alma que voluntariamente abandona o posto de guarda. Invocar a São Miguel enquanto nos revestimos da palavra de Deus e dos sacramentos nos garante a força necessária para resistir no dia mau e perseverar inabaláveis até a vitória final.`,
+Em sermões da tradição espiritual sobre a vida de ascese, recorda-se que o inimigo só vence a alma que voluntariamente abandona o posto de guarda. Invocar a São Miguel enquanto nos revestimos da palavra de Deus e dos sacramentos nos garante a força necessária para resistir no dia mau e perseverar inabaláveis até a vitória final.`,
       },
       meditation: `Irmão e irmã na fé, no segundo dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama à vigilância das armas espirituais. Muitas vezes iniciamos nossa caminhada com grande entusiasmo, mas logo ao primeiro sinal de cansaço ou contrariedade, sentimos o peso da tentação e a sutil paralisia da acídia — a preguiça da alma e a tibieza espiritual.
 
@@ -333,9 +333,9 @@ Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desân
       scripture: {
         reference: "Efésios 6, 16",
         text: "Em todas as circunstâncias, empenhai o escudo da fé, com o qual podereis apagar todos os dardos inflamados do Maligno.",
-        explanation: `Nos Sermões de Papa São Leão Magno, o escudo da fé é apresentado como a muralha inexpugnável da alma católica diante de todas as tempestades provocadas pelas heresias e tentações de dúvida. O santo Papa ensina que o inimigo sopra sutilmente a incredulidade para desestabilizar os alicerces da oração e fazer a alma duvidar da misericórdia e da providência de Deus.
+        explanation: `Nos Sermões da antiguidade cristã, o escudo da fé é apresentado como a muralha inexpugnável da alma católica diante de todas as tempestades provocadas pelas heresias e tentações de dúvida. O santo Papa ensina que o inimigo sopra sutilmente a incredulidade para desestabilizar os alicerces da oração e fazer a alma duvidar da misericórdia e da providência de Deus.
 
-Santo Agostinho, em seus Tratados sobre o Evangelho de São João, exorta que a fé não consiste em entender para crer, mas em crer para compreender. Quando o coração humano atravessa momentos de aridez e incerteza, o Bispo de Hipona recorda que o escudo da fé deve ser empunhado com decisão firme da vontade, ancorando o espírito na autoridade infalível da Palavra de Deus e no magistério dos Apóstolos.
+Nas reflexões da tradição patrística sobre o Evangelho de São João, exorta-se que a fé não consiste em entender para crer, mas em crer para compreender. Quando o coração humano atravessa momentos de aridez e incerteza, o tradição patrística recorda que o escudo da fé deve ser empunhado com decisão firme da vontade, ancorando o espírito na autoridade infalível da Palavra de Deus e no magistério dos Apóstolos.
 
 Nas Instruções Espirituais dos Padres do Deserto, a tentação da dúvida é descrita como uma flecha inflamada do Maligno destinada a provocar o pânico espiritual. Sob a proteção de São Miguel, que contemplava continuamente a glória divina, o fiel aprende a erguer a oração confiante e a permanecer inabalável na certeza de que a Verdade Divina jamais falha.`,
       },
@@ -426,9 +426,9 @@ Alcançai-me do Senhor uma fé viva, operante pela caridade e inabalável nas pr
       scripture: {
         reference: "Salmo 141 (140), 3 / Efésios 4, 25",
         text: "Ponde, Senhor, uma guarda à minha boca, e guardai a porta dos meus lábios! Por isso, renunciai à mentira e falai a verdade cada um ao seu próximo, pois somos membros uns dos outros.",
-        explanation: `Nos célebres Sermões de São João Maria Vianney, o Cura d'Ars, o vício da mentira e da fofoca é severamente denunciado como a linguagem própria do demônio, a quem o próprio Cristo chamou de 'pai da mentira'. O santo Cura ensinava ao seu povo que a maledicência é como um veneno lançado na fonte da comunidade, destruindo as almas de quem fala, de quem escuta e daquele de quem se fala.
+        explanation: `Nos célebres Sermões de A tradição pastoral da Igreja, o a tradição pastoral, o vício da mentira e da fofoca é severamente denunciado como a linguagem própria do demônio, a quem o próprio Cristo chamou de 'pai da mentira'. O santo Cura ensinava ao seu povo que a maledicência é como um veneno lançado na fonte da comunidade, destruindo as almas de quem fala, de quem escuta e daquele de quem se fala.
 
-São Francisco de Sales, em seus Sermões sobre a Custódia da Língua, compara as palavras murmuradoras e caluniosas a flechas de fogo espalhadas ao vento. Os Padres da Igreja, como São João Crisóstomo, recordam que a boca do cristão foi santificada para receber o Corpo de Cristo na Eucaristia e, portanto, jamais deveria ser usada como instrumento de falsidade, engano ou humilhação do próximo.
+Nos sermões da tradição espiritual sobre a Custódia da Língua, compara-se as palavras murmuradoras e caluniosas a flechas de fogo espalhadas ao vento. Os Padres da Igreja recordam que a boca do cristão foi santificada para receber o Corpo de Cristo na Eucaristia e, portanto, jamais deveria ser usada como instrumento de falsidade, engano ou humilhação do próximo.
 
 Pedir ao Senhor que ponha uma guarda à nossa boca, como ensina o Salmista, significa clamar pela pureza que procede do Espírito Santo. Sob a espada reluzente da verdade de São Miguel Arcanjo, a alma é convidada a banir todo engano e a cultivar o silêncio respeitoso ou a palavra de bênção que pacifica e edifica os corações.`,
       },
@@ -516,11 +516,11 @@ Alcançai-me a graça da honestidade interior e da mansidão nas palavras. Que a
       scripture: {
         reference: "1 Coríntios 6, 19-20 / Mateus 5, 8",
         text: "Bem-aventurados os puros de coração, porque verão a Deus. Acaso não sabeis que o vosso corpo é templo do Espírito Santo, que habita em vós? Glorificai, pois, a Deus no vosso corpo!",
-        explanation: `Nas Homilias de São João Crisóstomo sobre a Primeira Carta aos Coríntios, o santo Doutor da Igreja declara que violar a pureza do corpo é dessagrar o próprio templo vivo de Deus. O Crisóstomo explica aos fiéis que, pelo Batismo e pela Eucaristia, a carne humana foi unida de modo inefável a Cristo, tornando a impureza e a luxúria um sacrilégio profanador contra o Espírito Santo que habita na alma.
+        explanation: `Nas homilias da tradição patrística sobre a Primeira Carta aos Coríntios, declara-se que violar a pureza do corpo é dessagrar o próprio templo vivo de Deus. A tradição dos Padres explica aos fiéis que, pelo Batismo e pela Eucaristia, a carne humana foi unida de modo inefável a Cristo, tornando a impureza e a luxúria um sacrilégio profanador contra o Espírito Santo que habita na alma.
 
-Santo Afonso Maria de Ligório, em seus escritos e sermões morais, adverte que as tentações contra a castidade são as mais frequentes e perigosas no combate espiritual. O santo bispo enfatiza a doutrina dos Padres da Igreja de que a vitória sobre a carne não se alcança dialogando com a tentação, mas através da fuga imediata das ocasiões de pecado e da guarda rigorosa dos olhos e dos pensamentos.
+Os escritos e sermões da tradição espiritual advertem que as tentações contra a castidade são as mais frequentes e perigosas no combate espiritual. O santo bispo enfatiza a doutrina dos Padres da Igreja de que a vitória sobre a carne não se alcança dialogando com a tentação, mas através da fuga imediata das ocasiões de pecado e da guarda rigorosa dos olhos e dos pensamentos.
 
-São Jerônimo, em seus sermões aos monásticos, exortava que a castidade eleva o homem mortal à dignidade dos Anjos. Invocando o auxílio protetor de São Miguel Arcanjo — guardião da santidade celeste —, o cristão encontra a fortaleza necessária para desviar o olhar do mal, cultivar a modéstia e manter a sua vida como um sacrário imaculado para o Senhor.`,
+Os sermões patrísticos aos monásticos exortavam que a castidade eleva o homem mortal à dignidade dos Anjos. Invocando o auxílio protetor de São Miguel Arcanjo — guardião da santidade celeste —, o cristão encontra a fortaleza necessária para desviar o olhar do mal, cultivar a modéstia e manter a sua vida como um sacrário imaculado para o Senhor.`,
       },
       meditation: `Irmão e irmã na fé, no quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a beleza da pureza de coração e da santa castidade. Em um mundo saturado de erotismo, pornografia e desordens morais, manter a alma e os sentidos puros tornou-se um ato heroico de combate espiritual.
 
@@ -602,11 +602,11 @@ Cercai-me com as vossas asas de luz e obtende-me da Virgem Maria a graça de um 
       scripture: {
         reference: "Mateus 6, 19-21",
         text: "Não ajunteis tesouros na terra, onde a traça e a ferrugem roem e onde os ladrões escavam e roubam. Ajunteis tesouros no céu... pois onde estiver o teu tesouro, aí estará também o teu coração.",
-        explanation: `Nas contundentes Homilias de São Basílio Magno sobre a Avareza, o grande Pai da Igreja adverte que o acúmulo egoísta de bens materiais é uma espoliação do direito dos pobres. São Basílio ensina em seus sermões que o pão guardado em excesso nos armários pertence ao faminto, as vestes acumuladas pertencem ao nu e o ouro enterrado por ganância é o direito negado ao necessitado.
+        explanation: `Nas contundentes homilias da tradição patrística sobre a Avareza, adverte-se que o acúmulo egoísta de bens materiais é uma espoliação do direito dos pobres. Os sermões patrísticos ensinam que o pão guardado em excesso nos armários pertence ao faminto, as vestes acumuladas pertencem ao nu e o ouro enterrado por ganância é o direito negado ao necessitado.
 
-São João Crisóstomo, em seus Sermões sobre a parábola do Rico e de Lázaro, explica que o dinheiro não é mau em sua natureza, mas o apego desordenado e o idolatrar as riquezas tornam o coração cego, insensível e incapaz de amar. O tesouro terreno está sujeito à ferrugem e à traça dos anos; apenas a caridade e a graça divina permanecem incorruptíveis na eternidade.
+Os sermões patrísticos sobre a parábola do Rico e de Lázaro explicam que o dinheiro não é mau em sua natureza, mas o apego desordenado e o idolatrar as riquezas tornam o coração cego, insensível e incapaz de amar. O tesouro terreno está sujeito à ferrugem e à traça dos anos; apenas a caridade e a graça divina permanecem incorruptíveis na eternidade.
 
-São Francisco de Assis, inspirado pela tradição patrística, chamava a santa pobreza de 'caminho da liberdade angélica'. Sob a intercessão de São Miguel Arcanjo — administrador dos bens eternos do Céu —, o cristão aprende a desapegar-se do supérfluo, a confiar totalmente na Providência do Pai Celestial e a usar as riquezas deste mundo para construir um tesouro eterno no Reino dos Céus.`,
+A tradição espiritual da Igreja chama a santa pobreza de 'caminho da liberdade angélica'. Sob a intercessão de São Miguel Arcanjo — administrador dos bens eternos do Céu —, o cristão aprende a desapegar-se do supérfluo, a confiar totalmente na Providência do Pai Celestial e a usar as riquezas deste mundo para construir um tesouro eterno no Reino dos Céus.`,
       },
       meditation: `Irmão e irmã na fé, no sexto dia de nossa caminhada devocional, meditamos sobre o combate contra a avareza e o apego desordenado às coisas materiais. O dinheiro e os bens deste mundo foram criados para servir ao sustento honesto e à caridade; contudo, quando o coração humano se prende às posses, transforma o ouro em um ídolo que ocupa o lugar de Deus.
 
@@ -688,11 +688,11 @@ Concedei-me um coração generoso para partilhar com os necessitados e uma alma 
       scripture: {
         reference: "Colossenses 3, 12-13 / Mateus 6, 14-15",
         text: "Suportai-vos uns aos outros e perdoai-vos mutuamente, caso alguém tenha motivo de queixa contra o outro. Assim como o Senhor vos perdoou, assim fazei vós também. Se perdoardes aos homens as suas ofensas, o vosso Pai Celestial também vos perdoará.",
-        explanation: `Nos Sermões de Santo Agostinho sobre o Pai-Nosso, o Bispo de Hipona enfatiza a gravidade da cláusula 'perdoai-nos as nossas ofensas assim como nós perdoamos'. Agostinho adverte que o cristão que guarda rancor e recusa perdoar ao irmão está, na verdade, pronunciando uma maldição contra si mesmo ao rezar a oração do Senhor, fechando a porta da misericórdia divina para o seu próprio julgamento.
+        explanation: `Nos sermões da tradição patrística sobre o Pai-Nosso, enfatiza-se a gravidade da cláusula 'perdoai-nos as nossas ofensas assim como nós perdoamos'. A tradição da Igreja adverte que o cristão que guarda rancor e recusa perdoar ao irmão está, na verdade, pronunciando uma maldição contra si mesmo ao rezar a oração do Senhor, fechando a porta da misericórdia divina para o seu próprio julgamento.
 
-São João Crisóstomo, em suas Homilias sobre o Evangelho de São Mateus, ensina que a ira e o desejo de vingança transformam a alma humana em uma morada de demônios. O grande pregador de Antioquia recorda que Cristo perdoou a Seus algozes no alto do Calvário, deixando o exemplo supremo de que o perdão não é um sentimento frágil, mas a vitória heroica da graça sobre o orgulho ferido.
+A tradição patrística, em suas Homilias sobre o Evangelho de São Mateus, ensina que a ira e o desejo de vingança transformam a alma humana em uma morada de demônios. O grande pregador de Antioquia recorda que Cristo perdoou a Seus algozes no alto do Calvário, deixando o exemplo supremo de que o perdão não é um sentimento frágil, mas a vitória heroica da graça sobre o orgulho ferido.
 
-São Bernardo de Claraval exorta em seus sermões que guardar mágoa é carregar um cadáver no próprio peito. Sob o comando de São Miguel Arcanjo — Príncipe da Paz de Cristo —, o fiel é encorajado a cortar todas as raízes de amargura, desarmar os pensamentos de vingança e imitar a infinita misericórdia de Deus que a todos acolhe e perdoa.`,
+A tradição espiritual da Igreja exorta em seus sermões que guardar mágoa é carregar um cadáver no próprio peito. Sob o comando de São Miguel Arcanjo — Príncipe da Paz de Cristo —, o fiel é encorajado a cortar todas as raízes de amargura, desarmar os pensamentos de vingança e imitar a infinita misericórdia de Deus que a todos acolhe e perdoa.`,
       },
       meditation: `Irmão e irmã na fé, no sétimo dia de nossa Quaresma de São Miguel Arcanjo, enfrentamos uma das batalhas mais decisivas do coração humano: a vitória do perdão sobre a ira, o ressentimento e a vingança. Quem guarda rancor bebe um veneno esperando que o outro morra.
 
@@ -774,11 +774,11 @@ Concedei-me a santa mansidão do Coração de Jesus para perdoar a todos os que 
       scripture: {
         reference: "1 Coríntios 13, 4-7 / Tiago 3, 16",
         text: "A caridade é paciente, a caridade é prestativa. Não é invejosa, não se ostenta, não se incha de orgulho... Pois onde há inveja e espírito de discórdia, aí há perturbação e toda espécie de maus atos.",
-        explanation: `No famoso Tratado de São Cipriano de Cartago sobre o Ciúme e a Inveja, o santo bispo e mártir explica que a inveja foi o primeiro pecado pelo qual o diabo destruiu a própria felicidade no Céu e arrastou a humanidade para a queda. Cipriano adverte que a inveja é um câncer invisível na alma: enquanto os outros vícios buscam algum prazer aparente, a inveja só sente prazer no sofrimento alheio e desgosto na alegria do irmão.
+        explanation: `Nos tratados patrísticos da antiguidade cristã sobre o Ciúme e a Inveja, explica-se que a inveja foi o primeiro pecado pelo qual o diabo destruiu a própria felicidade no Céu e arrastou a humanidade para a queda. A tradição patrística adverte que a inveja é um câncer invisível na alma: enquanto os outros vícios buscam algum prazer aparente, a inveja só sente prazer no sofrimento alheio e desgosto na alegria do irmão.
 
-São Basílio Magno, em sua Homilia sobre a Inveja, compara o invejoso às aves de rapina que passam ao largo de prados floridos para pousar apenas na carniça. O Padre da Igreja ensina que a inveja corrói o coração como a ferrugem consome o ferro, impedindo a alma de saborear a doçura da caridade e a paz que procedem de Deus.
+A tradição patrística, em sua Homilia sobre a Inveja, compara o invejoso às aves de rapina que passam ao largo de prados floridos para pousar apenas na carniça. O Padre da Igreja ensina que a inveja corrói o coração como a ferrugem consome o ferro, impedindo a alma de saborear a doçura da caridade e a paz que procedem de Deus.
 
-São João da Cruz e Santo Tomás de Aquino lembram em seus sermões que no Céu os Anjos não sentem ciúmes das diversas ordens e glórias uns dos outros, mas alegram-se perfeitamente no bem comum. Sob o olhar de São Miguel Arcanjo, o cristão é chamado a purificar a mente, celebrando com gratidão sincera as virtudes e conquistas do próximo como um dom do próprio Pai Celestial.`,
+A tradição teológica e espiritual da Igreja lembra que no Céu os Anjos não sentem ciúmes das diversas ordens e glórias uns dos outros, mas alegram-se perfeitamente no bem comum. Sob o olhar de São Miguel Arcanjo, o cristão é chamado a purificar a mente, celebrando com gratidão sincera as virtudes e conquistas do próximo como um dom do próprio Pai Celestial.`,
       },
       meditation: `Irmão e irmã na fé, no oitavo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o mandamento novo da caridade e o combate contra o pecado capital da inveja. A inveja foi a porta pela qual a morte entrou no mundo: o diabo teve inveja da dignidade do homem e da glória de Deus.
 
@@ -860,11 +860,11 @@ Alcançai-me a graça de ver o meu próximo com os olhos misericordiosos de Cris
       scripture: {
         reference: "1 Coríntios 10, 31 / Filipenses 3, 19",
         text: "Quer comais, quer bebais ou façais qualquer outra coisa, fazei tudo para a glória de Deus. Não façais do ventre o vosso deus, mas vivei com sobriedade.",
-        explanation: `Nas Homilias de São João Crisóstomo sobre a Sobriedade Cristã, o santo Doutor adverte que a gula e a falta de moderação nas necessidades físicas escravizam a alma e obnubilam a visão espiritual. O Crisóstomo ensina que um corpo saciado de apetites desordenados e sem disciplina torna-se pesado e incapaz de se elevar à oração e à contemplação dos mistérios divinos.
+        explanation: `Nas Homilias de A tradição patrística sobre a Sobriedade Cristã, o santo Doutor adverte que a gula e a falta de moderação nas necessidades físicas escravizam a alma e obnubilam a visão espiritual. Os Padres da Igreja ensinam que um corpo saciado de apetites desordenados e sem disciplina torna-se pesado e incapaz de se elevar à oração e à contemplação dos mistérios divinos.
 
-São Bernardo de Claraval, em seus Sermões Quaresmais, explica que a mortificação dos sentidos e o jejum praticados pela Igreja não têm a finalidade de castigar o corpo, mas de libertá-lo da tirania das paixões carnais. Quando moderamos os nossos apetites por amor a Deus, fortalecemos o espírito e abrimos espaço interior para que a graça do Espírito Santo guie a nossa inteligência e afeições.
+Os sermões quaresmais da tradição da Igreja explicam que a mortificação dos sentidos e o jejum praticados pela Igreja não têm a finalidade de castigar o corpo, mas de libertá-lo da tirania das paixões carnais. Quando moderamos os nossos apetites por amor a Deus, fortalecemos o espírito e abrimos espaço interior para que a graça do Espírito Santo guie a nossa inteligência e afeições.
 
-Os Padres do Deserto, como São João Cassiano, ensinavam unanimemente que o combate contra a gula é a porta de entrada para todas as vitórias espirituais. Sob o patrocínio de São Miguel Arcanjo — exemplo perfeito de retidão e foco na glória de Deus —, o fiel é encorajado a viver com sobriedade, oferecendo cada refeição e mortificação para a santificação pessoal e salvação das almas.`,
+Os Padres do Deserto ensinavam unanimemente que o combate contra a gula é a porta de entrada para todas as vitórias espirituais. Sob o patrocínio de São Miguel Arcanjo — exemplo perfeito de retidão e foco na glória de Deus —, o fiel é encorajado a viver com sobriedade, oferecendo cada refeição e mortificação para a santificação pessoal e salvação das almas.`,
       },
       meditation: `Irmão e irmã na fé, no nono dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a virtude cardinal da temperança e o combate contra a gula e os excessos sensíveis. Em uma sociedade consumista que incentiva a satisfação imediata de todos os desejos, aprender a dizer 'não' ao próprio corpo é um sinal de maturidade espiritual.
 
@@ -946,11 +946,11 @@ Fortalecei a minha vontade para praticar o jejum e a mortificação com alegria 
       scripture: {
         reference: "Filipenses 4, 6-7 / Salmo 27 (26), 1",
         text: "Não vos inquieteis com coisa alguma; mas em todas as circunstâncias apresentai os vossos pedidos a Deus pela oração e pela súplica, acompanhadas de ação de graças. E a paz de Deus... guardará os vossos corações.",
-        explanation: `Nos Sermões de Santo Agostinho sobre os Salmos, o grande Bispo de Hipona nos ensina que a ansiedade sufocante é o fruto amargo da alma que tenta colocar sua segurança nas coisas transitórias do mundo em vez de descansar no amor imutável de Deus. Agostinho exclama famosamente que o nosso coração permanece inquieto e perturbado até que encontre o seu verdadeiro descanso e refúgio na Providência do Pai Criador.
+        explanation: `Nos sermões da tradição patrística sobre os Salmos, ensina-se que a ansiedade sufocante é o fruto amargo da alma que tenta colocar sua segurança nas coisas transitórias do mundo em vez de descansar no amor imutável de Deus. A tradição da Igreja ensina que o nosso coração permanece inquieto e perturbado até que encontre o seu verdadeiro descanso e refúgio na Providência do Pai Criador.
 
-São Francisco de Sales, em suas Cartas e Sermões sobre a Paz da Alma, exorta os fiéis a combaterem os sobressaltos da ansiedade abandonando o futuro nas mãos do Senhor. O Santo Bispo de Genebra ensina que o mesmo Pai Celestial que cuidou de nós no dia de hoje com tanta ternura proverá a graça necessária para o amanhã, tornando inútil e nociva a inquietação angustiada pelos males futuros.
+A tradição espiritual da Igreja, em suas Cartas e Sermões sobre a Paz da Alma, exorta os fiéis a combaterem os sobressaltos da ansiedade abandonando o futuro nas mãos do Senhor. A tradição espiritual da Igreja ensina que o mesmo Pai Celestial que cuidou de nós no dia de hoje com tanta ternura proverá a graça necessária para o amanhã, tornando inútil e nociva a inquietação angustiada pelos males futuros.
 
-São Leão Magno, em seus Sermões de Natal e Páscoa, recorda que a esperança teologal é a âncora imóvel lançada dentro do Santuário Celeste. Sob a proteção gloriosa de São Miguel Arcanjo — o mensageiro da paz e da vitória final de Deus —, o cristão aprende a silenciar as tempestades da mente, invocando com fé o nome do Senhor e descansando na certeza de que Deus governa todas as coisas para o bem dos Seus amados.`,
+A tradição patrística, em seus Sermões de Natal e Páscoa, recorda que a esperança teologal é a âncora imóvel lançada dentro do Santuário Celeste. Sob a proteção gloriosa de São Miguel Arcanjo — o mensageiro da paz e da vitória final de Deus —, o cristão aprende a silenciar as tempestades da mente, invocando com fé o nome do Senhor e descansando na certeza de que Deus governa todas as coisas para o bem dos Seus amados.`,
       },
       meditation: `Irmão e irmã na fé, no décimo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o dom da esperança cristã e o combate contra a ansiedade sufocante, as preocupações excessivas e o desespero. Quantas noites mal dormidas e corações aflitos porque tentamos controlar o amanhã com nossas próprias forças limitadas!
 
@@ -1032,11 +1032,11 @@ Ensina-me a abandonar a minha vida, a minha família e todas as minhas preocupa�
       scripture: {
         reference: "Filipenses 2, 8-10 / 1 Samuel 15, 22",
         text: "Ele humilhou-se a si mesmo, tornando-se obediente até a morte, e morte de cruz... Eis que a obediência vale mais que os sacrifícios.",
-        explanation: `Nos Sermões de São Bernardo de Claraval sobre a Obediência, o Doutor Melífluo ensina que a raiz do primeiro pecado da humanidade e dos anjos rebeldes foi a desobediência orgulhosa à vontade do Criador. São Bernardo destaca que o Verbo Eterno preferiu morrer na Cruz por amor à obediência do que renunciar à submissão filial ao Pai, mostrando que a salvação do mundo foi operada pelo 'Sim' humilde de Cristo e de Maria.
+        explanation: `Nos Sermões de A tradição espiritual da Igreja sobre a Obediência, o Doutor Melífluo ensina que a raiz do primeiro pecado da humanidade e dos anjos rebeldes foi a desobediência orgulhosa à vontade do Criador. A tradição espiritual destaca que o Verbo Eterno preferiu morrer na Cruz por amor à obediência do que renunciar à submissão filial ao Pai, mostrando que a salvação do mundo foi operada pelo 'Sim' humilde de Cristo e de Maria.
 
 São Bento, na sua famosa Regra Monástica comentada pelos Padres da Igreja, coloca a obediência sem demora como o primeiro degrau da escala da santidade. A obediência católica não é servidão cega ou fraqueza de caráter, mas a entrega inteligente e confiante da própria vontade nas mãos de Deus através dos Seus mandamentos, dos sacramentos e das autoridades legítimas da Igreja.
 
-São João Crisóstomo, em suas Homilias aos fiéis, adverte que a alma rebelde e autossuficiente jamais conseguirá saborear a paz dos filhos de Deus. Sob a proteção de São Miguel Arcanjo — cujo lema 'Quem é como Deus?' proclama a pronta obediência angélica —, o cristão aprende a renunciar aos seus próprios caprichos para abraçar com alegria a santa Vontade Divina.`,
+A tradição patrística, em suas Homilias aos fiéis, adverte que a alma rebelde e autossuficiente jamais conseguirá saborear a paz dos filhos de Deus. Sob a proteção de São Miguel Arcanjo — cujo lema 'Quem é como Deus?' proclama a pronta obediência angélica —, o cristão aprende a renunciar aos seus próprios caprichos para abraçar com alegria a santa Vontade Divina.`,
       },
       meditation: `Irmão e irmã na fé, no décimo primeiro dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama a examinar a nossa docilidade e obediência à vontade de Deus. Em uma cultura que exalta o individualismo desmedido e a rebelião contra qualquer autoridade, a virtude da obediência parece loucura aos olhos do mundo.
 
@@ -1118,11 +1118,11 @@ Ensinai-me a imitar a vossa pronta prontidão em cumprir os mandamentos divinos.
       scripture: {
         reference: "Mateus 6, 1-6 / Mateus 23, 27-28",
         text: "Guardai-vos de fazer as vossas boas obras diante dos homens, para serdes vistos por eles... Tu, porém, quando orares, entra no teu quarto, fecha a porta e reza ao teu Pai em segredo.",
-        explanation: `Nas Homilias de São João Crisóstomo sobre o Sermão do Monte, o santo bispo adverte com ardor que a vaidade e a busca por aplausos humanos são o 'ladrão invisível' que rouba o mérito de nossas melhores obras de caridade, jejum e oração. O Crisóstomo explica que o hipócrita gasta energias para aparentar santidade aos olhos do mundo, mas permanece com a alma vazia diante daquele que vê o segredo dos corações.
+        explanation: `Nas homilias da tradição patrística sobre o Sermão do Monte, adverte-se com ardor que a vaidade e a busca por aplausos humanos são o 'ladrão invisível' que rouba o mérito de nossas melhores obras de caridade, jejum e oração. A tradição patrística explica que o hipócrita gasta energias para aparentar santidade aos olhos do mundo, mas permanece com a alma vazia diante daquele que vê o segredo dos corações.
 
-Santo Agostinho, em seus Comentários ao Evangelho de São Mateus, ensina que a pureza de intenção consiste em buscar a Deus unicamente por ser Deus, sem colocar interesses secundários, elogios ou compensações humanas no centro da vida espiritual. A alma reta deseja agradar unicamente ao olhar do Pai Celestial, sem se importar com a aprovação ou crítica do mundo.
+A tradição patrística, em seus Comentários ao Evangelho de São Mateus, ensina que a pureza de intenção consiste em buscar a Deus unicamente por ser Deus, sem colocar interesses secundários, elogios ou compensações humanas no centro da vida espiritual. A alma reta deseja agradar unicamente ao olhar do Pai Celestial, sem se importar com a aprovação ou crítica do mundo.
 
-São Bernardo de Claraval exorta em seus sermões que a vaidade é a última tentação dos virtuosos. Sob a espada de luz de São Miguel Arcanjo — que contempla ininterruptamente a glória divina sem buscar glória para si mesmo —, o cristão é chamado a purificar os seus motivos, oferecendo cada boa ação unicamente para a maior glória de Deus.`,
+A tradição espiritual da Igreja exorta em seus sermões que a vaidade é a última tentação dos virtuosos. Sob a espada de luz de São Miguel Arcanjo — que contempla ininterruptamente a glória divina sem buscar glória para si mesmo —, o cristão é chamado a purificar os seus motivos, oferecendo cada boa ação unicamente para a maior glória de Deus.`,
       },
       meditation: `Irmão e irmã na fé, no décimo segundo dia de nossa caminhada espiritual, meditamos sobre a pureza de intenção e o combate contra a vaidade e a hipocrisia. Como é fácil buscar a aprovação dos homens, o aplauso dos outros e o reconhecimento social até mesmo quando praticamos atos devocionais ou obras de misericórdia!
 
@@ -1204,11 +1204,11 @@ Alcançai-me a graça da santa simplicidade e da intenção reta em todas as min
       scripture: {
         reference: "Salmo 26 (25), 8 / 1 Coríntios 11, 27-29",
         text: "Senhor, eu amo a habitação da vossa casa e o lugar onde reside a vossa glória... Examine-se cada um a si mesmo e assim coma deste pão e beba deste cálice.",
-        explanation: `Nas Catequeses Mistagógicas de São Cirilo de Jerusalém, o santo Pai da Igreja ensina com reverência sagrada o valor incomensurável dos Sacramentos e a dignidade com que a alma deve se aproximar da Santa Eucaristia. São Cirilo exorta os fiéis a perceberem que no altar não está um simples pão, mas o próprio Corpo, Sangue, Alma e Divindade do Nosso Senhor Jesus Cristo, cercado pelos Anjos do Céu.
+        explanation: `Nas Catequeses Mistagógicas da antiguidade cristã, a tradição dos Padres da Igreja ensina com reverência sagrada o valor incomensurável dos Sacramentos e a dignidade com que a alma deve se aproximar da Santa Eucaristia. A tradição patrística exorta os fiéis a perceberem que no altar não está um simples pão, mas o próprio Corpo, Sangue, Alma e Divindade do Nosso Senhor Jesus Cristo, cercado pelos Anjos do Céu.
 
-São Tomás de Aquino, em seus Tratados e Hinos Eucarísticos, declara que a Santa Missa é o renovar do Sacrifício do Calvário. O Doutor Angélico adverte, em conformidade com São Paulo, sobre o gravíssimo perigo do sacrilégio: aproximar-se da Sagrada Comunhão em estado de pecado mortal sem antes buscar o sacramento da Confissão é 'comer e beber a própria condenação'.
+A tradição litúrgica e teológica da Igreja, em seus Tratados e Hinos Eucarísticos, declara que a Santa Missa é o renovar do Sacrifício do Calvário. A doutrina da Igreja adverte, em conformidade com São Paulo, sobre o gravíssimo perigo do sacrilégio: aproximar-se da Sagrada Comunhão em estado de pecado mortal sem antes buscar o sacramento da Confissão é 'comer e beber a própria condenação'.
 
-São João Crisóstomo, em suas Homilias sobre o Povo de Antioquia, relata que os Santos Anjos assistem com temor e tremor ao Sacrifício Altar, cobrindo o rosto em adoração. Sob a custódia zelosa de São Miguel Arcanjo — guardião do Altíssimo —, o cristão é chamado a reavivar o amor à Santa Igreja Católica, defender a fé e aproximar-se dos sacramentos com viva devoção.`,
+A tradição patrística, em suas Homilias sobre o Povo de Antioquia, relata que os Santos Anjos assistem com temor e tremor ao Sacrifício Altar, cobrindo o rosto em adoração. Sob a custódia zelosa de São Miguel Arcanjo — guardião do Altíssimo —, o cristão é chamado a reavivar o amor à Santa Igreja Católica, defender a fé e aproximar-se dos sacramentos com viva devoção.`,
       },
       meditation: `No décimo terceiro dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama a renovar o nosso amor zeloso pelo Corpo Místico de Cristo e pelos Santos Sacramentos. Como é doloroso ver, nos dias atuais, o desrespeito, a indiferença e até o sacrilégio com que a Eucaristia e a Santa Missa são tantas vezes tratados!
 
@@ -1290,11 +1290,11 @@ Concedei-me o santo temor de Deus para jamais me aproximar da Eucaristia indigna
       scripture: {
         reference: "Tiago 1, 2-4 / Romanos 12, 12",
         text: "Meus irmãos, tende por motivo de grande alegria quando passardes por provações de toda espécie, sabendo que a prova da vossa fé produz a paciência... Sede alegres na esperança, fortes na tribulação, perseverantes na oração.",
-        explanation: `No clássico Tratado de São Cipriano de Cartago sobre o Bem da Paciência, o santo bispo e mártir ensina que a paciência é a virtude distintiva que preserva a alma cristã da ruína nas tribulações. São Cipriano explica que, enquanto os pagãos se desesperam ou reagem com fúria diante do sofrimento, os filhos de Deus abraçam a cruz com serena mansidão, sabendo que as provações purificam a fé como o ouro no crisol.
+        explanation: `Nos escritos da antiguidade cristã sobre o Bem da Paciência, ensina-se que a paciência é a virtude distintiva que preserva a alma cristã da ruína nas tribulações. a tradição patrística explica que, enquanto os pagãos se desesperam ou reagem com fúria diante do sofrimento, os filhos de Deus abraçam a cruz com serena mansidão, sabendo que as provações purificam a fé como o ouro no crisol.
 
-São João Crisóstomo, em suas Homilias sobre as Tribulações de Jó, destaca que o demônio ataca o fiel não apenas pela dor física ou perda material, mas incitando o coração à impaciência e ao murmúrio contra a Providência Divina. O Crisóstomo enfatiza que a reclamação azeda tira o mérito do sofrimento, enquanto a paciência agradecida transforma a dor em coroa de glória eterna.
+A tradição patrística, em suas Homilias sobre as Tribulações de Jó, destaca que o demônio ataca o fiel não apenas pela dor física ou perda material, mas incitando o coração à impaciência e ao murmúrio contra a Providência Divina. A tradição patrística enfatiza que a reclamação azeda tira o mérito do sofrimento, enquanto a paciência agradecida transforma a dor em coroa de glória eterna.
 
-São Padre Pio e São Francisco de Sales ensinavam em seus sermões que a paciência com os próprios defeitos e com o próximo é a prova de fogo do amor a Deus. Sob a proteção de São Miguel Arcanjo — que guardou inabalável fidelidade na grande prova dos anjos —, o cristão aprende a suportar as cruzes diárias sem perder a paz e a alegria da esperança.`,
+A tradição devocional da Igreja e A tradição espiritual da Igreja ensinavam em seus sermões que a paciência com os próprios defeitos e com o próximo é a prova de fogo do amor a Deus. Sob a proteção de São Miguel Arcanjo — que guardou inabalável fidelidade na grande prova dos anjos —, o cristão aprende a suportar as cruzes diárias sem perder a paz e a alegria da esperança.`,
       },
       meditation: `No décimo quarto dia de nossa Quaresma de São Miguel Arcanjo, voltamos o coração para o aprendizado da santa paciência. Como é difícil aceitar os imprevistos, as doenças, as demoras de Deus e as falhas das pessoas ao nosso redor sem perder a calma e cair no murmúrio!
 
@@ -1376,11 +1376,11 @@ Bani do meu coração a impaciência, a irritabilidade e a tentação de murmura
       scripture: {
         reference: "Mateus 26, 41 / 1 Tessalonicenses 5, 17",
         text: "Vigiai e orai para que não entreis em tentação; o espírito, na verdade, está pronto, mas a carne é fraca... Orai sem cessar.",
-        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Oração, a prece é descrita como a respiração indispensável da alma cristã e a luz do intelecto. O Crisóstomo ensina que a alma que não reza está espiritualmente morta, vulnerável a todas as ardis do demônio. O santo bispo exorta os fiéis a não abandonarem a oração por causa de distrações ou secura interior, pois a perseverança na prece nos momentos difíceis atrai imensa graça divina.
+        explanation: `Nas célebres Homilias de A tradição patrística sobre a Oração, a prece é descrita como a respiração indispensável da alma cristã e a luz do intelecto. Os Padres da Igreja ensinam que a alma que não reza está espiritualmente morta, vulnerável a todas as ardis do demônio. O santo bispo exorta os fiéis a não abandonarem a oração por causa de distrações ou secura interior, pois a perseverança na prece nos momentos difíceis atrai imensa graça divina.
 
 Santa Teresa de Ávila, em seu livro Caminho de Perfeição e em seus sermões às carmelitas, define a oração mental como um 'tratar de amizade, estando muitas vezes a sós com Quem sabemos que nos ama'. A Doutora da Igreja ensina que o combate da oração consiste em vencer as distrações voluntárias, a preguiça espiritual e a ilusão de que não temos tempo para estar com Deus.
 
-Santo Agostinho, em seu Tratado sobre a Oração a Proba, explica que o desejo sincero de Deus já é uma forma de oração contínua. Sob o olhar protetor de São Miguel Arcanjo — que vive em permanente contemplação diante do trono do Altíssimo —, o fiel aprende a cultivar o recolhimento, a vigilância dos sentidos e a fidelidade diária à vida de oração.`,
+A tradição patrística, em seu Tratado sobre a Oração a Proba, explica que o desejo sincero de Deus já é uma forma de oração contínua. Sob o olhar protetor de São Miguel Arcanjo — que vive em permanente contemplação diante do trono do Altíssimo —, o fiel aprende a cultivar o recolhimento, a vigilância dos sentidos e a fidelidade diária à vida de oração.`,
       },
       meditation: `No décimo quinto dia de nossa caminhada devocional da Quaresma de São Miguel, meditamos sobre a primazia da oração e a importância da vigilância espiritual. Como é fácil encontrar tempo para as redes sociais, conversas fúteis e entretenimento, enquanto reservamos apenas os restos do nosso tempo e da nossa atenção para Deus!
 
@@ -1462,11 +1462,11 @@ Bani do meu espírito toda distração voluntária, a preguiça espiritual e o d
       scripture: {
         reference: "Efésios 5, 21-33 / Colossenses 3, 18-21",
         text: "Sede submissos uns aos outros no temor de Cristo... Vós, maridos, amai as vossas mulheres, como Cristo amou a Igreja... Vós, filhos, obedecei em tudo aos vossos pais... E vós, pais, não irriteis os vossos filhos.",
-        explanation: `Nas Homilias de São João Crisóstomo sobre o Matrimônio e a Vida Familiar, a casa cristã é chamada pelo Santo Doutor de 'Igreja Doméstica'. O Crisóstomo ensina que o matrimônio e a família são o alvo preferencial dos ataques das forças das trevas, pois quando o diabo consegue introduzir a discórdia, a falta de perdão e a dureza de coração no lar, ele desestrutura a base da sociedade e da vida espiritual dos fiéis.
+        explanation: `Nas Homilias de A tradição patrística sobre o Matrimônio e a Vida Familiar, a casa cristã é chamada pelo Santo Doutor de 'Igreja Doméstica'. Os Padres da Igreja ensinam que o matrimônio e a família são o alvo preferencial dos ataques das forças das trevas, pois quando o diabo consegue introduzir a discórdia, a falta de perdão e a dureza de coração no lar, ele desestrutura a base da sociedade e da vida espiritual dos fiéis.
 
 São João Paulo II, em suas Catequeses e Homilias sobre a Família, fundamentado nos Padres da Igreja, enfatiza que o amor familiar exige sacrifício diário, renúncia do egoísmo e constante diálogo pacificador. O Papa ensina que o lar cristão deve ser um santuário de oração, onde os pais transmitem a fé aos filhos e onde o perdão mútuo cura as feridas ordinárias da convivência.
 
-Santo Agostinho, em seus Sermões sobre a Caridade no Lar, adverte que é ilusório pretender ser um santo fora de casa enquanto se é impaciente, grosseiro e tirano com a própria família. Sob o patrocínio de São Miguel Arcanjo — defensor da família e da paz nos lares —, o cristão é exortado a ser um instrumento de união, mansidão e reconciliação no seu ambiente familiar.`,
+A tradição patrística, em seus Sermões sobre a Caridade no Lar, adverte que é ilusório pretender ser um santo fora de casa enquanto se é impaciente, grosseiro e tirano com a própria família. Sob o patrocínio de São Miguel Arcanjo — defensor da família e da paz nos lares —, o cristão é exortado a ser um instrumento de união, mansidão e reconciliação no seu ambiente familiar.`,
       },
       meditation: `No décimo sexto dia de nossa Quaresma de São Miguel Arcanjo, voltamos as nossas intenções para a santificação da nossa família e o combate contra os conflitos domésticos. O diabo sabe que a família é a primeira fortaleza da fé e por isso busca incessantemente semear ressentimentos, grosserias, incompreensões e divisões entre pais, filhos e cônjuges.
 
@@ -1548,11 +1548,11 @@ Expulsai da nossa casa todo espírito de discórdia, violência, incompreensão 
       scripture: {
         reference: "Provérbios 9, 10 / Salmo 111 (110), 10",
         text: "O temor do Senhor é o princípio da sabedoria, e o conhecimento do Santo é a prudência... Todos os que o praticam têm bom senso.",
-        explanation: `Nas Homilias de São Basílio Magno sobre os Salmos, o Santo Padre da Igreja ensina que o 'Santo Temor de Deus' não é um medo escravagista ou pavor terrorista de um tirano, mas o temor reverencial do filho que ama profundamente o seu Pai e teme horrorosamente magoá-Lo ou afastar-se da Sua presença. São Basílio adverte contra o engano fatal da presunção: pecar deliberadamente contando com uma misericórdia automática sem arrependimento sincero.
+        explanation: `Nas Homilias de A tradição patrística sobre os Salmos, o Santo Padre da Igreja ensina que o 'Santo Temor de Deus' não é um medo escravagista ou pavor terrorista de um tirano, mas o temor reverencial do filho que ama profundamente o seu Pai e teme horrorosamente magoá-Lo ou afastar-se da Sua presença. A tradição patrística adverte contra o engano fatal da presunção: pecar deliberadamente contando com uma misericórdia automática sem arrependimento sincero.
 
-Santo Afonso Maria de Ligório, em seus Sermões Morais, denuncia que a presunção é uma das armadilhas mais sutis do diabo para arrastar almas ao inferno. O demônio sopra no ouvido do pecador: 'Peca agora, pois Deus é misericordioso e depois você se confessa'. Santo Afonso recorda os Padres da Igreja mostrando que abusar da misericórdia divina para permanecer no pecado é escarnecer da justiça de Deus.
+A tradição moral e espiritual da Igreja, em seus Sermões Morais, denuncia que a presunção é uma das armadilhas mais sutis do diabo para arrastar almas ao inferno. O demônio sopra no ouvido do pecador: 'Peca agora, pois Deus é misericordioso e depois você se confessa'. A tradição espiritual recorda os Padres da Igreja mostrando que abusar da misericórdia divina para permanecer no pecado é escarnecer da justiça de Deus.
 
-São João Crisóstomo, em suas Homilias sobre a Repetida Conversão, explica que o Santo Temor é a sentinela que guarda a alma da tibieza moral. Sob o olhar majestoso de São Miguel Arcanjo — que contempla a Santidade Infinita de Deus —, o fiel é exortado a cultivar uma profunda reverência pelas coisas sagradas e uma firme contrição pelos próprios pecados.`,
+A tradição patrística, em suas Homilias sobre a Repetida Conversão, explica que o Santo Temor é a sentinela que guarda a alma da tibieza moral. Sob o olhar majestoso de São Miguel Arcanjo — que contempla a Santidade Infinita de Deus —, o fiel é exortado a cultivar uma profunda reverência pelas coisas sagradas e uma firme contrição pelos próprios pecados.`,
       },
       meditation: `No décimo sétimo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o dom do Santo Temor de Deus e o combate contra a presunção espiritual. Vivemos em um tempo em que o pecado foi banalizado e em que muitos pensam que Deus, por ser misericordioso, não se importa com a nossa conduta moral.
 
@@ -1634,11 +1634,11 @@ Libertai a minha alma de toda presunção, tibieza e banalização do pecado. Qu
       scripture: {
         reference: "Lucas 16, 10 / Mateus 25, 21",
         text: "Quem é fiel no pouco também é fiel no muito; e quem é injusto no pouco também é injusto no muito... Muito bem, servo bom e fiel! Foste fiel no pouco, eu te confiarei muito.",
-        explanation: `Nos Sermões de São Francisco de Sales sobre a Santificação das Ações Ordinárias, o Santo Bispo de Genebra ensina que a verdadeira perfeição cristã raramente se realiza através de atos extraordinários ou grandes martírios, mas através do amor fiel com que realizamos os menores deveres do nosso estado de vida. São Francisco explica que fazer as pequenas coisas diárias com grande intenção de agradar a Deus é o segredo dos grandes santos.
+        explanation: `Nos sermões da tradição espiritual sobre a Santificação das Ações Ordinárias, ensina-se que a verdadeira perfeição cristã raramente se realiza através de atos extraordinários ou grandes martírios, mas através do amor fiel com que realizamos os menores deveres do nosso estado de vida. A tradição espiritual explica que fazer as pequenas coisas diárias com grande intenção de agradar a Deus é o segredo dos grandes santos.
 
 São Josemaría Escrivá, em suas homilias sobre o trabalho e a vida cotidiana, fundamentado na doutrina patrística, adverte severamente contra o vício da negligência e do desleixo. O santo ensina que o desleixo nos pequenos detalhes da profissão, do estudo ou das obrigações domésticas é uma falta de caridade e uma brecha por onde o demônio introduz a acídia e a tibieza espiritual.
 
-São João Crisóstomo, em suas Homilias sobre a Parábola dos Talentos, recorda que o servo mau foi condenado não porque roubou ou destruiu, mas porque foi negligente e enterrou o talento recebido. Sob a proteção de São Miguel Arcanjo — cujas legiões cumprem com absoluta precisão cada ordem do Senhor —, o cristão é chamado à fidelidade heroica nas pequenas coisas de cada dia.`,
+A tradição patrística, em suas Homilias sobre a Parábola dos Talentos, recorda que o servo mau foi condenado não porque roubou ou destruiu, mas porque foi negligente e enterrou o talento recebido. Sob a proteção de São Miguel Arcanjo — cujas legiões cumprem com absoluta precisão cada ordem do Senhor —, o cristão é chamado à fidelidade heroica nas pequenas coisas de cada dia.`,
       },
       meditation: `No décimo oitavo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a virtude da fidelidade nos pequenos deveres cotidianos e o combate contra a negligência e o desleixo. Muitas vezes sonhamos em fazer grandes sacrifícios por Deus, mas falhamos miseravelmente nas pequenas tarefas do nosso dia a dia!
 
@@ -1720,11 +1720,11 @@ Bani da minha vida a negligência, a procrastinação, a preguiça e o desleixo 
       scripture: {
         reference: "1 Reis 19, 11-13 / Salmo 46 (45), 10",
         text: "O Senhor não estava no vento forte, nem no terremoto, nem no fogo... Mas depois do fogo veio o murmúrio de uma brisa suave... Sossegai e reconhecei que eu sou Deus.",
-        explanation: `Nos Comentários aos Reis de Santo Agostinho e nas suas Homilias sobre os Salmos, a teofania de Elias no Monte Horeb é interpretada como o ensino de que Deus não habita na agitação barulhenta do mundo, mas no silêncio recolhido de um coração pacificado. Santo Agostinho ensina que o barulho das preocupações mundanas, das notícias fúteis e da curiosidade desordenada funciona como uma névoa que impede a alma de escutar o murmúrio suave da voz de Deus.
+        explanation: `Nos comentários patrísticos e nas antigas homilias sobre os Salmos, a teofania de Elias no Monte Horeb é interpretada como o ensino de que Deus não habita na agitação barulhenta do mundo, mas no silêncio recolhido de um coração pacificado. A tradição patrística ensina que o barulho das preocupações mundanas, das notícias fúteis e da curiosidade desordenada funciona como uma névoa que impede a alma de escutar o murmúrio suave da voz de Deus.
 
 São João da Cruz, em seus tratados da Subida do Monte Carmelo e Noite Escura, declara que o silêncio interior é o santuário onde a Santíssima Trindade se comunica com a alma. O Doutor Místico adverte que a curiosidade por saber da vida alheia, a busca compulsiva por novidades e o agito das paixões mantêm o espírito em permanente perturbação e fraqueza espiritual.
 
-São Francisco de Sales, em seus Sermões sobre a Paz do Coração, recorda que nada deve roubar a paz interior do cristão, pois a perturbação da mente é a atmosfera onde o diabo pesca. Sob a guarda de São Miguel Arcanjo — que contemplava a majestade divina no repouso da fé —, o cristão é chamado a desligar-se do barulho exterior para cultivar o santuário do silêncio interior.`,
+A tradição espiritual da Igreja, em seus Sermões sobre a Paz do Coração, recorda que nada deve roubar a paz interior do cristão, pois a perturbação da mente é a atmosfera onde o diabo pesca. Sob a guarda de São Miguel Arcanjo — que contemplava a majestade divina no repouso da fé —, o cristão é chamado a desligar-se do barulho exterior para cultivar o santuário do silêncio interior.`,
       },
       meditation: `No décimo nono dia de nossa Quaresma de São Miguel Arcanjo, somos chamados a cultivar a paz interior e o silêncio da alma no meio de um mundo ruidoso e frenético. Como é difícil encontrar momentos de silêncio real em nossa rotina diária, cercados por notificações de celular, notícias alarmantes e o barulho incessante da sociedade moderna!
 
@@ -1806,11 +1806,11 @@ Bani do meu espírito a curiosidade desordenada e o vício de buscar novidades f
       scripture: {
         reference: "Mateus 24, 13 / 2 Timóteo 4, 7-8",
         text: "Aquele que perseverar até o fim, esse será salvo... Combati o bom combate, completei a corrida, guardei a fé. Agora me está reservada a coroa da justiça.",
-        explanation: `Nos Sermões do Papa São Leão Magno sobre a Perseverança Cristã, a virtude da perseverança final é apresentada como a única que recebe a coroa da vitória eterna. O Santo Papa ensina que de nada adianta iniciar o combate espiritual com grande entusiasmo na juventude ou no início da Quaresma se a alma desiste no meio do caminho ou abandona a fé diante das primeiras tribulações e aridez espiritual.
+        explanation: `Nos Sermões da tradição patrística sobre a Perseverança Cristã, a virtude da perseverança final é apresentada como a única que recebe a coroa da vitória eterna. A tradição patrística ensina que de nada adianta iniciar o combate espiritual com grande entusiasmo na juventude ou no início da Quaresma se a alma desiste no meio do caminho ou abandona a fé diante das primeiras tribulações e aridez espiritual.
 
-São João Maria Vianney (Cura d'Ars), em seus Sermões sobre a Salvação da Alma, adverte que o maior triunfo do demônio não é fazer a alma cair — pois a misericórdia de Deus a ergue no Sacramento da Confissão —, mas induzi-la ao desânimo definitivo e ao abandono da prática religiosa. O Cura d'Ars recordava que o Céu foi feito para os violentos que perseveram na oração e na graça santificante até o último suspiro.
+A tradição pastoral da Igreja, em seus Sermões sobre a Salvação da Alma, adverte que o maior triunfo do demônio não é fazer a alma cair — pois a misericórdia de Deus a ergue no Sacramento da Confissão —, mas induzi-la ao desânimo definitivo e ao abandono da prática religiosa. O a tradição pastoral recordava que o Céu foi feito para os violentos que perseveram na oração e na graça santificante até o último suspiro.
 
-Santo Agostinho, em seu Tratado sobre o Dom da Perseverança, explica que a perseverança final é uma graça suprema que deve ser pedida a Deus diariamente com humildade e insistência. Sob o comando vitorioso de São Miguel Arcanjo — que perseverou fiel ao lado de Deus enquanto um terço das estrelas caía —, o cristão atinge a metade de sua Quaresma renovando o compromisso de jamais abandonar a fé católica.`,
+A tradição teológica da Igreja ensina que a perseverança final é uma graça suprema que deve ser pedida a Deus diariamente com humildade e insistência. Sob o comando vitorioso de São Miguel Arcanjo — que perseverou fiel ao lado de Deus enquanto um terço das estrelas caía —, o cristão atinge a metade de sua Quaresma renovando o compromisso de jamais abandonar a fé católica.`,
       },
       meditation: `No vigésimo dia de nossa Quaresma de São Miguel Arcanjo, alcançamos exatamente a metade desta santa jornada de 40 dias. É o momento propício para renovar o nosso compromisso de perseverança final no combate espiritual.
 
@@ -1892,11 +1892,11 @@ Alcançai-me do Senhor a suprema graça da perseverança final. Que nenhuma arid
       scripture: {
         reference: "Mateus 5, 43-48 / Romanos 12, 19-21",
         text: "Ouvistes o que foi dito: Amarás o teu próximo e odiarás o teu inimigo. Eu, porém, vos digo: Amai os vossos inimigos e orai pelos que vos perseguem...",
-        explanation: `Nas célebres Homilias de São João Crisóstomo sobre o Evangelho de São Mateus, o amor aos inimigos é apresentado como a coroa e a prova máxima da perfeição cristã. O Crisóstomo ensina que amar quem nos ama é virtude própria dos pagãos, mas rogar bênçãos e desejar o bem daqueles que nos caluniam e perseguem é o que nos torna verdadeiramente semelhantes ao Pai Celestial, que faz o sol nascer sobre maus e bons.
+        explanation: `Nas célebres homilias patrísticas sobre o Evangelho de São Mateus, o amor aos inimigos é apresentado como a coroa e a prova máxima da perfeição cristã. Os Padres da Igreja ensinam que amar quem nos ama é virtude própria dos pagãos, mas rogar bênçãos e desejar o bem daqueles que nos caluniam e perseguem é o que nos torna verdadeiramente semelhantes ao Pai Celestial, que faz o sol nascer sobre maus e bons.
 
-Santo Agostinho, em seus Sermões sobre a Caridade Perfeita, explica que o cristão ao perdoar o inimigo não apoia o mal que ele fez, mas distingue o pecado da pessoa. O Bispo de Hipona exorta que o verdadeiro soldado de Cristo busca vencer o mal com o bem, sabendo que a raiva e a aversão ao próximo fermentam a alma com o veneno do demônio, destruindo a paz interior.
+A tradição patrística, em seus Sermões sobre a Caridade Perfeita, explica que o cristão ao perdoar o inimigo não apoia o mal que ele fez, mas distingue o pecado da pessoa. A tradição dos Padres da Igreja exorta que o verdadeiro soldado de Cristo busca vencer o mal com o bem, sabendo que a raiva e a aversão ao próximo fermentam a alma com o veneno do demônio, destruindo a paz interior.
 
-São Bernardo de Claraval recorda em seus sermões que São Miguel Arcanjo, ao combater as potestades infernais, agiu em nome da justiça de Deus e não por rancor pessoal. Sob o comando de São Miguel, o fiel é chamado a desarmar os pensamentos de repulsa, rezando sinceramente pela salvação daqueles que o feriram.`,
+A tradição espiritual da Igreja recorda em seus sermões que São Miguel Arcanjo, ao combater as potestades infernais, agiu em nome da justiça de Deus e não por rancor pessoal. Sob o comando de São Miguel, o fiel é chamado a desarmar os pensamentos de repulsa, rezando sinceramente pela salvação daqueles que o feriram.`,
       },
       meditation: `No vigésimo primeiro dia de nossa Quaresma de São Miguel Arcanjo, somos chamados a viver o mandamento heroico do amor aos inimigos. Como é difícil abençoar quem nos criticou, caluniou ou desejou o nosso mal! O orgulho humano exige revanche, mas a lei de Cristo nos pede a vitória do bem sobre o mal.
 
@@ -1978,11 +1978,11 @@ Alcançai-me a graça de amar e perdoar os meus inimigos, rezando sinceramente p
       scripture: {
         reference: "2 Coríntios 10, 4-5 / Filipenses 4, 8",
         text: "Destruímos os raciocínios e todo o orgulho que se levanta contra o conhecimento de Deus, e reduzimos a cativeiro todo pensamento para submetê-lo a Cristo.",
-        explanation: `Nas Conferências de São João Cassiano sobre o Combate dos Pensamentos, o venerável Pai do Deserto explica que a mente humana é como um moinho que nunca para de girar; cabe ao cristão decidir se vai alimentar essa engrenagem com o trigo puro da oração e das sagradas escrituras ou com o joio dos pensamentos impuros, ressentidos e vaidosos. Cassiano adverte que as maiores quedas morais começam com pensamentos não rejeitados no início.
+        explanation: `Nas Conferências da tradição monástica sobre o Combate dos Pensamentos, explica-se que a mente humana é como um moinho que nunca para de girar; cabe ao cristão decidir se vai alimentar essa engrenagem com o trigo puro da oração e das sagradas escrituras ou com o joio dos pensamentos impuros, ressentidos e vaidosos. A tradição monástica adverte que as maiores quedas morais começam com pensamentos não rejeitados no início.
 
-São Jerônimo, em suas cartas e comentários às epístolas paulinas, ensina a urgência da imediata rejeição da tentação imaginativa. O santo Doutor adverte que brincar com pensamentos de vingança, luxúria ou inveja na imaginação é dar abrigo ao inimigo no santuário da alma, permitindo que a serpente coloque seus ovos de discórdia antes de ser expelleda.
+A tradição patrística, em suas cartas e comentários às epístolas paulinas, ensina a urgência da imediata rejeição da tentação imaginativa. O santo Doutor adverte que brincar com pensamentos de vingança, luxúria ou inveja na imaginação é dar abrigo ao inimigo no santuário da alma, permitindo que a serpente coloque seus ovos de discórdia antes de ser expelleda.
 
-São Francisco de Sales, em seus Sermões sobre a Paz da Alma, encoraja as almas escrupulosas explicando que sentir maus pensamentos não é pecado, contanto que a vontade não os consinta. Sob a custódia reluzente de São Miguel Arcanjo — protetor da mente e da verdade —, o fiel aprende a entregar suas imaginação a Cristo e a cultivar pensamentos nobres, puros e virtuosos.`,
+A tradição espiritual da Igreja, em seus Sermões sobre a Paz da Alma, encoraja as almas escrupulosas explicando que sentir maus pensamentos não é pecado, contanto que a vontade não os consinta. Sob a custódia reluzente de São Miguel Arcanjo — protetor da mente e da verdade —, o fiel aprende a entregar suas imaginação a Cristo e a cultivar pensamentos nobres, puros e virtuosos.`,
       },
       meditation: `No vigésimo segundo dia de nossa caminhada devocional, voltamos o nosso cuidado para o santuário da nossa imaginação e dos nossos pensamentos. A mente humana é o primeiro campo de batalha do combate espiritual: é ali que o demônio insinua dúvidas, mágoas, vaidades e fantasias impuras.
 
@@ -2064,11 +2064,11 @@ Ajudai-me a submeter todas as minhas ideias e afetos ao senhorio de Nosso Senhor
       scripture: {
         reference: "Isaías 1, 18 / Salmo 103 (102), 8-13",
         text: "Ainda que os vossos pecados sejam como a escarlata, eles se tornarão brancos como a neve... Como um pai se compadece de seus filhos, assim o Senhor se compadece dos que o temem.",
-        explanation: `Nos Sermões de São João Maria Vianney (Cura d'Ars) sobre a Misericórdia Divina, o santo padre afirma com ternura que os nossos pecados, por maiores que sejam, são como uma gota d'água lançada em um oceano infinito de amor quando nos aproximamos da Confissão. O Cura d'Ars adverte que o demônio atua em dois tempos: antes de pecar ele retira o temor para facilitar a queda; depois de pecar ele incute o desespero e a falsa culpabilidade para nos afastar do abraço do Pai.
+        explanation: `Nos sermões da tradição pastoral da Igreja sobre a Misericórdia Divina, afirma-se com ternura que os nossos pecados, por maiores que sejam, são como uma gota d'água lançada em um oceano infinito de amor quando nos aproximamos da Confissão. O a tradição pastoral adverte que o demônio atua em dois tempos: antes de pecar ele retira o temor para facilitar a queda; depois de pecar ele incute o desespero e a falsa culpabilidade para nos afastar do abraço do Pai.
 
 Santa Faustina Kowalska, em suas anotações e sermões sobre a Divina Misericórdia, revela que a maior dor provocada ao Coração de Jesus não é a fraqueza humana, mas a falta de confiança no Seu perdão. A santa ensina que uma alma que duvida da misericórdia de Cristo fere a Sua Paixão mais do que os próprios algozes da Cruz.
 
-São Bernardo de Claraval, em seus Sermões sobre o Cântico dos Cânticos, recorda que as nossas feridas espirituais são o local de encontro com a graça curativa de Deus. Sob a proteção de São Miguel Arcanjo — porta-estandarte da Misericórdia e Justiça —, o fiel arremessa todo desespero ao abismo e se prostra confiante diante do Trono da Graça.`,
+A tradição espiritual da Igreja, em seus Sermões sobre o Cântico dos Cânticos, recorda que as nossas feridas espirituais são o local de encontro com a graça curativa de Deus. Sob a proteção de São Miguel Arcanjo — porta-estandarte da Misericórdia e Justiça —, o fiel arremessa todo desespero ao abismo e se prostra confiante diante do Trono da Graça.`,
       },
       meditation: `No vigésimo terceiro dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos chama a renovar a nossa confiança inabalável na infinita misericórdia de Deus. Quantas vezes, após uma queda ou fraqueza espiritual, sentimo-nos indignos e tentados a abandonar a oração por causa do desespero ou da falsa culpa!
 
@@ -2150,11 +2150,11 @@ Ensinai-me a correr imediatamente para os braços misericordiosos do meu Salvado
       scripture: {
         reference: "Gálatas 1, 10 / João 5, 44",
         text: "Porventura procuro eu agora o favor dos homens ou o de Deus? Se tentasse ainda agradar aos homens, não seria servo de Cristo... Como podereis crer vós que recebeis glória uns dos outros?",
-        explanation: `Nas Homilias do Papa São Gregório Magno sobre os Evangelhos, o respeito humano e a busca desordenada por louvores sociais são denunciados como as amarras que paralisam os fiéis no caminho da santidade. São Gregório explica que quem vive preocupado em agradar aos homens torna-se escravo da opinião pública, incapaz de defender a verdade católica quando ela é zombada ou perseguida pela sociedade.
+        explanation: `Nas homilias da tradição patrística sobre os Evangelhos, o respeito humano e a busca desordenada por louvores sociais são denunciados como as amarras que paralisam os fiéis no caminho da santidade. A tradição patrística explica que quem vive preocupado em agradar aos homens torna-se escravo da opinião pública, incapaz de defender a verdade católica quando ela é zombada ou perseguida pela sociedade.
 
-São Francisco de Assis, em suas Admoestações aos irmãos, ensinava com santa radicalidade que o homem vale unicamente o que vale diante de Deus, e nada mais. O Poverello de Assis advertia em seus sermões que buscar compensações e elogios das criaturas pelas boas obras praticadas é roubar a glória que pertence exclusivamente ao Criador.
+A tradição espiritual, em suas Admoestações aos irmãos, ensinava com santa radicalidade que o homem vale unicamente o que vale diante de Deus, e nada mais. O Poverello de Assis advertia em seus sermões que buscar compensações e elogios das criaturas pelas boas obras praticadas é roubar a glória que pertence exclusivamente ao Criador.
 
-São João Crisóstomo exorta em suas Homilias que o aplauso humano é como uma nuvem de fumaça que o vento dissipa em um instante. Sob o exemplo de São Miguel Arcanjo — que proclama 'Quem é como Deus?' e não busca glória própria —, o cristão é chamado a desprezar a vaidade do respeito humano para agradar unicamente ao olhar soberano de Deus.`,
+A tradição patrística exorta em suas homilias que o aplauso humano é como uma nuvem de fumaça que o vento dissipa em um instante. Sob o exemplo de São Miguel Arcanjo — que proclama 'Quem é como Deus?' e não busca glória própria —, o cristão é chamado a desprezar a vaidade do respeito humano para agradar unicamente ao olhar soberano de Deus.`,
       },
       meditation: `No vigésimo quarto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o combate contra o respeito humano e a busca desenfreada por elogios e aprovação social. Quanto sofrimento e ansiedade geramos em nossa vida por estarmos obcecados com a opinião dos outros a nosso respeito!
 
@@ -2236,11 +2236,11 @@ Concedei-me a santa coragem de professar a minha fé católica sem vergonha nem 
       scripture: {
         reference: "1 Tessalonicenses 5, 18 / Salmo 103 (102), 1-5",
         text: "Em todas as circunstâncias, dai graças, porque esta é a vosso respeito a vontade de Deus em Cristo Jesus... Bendize, ó minha alma, ao Senhor, e não te esqueças de nenhum de seus benefícios.",
-        explanation: `Nas Homilias de São João Crisóstomo sobre a Ingratidão, o vício de reclamação contínua e a cegueira diante dos dons de Deus são apontados como a causa da aridez e da tristeza da alma. O Crisóstomo ensina que a gratidão é a chave que abre os tesouros do Céu, pois quem dá graças a Deus nas pequenas coisas capacita o coração a receber maiores bênçãos da graça divina.
+        explanation: `Nas homilias patrísticas sobre a Ingratidão, o vício de reclamação contínua e a cegueira diante dos dons de Deus são apontados como a causa da aridez e da tristeza da alma. Os Padres da Igreja ensinam que a gratidão é a chave que abre os tesouros do Céu, pois quem dá graças a Deus nas pequenas coisas capacita o coração a receber maiores bênçãos da graça divina.
 
-São Francisco de Sales, em seus Sermões sobre a Divina Providência, exorta que a alma cristã deve dar graças a Deus não apenas pelos momentos de alegria e consolamento, mas também pelas cruzes, tribulações e limitações de cada dia. O Bispo de Genebra ensina que o louvor oferecido a Deus na dor vale mais do que mil agradecimentos feitos na prosperidade.
+A tradição espiritual da Igreja, em seus Sermões sobre a Divina Providência, exorta que a alma cristã deve dar graças a Deus não apenas pelos momentos de alegria e consolamento, mas também pelas cruzes, tribulações e limitações de cada dia. O Bispo de Genebra ensina que o louvor oferecido a Deus na dor vale mais do que mil agradecimentos feitos na prosperidade.
 
-Santo Agostinho, em seus Tratados sobre os Salmos, exclama que toda a eternidade será um cântico ininterrupto de gratidão pela salvação operada por Cristo. Sob a intercessão de São Miguel Arcanjo e dos Anjos do Louvor —, o cristão é chamado a banir o espírito de murmúrio e insatisfação, transformando sua vida diária em um hino de ação de graças.`,
+A tradição espiritual da Igreja ensina que toda a eternidade será um cântico ininterrupto de gratidão pela salvação operada por Cristo. Sob a intercessão de São Miguel Arcanjo e dos Anjos do Louvor —, o cristão é chamado a banir o espírito de murmúrio e insatisfação, transformando sua vida diária em um hino de ação de graças.`,
       },
       meditation: `No vigésimo quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre a virtude da gratidão e o combate contra a ingratidão e o azedo espírito de insatisfação. Como é fácil esquecer as milhares de bênçãos que recebemos de Deus diariamente — a vida, a saúde, a fé, a família, o pão — e focar apenas naquilo que nos falta!
 
@@ -2322,11 +2322,11 @@ Bani da minha vida o espírito de ingratidão, murmúrio e insatisfação. Que a
       scripture: {
         reference: "Mateus 7, 1-5 / Romanos 14, 10-13",
         text: "Não julgueis, para que não sejais julgados. Porque com o julgamento com que julgardes sereis julgados... Por que olhas a palha no olho do teu irmão e não reparas na trave que está no teu próprio olho?",
-        explanation: `Nos Sermões de Santo Agostinho sobre o Julgamento das Intenções, o Bispo de Hipona adverte severamente contra a audácia de julgar o coração do próximo. Agostinho explica que o homem apenas vê a aparência exterior e as ações superficiais, enquanto Deus é o único que perscruta os segredos da alma, a ignorância e as intenções profundas; portanto, quem julga temerariamente assume usurpar o trono do Juiz Supremo.
+        explanation: `Nos sermões da tradição patrística sobre o Julgamento das Intenções, adverte-se severamente contra a audácia de julgar o coração do próximo. A tradição patrística explica que o homem apenas vê a aparência exterior e as ações superficiais, enquanto Deus é o único que perscruta os segredos da alma, a ignorância e as intenções profundas; portanto, quem julga temerariamente assume usurpar o trono do Juiz Supremo.
 
-São Francisco de Sales, em seu livro Introdução à Vida Devota e em seus sermões, compara o julgamento temerário a um olhar doente que vê tudo amarelado. O santo ensina que onde o amor está presente, o cristão busca sempre interpretar as ações alheias com benevolência e da melhor forma possível, cobrindo as falhas do irmão com a capa da santa caridade.
+A tradição espiritual da Igreja, em seu livro Introdução à Vida Devota e em seus sermões, compara o julgamento temerário a um olhar doente que vê tudo amarelado. A tradição espiritual ensina que onde o amor está presente, o cristão busca sempre interpretar as ações alheias com benevolência e da melhor forma possível, cobrindo as falhas do irmão com a capa da santa caridade.
 
-São João Crisóstomo, em suas Homilias sobre São Mateus, lembra que a trave do nosso próprio orgulho nos impede de enxergar com clareza. Sob a espada da retidão de São Miguel Arcanjo —, o fiel é exortado a calar os julgamentos apressados e a usar o tempo da vida para examinar os próprios defeitos diante da santidade de Cristo.`,
+A tradição patrística, em suas Homilias sobre São Mateus, lembra que a trave do nosso próprio orgulho nos impede de enxergar com clareza. Sob a espada da retidão de São Miguel Arcanjo —, o fiel é exortado a calar os julgamentos apressados e a usar o tempo da vida para examinar os próprios defeitos diante da santidade de Cristo.`,
       },
       meditation: `No vigésimo sexto dia de nossa Quaresma de São Miguel Arcanjo, a Palavra de Deus nos chama a combater o vício sutil e destrutivo do julgamento temerário. Como é fácil e rápido condenar as intenções dos outros, criticar suas decisões e enxergar os cisco nos olhos alheios enquanto ignoramos a trave dos nossos próprios pecados!
 
@@ -2408,11 +2408,11 @@ Alcançai-me a graça da santa benevolência e da prudência no falar e no pensa
       scripture: {
         reference: "Lucas 1, 46-55 / Apocalipse 12, 1",
         text: "A minha alma engrandece o Senhor... Apareceu no céu um grande sinal: uma Mulher vestida de sol, com a lua debaixo dos seus pés e uma coroa de doze estrelas na cabeça.",
-        explanation: `Nas célebres Homilias de São Bernardo de Claraval (Super Missus Est), Maria Santíssima é proclamada a Estrela do Mar e a Suprema Rainha dos Anjos. O Doutor Melífluo ensina que a Virgem Imaculada é a Mulher prometida no Gênesis que esmaga a cabeça da serpente infernal, sendo temida pelos demônios mais do que todos os exércitos em ordem de batalha.
+        explanation: `Nas célebres homilias da tradição mariana da Igreja, Maria Santíssima é proclamada a Estrela do Mar e a Suprema Rainha dos Anjos. O Doutor Melífluo ensina que a Virgem Imaculada é a Mulher prometida no Gênesis que esmaga a cabeça da serpente infernal, sendo temida pelos demônios mais do que todos os exércitos em ordem de batalha.
 
 São Luís Maria Grignion de Montfort, em seu Tratado da Verdadeira Devoção e em seus sermões, declara que o Arcanjo São Miguel é o primeiro e mais fiel devoto da Mãe de Deus. São Miguel lidera as milícias celestes em perfeita submissão e reverência à Rainha do Céu, protegendo os filhos da Igreja sob o manto virginal de Nossa Senhora.
 
-Santo Afonso Maria de Ligório, em As Glórias de Maria, ensina que quem recorre com confiança à proteção da Mãe de Deus jamais será derrotado pelo diabo. Sob a luz radiante da Rainha dos Anjos e a guarda de São Miguel, o cristão encontra a fortaleza inexpugnável para vencer todas as tentações e perigos do combate espiritual.`,
+A tradição moral e espiritual da Igreja, em As Glórias de Maria, ensina que quem recorre com confiança à proteção da Mãe de Deus jamais será derrotado pelo diabo. Sob a luz radiante da Rainha dos Anjos e a guarda de São Miguel, o cristão encontra a fortaleza inexpugnável para vencer todas as tentações e perigos do combate espiritual.`,
       },
       meditation: `No vigésimo sétimo dia de nossa Quaresma de São Miguel Arcanjo, voltamos os olhos do coração para Nossa Senhora, Rainha dos Anjos e dos Homens. O combate espiritual não pode ser vencido sem o refúgio seguro sob o manto da Virgem Imaculada.
 
@@ -2494,11 +2494,11 @@ Defendei-me sob o Manto Sagrado de Nossa Senhora contra todas as ciladas do drag
       scripture: {
         reference: "Tobias 4, 7-11 / Mateus 25, 34-40",
         text: "Dá esmola dos teus bens e não desvies o teu rosto de nenhum pobre... Todas as vezes que fizestes isto a um destes meus irmãos mais pequeninos, foi a mim que o fizestes.",
-        explanation: `Nas Homilias de São Basílio Magno sobre a Caridade Social, o grande Pai da Igreja declara que a esmola e a ajuda aos necessitados não são favores opcionais, mas atos de justiça e caridade cristã. São Basílio ensina em seus sermões que o alimento e os recursos acumulados pela indiferença pertencem aos famintos, e que a alma indiferente ao sofrimento do irmão fecha os ouvidos para o próprio clamor no dia do Juízo.
+        explanation: `Nas homilias da tradição patrística sobre a Caridade Social, declara-se que a esmola e a ajuda aos necessitados não são favores opcionais, mas atos de justiça e caridade cristã. Os sermões patrísticos ensinam que o alimento e os recursos acumulados pela indiferença pertencem aos famintos, e que a alma indiferente ao sofrimento do irmão fecha os ouvidos para o próprio clamor no dia do Juízo.
 
-São Vicente de Paulo, em suas conferências e sermões sobre os Pobres, ensinava que nos desvalidos e doentes é o próprio Jesus Crucificado que nos estende a mão pedindo consolo. O santo da caridade exortava que as obras de misericórdia corporais e espirituais são o verdadeiro passaporte da alma para entrar no Reino dos Céus.
+A tradição espiritual da Igreja sobre as obras de caridade ensina que nos desvalidos e doentes é o próprio Jesus Crucificado que nos estende a mão pedindo consolo. A sabedoria cristã exorta que as obras de misericórdia corporais e espirituais são o verdadeiro passaporte da alma para entrar no Reino dos Céus.
 
-São João Crisóstomo, em suas Homilias sobre o Evangelho de São Mateus, declara que as mãos dos pobres são a bolsa onde guardamos os tesouros no Céu. Sob a proteção de São Miguel Arcanjo — que ministra o amor de Deus aos necessitados —, o fiel é chamado a vencer a insensibilidade e a praticar a esmola generosa com alegria de coração.`,
+A tradição patrística, em suas Homilias sobre o Evangelho de São Mateus, declara que as mãos dos pobres são a bolsa onde guardamos os tesouros no Céu. Sob a proteção de São Miguel Arcanjo — que ministra o amor de Deus aos necessitados —, o fiel é chamado a vencer a insensibilidade e a praticar a esmola generosa com alegria de coração.`,
       },
       meditation: `No vigésimo oitavo dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o dever evangélico das obras de misericórdia e o combate contra o egoísmo e a insensibilidade diante da dor do próximo. Como é fácil fechar o coração e fingir que não vemos a necessidade dos que sofrem ao nosso redor!
 
@@ -2580,11 +2580,11 @@ Bani da minha vida o egoísmo, a insensibilidade e a ganância. Concedei-me a gr
       scripture: {
         reference: "Mateus 5, 48 / Colossenses 3, 14",
         text: "Sede perfeitos como o vosso Pai Celestial é perfeito... E acima de tudo isto, revesti-vos da caridade, que é o vínculo da perfeição.",
-        explanation: `Nas Homilias de São Gregório de Nissa sobre a Perfeição Cristã, o crescimento na santidade é apresentado como uma jornada sem fim de amor, na qual a alma jamais deve dizer 'basta'. O santo Pai da Igreja ensina que parar na caminhada espiritual é recuar, e que a mediocridade do coração morno é o estado que mais desgosta o Coração de Cristo, que deseja o nosso amor por inteiro.
+        explanation: `Nas homilias da tradição patrística sobre a Perfeição Cristã, o crescimento na santidade é apresentado como uma jornada sem fim de amor, na qual a alma jamais deve dizer 'basta'. A tradição patrística ensina que parar na caminhada espiritual é recuar, e que a mediocridade do coração morno é o estado que mais desgosta o Coração de Cristo, que deseja o nosso amor por inteiro.
 
-São Tomás de Aquino, em sua Suma Teológica e Sermões sobre o Amor de Deus, explica que a perfeição cristã consiste essencialmente na caridade: amar a Deus de todo o coração e ao próximo como a si mesmo. O Doutor Angélico ensina que todas as mortificações, jejuns e orações são meios destinados a fazer crescer essa caridade viva na alma.
+A tradição teológica da Igreja, em seus grandes tratados e sermões sobre o Amor de Deus, explica que a perfeição cristã consiste essencialmente na caridade: amar a Deus de todo o coração e ao próximo como a si mesmo. O Doutor da Igreja ensina que todas as mortificações, jejuns e orações são meios destinados a fazer crescer essa caridade viva na alma.
 
-São Bernardo de Claraval exorta em seus sermões que a medida de amar a Deus é amá-Lo sem medida. Sob o incentivo vitorioso de São Miguel Arcanjo — que ama a Deus com o ardor inabalável dos serafins —, o cristão é chamado a sacudir a tibieza e a buscar a perfeição da santidade em cada pensamento, palavra e ação.`,
+A tradição espiritual da Igreja exorta em seus sermões que a medida de amar a Deus é amá-Lo sem medida. Sob o incentivo vitorioso de São Miguel Arcanjo — que ama a Deus com o ardor inabalável dos serafins —, o cristão é chamado a sacudir a tibieza e a buscar a perfeição da santidade em cada pensamento, palavra e ação.`,
       },
       meditation: `No vigésimo nono dia de nossa Quaresma de São Miguel Arcanjo, a Igreja nos faz o convite supremo do Evangelho: a busca incondicional da perfeição no amor e o combate contra a tibieza espiritual. Não fomos criados por Deus para sermos cristãos mornos ou medíocres!
 
@@ -2666,11 +2666,11 @@ Inflamai o meu coração com o fogo do amor de Deus, para que eu não me content
       scripture: {
         reference: "Filipenses 4, 4 / Neemias 8, 10",
         text: "Alegrai-vos sempre no Senhor; outra vez digo: alegrai-vos!... Não vos entristeçais, porque a alegria do Senhor é a vossa força.",
-        explanation: `Nos Sermões de São Felipe Neri sobre a Alegria do Espírito, a santa alegria é proclamada como o estado próprio de uma alma em graça santificante. O Santo da Alegria ensinava ao seu povo que a tristeza azeda, a melancolia espiritual e o mofo do amargor são ferramentas preferenciais do diabo para arrastar a alma ao desânimo, à murmuração e ao afastamento de Deus.
+        explanation: `Nos sermões da tradição espiritual sobre a Alegria do Espírito, a santa alegria é proclamada como o estado próprio de uma alma em graça santificante. A tradição espiritual ensina que a tristeza azeda, a melancolia espiritual e o mofo do amargor são ferramentas preferenciais do diabo para arrastar a alma ao desânimo, à murmuração e ao afastamento de Deus.
 
-São Francisco de Sales, em seus Sermões e Cartas Espirituais, adverte que o demônio ama a tristeza porque ela paralisa a alma para o bem e obscurece a inteligência para a oração. O Santo Bispo ensina que a alegria cristã não depende da ausência de problemas terrenos, mas nasce da certeza inabalável de que fomos remidos por Cristo e que somos amados pelo Pai Celestial.
+A tradição espiritual da Igreja, em seus Sermões e Cartas Espirituais, adverte que o demônio ama a tristeza porque ela paralisa a alma para o bem e obscurece a inteligência para a oração. O Santo Bispo ensina que a alegria cristã não depende da ausência de problemas terrenos, mas nasce da certeza inabalável de que fomos remidos por Cristo e que somos amados pelo Pai Celestial.
 
-Santo Agostinho, em seus Tratados sobre os Salmos, exclama que um santo triste é um triste santo. Sob o triunfo de São Miguel Arcanjo e dos Anjos da Alegria Celestial —, o fiel atinge a marca dos 30 dias de Quaresma banindo toda amargura e renovando a alegria radiante de pertencer a Deus e à Santa Igreja Católica.`,
+A tradição espiritual da Igreja ensina que um santo triste é um triste santo. Sob o triunfo de São Miguel Arcanjo e dos Anjos da Alegria Celestial —, o fiel atinge a marca dos 30 dias de Quaresma banindo toda amargura e renovando a alegria radiante de pertencer a Deus e à Santa Igreja Católica.`,
       },
       meditation: `No trigésimo dia de nossa Quaresma de São Miguel Arcanjo, celebramos o dom da verdadeira alegria cristã e meditamos sobre o combate contra a tristeza diabólica e a amargura. Como o demônio busca lançar sombras de melancolia e desgosto sobre as nossas almas!
 
@@ -2752,11 +2752,11 @@ Infundi no meu coração a paz e a alegria profunda do Espírito Santo, que não
       scripture: {
         reference: "Efésios 6, 10-18 / 1 Pedro 5, 8-9",
         text: "Revesti-vos da armadura de Deus, para que possais resistir às ciladas do diabo... Pois não é contra homens de carne e sangue que temos de lutar, mas contra os principados e potestades.",
-        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Epístola aos Efésios, o Apóstolo São Paulo é apresentado como o estratega divino que descreve a armadura do soldado de Cristo. Crisóstomo explica que a nossa guerra nesta terra não é contra criaturas humanas, mas contra os espíritos malignos da astúcia e do orgulho; por isso, armas terrenas de nada valem: precisamos do cinturão da verdade, da couraça da justiça, do escudo da fé e do capacete da salvação.
+        explanation: `Nas célebres homilias da antiguidade cristã sobre a Epístola aos Efésios, o Apóstolo São Paulo é apresentado como o estratega divino que descreve a armadura do soldado de Cristo. A tradição patrística explica que a nossa guerra nesta terra não é contra criaturas humanas, mas contra os espíritos malignos da astúcia e do orgulho; por isso, armas terrenas de nada valem: precisamos do cinturão da verdade, da couraça da justiça, do escudo da fé e do capacete da salvação.
 
-São Jerônimo, em seus Comentários Paulinos, ensina que a espada do Espírito é a própria Palavra de Deus meditada e colocada em prática. O Santo Doutor adverte que um soldado que entra no campo de batalha sem o seu escudo da fé ou sem a vigilância da oração torna-se presa fácil para as flechas inflamadas do adversário.
+A tradição patrística, em seus Comentários Paulinos, ensina que a espada do Espírito é a própria Palavra de Deus meditada e colocada em prática. O Santo Doutor adverte que um soldado que entra no campo de batalha sem o seu escudo da fé ou sem a vigilância da oração torna-se presa fácil para as flechas inflamadas do adversário.
 
-São Bernardo de Claraval recorda que São Miguel Arcanjo é o comandante do exército celestial que nos ensina a empunhar as armas divinas com destreza e intrepidez. Sob a proteção de São Miguel —, o fiel aprende a manter a guarda espiritual em todos os momentos da vida, sabendo que a vitória final já pertence a Deus.`,
+A tradição espiritual da Igreja recorda que São Miguel Arcanjo é o comandante do exército celestial que nos ensina a empunhar as armas divinas com destreza e intrepidez. Sob a proteção de São Miguel —, o fiel aprende a manter a guarda espiritual em todos os momentos da vida, sabendo que a vitória final já pertence a Deus.`,
       },
       meditation: `No trigésimo primeiro dia de nossa Quaresma de São Miguel Arcanjo, entramos na última dezena desta santa caminhada devocional. A Palavra de Deus nos lembra com clareza: a nossa vida sobre a terra é uma guerra espiritual ininterrupta.
 
@@ -2838,11 +2838,11 @@ Defendei-me contra as ciladas, obsessões e flechas inflamadas do maligno. Conce
       scripture: {
         reference: "Mateus 6, 16-18 / 1 Coríntios 9, 27",
         text: "Quando jejuardes, não tomeis um ar sombrio como os hipócritas... Esbofeteio o meu corpo e o subjugo, para que não aconteça que, tendo pregado aos outros, venha eu próprio a ser reprovado.",
-        explanation: `Nas célebres Homilias de São Basílio Magno sobre o Jejum, a prática da mortificação é aclamada como a muralha protetora da alma e o alimento do espírito. São Basílio ensina que o jejum foi a primeira lei dada ao homem no Paraíso e que a ausência de sobriedade abriu a porta para o pecado de Adão. O jejum enfraquece as paixões desordenadas da carne e eleva os pensamentos até o Trono de Deus.
+        explanation: `Nas célebres homilias da tradição patrística sobre o Jejum, a prática da mortificação é aclamada como a muralha protetora da alma e o alimento do espírito. Os Padres da Igreja ensinam que o jejum foi a primeira lei dada ao homem no Paraíso e que a ausência de sobriedade abriu a porta para o pecado de Adão. O jejum enfraquece as paixões desordenadas da carne e eleva os pensamentos até o Trono de Deus.
 
-Papa São Leão Magno, em seus Sermões Quaresmais, explica que o jejum do corpo de nada vale se não vier acompanhado do jejum da língua — abstendo-se de fofocas e calúnias — e do jejum das paixões egoístas. O Santo Papa exorta que a verdadeira mortificação purifica a visão espiritual e nos torna solícitos para com os necessitados.
+Os sermões quaresmais da tradição patrística explicam que o jejum do corpo de nada vale se não vier acompanhado do jejum da língua — abstendo-se de fofocas e calúnias — e do jejum das paixões egoístas. Os Padres da Igreja exortam que a verdadeira mortificação purifica a visão espiritual e nos torna solícitos para com os necessitados.
 
-São João Maria Vianney (Cura d'Ars) recorda em seus sermões que certos demônios de impureza e desespero apenas são expulsos mediante a oração e o jejum perseverante. Sob a guarda de São Miguel Arcanjo — que vive na perfeita sobriedade dos espíritos puros —, o fiel oferece a sua mortificação em reparação pelos pecados e pelo bem da Santa Igreja.`,
+A tradição pastoral da Igreja recorda em seus sermões que certos demônios de impureza e desespero apenas são expulsos mediante a oração e o jejum perseverante. Sob a guarda de São Miguel Arcanjo — que vive na perfeita sobriedade dos espíritos puros —, o fiel oferece a sua mortificação em reparação pelos pecados e pelo bem da Santa Igreja.`,
       },
       meditation: `No trigésimo segundo dia de nossa caminhada, a Igreja nos recorda a necessidade indispensável do jejum e da mortificação dos sentidos. Numa cultura hedonista que prega a satisfação imediata de todos os apetites, a mortificação cristã é um ato revolucionário de amor a Deus.
 
@@ -2924,11 +2924,11 @@ Concedei-me a força de domar o meu corpo e os meus sentidos através da santa p
       scripture: {
         reference: "2 Timóteo 3, 16-17 / Salmo 119 (118), 105",
         text: "Toda a Escritura é inspirada por Deus e útil para ensinar, para repreender, para corrigir, para educar na justiça... Lâmpada para os meus pés é a tua palavra, e luz para o meu caminho.",
-        explanation: `Nas cartas e homilias de São Jerônimo, tradutor da Vulgata Sagrada, é formulada a célebre máxima: 'Ignorar as Escrituras é ignorar a Cristo'. O Doutor Máximo ensina que a Palavra de Deus escrita e preservada pela Tradição da Santa Igreja Católica é a luz infalível que dissipa as trevas dos erros humanos e nos revela a Vontade do Pai Celestial.
+        explanation: `Na tradição dos Padres da Igreja, conserva-se a célebre máxima: 'Ignorar as Escrituras é ignorar a Cristo'. A doutrina católica ensina que a Palavra de Deus escrita e preservada pela Tradição da Santa Igreja Católica é a luz infalível que dissipa as trevas dos erros humanos e nos revela a Vontade do Pai Celestial.
 
-Santo Agostinho, em seus Tratados sobre os Salmos, ensina que ler a Sagrada Escritura é ouvir o próprio Deus nos falar interiormente. O Bispo de Hipona adverte contra a presunção de interpretar as Escrituras fora do Magistério vivo da Igreja, lembrando que os heresiarcas caíram no erro por quererem adaptar a Palavra de Deus aos seus próprios desejos em vez de converterem o coração à Verdade.
+A tradição patrística, em seus Tratados sobre os Salmos, ensina que ler a Sagrada Escritura é ouvir o próprio Deus nos falar interiormente. A tradição dos Padres da Igreja adverte contra a presunção de interpretar as Escrituras fora do Magistério vivo da Igreja, lembrando que os heresiarcas caíram no erro por quererem adaptar a Palavra de Deus aos seus próprios desejos em vez de converterem o coração à Verdade.
 
-São João Crisóstomo exorta em suas Homilias que a leitura diária da Bíblia fortalece a alma contra os ataques do demônio, servindo como alimento espiritual insubstituível. Sob o gládio da verdade de São Miguel Arcanjo —, o cristão atinge o trigésimo terceiro dia de Quaresma renovando o seu amor apaixonado pela Palavra de Deus e pela doutrina católica.`,
+A tradição patrística exorta em suas homilias que a leitura diária da Bíblia fortalece a alma contra os ataques do demônio, servindo como alimento espiritual insubstituível. Sob o gládio da verdade de São Miguel Arcanjo —, o cristão atinge o trigésimo terceiro dia de Quaresma renovando o seu amor apaixonado pela Palavra de Deus e pela doutrina católica.`,
       },
       meditation: `No trigésimo terceiro dia de nossa Quaresma de São Miguel Arcanjo, contemplamos a beleza e a autoridade divina da Sagrada Escritura e da Doutrina Católica. Num mundo confuso, relativista e repleto de ideologias enganosas, a Palavra de Deus é o farol seguro que guia os nossos passos para a eternidade.
 
@@ -3010,11 +3010,11 @@ Preservai a minha mente de todos os erros, heresias e ideologias enganosas do mu
       scripture: {
         reference: "Salmo 91 (90), 11-12 / Mateus 18, 10",
         text: "Pois ele dará ordens aos seus anjos a teu respeito, para que te guardem em todos os teus caminhos... Os seus anjos no céu veem sem cessar a face de meu Pai que está nos céus.",
-        explanation: `Nas Homilias de São Bernardo de Claraval sobre o Salmo 90, o Doutor Melífluo pronuncia palavras imortais sobre a devoção ao Anjo da Guarda: 'Respeita a sua presença, sê-lhe grato pela sua benevolência, confia na sua proteção! Jamais estás só, mesmo que estejas no mais escuro dos desertos; o teu Anjo da Guarda está ao teu lado'. São Bernardo ensina que o Anjo da Guarda é um companheiro fiel dado por Deus para nos defender nas tentações e guiar os nossos passos ao Céu.
+        explanation: `Nas homilias da tradição espiritual da Igreja sobre o Salmo 90, o Doutor Melífluo pronuncia palavras imortais sobre a devoção ao Anjo da Guarda: 'Respeita a sua presença, sê-lhe grato pela sua benevolência, confia na sua proteção! Jamais estás só, mesmo que estejas no mais escuro dos desertos; o teu Anjo da Guarda está ao teu lado'. A tradição espiritual ensina que o Anjo da Guarda é um companheiro fiel dado por Deus para nos defender nas tentações e guiar os nossos passos ao Céu.
 
-São João Maria Vianney (Cura d'Ars), em seus Sermões sobre os Espíritos Celestiais, recorda a eficácia de invocar o Anjo da Guarda nos momentos de perigo moral e físico. O santo padre dizia que o nosso Anjo da Guarda reza por nós quando dormimos e apresenta as nossas humildes intenções diante do Trono da Santíssima Trindade.
+A tradição pastoral da Igreja, em seus Sermões sobre os Espíritos Celestiais, recorda a eficácia de invocar o Anjo da Guarda nos momentos de perigo moral e físico. O santo padre dizia que o nosso Anjo da Guarda reza por nós quando dormimos e apresenta as nossas humildes intenções diante do Trono da Santíssima Trindade.
 
-São Basílio Magno, em seus Tratados Teológicos, lembra que cada fiel tem ao seu lado um Anjo como protetor e pastor para o conduzir à vida eterna. Sob o comando supremo de São Miguel Arcanjo — Príncipe de toda a Milícia Angélica —, o cristão aprende a cultivar uma amizade diária e respeitosa com o seu Santo Anjo da Guarda.`,
+A tradição patrística, em seus Tratados Teológicos, lembra que cada fiel tem ao seu lado um Anjo como protetor e pastor para o conduzir à vida eterna. Sob o comando supremo de São Miguel Arcanjo — Príncipe de toda a Milícia Angélica —, o cristão aprende a cultivar uma amizade diária e respeitosa com o seu Santo Anjo da Guarda.`,
       },
       meditation: `No trigésimo quarto dia de nossa Quaresma de São Miguel Arcanjo, celebramos a presença amorosa e fiel do nosso Santo Anjo da Guarda. Num mundo onde tantos se sentem sós, abandonados ou incompreendidos, a fé católica nos revela que nunca estamos sozinhos!
 
@@ -3096,11 +3096,11 @@ Ensinai-me a respeitar a presença do meu Anjo protetor, escutando as suas santa
       scripture: {
         reference: "Tiago 5, 19-20 / 1 Coríntios 9, 22",
         text: "Aquele que fizer voltar um pecador do seu caminho errado salvará a sua alma da morte e cobrirá uma multidão de pecados... Fiz-me tudo para todos, a fim de salvar alguns a todo custo.",
-        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Salvação dos Próximos, o grande Patriarca declara que nada revela tanto a autenticidade da fé cristã quanto o zelo ardente pela salvação dos irmãos. Crisóstomo chega a dizer que um cristão que não se preocupa com a salvação dos outros é um membro atrofiado no Corpo Místico de Cristo, pois quem encontrou o tesouro da graça quer partilhá-lo com toda a humanidade.
+        explanation: `Nas célebres homilias da tradição patrística sobre a Salvação dos Próximos, a tradição dos Padres da Igreja declara que nada revela tanto a autenticidade da fé cristã quanto o zelo ardente pela salvação dos irmãos. Chega-se a ensinamento clássico de que um cristão que não se preocupa com a salvação dos outros é um membro atrofiado no Corpo Místico de Cristo, pois quem encontrou o tesouro da graça quer partilhá-lo com toda a humanidade.
 
-São Francisco Xavier, nas suas cartas apostólicas e sermões missionários, exclamava com lágrimas no coração que multidões de almas caíam no inferno por falta de quem lhes pregasse o Evangelho e lhes ensinasse os caminhos da salvação. O grande missionário exortava os fiéis a oferecerem orações, sacrifícios e testemunho de vida para resgatar os pecadores longe de Deus.
+A tradição missionária da Igreja, nas suas cartas apostólicas e sermões missionários, exclamava com lágrimas no coração que multidões de almas caíam no inferno por falta de quem lhes pregasse o Evangelho e lhes ensinasse os caminhos da salvação. O grande missionário exortava os fiéis a oferecerem orações, sacrifícios e testemunho de vida para resgatar os pecadores longe de Deus.
 
-São João Bosco, cujo lema era 'Dá-me almas e tira o resto' (Da mihi animas, caetera tolle), ensinava que a salvação de uma única alma vale mais do que todos os impérios da terra. Sob a intercessão de São Miguel Arcanjo — defensor e condutor das almas ao Paraíso —, o fiel é chamado a despertar para o zelo apostólico e rezar diariamente pela conversão dos pecadores.`,
+A tradição dos grandes educadores e santos da Igreja ensinava a célebre máxima 'Dá-me almas e tira o resto' (Da mihi animas, caetera tolle), lembrando que a salvação de uma única alma vale mais do que todos os impérios da terra. Sob a intercessão de São Miguel Arcanjo — defensor e condutor das almas ao Paraíso —, o fiel é chamado a despertar para o zelo apostólico e rezar diariamente pela conversão dos pecadores.`,
       },
       meditation: `No trigésimo quinto dia de nossa Quaresma de São Miguel Arcanjo, meditamos sobre o santo zelo pela salvação das almas e o combate contra a frieza e a indiferença espiritual pelo nosso próximo. Quantas almas ao nosso redor — amigos, familiares, colegas — vivem afastadas dos sacramentos, cegas pelo pecado e correndo o risco da perdição eterna!
 
@@ -3182,9 +3182,9 @@ Que eu não viva indiferente à perdição dos meus irmãos, mas ofereça oraç�
       scripture: {
         reference: "João 6, 51.54-56 / 1 Coríntios 11, 26-29",
         text: "Eu sou o pão vivo descido do céu. Se alguém comer deste pão viverá eternamente... Quem come a minha carne e bebe o meu sangue tem a vida eterna, e eu o ressuscitarei no último dia.",
-        explanation: `Nas célebres Homilias de São João Crisóstomo sobre a Santíssima Eucaristia, o altar do sacrifício é apresentado como o próprio Calvário tornado presente, ao redor do qual multidões de Santos Anjos se prostram em adoração tremenda e reverente. O Crisóstomo adverte severamente sobre o perigo de assistir à Santa Missa com distração, conversas fúteis ou na desgraça do pecado mortal, lembrando que na Eucaristia recebemos o próprio Deus Vivo.
+        explanation: `Nas célebres homilias da tradição patrística sobre a Santíssima Eucaristia, o altar do sacrifício é apresentado como o próprio Calvário tornado presente, ao redor do qual multidões de Santos Anjos se prostram em adoração tremenda e reverente. A tradição patrística adverte severamente sobre o perigo de assistir à Santa Missa com distração, conversas fúteis ou na desgraça do pecado mortal, lembrando que na Eucaristia recebemos o próprio Deus Vivo.
 
-São Tomás de Aquino, nos seus Hinos Eucarísticos e Sermões sobre o Corpo do Senhor, ensina que a Eucaristia é o ápice da vida cristã e o maior de todos os milagres do amor de Cristo. O Doutor Angélico explica que a Comunhão Eucarística feita com o coração puro aumenta a graça santificante, perdoa os pecados veniais e fortalece a alma contra os dardos do demônio.
+A tradição litúrgica e teológica da Igreja, nos Hinos Eucarísticos e Sermões sobre o Corpo do Senhor, ensina que a Eucaristia é o ápice da vida cristã e o maior de todos os milagres do amor de Cristo. A tradição da Igreja explica que a Comunhão Eucarística feita com o coração puro aumenta a graça santificante, perdoa os pecados veniais e fortalece a alma contra os dardos do demônio.
 
 São Tarcísio e os Mártires de Abitina testemunharam com o próprio sangue que 'sem a Eucaristia não podemos viver'. Sob a adoração profunda de São Miguel Arcanjo — que apresenta o incenso das orações diante do Trono Celestial —, o cristão é exortado a participar da Santa Missa com fervor renovado e modéstia no coração.`,
       },
@@ -3268,11 +3268,11 @@ Concedei-me a graça de me aproximar da Sagrada Comunhão com a alma pura, contr
       scripture: {
         reference: "João 14, 27 / Mateus 6, 31-34",
         text: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize... Não vos preocupeis com o dia de amanhã.",
-        explanation: `Nas célebres Homilias de São Francisco de Sales sobre a Divina Providência, a ansiedade excessiva e a agonia pelo amanhã são denunciadas como tentações sutis que roubam a paz da alma e paralisam a confiança no Pai Celestial. O Bispo de Genebra ensina que Deus, que cuida das aves do céu e veste os lírios do campo, jamais abandonará uma alma que se entrega com filial abandono em Suas mãos.
+        explanation: `Nas célebres homilias da tradição espiritual sobre a Divina Providência, a ansiedade excessiva e a agonia pelo amanhã são denunciadas como tentações sutis que roubam a paz da alma e paralisam a confiança no Pai Celestial. A tradição espiritual ensina que Deus, que cuida das aves do céu e veste os lírios do campo, jamais abandonará uma alma que se entrega com filial abandono em Suas mãos.
 
-Santo Agostinho, em seus Tratados sobre os Salmos, exclama que a paz de Cristo não significa a ausência de tempestades externas, mas o repouso do coração fundamentado na rocha da fé. Agostinho exorta que enquanto o mundo busca a paz na riqueza, nos prazeres e nas garantias humanas, o cristão encontra a sua paz inabalável na certeza de ser amado e guardado por Deus.
+A tradição espiritual da Igreja ensina que a paz de Cristo não significa a ausência de tempestades externas, mas o repouso do coração fundamentado na rocha da fé. A tradição patrística exorta que enquanto o mundo busca a paz na riqueza, nos prazeres e nas garantias humanas, o cristão encontra a sua paz inabalável na certeza de ser amado e guardado por Deus.
 
-São Padre Pio de Pietrelcina repetia constantemente aos seus filhos espirituais: 'Reza, espera e não te preocupes. A ansiedade não serve para nada; Deus é misericordioso e escutará a tua oração'. Sob o escudo de São Miguel Arcanjo —, o fiel atinge a reta final da Quaresma entregando todas as suas preocupações e medos nas mãos onipotentes de Deus.`,
+A sabedoria dos mestres da vida espiritual ensina constantemente: 'Reza, espera e não te preocupes. Confia na misericórdia de Deus que escuta a tua oração'. Sob o escudo de São Miguel Arcanjo —, o fiel atinge a reta final da Quaresma entregando todas as suas preocupações e medos nas mãos onipotentes de Deus.`,
       },
       meditation: `No trigésimo sétimo dia de nossa Quaresma de São Miguel Arcanjo, a Palavra de Nosso Senhor Jesus Cristo vem trazer o remédio divino para as nossas angústias: 'Deixo-vos a paz, a minha paz vos dou!'. Como o medo do futuro, a ansiedade financeira e o temor da doença roubam a alegria e a serenidade dos nossos dias!
 
@@ -3354,11 +3354,11 @@ Ensinai-me a descansar com inteira confiança nos braços da Divina Providência
       scripture: {
         reference: "Colossenses 3, 12-13 / Efésios 4, 31-32",
         text: "Suportai-vos uns aos outros e perdoai-vos mutuamente, se alguém tiver queixa contra outro. Como o Senhor vos perdoou, assim fazei vós também... Toda a amargura, aspereza e ira sejam tiradas do meio de vós.",
-        explanation: `Nas Homilias de Santo Agostinho sobre o Perdão das Ofensas, a memória ressentida é comparada a uma ferida aberta que a alma se recusa a curar, alimentando a dor de fatos passados e renovando continuamente o veneno do rancor. O Bispo de Hipona ensina que guardar mágoas antigas é como beber veneno esperando que o outro morra; o perdão libertador limpa a memória e restaura a saúde espiritual da alma.
+        explanation: `Nas homilias patrísticas sobre o Perdão das Ofensas, a memória ressentida é comparada a uma ferida aberta que a alma se recusa a curar, alimentando a dor de fatos passados e renovando continuamente o veneno do rancor. A tradição dos Padres da Igreja ensina que guardar mágoas antigas é como beber veneno esperando que o outro morra; o perdão libertador limpa a memória e restaura a saúde espiritual da alma.
 
-São João Crisóstomo, em seus Sermões sobre a Caridade, exorta os fiéis a perdoarem do fundo do coração todas as injustiças sofridas ao longo da vida. O Crisóstomo lembra que no Pai-Nosso rezamos: 'Perdoai-nos as nossas ofensas assim como nós perdoamos a quem nos tem ofendido'; portanto, quem se recusa a perdoar ao irmão fecha a porta do Céu para si mesmo no dia do Juízo.
+Nas homilias patrísticas sobre a Caridade, exorta-se os fiéis a perdoarem do fundo do coração todas as injustiças sofridas ao longo da vida. A tradição da Igreja lembra que no Pai-Nosso rezamos: 'Perdoai-nos as nossas ofensas assim como nós perdoamos a quem nos tem ofendido'; portanto, quem se recusa a perdoar ao irmão fecha a porta do Céu para si mesmo no dia do Juízo.
 
-São João da Cruz, em seus tratados místicos, ensina a necessidade da purificação da memória para alcançar a união com Deus. Sob a cura reluzente de São Miguel Arcanjo — anjo da paz e da retidão —, o fiel é convidado a perdoar velhas mágoas de infância, família ou relacionamentos passados, deixando a luz de Cristo lavar toda dor acumulada.`,
+A tradição mística da Igreja ensina a necessidade da purificação da memória para alcançar a união com Deus. Sob a cura reluzente de São Miguel Arcanjo — anjo da paz e da retidão —, o fiel é convidado a perdoar velhas mágoas de infância, família ou relacionamentos passados, deixando a luz de Cristo lavar toda dor acumulada.`,
       },
       meditation: `No trigésimo oitavo dia de nossa Quaresma de São Miguel Arcanjo, a graça de Deus nos convida a uma profunda purificação da memória e ao perdão definitivo de antigas feridas. Como é pesado carregar a bagagem de mágoas do passado, ressentimentos familiares e lembranças de injustiças sofridas há anos!
 
@@ -3440,11 +3440,11 @@ Purificai a minha memória no Sangue Precioso de Nosso Senhor Jesus Cristo. Conc
       scripture: {
         reference: "Hebreus 9, 27 / Lucas 12, 35-40",
         text: "Está determinado que os homens morram uma só vez, e depois disto vem o julgamento... Estejai preparados, porque na hora em que não pensais virá o Filho do Homem.",
-        explanation: `No clássico tratado de Santo Afonso Maria de Ligório (Preparações para a Morte), a meditação diária sobre os Novíssimos — Morte, Juízo, Inferno e Paraíso — é apresentada como a maior mestra da sabedoria cristã. Santo Afonso ensina que pensar na morte não gera tristeza ou desespero, mas desapego santo dos bens mundanos, fervor nos sacramentos e urgência na conversão do coração.
+        explanation: `Na tradição clássica da espiritualidade católica (Preparações para a Morte), a meditação diária sobre os Novíssimos — Morte, Juízo, Inferno e Paraíso — é apresentada como a maior mestra da sabedoria cristã. A tradição espiritual ensina que pensar na morte não gera tristeza ou desespero, mas desapego santo dos bens mundanos, fervor nos sacramentos e urgência na conversão do coração.
 
-São João Maria Vianney (Cura d'Ars), em seus Sermões sobre o Juízo Particular, recordava que no instante da morte as ilusões do mundo desaparecerão: os elogios das criaturas, as riquezas e as vaidades de nada valerão; valerão unicamente as boas obras feitas na graça santificante e o amor dedicado a Deus e ao próximo.
+Os sermões da tradição pastoral sobre o Juízo Particular recordavam que no instante da morte as ilusões do mundo desaparecerão: os elogios das criaturas, as riquezas e as vaidades de nada valerão; valerão unicamente as boas obras feitas na graça santificante e o amor dedicado a Deus e ao próximo.
 
-São Gregório Magno ensina que São Miguel Arcanjo é o psicopompo da Igreja — o anjo incumbido por Deus de receber as almas dos fiéis no momento da morte e de defendê-las contra os últimos ataques do diabo no tribunal do Juízo. Na véspera do encerramento de nossa jornada devocional, o cristão pede a São Miguel a graça insubstituível de uma santa morte na amizade com Deus.`,
+A tradição da Igreja ensina que São Miguel Arcanjo é o psicopompo da Igreja — o anjo incumbido por Deus de receber as almas dos fiéis no momento da morte e de defendê-las contra os últimos ataques do diabo no tribunal do Juízo. Na véspera do encerramento de nossa jornada devocional, o cristão pede a São Miguel a graça insubstituível de uma santa morte na amizade com Deus.`,
       },
       meditation: `No trigésimo nono dia de nossa Quaresma de São Miguel Arcanjo, na véspera da grande conclusão dos 40 dias, voltamos a nossa atenção para a realidade suprema e inevitável da nossa existência: a hora da morte e o Juízo Particular.
 
@@ -3526,9 +3526,9 @@ Defendei-me contra as últimas arremetidas do dragão infernal e conduzi a minha
       scripture: {
         reference: "Apocalipse 12, 7-12 / 2 Timóteo 4, 7-8",
         text: "Houve uma batalha no céu: Miguel e os seus anjos batalhavam contra o dragão... E ele foi precipitado, o grande dragão, a antiga serpente... Eles o venceram pelo sangue do Cordeiro.",
-        explanation: `Nas célebres Homilias do Papa São Leão Magno e de São João Crisóstomo sobre o Livro do Apocalipse, a vitória do Arcanjo São Miguel sobre Lúcifer é aclamada como a grande profecia e garantia do triunfo definitivo da Igreja e dos fiéis sobre as forças do mal. São Leão Magno proclama que o brado de São Miguel — 'Quem é como Deus?' — ressoa por toda a eternidade como a vitória do amor e da humildade sobre a soberba e a rebelião infernal.
+        explanation: `Nas célebres Homilias do A tradição patrística e de A tradição patrística sobre o Livro do Apocalipse, a vitória do Arcanjo São Miguel sobre Lúcifer é aclamada como a grande profecia e garantia do triunfo definitivo da Igreja e dos fiéis sobre as forças do mal. A tradição patrística proclama que o brado de São Miguel — 'Quem é como Deus?' — ressoa por toda a eternidade como a vitória do amor e da humildade sobre a soberba e a rebelião infernal.
 
-São Bernardo de Claraval, em seu sermão de encerramento da Quaresma de São Miguel, convida toda a Igreja a dar graças a Deus pelas vitórias espirituais alcançadas ao longo desses 40 dias de oração, jejum e combate. O Doutor Melífluo ensina que a Quaresma termina, mas o combate da vida cristã continua; por isso, a alma deve permanecer unida a São Miguel até o dia em que for introduzida na glória eterna do Céu.
+A tradição espiritual da Igreja, nos sermões da Quaresma de São Miguel, convida toda a Igreja a dar graças a Deus pelas vitórias espirituais alcançadas ao longo desses 40 dias de oração, jejum e combate. O Doutor Melífluo ensina que a Quaresma termina, mas o combate da vida cristã continua; por isso, a alma deve permanecer unida a São Miguel até o dia em que for introduzida na glória eterna do Céu.
 
 Neste quadragésimo e último dia de nossa abençoada Quaresma, renovamos a nossa consagração total a São Miguel Arcanjo, à Santíssima Virgem Maria e a Nosso Senhor Jesus Cristo. Com o coração transbordante de alegria e vitória, proclamamos juntamente com todas as milícias celestes: 'Quem é como Deus? Ninguém como Deus!'`,
       },
