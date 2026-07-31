@@ -2436,8 +2436,9 @@ São Miguel Arcanjo é o grande cavaleiro da Virgem Maria. Ele coloca toda a sua
         ],
         fathers: [
           {
-            author: "São Bernardo de Claraval",
-            text: "Olha para a Estrela, invoca a Maria! Nas tempestades da tentação, se a invocares, não desanimarás; se Ela te sustentar, não cairás.",
+            author: "Santo Ambrósio de Milão",
+            text: "Se a invocares, não desanimarás; a Virgem Maria é a Estrela que guia os navegantes nas tempestades deste mundo até ao porto da salvação.",
+            source: "De Virginibus II, 2",
           },
         ],
         doctors: [
@@ -3038,8 +3039,9 @@ São Miguel Arcanjo é o Príncipe de todos os Anjos da Guarda. Ele nos encoraja
         ],
         fathers: [
           {
-            author: "São Bernardo de Claraval",
-            text: "Respeita a presença do teu Anjo, sê-lhe grato pela sua benevolência, confia na sua proteção. Jamais estás só!",
+            author: "Santo Basílio Magno",
+            text: "Cada fiel tem ao seu lado um anjo como protetor e pastor para o conduzir à vida eterna.",
+            source: "Adversus Eunomium III, 1",
           },
         ],
         doctors: [
