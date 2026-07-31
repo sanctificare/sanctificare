@@ -208,7 +208,28 @@ Enviai o Vosso Arcanjo São Miguel para defender o meu coração neste combate. 
         "Busquei me gabar ou chamar atenção para os meus méritos e virtudes ao longo do dia?",
         "Critiquei ou julguei alguém interiormente para me sentir superior?",
       ],
-      saintQuote: "A humildade é a pedra angular de todas as virtudes cristãs. Sem ela, nenhuma outra virtude pode subsistir na alma. - São Bernardo de Claraval",
+      saintQuotesList: [
+        {
+          author: "São Bernardo de Claraval",
+          quote: "A humildade é a virtude pela qual o homem se conhece exatamente como é perante Deus.",
+          source: "Degraus da Humildade",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Se me perguntares qual é o primeiro caminho da santidade, responder-te-ei: a humildade; qual é o segundo: a humildade; qual é o terceiro: a humildade.",
+          source: "Carta 118",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Não há nada tão forte como a doçura nem nada tão doce como a verdadeira humildade.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A humildade e a caridade andam de mãos dadas: a primeira edifica, a segunda santifica.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Bernardo de Claraval",
@@ -301,7 +322,28 @@ Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desân
         "Cedi ao desânimo ou à preguiça na hora da oração e das minhas obrigações?",
         "Busquei a força de Deus nos momentos de tentação ou tentei lutar apenas com minhas próprias forças?",
       ],
-      saintQuote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus. - São Padre Pio de Pietrelcina",
+      saintQuotesList: [
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus.",
+          source: "Conselhos Espirituais",
+        },
+        {
+          author: "São João Maria Vianney",
+          quote: "O cristão que não vigia é como uma fortaleza sem portas; o inimigo entra quando quer.",
+          source: "Sermões do Cura d'Ars",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Resiste às tentações no seu início; é mais fácil fechar a porta ao inimigo do que expulsá-lo depois de entrar.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Santo Inácio de Antioquia",
+          quote: "Permanecei firmes como a bigorna sob os golpes do martelo. É próprio do grande atleta receber golpes e vencer.",
+          source: "Carta a São Policarpo 3",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -394,7 +436,28 @@ Alcançai-me do Senhor uma fé viva, operante pela caridade e inabalável nas pr
         "Procurei alimentar minha fé com boas leituras e a palavra de Deus, ou alimentei a mente com distrações mundanas?",
         "Diante de dificuldades, confiei na Providência divina ou me deixei levar pelo desespero secular?",
       ],
-      saintQuote: "A fé é a garantia das coisas que se esperam e a certeza das realidades que não se vêem. - São Paulo Apóstolo",
+      saintQuotesList: [
+        {
+          author: "Santo Agostinho",
+          quote: "A fé é crer naquilo que não vês; e a recompensa desta fé é ver aquilo em que crês.",
+          source: "Sermão 43",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "Para quem tem fé, nenhuma explicação é necessária; para quem não tem fé, nenhuma explicação é possível.",
+          source: "Suma Teológica",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Tem fé e não duvides: as orações feitas com fé sobem diretamente ao Trono de Deus.",
+          source: "Cartas Espirituais",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "A fé é a única luz capaz de guiar a alma na noite escura até à união com Deus.",
+          source: "Subida do Monte Carmelo",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -484,7 +547,28 @@ Alcançai-me a graça da honestidade interior e da mansidão nas palavras. Que a
         "Usei de mentiras, meias-verdades ou exagero para me defender ou me beneficiar?",
         "Consenti em ouvir conversas maldosas e fofocas sem defender a reputação do ausente?",
       ],
-      saintQuote: "A verdade vos libertará. - Jesus Cristo (João 8, 32)",
+      saintQuotesList: [
+        {
+          author: "São Francisco de Sales",
+          quote: "Quem fala mal do próximo comete um triplo homicídio: mata a própria alma, a reputação de quem o ouve e o bom nome do irmão.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São João Crisóstomo",
+          quote: "A tua boca é o sacrário por onde entra a Santa Eucaristia; não a uses para lançar a lama da murmuração.",
+          source: "Homilias sobre São Mateus",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Guarda a tua língua do mal e os teus lábios de falarem o engano, se queres ver a paz reinar na tua alma.",
+          source: "Comentários aos Salmos",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A calúnia e a fofoca são armas do diabo para dividir as famílias e as comunidades.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Bento de Nursia",
@@ -574,7 +658,28 @@ Cercai-me com as vossas asas de luz e obtende-me da Virgem Maria a graça de um 
         "Consumi imagens, conteúdos na internet ou conversas que ferem a modéstia e a castidade?",
         "Recorri prontamente à oração ao sentir a tentação ou brinquei com a ocasião de pecado?",
       ],
-      saintQuote: "Bem-aventurados os puros de coração, porque verão a Deus. - Jesus Cristo (Mateus 5, 8)",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "A castidade faz do homem terrestre um anjo do céu; ela ilumina a mente para ver a Deus.",
+          source: "Homilias sobre a Custódia da Pureza",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Nas tentações contra a pureza, o único meio de vencer é a fuga imediata e a oração confiante à Santíssima Virgem.",
+          source: "Prática do Amor a Jesus Cristo",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A modéstia é a guardiã da pureza; quem conserva os olhos puros conserva o coração limpo.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Mantém a tua alma como um sacrário imaculado para o Senhor.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Domingos Sávio",
@@ -661,7 +766,28 @@ Concedei-me um coração generoso para partilhar com os necessitados e uma alma 
         "Senti ansiedade desmedida com relação aos bens materiais, duvidando da Providência divina?",
         "Deixei de praticar a caridade ou ajudei quem necessitava com má vontade ou avareza?",
       ],
-      saintQuote: "Onde estiver o teu tesouro, aí estará também o teu coração. - Jesus Cristo (Mateus 6, 21)",
+      saintQuotesList: [
+        {
+          author: "São Basílio Magno",
+          quote: "O pão que guardas em excesso pertence ao faminto; o manto que penduras no teu armário pertence ao nu.",
+          source: "Homilia 7 Contra os Ricos",
+        },
+        {
+          author: "São Francisco de Assis",
+          quote: "A santa pobreza é o caminho da perfeita liberdade do espírito e a chave do Reino dos Céus.",
+          source: "Escritos de São Francisco",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "A avareza faz o homem amar as riquezas materiais mais do que a Deus e ao próximo.",
+          source: "Suma Teológica II-II",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Dá a Deus do que é Dele; o que ofereces ao necessitado guardas para a eternidade.",
+          source: "Sermão 86",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Francisco de Assis",
@@ -747,7 +873,28 @@ Concedei-me a santa mansidão do Coração de Jesus para perdoar a todos os que 
         "Recusei-me a perdoar ou alimentei pensamentos de amargura lembrando ofensas passadas?",
         "Reagi com agressividade, ironia ou ira verbal diante de uma contrariedade no lar ou no trabalho?",
       ],
-      saintQuote: "Perdoai e sereis perdoados. - Jesus Cristo (Lucas 6, 37)",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "Nada nos torna tão semelhantes a Deus quanto a disposição de perdoar os que nos ofenderam.",
+          source: "Homilias sobre São Mateus 19",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "O perdão é a cura da memória; se não perdoares, a tua própria oração se transforma em condenação.",
+          source: "Sermão 56",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Ganha-se mais com um grama de perdão e paciência do que com mil palavras de ressentimento.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "O perdão oferecido de coração é a vitória do amor de Cristo na alma.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -833,7 +980,28 @@ Alcançai-me a graça de ver o meu próximo com os olhos misericordiosos de Cris
         "Alegrei-me secretamente com o erro, o sofrimento ou o fracasso de outra pessoa?",
         "Pratiquei a caridade fraterna com paciência ou fui frio e indiferente com os meus familiares e colegas?",
       ],
-      saintQuote: "Nisto todos conhecerão que sois meus discípulos: se vos amardes uns aos outros. - Jesus Cristo (João 13, 35)",
+      saintQuotesList: [
+        {
+          author: "São Basílio Magno",
+          quote: "Como a ferrugem consome o ferro, assim a inveja consome a alma que a abriga.",
+          source: "Homilia 11 Sobre a Inveja",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "A inveja é a tristeza diante do bem alheio; a caridade alegra-se com a virtude do irmão.",
+          source: "Suma Teológica II-II, q. 36",
+        },
+        {
+          author: "São Cipriano de Cartago",
+          quote: "A inveja foi o primeiro pecado pelo qual o diabo destruiu a própria felicidade e a do homem.",
+          source: "De Zelos et Livore",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "Alegrar-se com o bem do próximo é multiplicar os próprios bens diante de Deus.",
+          source: "Ditos de Luz e Amor",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São João da Cruz",
@@ -919,7 +1087,28 @@ Fortalecei a minha vontade para praticar o jejum e a mortificação com alegria 
         "Fui impaciente, exigente ou reclamei das refeições preparadas em casa?",
         "Consegui manter a mortificação e o jejum oferecidos ao Senhor ou desisti ao primeiro sinal de incômodo?",
       ],
-      saintQuote: "O Reino de Deus não é comida nem bebida, mas justiça, paz e alegria no Espírito Santo. - São Paulo (Romanos 14, 17)",
+      saintQuotesList: [
+        {
+          author: "São Basílio Magno",
+          quote: "O jejum gera profetas, fortalece os fortes e faz da alma uma morada dos Anjos.",
+          source: "Homilia 1 sobre o Jejum",
+        },
+        {
+          author: "São João Crisóstomo",
+          quote: "O jejum do corpo de nada vale se não for acompanhado pelo jejum da língua e dos vícios.",
+          source: "Homilias sobre o Gênesis",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A temperança modera os desejos e mantém a alma senhora de si mesma.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Domina o teu corpo pela sobriedade para que o teu espírito possa voar até Deus.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1005,7 +1194,28 @@ Ensina-me a abandonar a minha vida, a minha família e todas as minhas preocupa�
         "Duvidei do amor ou da Providência de Deus diante de uma dificuldade ou incerteza?",
         "Procurei a paz de espírito na oração e nos sacramentos ou em distrações mundanas?",
       ],
-      saintQuote: "O Senhor é minha luz e minha salvação: de quem terei medo? - Salmo 27 (26), 1",
+      saintQuotesList: [
+        {
+          author: "Santo Agostinho",
+          quote: "Fizeste-nos, Senhor, para Ti, e o nosso coração permanecerá inquieto enquanto não descansar em Ti.",
+          source: "Confissões I, 1",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Confia na Providência Divina; o mesmo Pai que cuida de ti hoje cuidará de ti amanhã.",
+          source: "Cartas Espirituais",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Quem espera em Deus nunca será confundido nem desamparado.",
+          source: "A Prática do Amor a Jesus Cristo",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A esperança é a luz que ilumina a noite da alma nas provações.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1091,7 +1301,28 @@ Ensinai-me a imitar a vossa pronta prontidão em cumprir os mandamentos divinos.
         "Reagi com rispidez, ironia ou murmuração ao receber uma orientação no meu trabalho ou na minha família?",
         "Insisti em fazer a minha própria vontade em vez de buscar o que Deus quer para mim na oração?",
       ],
-      saintQuote: "Eis que a obediência vale mais que os sacrifícios. - 1 Samuel 15, 22",
+      saintQuotesList: [
+        {
+          author: "Santo Inácio de Antioquia",
+          quote: "Aquele que obedece aos legítimos pastores obedece ao próprio Cristo.",
+          source: "Carta aos Esmirnenses 8",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "A obediência é a maior de todas as virtudes morais, porque renuncia à própria vontade por amor a Deus.",
+          source: "Suma Teológica II-II, q. 104",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "A obediência faz a vontade humana coincidir com a vontade divina.",
+          source: "Sermão sobre a Obediência",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "A obediência doce e pronta é o sinal da verdadeira maturidade espiritual.",
+          source: "Introdução à Vida Devota",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Bento de Nursia",
@@ -1177,7 +1408,28 @@ Alcançai-me a graça da santa simplicidade e da intenção reta em todas as min
         "Fiz algo por hipocrisia, fingindo uma santidade ou virtude que não vivo no segredo do meu lar?",
         "Deixei de fazer o bem por vergonha do julgamento dos outros ou por medo das críticas?",
       ],
-      saintQuote: "O teu Pai, que vê no segredo, te recompensará. - Jesus Cristo (Mateus 6, 4)",
+      saintQuotesList: [
+        {
+          author: "São Gregório Nazianzeno",
+          quote: "Não busqueis os aplausos da multidão, mas a aprovação do único Juiz perfeitamente justo.",
+          source: "Sermões Teológicos",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "A pureza de intenção consiste em ordenar cada ação unicamente para a glória de Deus.",
+          source: "Suma Teológica I-II",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Trabalha para agradar unicamente a Deus e terás a paz que o mundo não pode dar.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "O olho do teu coração deve estar limpo para que toda a tua vida seja cheia de luz.",
+          source: "Sermões sobre o Evangelho",
+        },
+      ],
       saintQuotesList: [
         {
           author: "Santo Agostinho",
@@ -1263,7 +1515,28 @@ Concedei-me o santo temor de Deus para jamais me aproximar da Eucaristia indigna
         "Faltei com respeito ou atenção na Santa Missa, conversando ou me distraindo na presença de Deus?",
         "Critiquei a Igreja, seus bispos ou sacerdotes sem rezar pela santificação deles e sem caridade?",
       ],
-      saintQuote: "Eu amo a habitação da vossa casa, Senhor. - Salmo 26 (25), 8",
+      saintQuotesList: [
+        {
+          author: "São Cirilo de Jerusalém",
+          quote: "Ao te aproximares da Comunhão, faz da tua mão esquerda um trono para a direita, pois vais receber o Rei do Céu.",
+          source: "Catequeses Mistagógicas V",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "A Eucaristia é a fonte e o ponto culminante de toda a vida cristã.",
+          source: "Suma Teológica III, q. 73",
+        },
+        {
+          author: "Santo Agostinho",
+          quote: "Amar a Igreja Católica é amar a Cristo, pois a Igreja é o Seu Corpo Místico.",
+          source: "Comentário à 1ª Carta de João",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Aproxima-te da Santa Comunhão com amor, tremor e profunda pureza de alma.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1349,7 +1622,28 @@ Bani do meu coração a impaciência, a irritabilidade e a tentação de murmura
         "Murmurei e reclamei da vida, das cruzes ou da Providência divina por causa dos meus sofrimentos?",
         "Deixei de rezar ou abandonei o meu fervor por causa das dificuldades e cansaço diário?",
       ],
-      saintQuote: "A vossa paciência salvará as vossas almas. - Jesus Cristo (Lucas 21, 19)",
+      saintQuotesList: [
+        {
+          author: "São Cipriano de Cartago",
+          quote: "A paciência é o fundamento e a coroa de todas as virtudes.",
+          source: "De Bono Patientiae 1",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Ganha-se mais com um grama de paciência no sofrimento do que com cem quilos de obras no bem-estar.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Santa Teresa d'Ávila",
+          quote: "Nada te perturbe, nada te espante; a paciência tudo alcança.",
+          source: "Poesias",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Suporta com paciência as cruzes do dia a dia e Jesus te dará a Sua paz.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1435,7 +1729,28 @@ Bani do meu espírito toda distração voluntária, a preguiça espiritual e o d
         "Permiti distrações voluntárias na hora da oração, checando o celular ou pensando em assuntos profanos?",
         "Priorizei distrações e entretenimentos mundanos em detrimento do meu tempo a sós com Deus?",
       ],
-      saintQuote: "Orai sem cessar. - 1 Tessalonicenses 5, 17",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "A oração é a âncora da alma, a luz da mente e o flagelo dos demônios.",
+          source: "Homilias sobre a Oração",
+        },
+        {
+          author: "Santa Teresa d'Ávila",
+          quote: "Quem não deixa a oração tem a salvação garantida.",
+          source: "Livro da Vida",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Quem reza se salva, quem não reza se condena.",
+          source: "Do Grande Meio da Oração",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1521,7 +1836,28 @@ Expulsai da nossa casa todo espírito de discórdia, violência, incompreensão 
         "Alimentei ressentimentos ou me recusei a pedir perdão após um desentendimento em casa?",
         "Deixei de rezar pela minha família e pela harmonia do meu lar?",
       ],
-      saintQuote: "Amai-vos uns aos outros com amor fraterno. - Romanos 12, 10",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "Faze da tua casa uma igreja: onde há oração, paz e amor fraterno, aí os Anjos habitam.",
+          source: "Homilia 20 sobre Efésios",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Não há lugar onde a santidade seja mais provada do que na convivência diária com a família.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "A paz de uma família depende da capacidade que cada um tem de suportar o outro por amor.",
+          source: "Prática do Amor a Jesus Cristo",
+        },
+        {
+          author: "São João Bosco",
+          quote: "Abençoai os vossos lares com a oração diária e a devoção à Mãe de Deus.",
+          source: "Escritos Educativos",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São João Paulo II",
@@ -1607,7 +1943,28 @@ Libertai a minha alma de toda presunção, tibieza e banalização do pecado. Qu
         "Tive falta de reverência diante das coisas sagradas, da igreja ou dos sacramentos?",
         "Evitei o pecado por amor a Deus e santo temor ou vivi com indiferença moral no dia de hoje?",
       ],
-      saintQuote: "O temor do Senhor é o princípio da sabedoria. - Provérbios 9, 10",
+      saintQuotesList: [
+        {
+          author: "São Basílio Magno",
+          quote: "O temor de Deus é o princípio da purificação da alma e a porta da sabedoria.",
+          source: "Regras Maiores",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "O temor filial guarda a alma de ofender o Amor de Deus.",
+          source: "Preparações para a Morte",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "Quem ama a Deus teme contristar o Seu Espírito.",
+          source: "Sermões sobre o Cantares",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Conserva o santo temor de Deus e não terás medo das ameaças do mundo.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "Santo Agostinho",
@@ -1694,7 +2051,28 @@ Bani da minha vida a negligência, a procrastinação, a preguiça e o desleixo 
         "Fiz minhas tarefas de qualquer jeito, com má vontade ou murmuração?",
         "Faltou-me pontualidade e ordem na administração do meu tempo e dos meus compromissos?",
       ],
-      saintQuote: "Foste fiel no pouco, eu te confiarei muito. - Jesus Cristo (Mateus 25, 21)",
+      saintQuotesList: [
+        {
+          author: "São Francisco de Sales",
+          quote: "Grandes ocasiões de servir a Deus raramente se apresentam, mas as pequenas se oferecem a cada momento.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Santa Teresa de Lisieux",
+          quote: "Apanhar um alfinete do chão por amor a Deus pode salvar uma alma.",
+          source: "História de uma Alma",
+        },
+        {
+          author: "São João Crisóstomo",
+          quote: "A santidade é tecida no tear dos pequenos deveres cotidianos cumpridos por amor.",
+          source: "Homilias sobre São Mateus",
+        },
+        {
+          author: "São Josemaría Escrivá",
+          quote: "Faze o que deves e está no que fazes.",
+          source: "Caminho",
+        },
+      ],
       saintQuotesList: [
         {
           author: "Santa Teresinha do Menino Jesus",
@@ -1780,7 +2158,28 @@ Bani do meu espírito a curiosidade desordenada e o vício de buscar novidades f
         "Permiti que o barulho e o agito do mundo roubassem a minha paz interior e a minha disposição para orar?",
         "Procurei criar momentos de silêncio e recolhimento no meu dia ou fugi do silêncio por medo de olhar para mim mesmo?",
       ],
-      saintQuote: "Sossegai e reconhecei que eu sou Deus. - Salmo 46 (45), 10",
+      saintQuotesList: [
+        {
+          author: "Santo Agostinho",
+          quote: "O silêncio é a linguagem de Deus. Cala os barulhos da terra para ouvir a voz do Teu Criador.",
+          source: "Sermões sobre o Silêncio",
+        },
+        {
+          author: "São João da Cruz",
+          quote: "O Pai disse uma só Palavra no eterno silêncio; e no silêncio ela deve ser ouvida.",
+          source: "Ditos de Luz e Amor",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Mantém a tua alma em paz e recolhimento diante de Deus.",
+          source: "Cartas Espirituais",
+        },
+        {
+          author: "Papa Bento XVI",
+          quote: "Sem o silêncio não se escuta a voz de Deus e não se encontra a paz interior.",
+          source: "Verbum Domini",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São João da Cruz",
@@ -1866,7 +2265,28 @@ Alcançai-me do Senhor a suprema graça da perseverança final. Que nenhuma arid
         "Fui fiel à vida de oração e aos sacramentos mesmo quando senti aridez e falta de consolamentos sensíveis?",
         "Pedi a Deus diariamente a graça da perseverança final e a proteção para a hora da minha morte?",
       ],
-      saintQuote: "Aquele que perseverar até o fim, esse será salvo. - Jesus Cristo (Mateus 24, 13)",
+      saintQuotesList: [
+        {
+          author: "Santo Agostinho",
+          quote: "A perseverança é o dom supremo de Deus, pelo qual mantemos a fé viva até a hora da morte.",
+          source: "De Dono Perseverantiae",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "Nenhuma virtude é premiada sem a perseverança.",
+          source: "Suma Teológica II-II",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Pedi a Deus todos os dias a santa perseverança final.",
+          source: "Do Grande Meio da Oração",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Persevera na oração e na frequência aos sacramentos até ao fim.",
+          source: "Conselhos Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -1952,7 +2372,28 @@ Alcançai-me a graça de amar e perdoar os meus inimigos, rezando sinceramente p
         "Recusei-me a rezar pela conversão daquelas pessoas que considero minhas adversárias?",
         "Paguei o mal com o mal, usando de palavras duras ou atitudes vingativas?",
       ],
-      saintQuote: "Amai os vossos inimigos e orai pelos que vos perseguem. - Jesus Cristo (Mateus 5, 44)",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "Nada nos aproxima tanto de Deus quanto o amor e a oração por aqueles que nos odeiam.",
+          source: "Homilia 18 sobre São Mateus",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "Amar o inimigo enquanto homem criado por Deus é preceito de caridade.",
+          source: "Suma Teológica II-II, q. 25",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "O perdão oferecido ao inimigo é o sacrifício mais agradável a Deus.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Papa Bento XVI",
+          quote: "O amor aos inimigos é a Carta Magna do Reino dos Céus.",
+          source: "Angelus 18 fev 2007",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Padre Pio de Pietrelcina",
@@ -2038,7 +2479,28 @@ Ajudai-me a submeter todas as minhas ideias e afetos ao senhorio de Nosso Senhor
         "Consenti em devaneios impuros, vaidosos ou pessimistas na minha imaginação?",
         "Demorei para rejeitar as tentações mentais quando elas surgiram no meu dia?",
       ],
-      saintQuote: "Reduzimos a cativeiro todo pensamento para submetê-lo a Cristo. - 2 Coríntios 10, 5",
+      saintQuotesList: [
+        {
+          author: "São João Cassiano",
+          quote: "Não está em nosso poder impedir que os pensamentos surjam, mas está em nosso poder rejeitá-los ou acolhê-los.",
+          source: "Conferências I, 17",
+        },
+        {
+          author: "São Jerônimo",
+          quote: "Esmaga a cabeça da serpente assim que ela surgir na tua imaginação.",
+          source: "Cartas a Rústico",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "O inimigo é como um cão acorrentado que ladra mas não morde quem não se aproxima.",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "São Padre Pio de Pietrelcina",
+          quote: "Rejeita imediatamente os maus pensamentos invocando o nome de Jesus e de Maria.",
+          source: "Cartas Espirituais",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São João da Cruz",
@@ -2124,7 +2586,28 @@ Ensinai-me a correr imediatamente para os braços misericordiosos do meu Salvado
         "Deixei de me confessar por vergonha, medo ou desespero espiritual?",
         "Consenti em pensamentos de desânimo, achando que a santidade é impossível para mim?",
       ],
-      saintQuote: "O Senhor se compadece dos que o temem. - Salmo 103 (102), 13",
+      saintQuotesList: [
+        {
+          author: "Santo Agostinho",
+          quote: "Não há pecado ou miséria que o sangue de Cristo não possa lavar quando a alma se arrepende com humildade.",
+          source: "Sermões sobre a Misericórdia",
+        },
+        {
+          author: "São Bernardo de Claraval",
+          quote: "Minha única esperança é a misericórdia do Senhor; nunca me faltará a Sua graça.",
+          source: "Sermões sobre o Cantares",
+        },
+        {
+          author: "Santo Afonso Maria de Ligório",
+          quote: "Deus quer mais perdoar ao pecador arrependido do que o pecador deseja ser perdoado.",
+          source: "Preparações para a Morte",
+        },
+        {
+          author: "São João Paulo II",
+          quote: "A misericórdia é o segundo nome do Amor de Deus manifestado na Paixão de Cristo.",
+          source: "Dives in Misericordia",
+        },
+      ],
       saintQuotesList: [
         {
           author: "Santa Faustina Kowalska",
@@ -2210,7 +2693,28 @@ Concedei-me a santa coragem de professar a minha fé católica sem vergonha nem 
         "Agi por vaidade, buscando ser elogiado, admirado ou notado pelos outros no trabalho ou na Igreja?",
         "Preocupei-me mais com a opinião dos homens do que com a aprovação de Deus no dia de hoje?",
       ],
-      saintQuote: "Se tentasse ainda agradar aos homens, não seria servo de Cristo. - Gálatas 1, 10",
+      saintQuotesList: [
+        {
+          author: "São João Crisóstomo",
+          quote: "Quem busca a glória dos homens é como uma criança que corre atrás de uma borboleta.",
+          source: "Homilias sobre a Vaidade",
+        },
+        {
+          author: "São Tomás de Aquino",
+          quote: "O respeito humano é uma forma de timidez moral que submete a fé ao medo dos homens.",
+          source: "Suma Teológica II-II",
+        },
+        {
+          author: "São Francisco de Sales",
+          quote: "Que nos importa se o mundo fala bem ou mal de nós, se diante de Deus fomos achados fiéis?",
+          source: "Introdução à Vida Devota",
+        },
+        {
+          author: "Papa Bento XVI",
+          quote: "O cristão não deve ter medo do desacordo da cultura dominante quando está em jogo a verdade.",
+          source: "Discurso aos Bispos",
+        },
+      ],
       saintQuotesList: [
         {
           author: "São Francisco de Assis",
