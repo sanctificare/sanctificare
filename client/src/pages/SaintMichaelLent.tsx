@@ -389,11 +389,6 @@ export default function SaintMichaelLent() {
                 >
                   <Headphones size={15} />
                   <span>Áudio</span>
-                  {selectedDayNum <= 3 && (
-                    <span className="rounded-full bg-amber-500/20 text-amber-300 px-1.5 py-0.2 text-[9px] font-bold">
-                      Grátis
-                    </span>
-                  )}
                   {isPlaying && (
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   )}
@@ -408,7 +403,7 @@ export default function SaintMichaelLent() {
                   }`}
                 >
                   <BookOpen size={15} />
-                  <span>Texto (100% Gratuito)</span>
+                  <span>Texto</span>
                 </button>
               </div>
 
