@@ -15,6 +15,7 @@ import { BIBLE_VIDEOS } from "@/data/bible-videos";
 import { toast } from "sonner";
 import { shareText } from "@/lib/share";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
+import GooglePlayBanner from "@/components/GooglePlayBanner";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
@@ -451,6 +452,11 @@ export default function Dashboard() {
                 </Link>
               </div>
             </div>
+          </div>
+
+          {/* Google Play Store banner (apenas na web desktop) */}
+          <div className="mt-4">
+            <GooglePlayBanner variant="card" showDismiss={true} />
           </div>
         </div>
 

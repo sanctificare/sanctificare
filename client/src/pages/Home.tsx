@@ -16,6 +16,7 @@ import { RosaryIcon } from "@/components/RosaryIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { dailyRoutine, trendingPrayers } from "@/data/prayersCatalog";
+import GooglePlayBanner from "@/components/GooglePlayBanner";
 
 const HERO_IMG = "/assets/sanctificare-hero.webp";
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
@@ -579,6 +580,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Google Play Store Download Section */}
+      <GooglePlayBanner variant="section" />
 
       {/* FAQ Section */}
       <section id="perguntas" className="py-24 bg-[oklch(0.12_0.03_260)] text-white relative border-t border-[oklch(0.75_0.12_75/0.2)]">

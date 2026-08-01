@@ -4,6 +4,7 @@ import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
 import { Search, Compass, Lock } from "lucide-react";
 import { openRouteInApp } from "@/lib/deepLink";
+import GooglePlayBanner from "@/components/GooglePlayBanner";
 
 type ExploreCard = {
   href: string;
@@ -95,6 +96,11 @@ export default function Explore() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Banner Google Play (apenas na web desktop) */}
+        <div className="mb-6">
+          <GooglePlayBanner variant="card" showDismiss={true} />
         </div>
 
         {/* Search & Filter Bar */}

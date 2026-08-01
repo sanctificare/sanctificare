@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { isMobileApp, getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,12 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown, HeartHandshake, Shield } from "lucide-react";
+import { BookOpen, Users, Home, User, ScrollText, Flame, Music, Film, CalendarCheck2, ChevronDown, CheckCircle2, Search, Compass, BookMarked, Crown, HeartHandshake, Shield, Smartphone } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
+import { GOOGLE_PLAY_URL } from "@/components/GooglePlayBanner";
 
 const mainLinks = [
   { href: "/explore", label: "Explore", icon: Compass },
@@ -200,6 +201,20 @@ export default function AppNav() {
                         <span>Apoie a Missão</span>
                       </Link>
                     </DropdownMenuItem>
+
+                    {!isMobileApp() && (
+                      <DropdownMenuItem asChild>
+                        <a
+                          href={GOOGLE_PLAY_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-amber-400 hover:text-amber-300 font-medium"
+                        >
+                          <Smartphone size={14} />
+                          <span>Baixar App Android</span>
+                        </a>
+                      </DropdownMenuItem>
+                    )}
 
                     {user?.role === "admin" && (
                       <>
