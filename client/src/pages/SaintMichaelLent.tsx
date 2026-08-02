@@ -26,7 +26,6 @@ import {
   ChevronUp,
   ChevronLeft,
   ChevronRight,
-  LayoutGrid,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -37,12 +36,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { SaintMichaelGuidedReader } from "@/components/saint-michael/SaintMichaelGuidedReader";
 import {
   SAINT_MICHAEL_CONSECRATION,
@@ -142,7 +135,6 @@ export default function SaintMichaelLent() {
   const [state, setState] = useState<JourneyState>(loadLocalState);
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [showDayPickerModal, setShowDayPickerModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
   const [textReaderMode, setTextReaderMode] = useState<"standard" | "guided">("standard");
   const [expandedTraditions, setExpandedTraditions] = useState<Record<string, boolean>>({ cic: true, fathers: true, doctors: true, magisterium: true });
@@ -352,89 +344,61 @@ export default function SaintMichaelLent() {
         </div>
 
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
-        <div className="block lg:hidden mb-5 space-y-2.5">
-          {/* Cabeçalho com título e botão para ver todos os 40 dias em Grid */}
-          <div className="flex items-center justify-between px-0.5">
+        <div className="block lg:hidden mb-5">
+          <div className="flex items-center justify-between mb-2 px-0.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
               Meditações (40 Dias)
             </span>
-            <button
-              type="button"
-              onClick={() => setShowDayPickerModal(true)}
-              className="text-[11px] font-serif font-bold text-amber-800 dark:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-1 rounded-lg border border-amber-500/25 transition-all"
-            >
-              <LayoutGrid size={13} className="text-amber-600 dark:text-amber-400" />
-              <span>Ver os 40 Dias</span>
-            </button>
+            <span className="text-[11px] font-medium text-muted-foreground">
+              Dia {selectedDayNum} de 40
+            </span>
           </div>
-
-          {/* Barra de controle principal: [ Seta Anterior ] [ Botão Central Selector ] [ Seta Próximo ] */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               aria-label="Dia anterior"
               disabled={selectedDayNum <= 1}
               onClick={() => handleSelectDay(selectedDayNum - 1)}
-              className="shrink-0 w-10 h-10 rounded-xl border border-border bg-card text-foreground flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shadow-xs hover:bg-muted active:scale-95 transition-all"
+              className="shrink-0 w-11 h-11 rounded-full border border-border bg-card flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={18} />
             </button>
-
-            {/* Botão Central Seletor */}
-            <button
-              type="button"
-              onClick={() => setShowDayPickerModal(true)}
-              className="flex-1 min-h-10 px-3 py-2 rounded-xl bg-card dark:bg-muted/40 border border-amber-500/30 shadow-xs flex items-center justify-between text-left cursor-pointer hover:border-amber-500/60 active:scale-[0.99] transition-all gap-2"
+            <div
+              ref={pillNavRef}
+              className="flex items-center gap-2 overflow-x-auto py-2 scrollbar-none snap-x px-1"
             >
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="shrink-0 px-2 py-0.5 rounded-md bg-[oklch(0.22_0.07_260)] text-white font-bold text-xs font-mono">
-                  {selectedDayNum}/40
-                </span>
-                <span className="font-serif font-bold text-xs text-foreground truncate">
-                  Dia {selectedDayNum}: {currentDayData.theme}
-                </span>
-              </div>
-              <ChevronDown size={16} className="text-amber-600 dark:text-amber-400 shrink-0 ml-1" />
-            </button>
+              {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
+                const active = dayNum === selectedDayNum;
+                const isDone = state.completedDays.includes(dayNum);
+                const isAudioLockedDay = !isPremium && dayNum > 7;
 
+                return (
+                  <button
+                    key={dayNum}
+                    data-active={active}
+                    onClick={() => handleSelectDay(dayNum)}
+                    className={`shrink-0 snap-start min-h-11 rounded-full px-3.5 py-2 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
+                      active
+                        ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
+                        : "bg-card text-foreground border-border hover:border-slate-300"
+                    }`}
+                  >
+                    <span>Dia {dayNum}</span>
+                    {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
+                    {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
+                  </button>
+                );
+              })}
+            </div>
             <button
               type="button"
               aria-label="Próximo dia"
               disabled={selectedDayNum >= 40}
               onClick={() => handleSelectDay(selectedDayNum + 1)}
-              className="shrink-0 w-10 h-10 rounded-xl border border-border bg-card text-foreground flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shadow-xs hover:bg-muted active:scale-95 transition-all"
+              className="shrink-0 w-11 h-11 rounded-full border border-border bg-card flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronRight size={18} />
             </button>
-          </div>
-
-          {/* Carrossel de Borda a Borda (Edge-to-Edge) sem setas laterais para deslizar fácil */}
-          <div
-            ref={pillNavRef}
-            className="-mx-4 px-4 flex items-center gap-2 overflow-x-auto py-1 scrollbar-none snap-x"
-          >
-            {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
-              const active = dayNum === selectedDayNum;
-              const isDone = state.completedDays.includes(dayNum);
-              const isAudioLockedDay = !isPremium && dayNum > 7;
-
-              return (
-                <button
-                  key={dayNum}
-                  data-active={active}
-                  onClick={() => handleSelectDay(dayNum)}
-                  className={`shrink-0 snap-start min-h-9 rounded-full px-3 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
-                    active
-                      ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
-                      : "bg-card text-foreground border-border hover:border-amber-500/30"
-                  }`}
-                >
-                  <span>Dia {dayNum}</span>
-                  {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
-                  {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
-                </button>
-              );
-            })}
           </div>
         </div>
 
@@ -1110,66 +1074,6 @@ export default function SaintMichaelLent() {
         onOpenChange={setShowUpgradeModal}
         description="Assine o Sanctificare Premium para desbloquear os áudios completos dos 40 dias da Quaresma de São Miguel Arcanjo."
       />
-
-      {/* Dialog / Modal de Seleção dos 40 Dias */}
-      <Dialog open={showDayPickerModal} onOpenChange={setShowDayPickerModal}>
-        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6">
-          <DialogHeader className="pb-3 border-b border-border">
-            <DialogTitle className="font-serif text-base sm:text-lg font-bold flex items-center justify-between pr-6">
-              <span className="flex items-center gap-2 text-foreground">
-                <CalendarDays className="text-amber-600 dark:text-amber-400" size={20} />
-                Jornada dos 40 Dias
-              </span>
-              <span className="text-xs font-sans font-medium text-muted-foreground bg-muted px-2.5 py-1 rounded-full">
-                {state.completedDays.length} de 40 Concluídos
-              </span>
-            </DialogTitle>
-          </DialogHeader>
-
-          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-2.5 pt-3">
-            {SAINT_MICHAEL_LENT.days.map((day) => {
-              const active = day.number === selectedDayNum;
-              const isDone = state.completedDays.includes(day.number);
-              const isAudioLockedDay = !isPremium && day.number > 7;
-
-              return (
-                <button
-                  key={day.number}
-                  onClick={() => {
-                    handleSelectDay(day.number);
-                    setShowDayPickerModal(false);
-                  }}
-                  className={`p-3 rounded-xl border text-left transition-all relative flex flex-col justify-between gap-2 cursor-pointer ${
-                    active
-                      ? "bg-amber-500/15 border-amber-500 text-amber-950 dark:text-amber-100 ring-2 ring-amber-500/30"
-                      : isDone
-                      ? "bg-emerald-500/5 border-emerald-500/30 hover:border-emerald-500/60"
-                      : "bg-card border-border hover:border-amber-500/40 hover:bg-muted/30"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className={`text-[11px] font-bold font-mono px-2 py-0.5 rounded-md ${
-                      active
-                        ? "bg-[oklch(0.22_0.07_260)] text-white"
-                        : "bg-muted text-muted-foreground"
-                    }`}>
-                      Dia {day.number}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      {isDone && <CheckCircle2 size={13} className="text-emerald-600 dark:text-emerald-400" />}
-                      {isAudioLockedDay && <Lock size={11} className="text-amber-500" />}
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] font-serif font-medium line-clamp-2 leading-tight text-foreground/90">
-                    {day.theme}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
