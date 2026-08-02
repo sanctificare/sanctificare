@@ -19,3 +19,20 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# --- Rules for Glide (Image Loading & Memory Optimization) ---
+-keep class com.bumptech.glide.** { *; }
+-keepclassmembers class * implements com.bumptech.glide.module.GlideModule {
+    public <init>(...);
+}
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @com.bumptech.glide.annotation.GlideOption <methods>;
+    @com.bumptech.glide.annotation.GlideExtension <methods>;
+}
+-dontwarn com.bumptech.glide.**
+
+# --- Rules for OneSignal & Capacitor Native Utilities ---
+-keep class com.onesignal.** { *; }
+-dontwarn com.onesignal.**
+
