@@ -36,7 +36,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
-import { SaintMichaelGuidedReader } from "@/components/saint-michael/SaintMichaelGuidedReader";
 import {
   SAINT_MICHAEL_CONSECRATION,
   SAINT_MICHAEL_LENT,
@@ -136,7 +135,6 @@ export default function SaintMichaelLent() {
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
-  const [textReaderMode, setTextReaderMode] = useState<"standard" | "guided">("standard");
   const [expandedTraditions, setExpandedTraditions] = useState<Record<string, boolean>>({ cic: true, fathers: true, doctors: true, magisterium: true });
   const toggleTradition = (key: string) => setExpandedTraditions((prev) => ({ ...prev, [key]: !prev[key] }));
   const pillNavRef = useRef<HTMLDivElement | null>(null);
@@ -619,32 +617,6 @@ export default function SaintMichaelLent() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                      {/* Alternador de Modo de Leitura */}
-                      <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/50 text-xs">
-                        <button
-                          type="button"
-                          onClick={() => setTextReaderMode("standard")}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-serif font-bold transition-all cursor-pointer ${
-                            textReaderMode === "standard"
-                              ? "bg-amber-600 text-white shadow-xs"
-                              : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
-                          }`}
-                        >
-                          📄 Contínuo
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setTextReaderMode("guided")}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-serif font-bold transition-all cursor-pointer ${
-                            textReaderMode === "guided"
-                              ? "bg-amber-600 text-white shadow-xs"
-                              : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
-                          }`}
-                        >
-                          📖 Leitor Guiado
-                        </button>
-                      </div>
-
                       {/* Controle de Tamanho de Fonte */}
                       <div className="flex items-center gap-1.5 bg-muted/60 dark:bg-muted/40 p-1.5 rounded-xl border border-border/50 text-xs">
                         <span className="text-[11px] font-bold text-muted-foreground px-1 flex items-center gap-1 shrink-0">
@@ -674,18 +646,7 @@ export default function SaintMichaelLent() {
                     </div>
                   </div>
 
-                  {textReaderMode === "guided" ? (
-                    <SaintMichaelGuidedReader
-                      dayData={currentDayData}
-                      dayNumber={selectedDayNum}
-                      fontSize={fontSize}
-                      setFontSize={setFontSize}
-                      isCompleted={isCurrentDayCompleted}
-                      onToggleComplete={toggleDayComplete}
-                      penanceText={state.penance}
-                    />
-                  ) : (
-                    <div className="space-y-6">
+                  <div className="space-y-6">
 
                   {/* Passos 1 a 7: Orações Tradicionais & Consagração Solene */}
                   <div id="sec-prayers" className="scroll-mt-16 space-y-4">
@@ -963,7 +924,6 @@ export default function SaintMichaelLent() {
                 </Button>
               </div>
             </div>
-          </div>
 
           {/* Coluna Lateral: Lista de Meditações (40 Dias) - Opção 2: Clean & Cremoso */}
           <div className="hidden lg:block space-y-4">
