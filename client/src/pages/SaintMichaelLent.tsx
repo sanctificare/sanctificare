@@ -844,23 +844,23 @@ export default function SaintMichaelLent() {
             </div>
           </div>
 
-          {/* Coluna Lateral: Lista de Meditações (40 Dias) - Design Refinado e Acolhedor */}
+          {/* Coluna Lateral: Lista de Meditações (40 Dias) - Opção 2: Clean & Cremoso */}
           <div className="hidden lg:block space-y-4">
-            <div className="rounded-2xl border border-border bg-card p-4 shadow-md space-y-3">
-              {/* Cabeçalho com Barra de Progresso */}
-              <div className="border-b border-border pb-3.5 space-y-2">
+            <div className="rounded-2xl border border-amber-900/15 dark:border-amber-500/20 bg-[#FAF7EE] dark:bg-[#181410] p-4 shadow-sm space-y-3.5">
+              {/* Cabeçalho com Barra de Progresso em Ouro */}
+              <div className="border-b border-amber-900/10 dark:border-amber-500/15 pb-3.5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-                    <BookOpen size={14} className="text-amber-500" />
+                  <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-2">
+                    <BookOpen size={14} className="text-amber-600 dark:text-amber-400" />
                     Meditações (40 Dias)
                   </span>
-                  <span className="text-xs font-serif text-muted-foreground font-semibold">
+                  <span className="text-[11px] font-serif font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-900 dark:text-amber-300 border border-amber-500/20">
                     {state.completedDays.length}/40 Concluídos
                   </span>
                 </div>
-                <div className="w-full bg-muted/60 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-amber-900/10 dark:bg-amber-950/80 h-2 rounded-full p-0.5 overflow-hidden">
                   <div
-                    className="bg-amber-500 h-full rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full transition-all duration-500 shadow-sm"
                     style={{ width: `${(state.completedDays.length / 40) * 100}%` }}
                   />
                 </div>
@@ -882,46 +882,46 @@ export default function SaintMichaelLent() {
                       onClick={() => handleSelectDay(dayNum)}
                       className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start justify-between gap-3 cursor-pointer group ${
                         active
-                          ? "bg-amber-500/10 dark:bg-amber-950/40 border-amber-500/80 ring-1 ring-amber-500/30 shadow-sm"
+                          ? "bg-amber-100/80 dark:bg-amber-950/60 border-amber-500 dark:border-amber-400 ring-2 ring-amber-500/20 shadow-sm"
                           : isDone
-                          ? "bg-emerald-500/5 dark:bg-emerald-950/20 border-emerald-500/30 hover:border-emerald-500/50"
-                          : "bg-card hover:bg-amber-500/5 border-border/80 hover:border-amber-500/30"
+                          ? "bg-emerald-50/90 dark:bg-emerald-950/30 border-emerald-500/30 hover:border-emerald-500/50 shadow-[0_2px_6px_rgba(0,0,0,0.02)]"
+                          : "bg-white dark:bg-[#221D17] border-amber-900/10 dark:border-amber-500/15 hover:border-amber-500/40 hover:bg-amber-50/50 dark:hover:bg-[#2A231C] shadow-[0_2px_6px_rgba(0,0,0,0.03)]"
                       }`}
                     >
                       <div className="space-y-1.5 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className={`text-[10px] font-bold uppercase tracking-wider font-serif ${
-                            active ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
+                            active ? "text-amber-800 dark:text-amber-300" : "text-amber-900/70 dark:text-amber-400/80"
                           }`}>
                             Meditação {dayNum}
                           </span>
                           {isDone && (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-800/40">
                               <CheckCircle2 size={10} /> Concluído
                             </span>
                           )}
                           {!isDone && active && (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30">
                               Em andamento
                             </span>
                           )}
                         </div>
-                        <p className={`text-xs font-serif font-semibold leading-snug line-clamp-2 transition-colors ${
+                        <p className={`text-xs font-serif font-bold leading-snug line-clamp-2 transition-colors ${
                           active
                             ? "text-amber-950 dark:text-amber-100"
-                            : "text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-300"
+                            : "text-slate-900 dark:text-amber-50 group-hover:text-amber-900 dark:group-hover:text-amber-200"
                         }`}>
                           Dia {dayNum}: {themeTitle}
                         </p>
                       </div>
 
                       <div className="flex flex-col items-end gap-1.5 shrink-0 pt-0.5">
-                        <span className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
-                          <Headphones size={10} className={active ? "text-amber-500" : ""} />
+                        <span className="text-[10px] font-mono font-medium text-amber-900/70 dark:text-amber-300/80 bg-amber-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                          <Headphones size={10} className={active ? "text-amber-600 dark:text-amber-400" : "text-amber-700/60"} />
                           05:15
                         </span>
                         {isAudioLockedDay && (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-medium text-amber-600/90 dark:text-amber-400/90 bg-amber-500/10 px-1.5 py-0.5 rounded-md border border-amber-500/20">
+                          <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/50 px-2 py-0.5 rounded-full border border-amber-300/60 dark:border-amber-700/50">
                             <Lock size={9} /> Premium
                           </span>
                         )}
