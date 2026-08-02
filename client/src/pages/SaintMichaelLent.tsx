@@ -227,9 +227,8 @@ export default function SaintMichaelLent() {
   }, [selectedDayNum]);
 
   // Audio accessibility rule:
-  // Days 1, 2, 3: FREE AUDIO FOR ALL!
-  // Days 4 to 40: PREMIUM AUDIO ONLY
-  const isAudioLocked = selectedDayNum > 3 && !isPremium;
+  // ALL AUDIO IS PREMIUM ONLY
+  const isAudioLocked = !isPremium;
 
   const isCurrentDayCompleted = state.completedDays.includes(selectedDayNum);
 
@@ -343,7 +342,7 @@ export default function SaintMichaelLent() {
             {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
               const active = dayNum === selectedDayNum;
               const isDone = state.completedDays.includes(dayNum);
-              const isAudioLockedDay = dayNum > 3 && !isPremium;
+              const isAudioLockedDay = !isPremium;
 
               return (
                 <button
@@ -420,10 +419,10 @@ export default function SaintMichaelLent() {
                         Dia {selectedDayNum} — Áudio Premium
                       </span>
                       <h3 className="font-serif text-xl sm:text-2xl font-bold text-white max-w-md mx-auto">
-                        O áudio dos Dias 4 a 40 é exclusivo para assinantes Sanctificare Premium
+                        O áudio é exclusivo para assinantes Sanctificare Premium
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                        Os 3 primeiros dias de áudio são gratuitos. O texto das orações tradicionais e a meditação do Dia {selectedDayNum} continuam <strong>100% gratuitos</strong> na aba <strong>TEXTO</strong>.
+                        Os áudios da Quaresma de São Miguel são um recurso Premium. O texto das orações tradicionais e a meditação do Dia {selectedDayNum} são <strong>100% gratuitos</strong> na aba <strong>TEXTO</strong>.
                       </p>
 
                       <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
@@ -849,7 +848,7 @@ export default function SaintMichaelLent() {
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                   const active = dayNum === selectedDayNum;
                   const isDone = state.completedDays.includes(dayNum);
-                  const isAudioLockedDay = dayNum > 3 && !isPremium;
+                  const isAudioLockedDay = !isPremium;
 
                   const dayItem = SAINT_MICHAEL_LENT.days.find((d) => d.number === dayNum);
                   const themeTitle = dayItem ? dayItem.theme : `Dia ${dayNum}: Combate Espiritual e Oração`;
