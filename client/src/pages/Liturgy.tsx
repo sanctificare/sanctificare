@@ -695,7 +695,7 @@ export default function Liturgy() {
                     onClick={() => setActiveTab("audio")}
                     className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 ${
                       activeTab === "audio"
-                        ? "border-amber-500 text-amber-500"
+                        ? "border-amber-500 text-amber-400 font-extrabold"
                         : "border-transparent text-muted-foreground hover:text-foreground"
                     }`}
                   >
@@ -706,13 +706,15 @@ export default function Liturgy() {
                   </button>
                   <button
                     onClick={() => setActiveTab("text")}
-                    className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
+                    className={`flex-1 py-3 text-center text-xs font-bold uppercase tracking-wider transition-all border-b-2 flex items-center justify-center gap-1.5 ${
                       activeTab === "text"
-                        ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                        : "border-transparent text-muted-foreground hover:text-foreground"
+                        ? "border-amber-500 text-amber-600 dark:text-amber-400 font-extrabold"
+                        : activeTab === "audio"
+                        ? "border-transparent text-slate-100 hover:text-white font-bold text-sm"
+                        : "border-transparent text-foreground hover:text-amber-600 font-bold"
                     }`}
                   >
-                    Texto
+                    <span>Texto</span>
                   </button>
                 </div>
               )}
