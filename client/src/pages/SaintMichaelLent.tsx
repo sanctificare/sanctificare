@@ -21,6 +21,7 @@ import {
   CalendarDays,
   Flame,
   ShieldCheck,
+  Type,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -565,7 +566,7 @@ export default function SaintMichaelLent() {
               {/* ABA TEXTO (100% Gratuita para todos os 40 dias) */}
               {activeTab === "text" && (
                 <div className="space-y-6 animate-fade-in">
-                  <div className="flex items-center justify-between border-b border-border pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 font-serif">
                         Devoção Tradicional Gratuitamente
@@ -575,18 +576,30 @@ export default function SaintMichaelLent() {
                       </h2>
                     </div>
 
-                    <div className="flex items-center gap-1 bg-muted p-1 rounded-lg text-xs font-serif">
-                      <span className="px-2 text-muted-foreground">Tamanho do texto:</span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                          setFontSize((s) => (s === "text-sm" ? "text-lg" : s === "text-base" ? "text-sm" : "text-base"))
-                        }
-                        className="h-7 w-7"
-                      >
-                        {fontSize === "text-lg" ? <Minus size={14} /> : <Plus size={14} />}
-                      </Button>
+                    <div className="flex items-center gap-1.5 bg-muted/60 dark:bg-muted/40 p-1.5 rounded-xl border border-border/50 text-xs shrink-0 self-start sm:self-auto">
+                      <span className="text-[11px] font-bold text-muted-foreground px-1.5 flex items-center gap-1 shrink-0">
+                        <Type size={14} /> Fonte
+                      </span>
+                      <div className="flex items-center gap-1">
+                        {[
+                          { id: "text-sm", label: "P" },
+                          { id: "text-base", label: "M" },
+                          { id: "text-lg", label: "G" },
+                        ].map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setFontSize(item.id as "text-sm" | "text-base" | "text-lg")}
+                            className={`w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                              fontSize === item.id
+                                ? "bg-amber-600 text-white shadow-xs"
+                                : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                            }`}
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
