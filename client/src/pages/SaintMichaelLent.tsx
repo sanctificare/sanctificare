@@ -903,27 +903,27 @@ export default function SaintMichaelLent() {
                         Excluir Anotação
                       </Button>
                     )}
-                    </div>
                   </div>
-                )}
+
+                  {/* Botão de Ação: Marcar Dia como Rezado (Igual ao anexo) */}
+                  <div className="pt-4 border-t border-white/10 dark:border-border/40">
+                    <Button
+                      onClick={toggleDayComplete}
+                      className={`w-full py-6 font-serif font-bold text-sm sm:text-base rounded-xl cursor-pointer transition-all shadow-md ${
+                        isCurrentDayCompleted
+                          ? "bg-emerald-700 hover:bg-emerald-800 text-white"
+                          : "bg-amber-500 hover:bg-amber-400 text-slate-950"
+                      }`}
+                    >
+                      <CheckCircle2 className="mr-2 h-5 w-5" />
+                      {isCurrentDayCompleted ? `Dia ${selectedDayNum} Rezado` : `Marcar Dia ${selectedDayNum} como Rezado`}
+                    </Button>
+                  </div>
+                </div>
               </div>
             )}
-
-              {/* Botão de Ação: Marcar Dia como Rezado (Igual ao anexo) */}
-              <div className="pt-4 border-t border-white/10 dark:border-border/40">
-                <Button
-                  onClick={toggleDayComplete}
-                  className={`w-full py-6 font-serif font-bold text-sm sm:text-base rounded-xl cursor-pointer transition-all shadow-md ${
-                    isCurrentDayCompleted
-                      ? "bg-emerald-700 hover:bg-emerald-800 text-white"
-                      : "bg-amber-500 hover:bg-amber-400 text-slate-950"
-                  }`}
-                >
-                  <CheckCircle2 className="mr-2 h-5 w-5" />
-                  {isCurrentDayCompleted ? `Dia ${selectedDayNum} Rezado` : `Marcar Dia ${selectedDayNum} como Rezado`}
-                </Button>
-              </div>
-            </div>
+          </div>
+        </div>
 
           {/* Coluna Lateral: Lista de Meditações (40 Dias) - Opção 2: Clean & Cremoso */}
           <div className="hidden lg:block space-y-4">
