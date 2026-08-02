@@ -844,20 +844,30 @@ export default function SaintMichaelLent() {
             </div>
           </div>
 
-          {/* Coluna Lateral: Lista de Meditações (40 Dias) - Idêntico ao Anexo */}
+          {/* Coluna Lateral: Lista de Meditações (40 Dias) - Design Refinado e Acolhedor */}
           <div className="hidden lg:block space-y-4">
             <div className="rounded-2xl border border-border bg-card p-4 shadow-md space-y-3">
-              <div className="flex items-center justify-between border-b border-border pb-3">
-                <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                  Meditações (40 Dias)
-                </span>
-                <span className="text-xs font-serif text-muted-foreground font-semibold">
-                  {state.completedDays.length}/40 Concluídos
-                </span>
+              {/* Cabeçalho com Barra de Progresso */}
+              <div className="border-b border-border pb-3.5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                    <BookOpen size={14} className="text-amber-500" />
+                    Meditações (40 Dias)
+                  </span>
+                  <span className="text-xs font-serif text-muted-foreground font-semibold">
+                    {state.completedDays.length}/40 Concluídos
+                  </span>
+                </div>
+                <div className="w-full bg-muted/60 h-1.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-amber-500 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${(state.completedDays.length / 40) * 100}%` }}
+                  />
+                </div>
               </div>
 
               {/* Scrollable List of 40 Days */}
-              <div className="space-y-2 max-h-[720px] overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-[720px] overflow-y-auto pr-1.5 custom-scrollbar">
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                   const active = dayNum === selectedDayNum;
                   const isDone = state.completedDays.includes(dayNum);
@@ -870,31 +880,52 @@ export default function SaintMichaelLent() {
                     <button
                       key={dayNum}
                       onClick={() => handleSelectDay(dayNum)}
-                      className={`w-full text-left p-3 rounded-xl border transition-all flex items-start justify-between gap-3 cursor-pointer ${
+                      className={`w-full text-left p-3.5 rounded-xl border transition-all flex items-start justify-between gap-3 cursor-pointer group ${
                         active
-                          ? "bg-[#FAF7EE] dark:bg-[#1C1813] border-amber-500 ring-2 ring-amber-500/30 shadow-sm"
-                          : "bg-muted/40 hover:bg-muted border-border"
+                          ? "bg-amber-500/10 dark:bg-amber-950/40 border-amber-500/80 ring-1 ring-amber-500/30 shadow-sm"
+                          : isDone
+                          ? "bg-emerald-500/5 dark:bg-emerald-950/20 border-emerald-500/30 hover:border-emerald-500/50"
+                          : "bg-card hover:bg-amber-500/5 border-border/80 hover:border-amber-500/30"
                       }`}
                     >
-                      <div className="space-y-1">
+                      <div className="space-y-1.5 min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 font-serif">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider font-serif ${
+                            active ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
+                          }`}>
                             Meditação {dayNum}
                           </span>
-                          {isDone && <CheckCircle2 size={12} className="text-emerald-600" />}
-                          {isAudioLockedDay && <Lock size={11} className="text-amber-500" />}
+                          {isDone && (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                              <CheckCircle2 size={10} /> Concluído
+                            </span>
+                          )}
+                          {!isDone && active && (
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                              Em andamento
+                            </span>
+                          )}
                         </div>
-                        <p className={`text-xs font-serif font-bold leading-snug line-clamp-2 ${
-                          active ? "text-amber-900 dark:text-amber-100" : "text-foreground"
+                        <p className={`text-xs font-serif font-semibold leading-snug line-clamp-2 transition-colors ${
+                          active
+                            ? "text-amber-950 dark:text-amber-100"
+                            : "text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-300"
                         }`}>
                           Dia {dayNum}: {themeTitle}
                         </p>
                       </div>
 
-                      <span className="text-[10px] font-mono text-muted-foreground shrink-0 flex items-center gap-1 mt-0.5">
-                        <Headphones size={10} />
-                        05:15
-                      </span>
+                      <div className="flex flex-col items-end gap-1.5 shrink-0 pt-0.5">
+                        <span className="text-[10px] font-mono text-muted-foreground flex items-center gap-1">
+                          <Headphones size={10} className={active ? "text-amber-500" : ""} />
+                          05:15
+                        </span>
+                        {isAudioLockedDay && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-medium text-amber-600/90 dark:text-amber-400/90 bg-amber-500/10 px-1.5 py-0.5 rounded-md border border-amber-500/20">
+                            <Lock size={9} /> Premium
+                          </span>
+                        )}
+                      </div>
                     </button>
                   );
                 })}
