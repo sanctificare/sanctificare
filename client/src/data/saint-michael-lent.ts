@@ -168,6 +168,10 @@ Neste primeiro dia, não tenha medo de se apresentar diante do Senhor exatamente
             code: "CIC §1850",
             text: "O pecado é uma ofensa a Deus: 'Contra ti, só contra ti pequei, o que é mau aos teus olhos eu fiz'. O pecado é assim 'o amor de si mesmo até ao desprezo de Deus'.",
           },
+          {
+            code: "CIC §2092",
+            text: "Há dois tipos de presunção: ou o homem presume de suas próprias capacidades... ou presume da omnipotência ou da misericórdia de Deus, esperando obter o seu perdão sem conversão.",
+          },
         ],
         fathers: [
           {
@@ -184,12 +188,6 @@ Neste primeiro dia, não tenha medo de se apresentar diante do Senhor exatamente
           {
             author: "São Bernardo de Claraval",
             text: "A humildade é a virtude pela qual o homem se conhece exatamente como é e, por este conhecimento verdadeiro, se torna desprezível aos seus próprios olhos.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa São Gregório Magno",
-            text: "A soberba é o sinal da ruína iminente. Quando o coração se engorda de complacência própria, deixa de ter espaço para a luz e a graça do Espírito Santo.",
           },
         ],
       },
@@ -286,22 +284,20 @@ São Miguel Arcanjo é o grande estrategista do Céu. Ele não combate com armas
             code: "CIC §2728",
             text: "O combate de oração deve enfrentar aquilo que experimentamos como nossas falhas: o desânimo diante de nossas aridez e tibieza, e a tristeza de não termos dado tudo ao Senhor.",
           },
+          {
+            code: "CIC §409",
+            text: "A situação dramática do mundo que 'jaz sob o poder do Maligno' faz da vida do homem um combate espiritual. Este combate dura toda a vida.",
+          },
+          {
+            code: "CIC §2016",
+            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
+          },
         ],
         fathers: [
           {
             author: "Santo Inácio de Antioquia",
             text: "Permanecei firmes como a bigorna sob os golpes do martelo. É próprio do grande atleta receber golpes e vencer.",
             source: "Carta a São Policarpo",
-          },
-        ],
-        doctors: [
-          {
-            author: "São João da Cruz",
-            text: "A alma que caminha no amor de Deus não se cansa nem se enfada nas dificuldades; encontra sua força no silêncio da esperança.",
-          },
-          {
-            author: "São Padre Pio de Pietrelcina",
-            text: "A oração é a melhor arma que possuímos; ela é uma chave que abre o coração de Deus. Não desanimeis se a luta for árdua.",
           },
         ],
         magisterium: [
@@ -400,6 +396,10 @@ Em nossa caminhada diária, ter fé não significa ausência de trevas ou sentim
             code: "CIC §162",
             text: "A fé é um dom gratuito que Deus faz ao homem. Podemos perder este dom inestimável; para viver, crescer e perseverar na fé até o fim, devemos alimentá-la com a Palavra de Deus e a oração.",
           },
+          {
+            code: "CIC §144",
+            text: "Obedecer na fé é submeter-se livremente à palavra ouvida, porque sua verdade é garantida por Deus, que é a própria Verdade.",
+          },
         ],
         fathers: [
           {
@@ -412,10 +412,6 @@ Em nossa caminhada diária, ter fé não significa ausência de trevas ou sentim
           {
             author: "São Tomás de Aquino",
             text: "Crer é um ato da inteligência que assente à verdade divina por imperativo da vontade movida por Deus mediante a graça.",
-          },
-          {
-            author: "São Bernardo de Claraval",
-            text: "A fé não é uma opinião incerta, mas uma certeza firme que habita no fundo do coração pelo Espírito Santo.",
           },
         ],
         magisterium: [
@@ -514,21 +510,19 @@ Combater a mentira exige coragem para assumir os próprios erros, moderação ao
             code: "CIC §2477",
             text: "O respeito pela reputação das pessoas proíbe qualquer atitude e palavra capazes de lhes causar um dano injusto: a detração e a calúnia.",
           },
-        ],
-        fathers: [
           {
-            author: "São Gregório Nazianzeno",
-            text: "A palavra é o espelho da alma: como é o homem, assim é a sua palavra.",
+            code: "CIC §2478",
+            text: "Para evitar o julgamento temerário, cada um deve interpretar, na medida do possível, em sentido favorável os pensamentos, palavras e atos do seu próximo.",
+          },
+          {
+            code: "CIC §1849",
+            text: "O pecado é uma falta contra a razão, a verdade, a reta consciência; é uma falha no amor verdadeiro para com Deus e para com o próximo... Foi definido como 'uma palavra, um ato ou um desejo contrários à Lei eterna'.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A mentira é um vício oposto à veracidade. Todo engano nas palavras fere a justiça e a ordem devida nas relações humanas.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "A língua do murmurador é como um dardo envenenado que fere três pessoas ao mesmo tempo: quem fala, quem escuta e aquele de quem se fala.",
           },
         ],
         magisterium: [
@@ -625,21 +619,19 @@ O combate pela castidade não é apenas uma renúncia negativa, mas uma afirmaç
             code: "CIC §2520",
             text: "O combate pela pureza envolve a modéstia, que guarda a intimidade da pessoa e recusa desvendar o que deve permanecer oculto.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "A castidade faz do homem terrestre um anjo do céu; ela ilumina a mente para ver a Deus.",
+            code: "CIC §2526",
+            text: "A modéstia dos pensamentos e olhares exige uma purificação do clima cultural e uma rejeição da curiosidade desordenada.",
+          },
+          {
+            code: "CIC §1809",
+            text: "A temperança é a virtude moral que modera a atração dos prazeres e assegura o domínio da vontade sobre os instintos.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A luxúria enfraquece a razão e gera a cegueira da alma, enquanto a pureza conserva a clareza do julgamento moral.",
-          },
-          {
-            author: "Santo Afonso Maria de Ligório",
-            text: "Nas tentações contra a pureza, a melhor vitória é a fuga imediata e o recurso à oração à Virgem Santíssima.",
           },
         ],
         magisterium: [
@@ -840,21 +832,19 @@ São Miguel Arcanjo é o guardião da paz divina. Ele nos ensina que a verdadeir
             code: "CIC §2302",
             text: "A ira é um desejo de vingança. Desejar a vingança para o mal de quem se deve punir é ilícito; mas é louvável impor uma reparação para a correção dos vícios e a conservação da justiça.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "Nada nos torna tão semelhantes a Deus quanto a disposição de perdoar os que nos ofenderam.",
+            code: "CIC §2844",
+            text: "A oração pelos nossos inimigos é o cume da oração cristã. Ela nos configura com o Coração de Jesus que entregou Sua vida pelos pecadores.",
+          },
+          {
+            code: "CIC §2305",
+            text: "A paz terrena é imagem e fruto da paz de Cristo... Ela é a 'tranquilidade da ordem' fundada na justiça e na caridade.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "O perdão das ofensas é uma obra de misericórdia espiritual superior a dar bens materiais, pois cura a alma da divisão e da amargura.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Um só ato de perdão dito com o coração vale mais do que muitos dias de jejum e grandes mortificações.",
           },
         ],
         magisterium: [
@@ -1054,21 +1044,19 @@ São Miguel Arcanjo nos convida à sobriedade dos filhos de Deus. O jejum e a ab
             code: "CIC §2043",
             text: "O quarto mandamento da Igreja (jejuar e abster-se de carne) assegura os tempos de ascese e de penitência que nos preparam para as festas litúrgicas.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "O jejum é o alimento da alma, o fortalecimento da mente e a destruição dos maus pensamentos.",
+            code: "CIC §1434",
+            text: "A penitência interior do cristão pode ter expressões muito variadas. A Escritura e os Padres insistem sobretudo em três formas: o jejum, a oração, a esmola.",
+          },
+          {
+            code: "CIC §2545",
+            text: "Todos os fiéis devem orientar retamente os seus afetos, para que não sejam impedidos de buscar a caridade perfeita pelo uso das coisas do mundo.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A gula embota o sentido espiritual e inclina o homem à preguiça e à imoralidade, enquanto a sobriedade eleva a mente à contemplação.",
-          },
-          {
-            author: "São Bernardo de Claraval",
-            text: "Aquele que controla a gula abre a porta para todas as outras virtudes entrarem em seu coração.",
           },
         ],
         magisterium: [
@@ -1161,6 +1149,10 @@ São Miguel Arcanjo é o mensageiro da paz e da vitória de Deus. Ele nos record
             code: "CIC §305",
             text: "Jesus pede um abandono filial à Providência do Pai Celeste, que cuida até das menores necessidades dos Seus filhos.",
           },
+          {
+            code: "CIC §2016",
+            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
+          },
         ],
         fathers: [
           {
@@ -1172,10 +1164,6 @@ São Miguel Arcanjo é o mensageiro da paz e da vitória de Deus. Ele nos record
           {
             author: "São Tomás de Aquino",
             text: "A esperança apoia-se na omnipotência e na misericórdia de Deus; por isso, para quem confia no Senhor, nada é impossível.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Não antecipes os males de amanhã. O mesmo Pai que cuida de ti hoje, cuidará de ti amanhã e sempre.",
           },
         ],
         magisterium: [
@@ -1268,21 +1256,19 @@ São Miguel Arcanjo é o protótipo da pronta obediência celeste. Quando o Senh
             code: "CIC §2062",
             text: "Os Dez Mandamentos indicam as condições de uma vida liberta da escravidão do pecado. A obediência aos mandamentos é a resposta do homem ao amor de Deus.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Inácio de Antioquia",
-            text: "Aquele que obedece ao bispo e aos legítimos pastores obedece ao próprio Cristo, que é o Bispo Supremo das nossas almas.",
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
+          },
+          {
+            code: "CIC §1808",
+            text: "A fortaleza é a virtude moral que assegura a firmeza e a constância na busca do bem. Ela torna o homem capaz de vencer o medo das críticas e da perseguição.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A obediência é a maior das virtudes morais, pois despreza a própria vontade por amor a Deus, o que é superior a sacrificar bens materiais.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Uma só ação feita por obediência vale mais do que mil obras realizadas por escolha própria e gosto pessoal.",
           },
         ],
         magisterium: [
@@ -1375,21 +1361,19 @@ São Miguel Arcanjo nos convida à transparência da alma. No Céu não existem 
             code: "CIC §1752",
             text: "A intenção é um elemento essencial na qualificação moral da ação. Ela visa ao fim da ação; orienta o agir para o bem supremo.",
           },
-        ],
-        fathers: [
           {
-            author: "São Gregório Nazianzeno",
-            text: "Não busqueis os aplausos da multidão, mas a aprovação do único Juiz perfeitamente justo, que conhece os segredos da alma.",
+            code: "CIC §2472",
+            text: "O dever de participar na vida da Igreja obriga os cristãos a prestar testemunho da fé. O testemunho é um ato de justiça que estabelece ou faz conhecer a verdade.",
+          },
+          {
+            code: "CIC §224",
+            text: "Crer em Deus significa viver em ação de graças: se Deus nos criou e nos salva, a nossa atitude fundamental deve ser o agradecimento.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A intenção é dita pura quando busca a Deus como fim último, sem mistura de vaidade ou interesse egoísta.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Fazer as coisas ordinárias com grande intenção de agradar a Deus é o segredo da verdadeira santidade.",
           },
         ],
         magisterium: [
@@ -1494,10 +1478,6 @@ São Miguel Arcanjo é o zelador dos mistérios divinos. Na Santa Missa, o céu 
             author: "São Tomás de Aquino",
             text: "Nenhum outro sacramento é mais salutar que a Eucaristia, pois nele não se recebe apenas a graça, mas o próprio Autor da graça.",
           },
-          {
-            author: "São João Maria Vianney",
-            text: "Todas as boas obras reunidas não equivalem ao Sacrifício da Santa Missa, porque são obras dos homens, enquanto a Missa é obra de Deus.",
-          },
         ],
         magisterium: [
           {
@@ -1589,21 +1569,19 @@ São Miguel Arcanjo nos convida à fortaleza serena. A vitória espiritual não 
             code: "CIC §1505",
             text: "Pela sua paixão e morte na cruz, Cristo deu um novo sentido ao sofrimento: este pode doravante configurar-nos com Ele e unir-nos à sua paixão redentora.",
           },
-        ],
-        fathers: [
           {
-            author: "São Cipriano de Cartago",
-            text: "A paciência é o fundamento e a coroa de todas as virtudes. Sem a paciência, a fé não persevera e a caridade esfria.",
+            code: "CIC §1808",
+            text: "A fortaleza é a virtude moral que assegura a firmeza e a constância na busca do bem. Ela torna o homem capaz de vencer o medo das críticas e da perseguição.",
+          },
+          {
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "A paciência é a virtude moral que nos impede de deixar que a tristeza nos afaste do bem da razão e da graça divina.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Ganha-se mais com um grama de paciência no sofrimento do que com cem quilos de grandes obras feitas no bem-estar.",
           },
         ],
         magisterium: [
@@ -1696,11 +1674,9 @@ São Miguel Arcanjo é um anjo de oração e adoração incessante. Ele nos ensi
             code: "CIC §2725",
             text: "A oração é um combate. Contra quem? Contra nós mesmos e contra as astúcias do Tentador, que tudo faz para desviar o homem da oração.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "A oração é a âncora da alma, a luz da mente, o consolo dos aflitos e o flagelo dos demônios.",
+            code: "CIC §2728",
+            text: "O combate de oração deve enfrentar aquilo que experimentamos como nossas falhas: o desânimo diante de nossas aridez e tibieza, e a tristeza de não termos dado tudo ao Senhor.",
           },
         ],
         doctors: [
@@ -2017,11 +1993,9 @@ São Miguel Arcanjo é um modelo de fidelidade incondicional aos pequenos e gran
             code: "CIC §2013",
             text: "Todos os fiéis cristãos são chamados à plenitude da vida cristã e à perfeição da caridade. Esta santidade é cultivada no cumprimento dos deveres ordinários.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "Aquele que despreza as pequenas coisas cairá pouco a pouco. A santidade é tecida no tear dos deveres cotidianos.",
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
           },
         ],
         doctors: [
@@ -2125,21 +2099,19 @@ São Miguel Arcanjo vive no silêncio adorador dos Céus. O silêncio dos anjos 
             code: "CIC §2304",
             text: "A paz não é a simples ausência de guerra... A paz é a 'tranquilidade da ordem'. É obra da justiça e efeito da caridade.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "O silêncio é a linguagem de Deus. Cala os barulhos da terra para que possas ouvir a voz do Teu Criador.",
+            code: "CIC §2725",
+            text: "A oração é um combate. Contra quem? Contra nós mesmos e contra as astúcias do Tentador, que tudo faz para desviar o homem da oração.",
+          },
+          {
+            code: "CIC §305",
+            text: "Jesus pede um abandono filial à Providência do Pai Celeste, que cuida até das menores necessidades dos Seus filhos.",
           },
         ],
         doctors: [
           {
             author: "São João da Cruz",
             text: "O Pai disse uma só Palavra, que foi o Seu Filho, e a diz sempre no eterno silêncio; e no silêncio ela deve ser ouvida pela alma.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Nunca coloques o teu coração em perturbação por motivo algum. Mantém a tua alma em paz diante de Deus.",
           },
         ],
         magisterium: [
@@ -2232,21 +2204,19 @@ São Miguel Arcanjo é o anjo da perseverança invencível. Ele permaneceu inaba
             code: "CIC §162",
             text: "Para viver, crescer e perseverar na fé até ao fim, devemos alimentá-la com a Palavra de Deus e pedir ao Senhor que a aumente.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "A perseverança é o dom supremo de Deus, pelo qual mantemos a fé viva e a caridade operante até a hora da morte.",
+            code: "CIC §1817",
+            text: "A esperança é a virtude teologal pela qual desejamos o Reino dos Céus e a Vida Eterna como nossa felicidade, pondo nossa confiança nas promessas de Cristo.",
+          },
+          {
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "Nenhuma virtude é premiada sem a perseverança, pois somente quem persevera até o fim alcança a coroa da vida eterna.",
-          },
-          {
-            author: "Santo Afonso Maria de Ligório",
-            text: "Pedi a Deus todos os dias a santa perseverança final. Quem pede perseverança pede a própria salvação eterna.",
           },
         ],
         magisterium: [
@@ -2339,21 +2309,19 @@ São Miguel Arcanjo é o campeão da caridade divina. Ele combateu o dragão por
             code: "CIC §2844",
             text: "A oração pelos nossos inimigos é o cume da oração cristã. Ela nos configura com o Coração de Jesus que entregou Sua vida pelos pecadores.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "Nada nos aproxima tanto de Deus e nada nos torna tão semelhantes a Ele como o amor e a oração por aqueles que nos odeiam.",
+            code: "CIC §2843",
+            text: "A recusa de perdoar aos nossos irmãos fecha o nosso coração; a sua dureza torna-o impermeável ao amor misericordioso do Pai.",
+          },
+          {
+            code: "CIC §1825",
+            text: "A caridade é paciente e prestativa. O amor suporta tudo, crê tudo, espera tudo, suporta tudo.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "Amar o inimigo enquanto homem criado à imagem de Deus é preceito de caridade; amar o seu pecado é ilícito.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "O perdão oferecido ao inimigo é o sacrifício mais agradável que podemos colocar sobre o altar da nossa alma.",
           },
         ],
         magisterium: [
@@ -2446,21 +2414,19 @@ São Miguel Arcanjo é o iluminador dos espíritos. Ele nos ensina a rejeitar pr
             code: "CIC §2526",
             text: "A modéstia dos pensamentos e olhares exige uma purificação do clima cultural e uma rejeição da curiosidade desordenada.",
           },
+          {
+            code: "CIC §2478",
+            text: "Para evitar o julgamento temerário, cada um deve interpretar, na medida do possível, em sentido favorável os pensamentos, palavras e atos do seu próximo.",
+          },
+          {
+            code: "CIC §2725",
+            text: "A oração é um combate. Contra quem? Contra nós mesmos e contra as astúcias do Tentador, que tudo faz para desviar o homem da oração.",
+          },
         ],
         fathers: [
           {
             author: "São João Cassiano",
             text: "Não está em nosso poder impedir que os pensamentos surjam na mente, mas está em nosso poder rejeitá-los ou acolhê-los.",
-          },
-        ],
-        doctors: [
-          {
-            author: "São Jerônimo",
-            text: "Esmaga a cabeça da serpente assim que ela surgir na tua imaginação, antes que o seu veneno contamine o teu coração.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Não te perturbes com os maus pensamentos que cruzam a tua mente; o inimigo é como um cão acorrentado que ladra mas não morde quem não se aproxima.",
           },
         ],
         magisterium: [
@@ -2553,21 +2519,17 @@ São Miguel Arcanjo é o mensageiro da compaixão e da verdade divina. Ele nos r
             code: "CIC §1468",
             text: "Todo o valor do sacramento da Penitência consiste em reestabelecer-nos na graça de Deus e unir-nos a Ele numa santa amizade.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "Não há pecado ou miséria que o sangue de Cristo não possa lavar quando a alma se arrepende com humildade.",
-          },
-        ],
-        doctors: [
-          {
-            author: "São Bernardo de Claraval",
-            text: "Minha única esperança é a misericórdia do Senhor. Nunca me faltará a Sua graça se eu não parar de pedir.",
+            code: "CIC §1850",
+            text: "O pecado é uma ofensa a Deus: 'Contra ti, só contra ti pequei, o que é mau aos teus olhos eu fiz'. O pecado é assim 'o amor de si mesmo até ao despreço de Deus'.",
           },
           {
-            author: "Santo Afonso Maria de Ligório",
-            text: "Deus quer mais perdoar ao pecador arrependido do que o pecador deseja ser perdoado.",
+            code: "CIC §1817",
+            text: "A esperança é a virtude teologal pela qual desejamos o Reino dos Céus e a Vida Eterna como nossa felicidade, pondo nossa confiança nas promessas de Cristo.",
+          },
+          {
+            code: "CIC §2843",
+            text: "A recusa de perdoar aos nossos irmãos fecha o nosso coração; a sua dureza torna-o impermeável ao amor misericordioso do Pai.",
           },
         ],
         magisterium: [
@@ -2660,21 +2622,19 @@ São Miguel Arcanjo vive para a glória de Deus e nada mais. Ele não busca a ad
             code: "CIC §1808",
             text: "A fortaleza é a virtude moral que assegura a firmeza e a constância na busca do bem. Ela torna o homem capaz de vencer o medo das críticas e da perseguição.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "Quem busca a glória dos homens é como uma criança que corre atrás de uma borboleta: gasta energia e no fim fica com as mãos vazias.",
+            code: "CIC §2478",
+            text: "Para evitar o julgamento temerário, cada um deve interpretar, na medida do possível, em sentido favorável os pensamentos, palavras e atos do seu próximo.",
+          },
+          {
+            code: "CIC §2467",
+            text: "O homem busca naturalmente a verdade. É tenazmente obrigado a aderir à verdade e a ordenar toda a sua vida segundo as exigências da verdade.",
           },
         ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "O respeito humano é uma forma de timidez moral que submete o julgamento da razão e da fé ao medo dos homens.",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Que nos importa se o mundo fala bem ou mal de nós, se diante de Deus fomos achados fiéis e sinceros?",
           },
         ],
         magisterium: [
@@ -2767,21 +2727,19 @@ São Miguel Arcanjo lidera a oração de ação de graças dos anjos no Céu. El
             code: "CIC §224",
             text: "Crer em Deus significa viver em ação de graças: se Deus nos criou e nos salva, a nossa atitude fundamental deve ser o agradecimento.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "Não há nada mais agradável a Deus do que uma alma que Lhe dá graças no meio das contrariedades da vida.",
+            code: "CIC §1823",
+            text: "Jesus faz da caridade o mandamento novo. Amando os seus até o fim, manifesta o amor do Pai que Ele mesmo recebe.",
+          },
+          {
+            code: "CIC §1832",
+            text: "Os frutos do Espírito Santo são perfeições que o Espírito forma em nós como primeiros frutos da glória eterna. A tradição da Igreja enumera doze: caridade, alegria, paz, paciência...",
           },
         ],
         doctors: [
           {
             author: "Santo Agostinho",
             text: "Que coisa melhor podemos trazer no coração, pronunciar com a boca e escrever com a pena do que esta palavra: 'Graças a Deus'?",
-          },
-          {
-            author: "São Francisco de Sales",
-            text: "Quem é grato nas pequenas coisas recebe a graça de permanecer fiel nas grandes provações.",
           },
         ],
         magisterium: [
@@ -2853,18 +2811,16 @@ São Miguel Arcanjo é o anjo da justiça reta de Deus. Ele nos ensina que a nó
             code: "CIC §2478",
             text: "Para evitar o julgamento temerário, cada um deve interpretar, na medida do possível, em sentido favorável os pensamentos, palavras e atos do seu próximo.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "Deixa o julgamento das intenções para Aquele que conhece os segredos dos corações; tu, cuida de julgar a ti mesmo.",
+            code: "CIC §1823",
+            text: "Jesus faz da caridade o mandamento novo. Amando os seus até o fim, manifesta o amor do Pai que Ele mesmo recebe.",
+          },
+          {
+            code: "CIC §2843",
+            text: "A recusa de perdoar aos nossos irmãos fecha o nosso coração; a sua dureza torna-o impermeável ao amor misericordioso do Pai.",
           },
         ],
         doctors: [
-          {
-            author: "São Francisco de Sales",
-            text: "Onde não puderes desculpar a ação do próximo, desculpa ao menos a sua intenção, pensando que agiu por ignorância ou fraqueza.",
-          },
           {
             author: "São Tomás de Aquino",
             text: "O julgamento temerário fere a justiça e a caridade, pois retira injustamente a boa reputação do irmão no tribunal interior da alma.",
@@ -3028,11 +2984,9 @@ São Miguel Arcanjo é o administrador dos bens de Deus e protetor dos necessita
             code: "CIC §2462",
             text: "A esmola dada aos pobres é um testemunho de caridade fraterna: é também uma prática de justiça que agrada a Deus.",
           },
-        ],
-        fathers: [
           {
-            author: "São Basílio Magno",
-            text: "A esmola não diminui a riqueza do homem, antes a aumenta e a multiplica diante do Criador.",
+            code: "CIC §1822",
+            text: "A caridade é a virtude teologal pela qual amamos a Deus sobre todas as coisas e ao próximo como a nós mesmos por amor de Deus.",
           },
         ],
         doctors: [
@@ -3114,6 +3068,10 @@ São Miguel Arcanjo é o anjo do ardor e do zelo divino. Ele não aceita meias m
             code: "CIC §2014",
             text: "O progresso espiritual tende para uma união cada vez mais íntima com Cristo. Esta união chama-se 'mística', porque participa no mistério de Cristo pelos sacramentos.",
           },
+          {
+            code: "CIC §2015",
+            text: "O caminho da perfeição passa pela cruz. Não há santidade sem renúncia e sem combate espiritual. O progresso espiritual implica a ascese e a mortificação, que conduzem gradualmente a viver na paz e na alegria das bem-aventuranças.",
+          },
         ],
         fathers: [
           {
@@ -3125,10 +3083,6 @@ São Miguel Arcanjo é o anjo do ardor e do zelo divino. Ele não aceita meias m
           {
             author: "São Tomás de Aquino",
             text: "A perfeição da vida cristã consiste na caridade; quanto mais a alma ama a Deus e ao próximo, mais perfeita ela se torna.",
-          },
-          {
-            author: "São Bernardo de Claraval",
-            text: "No caminho da santidade, quem não avança retrocede; não parar na busca do Amor é a única garantia de vitória.",
           },
         ],
         magisterium: [
@@ -3199,6 +3153,10 @@ São Miguel Arcanjo e as legiões celestes vivem na alegria radiante da visão b
           {
             code: "CIC §301",
             text: "Com a criação, Deus não abandona a sua criatura a si mesma. Dá-lhe a cada momento a graça de existir, de agir e de ser o termo para onde tende a sua vida.",
+          },
+          {
+            code: "CIC §2638",
+            text: "A ação de graças caracteriza a oração da Igreja que, ao celebrar a Eucaristia, manifesta e torna-se aquilo que é. Todo o acontecimento e toda a necessidade podem tornar-se oferenda de ação de graças.",
           },
         ],
         fathers: [
@@ -3288,21 +3246,17 @@ São Miguel Arcanjo é o Supremo Comandante dos Exércitos do Senhor. Ele nos co
             code: "CIC §2015",
             text: "O caminho da perfeição passa pela Cruz. Não há santidade sem renúncia e sem combate espiritual.",
           },
-        ],
-        fathers: [
           {
-            author: "São João Crisóstomo",
-            text: "O cristão que entra no campo de batalha sem a oração é como um soldado que corre nu para o meio das espadas.",
-          },
-        ],
-        doctors: [
-          {
-            author: "São Jerônimo",
-            text: "Empunha a espada da Palavra de Deus em todas as tuas tentações; o diabo foge da alma que medita as Escrituras.",
+            code: "CIC §2725",
+            text: "A oração é um combate. Contra quem? Contra nós mesmos e contra as astúcias do Tentador, que tudo faz para desviar o homem da oração.",
           },
           {
-            author: "São Bernardo de Claraval",
-            text: "São Miguel Arcanjo é o escudo invencível dos fiéis; com ele à frente, nenhum exército infernal pode prevalecer.",
+            code: "CIC §104",
+            text: "Na Sagrada Escritura, a Igreja encontra continuamente o seu alimento e a sua força, porque nela não acolhe apenas uma palavra humana, mas o que ela é verdadeiramente: a Palavra de Deus.",
+          },
+          {
+            code: "CIC §1808",
+            text: "A fortaleza é a virtude moral que assegura a firmeza e a constância na busca do bem. Ela torna o homem capaz de vencer o medo das críticas e da perseguição.",
           },
         ],
         magisterium: [
@@ -3462,18 +3416,16 @@ São Miguel Arcanjo é o defensor da Doutrina Eterna. Ele nos convida a ler a B�
             code: "CIC §133",
             text: "A Igreja exorta com veemência todos os fiéis à leitura frequente das divinas Escrituras. 'Ignorar as Escrituras é ignorar a Cristo'.",
           },
-        ],
-        fathers: [
           {
-            author: "São Jerônimo",
-            text: "Ama a leitura das Sagradas Escrituras e a sabedoria divina te amará; guarda a Palavra de Deus na tua mente e ela guardará o teu coração.",
+            code: "CIC §1814",
+            text: "A fé é a virtude teologal pela qual cremos em Deus e em tudo o que Ele nos disse e revelou, e que a Santa Igreja nos propõe para crer, porque Ele é a própria verdade.",
+          },
+          {
+            code: "CIC §2472",
+            text: "O dever de participar na vida da Igreja obriga os cristãos a prestar testemunho da fé. O testemunho é um ato de justiça que estabelece ou faz conhecer a verdade.",
           },
         ],
         doctors: [
-          {
-            author: "Santo Agostinho",
-            text: "A tua oração é o teu falar com Deus; a tua leitura da Bíblia é Deus a falar contigo.",
-          },
           {
             author: "São Tomás de Aquino",
             text: "A Sagrada Escritura é a regra infalível da fé católica, dada por Deus para iluminar a razão humana.",
@@ -3548,6 +3500,10 @@ São Miguel Arcanjo é o Príncipe de todos os Anjos da Guarda. Ele nos encoraja
             code: "CIC §329",
             text: "Os Anjos são servidores e mensageiros de Deus. 'Sendo criaturas puramente espirituais, têm inteligência e vontade: são criaturas pessoais e imortais'.",
           },
+          {
+            code: "CIC §335",
+            text: "Na liturgia celeste, a Igreja une-se aos anjos para adorar o Deus três vezes Santo; invoca a sua assistência e celebra a memória de São Miguel Arcanjo e de todas as milícias celestes.",
+          },
         ],
         fathers: [
           {
@@ -3560,10 +3516,6 @@ São Miguel Arcanjo é o Príncipe de todos os Anjos da Guarda. Ele nos encoraja
           {
             author: "São Tomás de Aquino",
             text: "O Anjo da Guarda é designado por Deus para guiar o homem pelo caminho da salvação e afastar os perigos do corpo e da alma.",
-          },
-          {
-            author: "São Basílio Magno",
-            text: "Nenhum fiel duvide da presença do seu Anjo; ele é o guarda invisível e poderoso da tua alma.",
           },
         ],
         magisterium: [
@@ -3724,20 +3676,10 @@ São Miguel Arcanjo e os anjos da corte celeste adoram a Jesus Eucarístico com 
             text: "Para responder a este convite, devemos preparar-nos para este momento tão grande e tão sagrado. Aquele que tiver consciência de ter cometido um pecado mortal deve receber o sacramento da Reconciliação antes de se aproximar da Comunhão.",
           },
         ],
-        fathers: [
-          {
-            author: "São João Crisóstomo",
-            text: "Quando vires o Altar e o sacerdote oferecendo o Sacrifício, pensa que os Anjos estão ali prostrados em adoradora reverência.",
-          },
-        ],
         doctors: [
           {
             author: "São Tomás de Aquino",
             text: "Nenhum outro sacramento é mais salutar do que a Eucaristia; por ele os pecados são purificados e as virtudes aumentadas na alma.",
-          },
-          {
-            author: "Santo Afonso Maria de Ligório",
-            text: "A adoração ao Santíssimo Sacramento é a maior das devoções depois dos sacramentos e a mais cara a Deus.",
           },
         ],
         magisterium: [
@@ -3809,6 +3751,10 @@ São Miguel Arcanjo é o guardião da paz das almas. Ele nos ensina a descansar 
             code: "CIC §2305",
             text: "A paz terrena é imagem e fruto da paz de Cristo... Ela é a 'tranquilidade da ordem' fundada na justiça e na caridade.",
           },
+          {
+            code: "CIC §1817",
+            text: "A esperança é a virtude teologal pela qual desejamos o Reino dos Céus e a Vida Eterna como nossa felicidade, pondo nossa confiança nas promessas de Cristo.",
+          },
         ],
         fathers: [
           {
@@ -3820,10 +3766,6 @@ São Miguel Arcanjo é o guardião da paz das almas. Ele nos ensina a descansar 
           {
             author: "São Francisco de Sales",
             text: "Não te preocupes com o que acontecerá amanhã; o mesmo Pai Eterno que cuida de ti hoje cuidará de ti amanhã e sempre.",
-          },
-          {
-            author: "São João da Cruz",
-            text: "Na tempestade, mantém o teu coração em paz e confiança em Deus; a perturbação é o vento do inimigo.",
           },
         ],
         magisterium: [
@@ -3895,21 +3837,17 @@ São Miguel Arcanjo vem com a sua espada de luz cortar as correntes do rancor e 
             code: "CIC §1460",
             text: "A satisfação ou penitência serve para reparar o dano causado e curar as feridas espirituais deixadas pelo pecado na memória e na alma.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "Queres libertar a tua alma? Perdoa de coração a quem te ofendeu e a paz de Deus reinará na tua memória.",
-          },
-        ],
-        doctors: [
-          {
-            author: "São João da Cruz",
-            text: "Purifica a tua memória de todas as imagens e mágoas passadas para seres habitado unicamente por Deus.",
+            code: "CIC §2844",
+            text: "A oração pelos nossos inimigos é o cume da oração cristã. Ela nos configura com o Coração de Jesus que entregou Sua vida pelos pecadores.",
           },
           {
-            author: "São Francisco de Sales",
-            text: "O perdão sincero tira a amargura da alma e restaura a doce paz da caridade nas relações humanas.",
+            code: "CIC §2305",
+            text: "A paz terrena é imagem e fruto da paz de Cristo... Ela é a 'tranquilidade da ordem' fundada na justiça e na caridade.",
+          },
+          {
+            code: "CIC §1468",
+            text: "Todo o valor do sacramento da Penitência consiste em reestabelecer-nos na graça de Deus e unir-nos a Ele numa santa amizade.",
           },
         ],
         magisterium: [
@@ -3981,11 +3919,9 @@ São Miguel Arcanjo é o advogado defensor dos fiéis no tribunal do Juízo e o 
             code: "CIC §1022",
             text: "Cada homem recebe na sua alma imortal a retribuição eterna no seu juízo particular, que refere a sua vida a Cristo, quer através duma purificação, quer para entrar imediatamente na felicidade do céu.",
           },
-        ],
-        fathers: [
           {
-            author: "Santo Agostinho",
-            text: "Vive de tal modo a tua vida presente que não tenhas medo de comparecer diante de Deus no dia do Juízo.",
+            code: "CIC §2016",
+            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
           },
         ],
         doctors: [
@@ -4069,21 +4005,17 @@ Mas o encerramento desta Quaresma não é um fim, é um novo começo! Continuemo
             code: "CIC §2854",
             text: "Ao pedir a libertação do Maligno, a Igreja pede também a libertação de todos os males presentes, passados e futuros, dos quais ele é autor ou instigador.",
           },
-        ],
-        fathers: [
           {
-            author: "Papa São Leão Magno",
-            text: "O brado de São Miguel 'Quis ut Deus?' é a bandeira vitoriosa que humilha o orgulho de Satanás e exalta a soberania do Criador.",
-          },
-        ],
-        doctors: [
-          {
-            author: "São Bernardo de Claraval",
-            text: "Demos graças a Deus por São Miguel Arcanjo, nosso defensor no combate e nosso guia para o Reino dos Céus.",
+            code: "CIC §336",
+            text: "Desde o seu início até à hora da morte, a vida humana é cercada pela sua proteção e pela sua intercesão. 'Cada fiel tem ao seu lado um anjo como protetor e pastor para o conduzir à vida'.",
           },
           {
-            author: "Santo Afonso Maria de Ligório",
-            text: "São Miguel Arcanjo recompensará com graças abundantes no Céu todos os que o honraram com fervor nesta terra.",
+            code: "CIC §409",
+            text: "A situação dramática do mundo que 'jaz sob o poder do Maligno' faz da vida do homem um combate espiritual. Este combate dura toda a vida.",
+          },
+          {
+            code: "CIC §2016",
+            text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
           },
         ],
         magisterium: [
