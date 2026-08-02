@@ -622,20 +622,10 @@ export default function SaintMichaelLent() {
                     </div>
                   </div>
 
-                  {/* 8. Penitência para hoje */}
-                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
-                      8. Penitência para hoje
-                    </span>
-                    <p className={`font-serif font-semibold italic text-foreground ${fontSize}`}>
-                      "{currentDayData.suggestedPenance}"
-                    </p>
-                  </div>
-
-                  {/* 9. Reflexão Bíblica */}
+                  {/* 8. Reflexão Bíblica */}
                   <div className="rounded-xl border-l-4 border-amber-600 bg-amber-500/10 p-5 space-y-3">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-400 font-serif">
-                      9. Reflexão Bíblica
+                      8. Reflexão Bíblica
                     </span>
                     <p className="font-serif font-bold text-amber-800 dark:text-amber-300 text-sm flex items-center gap-1.5">
                       <BookOpen size={16} /> Referência: {currentDayData.scripture.reference}
@@ -650,18 +640,18 @@ export default function SaintMichaelLent() {
                     )}
                   </div>
 
-                  {/* 10. Reflexão do dia */}
+                  {/* 9. Reflexão do Dia */}
                   <div className="space-y-2 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">10. Reflexão do Dia</h3>
+                    <h3 className="font-serif text-lg font-bold text-foreground">9. Reflexão do Dia</h3>
                     <p className={`font-serif leading-relaxed text-muted-foreground ${fontSize} whitespace-pre-line`}>
                       {currentDayData.meditation}
                     </p>
                   </div>
 
-                  {/* 11. Fundamentação na Tradição da Igreja */}
+                  {/* 10. Fundamentação na Tradição da Igreja */}
                   {currentDayData.churchTradition && (
                     <div className="space-y-3 pt-2 border-t border-border">
-                      <h3 className="font-serif text-lg font-bold text-foreground">11. Fundamentação na Tradição da Igreja</h3>
+                      <h3 className="font-serif text-lg font-bold text-foreground">10. Fundamentação na Tradição da Igreja</h3>
                       
                       {currentDayData.churchTradition.cic && (
                         <div className="rounded-xl border border-border bg-muted/20 p-4 space-y-2">
@@ -717,11 +707,11 @@ export default function SaintMichaelLent() {
                     </div>
                   )}
 
-                  {/* 12. Oração: Entrega a São Miguel */}
+                  {/* 11. Oração: Entrega a São Miguel */}
                   {currentDayData.deliveryPrayer && (
                     <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3 border-t border-border">
                       <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
-                        12. Oração: Entrega a São Miguel
+                        11. Oração: Entrega a São Miguel
                       </h3>
                       <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
                         {currentDayData.deliveryPrayer}
@@ -729,19 +719,19 @@ export default function SaintMichaelLent() {
                     </div>
                   )}
 
-                  {/* 13. Exercício Espiritual */}
+                  {/* 12. Exercício Espiritual */}
                   <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
-                      13. Exercício Espiritual
+                      12. Exercício Espiritual
                     </span>
                     <p className={`font-serif leading-relaxed text-foreground ${fontSize}`}>
                       "{currentDayData.spiritualExercise}"
                     </p>
                   </div>
 
-                  {/* 14. Citações dos Santos */}
+                  {/* 13. Citações dos Santos */}
                   <div className="space-y-3 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">14. Citações dos Santos</h3>
+                    <h3 className="font-serif text-lg font-bold text-foreground">13. Citações dos Santos</h3>
                     {currentDayData.saintQuotesList ? (
                       <div className="grid gap-3 sm:grid-cols-2">
                         {currentDayData.saintQuotesList.map((sq, idx) => (
@@ -769,9 +759,9 @@ export default function SaintMichaelLent() {
                     )}
                   </div>
 
-                  {/* 15. Exame de Consciência (3 Perguntas Diárias) */}
+                  {/* 14. Exame de Consciência (3 Perguntas Diárias) */}
                   <div className="space-y-2 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">15. Exame de Consciência (3 Perguntas Diárias)</h3>
+                    <h3 className="font-serif text-lg font-bold text-foreground">14. Exame de Consciência (3 Perguntas Diárias)</h3>
                     <ul className="space-y-2 font-serif text-sm text-muted-foreground">
                       {currentDayData.examination.map((q, idx) => (
                         <li key={idx} className="flex items-start gap-2 bg-muted/20 p-2.5 rounded-lg border border-border">
@@ -780,6 +770,16 @@ export default function SaintMichaelLent() {
                         </li>
                       ))}
                     </ul>
+                  </div>
+
+                  {/* 15. Penitência para hoje */}
+                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
+                      15. Penitência para hoje
+                    </span>
+                    <p className={`font-serif font-semibold italic text-foreground ${fontSize}`}>
+                      "{currentDayData.suggestedPenance}"
+                    </p>
                   </div>
 
                   {/* 16. Consagração da Família a São Miguel Arcanjo */}
