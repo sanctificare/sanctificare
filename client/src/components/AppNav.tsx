@@ -39,14 +39,6 @@ const moreLinks = [
   { href: "/apoie-a-missao", label: "Apoie a Missão", icon: HeartHandshake },
 ];
 
-const mobilePrimaryLinks = [
-  { href: "/explore", label: "Explore", icon: Compass },
-  { href: "/biblia", label: "Bíblia", icon: BookOpen },
-  { href: "/rosario", label: "Terço", icon: RosaryIcon },
-  { href: "/liturgia", label: "Liturgia", icon: LiturgyIcon },
-  { href: "/lectio", label: "Lectio", icon: ScrollText },
-] as const;
-
 export default function AppNav() {
   const [location] = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
@@ -251,38 +243,6 @@ export default function AppNav() {
           </div>
         </div>
       </div>
-
-      {isAuthenticated && (
-        <>
-          <div className="h-20 lg:hidden" />
-          <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden border-t border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.22_0.07_260/0.97)] backdrop-blur-md">
-            <div className="grid grid-cols-5 px-2 py-1">
-              {mobilePrimaryLinks.map((item) => {
-                const isActive = location === item.href;
-                const Icon = item.icon;
-
-                return (
-                  <Link key={item.href} href={item.href}>
-                    <button
-                      aria-current={isActive ? "page" : undefined}
-                      className={`flex h-16 w-full flex-col items-center justify-center gap-1 rounded-xl transition-all ${
-                        isActive
-                          ? "bg-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.96_0.06_82)] shadow-[inset_0_0_0_1px_oklch(0.75_0.12_75/0.45)]"
-                          : "text-[oklch(0.80_0.03_260)] hover:text-[oklch(0.88_0.08_80)]"
-                      }`}
-                    >
-                      <Icon size={19} className={isActive ? "scale-105" : ""} />
-                      <span className={`text-[11px] leading-none ${isActive ? "font-semibold" : "font-medium"}`}>
-                        {item.label}
-                      </span>
-                    </button>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </>
-      )}
     </nav>
   );
 }
