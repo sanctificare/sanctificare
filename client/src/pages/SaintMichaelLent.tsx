@@ -228,8 +228,8 @@ export default function SaintMichaelLent() {
   }, [selectedDayNum]);
 
   // Audio accessibility rule:
-  // ALL AUDIO IS PREMIUM ONLY
-  const isAudioLocked = !isPremium;
+  // Days 1-7 are FREE for everyone (text + audio). Days 8-40 require Premium for Audio.
+  const isAudioLocked = !isPremium && selectedDayNum > 7;
 
   const isCurrentDayCompleted = state.completedDays.includes(selectedDayNum);
 
@@ -343,7 +343,7 @@ export default function SaintMichaelLent() {
             {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
               const active = dayNum === selectedDayNum;
               const isDone = state.completedDays.includes(dayNum);
-              const isAudioLockedDay = !isPremium;
+              const isAudioLockedDay = !isPremium && dayNum > 7;
 
               return (
                 <button
@@ -410,7 +410,7 @@ export default function SaintMichaelLent() {
               {/* ABA ÁUDIO */}
               {activeTab === "audio" && (
                 <div className="space-y-6 animate-fade-in">
-                  {/* Se o áudio estiver bloqueado (Dias 4-40 sem Premium) */}
+                  {/* Se o áudio estiver bloqueado (Dias 8-40 sem Premium) */}
                   {isAudioLocked ? (
                     <div className="py-12 text-center space-y-4">
                       <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
@@ -871,7 +871,7 @@ export default function SaintMichaelLent() {
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                   const active = dayNum === selectedDayNum;
                   const isDone = state.completedDays.includes(dayNum);
-                  const isAudioLockedDay = !isPremium;
+                  const isAudioLockedDay = !isPremium && dayNum > 7;
 
                   const dayItem = SAINT_MICHAEL_LENT.days.find((d) => d.number === dayNum);
                   const themeTitle = dayItem ? dayItem.theme : `Dia ${dayNum}: Combate Espiritual e Oração`;
