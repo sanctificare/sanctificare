@@ -420,10 +420,10 @@ export default function SaintMichaelLent() {
                         Dia {selectedDayNum} — Áudio Premium
                       </span>
                       <h3 className="font-serif text-xl sm:text-2xl font-bold text-white max-w-md mx-auto">
-                        O áudio é exclusivo para assinantes Sanctificare Premium
+                        Acompanhe as meditações em áudio no Sanctificare Premium
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                        Os áudios da Quaresma de São Miguel são um recurso Premium. O texto das orações tradicionais e a meditação do Dia {selectedDayNum} são <strong>100% gratuitos</strong> na aba <strong>TEXTO</strong>.
+                        O texto completo do Dia {selectedDayNum} está disponível gratuitamente na aba <strong>TEXTO</strong>. Se preferir ouvir a oração guiada em áudio, conheça nosso plano Premium.
                       </p>
 
                       <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
@@ -431,14 +431,14 @@ export default function SaintMichaelLent() {
                           onClick={() => setActiveTab("text")}
                           className="bg-amber-600 hover:bg-amber-700 text-white font-serif font-bold text-xs"
                         >
-                          <BookOpen size={14} className="mr-1.5" /> Ler Texto Gratuito do Dia {selectedDayNum}
+                          <BookOpen size={14} className="mr-1.5" /> Ler Texto do Dia {selectedDayNum}
                         </Button>
                         <Button
                           variant="outline"
                           onClick={() => setShowUpgradeModal(true)}
                           className="border-amber-500/40 text-amber-300 hover:bg-amber-500/10 font-serif font-bold text-xs"
                         >
-                          <Crown size={14} className="mr-1.5 text-amber-400" /> Desbloquear Áudios Premium
+                          <Crown size={14} className="mr-1.5 text-amber-400" /> Conhecer Plano Premium
                         </Button>
                       </div>
                     </div>
