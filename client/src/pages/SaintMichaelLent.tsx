@@ -22,7 +22,6 @@ import {
   Flame,
   ShieldCheck,
   Type,
-  ListFilter,
   ChevronDown,
   ChevronUp,
   ChevronLeft,
@@ -685,40 +684,6 @@ export default function SaintMichaelLent() {
                     />
                   ) : (
                     <div className="space-y-6">
-
-                  {/* Barra de Navegação Rápida (Índice Flutuante das 17 Partes) */}
-                  <div className="sticky top-2 z-20 bg-card/95 backdrop-blur-md border border-amber-500/20 rounded-2xl p-2.5 shadow-sm space-y-1.5">
-                    <div className="flex items-center justify-between px-1">
-                      <span className="text-[10px] font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                        <ListFilter size={12} /> Navegação Rápida no Texto (17 Partes)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar text-xs">
-                      {[
-                        { id: "sec-prayers", label: "1-7. Orações" },
-                        { id: "sec-biblia", label: "8. Bíblia" },
-                        { id: "sec-reflexao", label: "9. Meditação" },
-                        { id: "sec-tradicao", label: "10. Tradição" },
-                        { id: "sec-entrega", label: "11. Entrega" },
-                        { id: "sec-exercicio", label: "12. Exercício" },
-                        { id: "sec-santos", label: "13. Santos" },
-                        { id: "sec-exame", label: "14. Exame" },
-                        { id: "sec-penitencia", label: "15. Penitência" },
-                        { id: "sec-consagracao", label: "16-17. Consagração" },
-                      ].map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            const el = document.getElementById(item.id);
-                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                          }}
-                          className="shrink-0 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-300 font-serif font-semibold text-[11px] border border-amber-500/20 transition-all cursor-pointer"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* Passos 1 a 7: Orações Tradicionais & Consagração Solene */}
                   <div id="sec-prayers" className="scroll-mt-16 space-y-4">
