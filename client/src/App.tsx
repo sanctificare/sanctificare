@@ -72,6 +72,7 @@ const Premium = lazyWithPreload(() => import("./pages/Premium"));
 const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
 const ApoieMissao = lazyWithPreload(() => import("./pages/ApoieMissao"));
 const SaintMichaelLent = lazyWithPreload(() => import("./pages/SaintMichaelLent"));
+const SaintMichaelLentLanding = lazyWithPreload(() => import("./pages/SaintMichaelLentLanding"));
 
 
 // Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
@@ -94,6 +95,7 @@ const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] 
   Premium,
   PremiumSucesso,
   SaintMichaelLent,
+  SaintMichaelLentLanding,
 ];
 
 function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
@@ -179,6 +181,7 @@ function Router() {
         <Route path="/biblia" component={Bible} />
         <Route path="/novenas" component={Novenas} />
         <Route path="/novenas/:slug" component={NovenaDetails} />
+        <Route path="/quaresma-de-sao-miguel" component={SaintMichaelLentLanding} />
         <Route path="/quaresma-sao-miguel" component={SaintMichaelLent} />
         <Route path="/intencoes" component={ProtectedIntentionsRoute} />
         <Route path="/perfil" component={ProtectedProfileRoute} />
@@ -216,6 +219,7 @@ function AppShell() {
 
   const isLandingPage =
     location === "/" ||
+    location === "/quaresma-de-sao-miguel" ||
     location === "/login" ||
     location === "/redefinir-senha" ||
     location === "/privacidade" ||
