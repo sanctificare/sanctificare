@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
+import { SaintMichaelGuidedReader } from "@/components/saint-michael/SaintMichaelGuidedReader";
 import {
   SAINT_MICHAEL_CONSECRATION,
   SAINT_MICHAEL_LENT,
@@ -134,6 +135,7 @@ export default function SaintMichaelLent() {
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
+  const [textReaderMode, setTextReaderMode] = useState<"standard" | "guided">("standard");
   const [expandedTraditions, setExpandedTraditions] = useState<Record<string, boolean>>({ cic: true, fathers: true, doctors: true, magisterium: true });
   const toggleTradition = (key: string) => setExpandedTraditions((prev) => ({ ...prev, [key]: !prev[key] }));
   const pillNavRef = useRef<HTMLDivElement | null>(null);
@@ -581,32 +583,74 @@ export default function SaintMichaelLent() {
                       </h2>
                     </div>
 
-                    <div className="flex items-center gap-1.5 bg-muted/60 dark:bg-muted/40 p-1.5 rounded-xl border border-border/50 text-xs shrink-0 self-start sm:self-auto">
-                      <span className="text-[11px] font-bold text-muted-foreground px-1.5 flex items-center gap-1 shrink-0">
-                        <Type size={14} /> Fonte
-                      </span>
-                      <div className="flex items-center gap-1">
-                        {[
-                          { id: "text-sm", label: "P" },
-                          { id: "text-base", label: "M" },
-                          { id: "text-lg", label: "G" },
-                        ].map((item) => (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => setFontSize(item.id as "text-sm" | "text-base" | "text-lg")}
-                            className={`w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                              fontSize === item.id
-                                ? "bg-amber-600 text-white shadow-xs"
-                                : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
-                            }`}
-                          >
-                            {item.label}
-                          </button>
-                        ))}
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Alternador de Modo de Leitura */}
+                      <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/50 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => setTextReaderMode("standard")}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-serif font-bold transition-all cursor-pointer ${
+                            textReaderMode === "standard"
+                              ? "bg-amber-600 text-white shadow-xs"
+                              : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                          }`}
+                        >
+                          📄 Contínuo
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setTextReaderMode("guided")}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-serif font-bold transition-all cursor-pointer ${
+                            textReaderMode === "guided"
+                              ? "bg-amber-600 text-white shadow-xs"
+                              : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                          }`}
+                        >
+                          📖 Leitor Guiado
+                        </button>
+                      </div>
+
+                      {/* Controle de Tamanho de Fonte */}
+                      <div className="flex items-center gap-1.5 bg-muted/60 dark:bg-muted/40 p-1.5 rounded-xl border border-border/50 text-xs">
+                        <span className="text-[11px] font-bold text-muted-foreground px-1 flex items-center gap-1 shrink-0">
+                          <Type size={14} />
+                        </span>
+                        <div className="flex items-center gap-1">
+                          {[
+                            { id: "text-sm", label: "P" },
+                            { id: "text-base", label: "M" },
+                            { id: "text-lg", label: "G" },
+                          ].map((item) => (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => setFontSize(item.id as "text-sm" | "text-base" | "text-lg")}
+                              className={`w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                fontSize === item.id
+                                  ? "bg-amber-600 text-white shadow-xs"
+                                  : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
+                              }`}
+                            >
+                              {item.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
+
+                  {textReaderMode === "guided" ? (
+                    <SaintMichaelGuidedReader
+                      dayData={currentDayData}
+                      dayNumber={selectedDayNum}
+                      fontSize={fontSize}
+                      setFontSize={setFontSize}
+                      isCompleted={isCurrentDayCompleted}
+                      onToggleComplete={toggleDayComplete}
+                      penanceText={state.penance}
+                    />
+                  ) : (
+                    <div className="space-y-6">
 
                   {/* Barra de Navegação Rápida (Índice Flutuante das 17 Partes) */}
                   <div className="sticky top-2 z-20 bg-card/95 backdrop-blur-md border border-amber-500/20 rounded-2xl p-2.5 shadow-sm space-y-1.5">
@@ -897,9 +941,11 @@ export default function SaintMichaelLent() {
                         Excluir Anotação
                       </Button>
                     )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+            )}
 
               {/* Botão de Ação: Marcar Dia como Rezado (Igual ao anexo) */}
               <div className="pt-4 border-t border-white/10 dark:border-border/40">
