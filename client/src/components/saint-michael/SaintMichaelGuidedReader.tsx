@@ -6,7 +6,6 @@ import {
   BookOpen,
   CheckCircle2,
   Heart,
-  Type,
   ListFilter,
   Sparkles,
   Quote,
@@ -67,69 +66,31 @@ export function SaintMichaelGuidedReader({
   };
 
   return (
-    <div className="space-y-5 animate-fade-in pb-20">
-      {/* Top Header & Font Size Controls */}
+    <div className="space-y-5 animate-fade-in pb-36 lg:pb-20">
+      {/* Barra de Progresso das Etapas (título e fonte já ficam no cabeçalho da aba Texto, acima) */}
       <div className="bg-card border border-border/80 rounded-2xl p-4 shadow-sm space-y-3">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <span className="text-[10px] font-serif font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-              Modo Leitor Guiado Móvel
-            </span>
-            <h2 className="font-serif text-lg sm:text-xl font-bold text-foreground leading-snug">
-              Dia {dayNumber}: {dayData.theme}
-            </h2>
-          </div>
-
-          <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/50 text-xs shrink-0">
-            <span className="text-[10px] font-bold text-muted-foreground px-1 flex items-center gap-0.5">
-              <Type size={12} />
-            </span>
-            {[
-              { id: "text-sm", label: "P" },
-              { id: "text-base", label: "M" },
-              { id: "text-lg", label: "G" },
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setFontSize(item.id as "text-sm" | "text-base" | "text-lg")}
-                className={`w-6 h-6 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                  fontSize === item.id
-                    ? "bg-amber-600 text-white shadow-xs"
-                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/5"
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center justify-between text-[11px] font-serif font-bold">
+          <span className="text-amber-700 dark:text-amber-400">
+            Etapa {currentStep + 1} de {steps.length}: {steps[currentStep].title}
+          </span>
+          <span className="text-muted-foreground font-mono text-[10px]">
+            {Math.round(((currentStep + 1) / steps.length) * 100)}%
+          </span>
         </div>
-
-        {/* Step Progress Bar */}
-        <div className="space-y-1.5 pt-1 border-t border-border/50">
-          <div className="flex items-center justify-between text-[11px] font-serif font-bold">
-            <span className="text-amber-700 dark:text-amber-400">
-              Etapa {currentStep + 1} de {steps.length}: {steps[currentStep].title}
-            </span>
-            <span className="text-muted-foreground font-mono text-[10px]">
-              {Math.round(((currentStep + 1) / steps.length) * 100)}%
-            </span>
-          </div>
-          <div className="w-full bg-muted/70 h-2 rounded-full overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full transition-all duration-300"
-              style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-            />
-          </div>
+        <div className="w-full bg-muted/70 h-2 rounded-full overflow-hidden">
+          <div
+            className="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full transition-all duration-300"
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+          />
         </div>
 
         {/* Horizontal Step Pills Navigator */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto py-1 pr-4 scrollbar-none snap-x">
           {steps.map((step, idx) => (
             <button
               key={step.id}
               onClick={() => setCurrentStep(idx)}
-              className={`shrink-0 px-3 py-1 rounded-full text-[11px] font-serif font-semibold transition-all cursor-pointer border ${
+              className={`shrink-0 snap-start min-h-10 px-3 py-2 rounded-full text-[11px] font-serif font-semibold transition-all cursor-pointer border ${
                 currentStep === idx
                   ? "bg-amber-600 text-white border-amber-600 shadow-sm"
                   : idx < currentStep
@@ -388,8 +349,8 @@ export function SaintMichaelGuidedReader({
         )}
       </div>
 
-      {/* Sticky Bottom Action Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-md border-t border-border p-3 flex items-center justify-between gap-3 shadow-lg max-w-2xl mx-auto rounded-t-2xl">
+      {/* Sticky Bottom Action Navigation Bar (offset above the app's own mobile tab bar so it isn't hidden behind it) */}
+      <div className="fixed bottom-[calc(var(--mobile-bottom-nav-height)+var(--safe-area-bottom))] lg:bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-md border-t border-border p-3 flex items-center justify-between gap-3 shadow-lg max-w-2xl mx-auto rounded-t-2xl">
         <Button
           variant="outline"
           size="sm"
