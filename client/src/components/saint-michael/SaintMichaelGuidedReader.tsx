@@ -243,11 +243,11 @@ export function SaintMichaelGuidedReader({
               {dayData.saintQuotesList ? (
                 <div className="space-y-3">
                   {dayData.saintQuotesList.map((sq, idx) => (
-                    <div key={idx} className="p-3 rounded-xl bg-muted/30 border border-border/50 space-y-1">
-                      <span className="text-xs font-serif font-bold text-amber-800 dark:text-amber-300">
+                    <div key={idx} className="p-3.5 rounded-xl bg-muted/30 border border-border/50 space-y-1.5">
+                      <span className="text-sm font-serif font-bold text-amber-800 dark:text-amber-300">
                         {sq.author}
                       </span>
-                      <p className="font-serif text-xs italic text-muted-foreground leading-relaxed">
+                      <p className={`font-serif italic text-muted-foreground leading-relaxed ${fontSize}`}>
                         "{sq.quote}"
                       </p>
                     </div>

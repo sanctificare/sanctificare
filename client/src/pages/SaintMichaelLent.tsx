@@ -679,7 +679,7 @@ export default function SaintMichaelLent() {
                       "{currentDayData.scripture.text}"
                     </p>
                     {currentDayData.scripture.explanation && (
-                      <p className="text-xs font-serif text-muted-foreground pt-2 border-t border-amber-600/20 leading-relaxed">
+                      <p className={`font-serif text-muted-foreground pt-3 border-t border-amber-600/20 leading-relaxed ${fontSize}`}>
                         {currentDayData.scripture.explanation}
                       </p>
                     )}
@@ -813,14 +813,14 @@ export default function SaintMichaelLent() {
                       <div className="grid gap-3 sm:grid-cols-2">
                         {currentDayData.saintQuotesList.map((sq, idx) => (
                           <div key={idx} className="rounded-xl border border-border bg-card p-4 space-y-1.5">
-                            <span className="text-xs font-serif font-bold text-amber-700 dark:text-amber-400">
+                            <span className="text-sm font-serif font-bold text-amber-700 dark:text-amber-400">
                               {idx + 1}. {sq.author}
                             </span>
-                            <p className="font-serif text-xs italic text-muted-foreground leading-relaxed">
+                            <p className={`font-serif italic text-muted-foreground leading-relaxed ${fontSize}`}>
                               "{sq.quote}"
                             </p>
                             {sq.source && (
-                              <p className="text-[10px] font-serif text-muted-foreground/80">
+                              <p className="text-xs font-serif text-muted-foreground/80">
                                 ({sq.source})
                               </p>
                             )}
