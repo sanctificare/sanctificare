@@ -25,6 +25,8 @@ import {
   ListFilter,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -164,6 +166,15 @@ export default function SaintMichaelLent() {
       if (interval) clearInterval(interval);
     };
   }, [isPlaying, duration]);
+
+  // Deep link: open a shared "?dia=N" link directly on that day
+  useEffect(() => {
+    const dayParam = Number(new URLSearchParams(window.location.search).get("dia"));
+    if (dayParam >= 1 && dayParam <= 40) {
+      setState((prev) => ({ ...prev, selectedDay: dayParam }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Sync server progress into local state when available
   useEffect(() => {
@@ -317,11 +328,11 @@ export default function SaintMichaelLent() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-4">
           <div>
             <Link href="/explore">
-              <button className="mb-2 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] flex items-center gap-1">
+              <button className="mb-2 -ml-2 px-2 min-h-11 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] flex items-center gap-1">
                 <ArrowLeft size={16} /> Voltar ao catálogo de devocionais
               </button>
             </Link>
-            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+            <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
               Devocional • Jornada Espiritual de 40 Dias
             </p>
             <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-[oklch(0.22_0.07_260)] dark:text-amber-100 leading-tight break-words">
@@ -336,44 +347,64 @@ export default function SaintMichaelLent() {
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
         <div className="block lg:hidden mb-5">
           <div className="flex items-center justify-between mb-2 px-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
               Meditações (40 Dias)
             </span>
-            <span className="text-[10px] font-medium text-muted-foreground">
+            <span className="text-[11px] font-medium text-muted-foreground">
               Dia {selectedDayNum} de 40
             </span>
           </div>
-          <div
-            ref={pillNavRef}
-            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none snap-x -mx-4 px-4 sm:mx-0 sm:px-0"
-          >
-            {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
-              const active = dayNum === selectedDayNum;
-              const isDone = state.completedDays.includes(dayNum);
-              const isAudioLockedDay = !isPremium && dayNum > 7;
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              aria-label="Dia anterior"
+              disabled={selectedDayNum <= 1}
+              onClick={() => handleSelectDay(selectedDayNum - 1)}
+              className="shrink-0 w-11 h-11 rounded-full border border-border bg-card flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <div
+              ref={pillNavRef}
+              className="flex items-center gap-2 overflow-x-auto py-2 scrollbar-none snap-x px-1"
+            >
+              {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
+                const active = dayNum === selectedDayNum;
+                const isDone = state.completedDays.includes(dayNum);
+                const isAudioLockedDay = !isPremium && dayNum > 7;
 
-              return (
-                <button
-                  key={dayNum}
-                  data-active={active}
-                  onClick={() => handleSelectDay(dayNum)}
-                  className={`shrink-0 snap-start rounded-full px-3.5 py-1.5 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
-                    active
-                      ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
-                      : "bg-card text-foreground border-border hover:border-slate-300"
-                  }`}
-                >
-                  <span>Dia {dayNum}</span>
-                  {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
-                  {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={dayNum}
+                    data-active={active}
+                    onClick={() => handleSelectDay(dayNum)}
+                    className={`shrink-0 snap-start min-h-11 rounded-full px-3.5 py-2 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
+                      active
+                        ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
+                        : "bg-card text-foreground border-border hover:border-slate-300"
+                    }`}
+                  >
+                    <span>Dia {dayNum}</span>
+                    {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
+                    {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              aria-label="Próximo dia"
+              disabled={selectedDayNum >= 40}
+              onClick={() => handleSelectDay(selectedDayNum + 1)}
+              className="shrink-0 w-11 h-11 rounded-full border border-border bg-card flex items-center justify-center cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
         </div>
 
         {/* Layout Principal em 2 Colunas (Exatamente como NovenaDetails) */}
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
           
           {/* Coluna Principal: Conteúdo de Áudio / Texto */}
           <div
@@ -519,7 +550,7 @@ export default function SaintMichaelLent() {
                         <div className="flex items-center justify-center gap-5 pt-1">
                           <button
                             onClick={() => setCurrentTime(0)}
-                            className="text-slate-400 hover:text-white transition-colors"
+                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
                             aria-label="Reiniciar"
                           >
                             <RotateCcw size={16} />
@@ -527,17 +558,20 @@ export default function SaintMichaelLent() {
 
                           <button
                             onClick={() => {
+                              const shareUrl = new URL(window.location.href);
+                              shareUrl.searchParams.set("dia", String(selectedDayNum));
                               if (navigator.share) {
                                 void navigator.share({
                                   title: `Quaresma de São Miguel Arcanjo - Dia ${selectedDayNum}`,
                                   text: `Estou rezando o Dia ${selectedDayNum} da Quaresma de São Miguel no Sanctificare!`,
-                                  url: window.location.href,
+                                  url: shareUrl.toString(),
                                 });
                               } else {
+                                void navigator.clipboard?.writeText(shareUrl.toString());
                                 toast.success("Link da oração copiado para a área de transferência!");
                               }
                             }}
-                            className="text-slate-400 hover:text-white transition-colors"
+                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
                             aria-label="Compartilhar"
                           >
                             <Share2 size={16} />
@@ -558,7 +592,7 @@ export default function SaintMichaelLent() {
 
                           <button
                             onClick={() => setIsMuted(!isMuted)}
-                            className="text-slate-400 hover:text-white transition-colors"
+                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
                             aria-label="Mudo"
                           >
                             {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
