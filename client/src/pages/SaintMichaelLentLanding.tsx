@@ -89,8 +89,7 @@ export default function SaintMichaelLentLanding() {
           <div className="qsm-ornament"><span /><b>✦</b><span /></div>
           <p className="qsm-lead">Durante 40 dias, acompanhe as orações tradicionais, meditações e seu progresso diário em uma jornada feita para ajudar você a perseverar.</p>
           <div className="qsm-actions">
-            <button className="qsm-button qsm-gold" onClick={() => participate("hero")}><Sparkles /> Quero participar</button>
-            <button className="qsm-button qsm-outline" onClick={login}>Já tenho uma conta</button>
+            <button className="qsm-button qsm-gold qsm-hero-cta" onClick={() => participate("hero")}><Sparkles /> Iniciar Quaresma de São Miguel</button>
           </div>
           <div className="qsm-trust">
             <div><BookOpen /><strong>Orações</strong><small>tradicionais</small></div>
