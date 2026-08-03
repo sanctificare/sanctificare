@@ -36,8 +36,8 @@ describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
     expect(isSaintMichaelContentUnlocked(normalUser, dateAfterActivation)).toBe(true);
   });
 
-  it("calcula o término em 29/09/2026 excluindo os 6 domingos a partir de 15/08/2026", () => {
+  it("calcula o término dos 40 dias penitenciais excluindo os domingos a partir de 15/08/2026", () => {
     const endDate = calculateSaintMichaelEndDateIso("2026-08-15", 40);
-    expect(endDate).toBe("2026-09-29");
+    expect(endDate).toBe("2026-09-30");
   });
 });
