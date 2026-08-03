@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { BookOpen, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2 } from "lucide-react";
+import { BookOpen, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2, ShieldCheck } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
@@ -22,6 +22,7 @@ const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
 const SANCTIFICARE_SHARE_TEXT = `Conheça o Sanctificare: um app para rezar, acompanhar a liturgia e fortalecer sua vida espiritual. ${SANCTIFICARE_SHARE_URL}`;
 
 const secondaryLinks = [
+  { href: "/quaresma-sao-miguel", label: "Quaresma de São Miguel", desc: "40 dias de oração", icon: ShieldCheck, color: "text-amber-600 bg-amber-500/10 border-amber-500/30" },
   { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
   { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
   { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.36_0.15_20)] bg-[oklch(0.36_0.15_20/0.06)] border-[oklch(0.36_0.15_20/0.15)]" },
@@ -458,6 +459,47 @@ export default function Dashboard() {
           <div className="mt-4">
             <GooglePlayBanner variant="card" showDismiss={true} />
           </div>
+        </div>
+
+        {/* Banner Destaque Especial: Quaresma de São Miguel Arcanjo */}
+        <div className="section-block animate-fade-in my-6">
+          <Link href="/quaresma-sao-miguel" aria-label="Acessar Quaresma de São Miguel Arcanjo" className="block rounded-2xl focus-gold-ring">
+            <div className="relative overflow-hidden rounded-2xl border border-amber-500/40 bg-gradient-to-r from-[#181410] via-[#241a12] to-[#120f0c] p-5 sm:p-7 shadow-xl group cursor-pointer hover:border-amber-500/60 transition-all duration-300">
+              <img
+                src="/assets/quaresma-sao-miguel/hero-sao-miguel-classico.webp"
+                alt="São Miguel Arcanjo"
+                loading="lazy"
+                decoding="async"
+                onError={(event) => applyImageFallback(event.currentTarget)}
+                className="absolute inset-0 h-full w-full object-cover opacity-35 group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#12100e]/95 via-[#12100e]/80 to-transparent" />
+              <div className="absolute inset-0 bg-pattern-cross opacity-10" />
+
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="max-w-2xl space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full px-3 py-0.5 text-[11px] font-bold uppercase tracking-widest font-serif flex items-center gap-1.5 backdrop-blur-xs">
+                      <span>⚔️</span> Devocional • Início 15 de Agosto
+                    </span>
+                  </div>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold text-amber-100 group-hover:text-amber-300 transition-colors">
+                    Quaresma de São Miguel Arcanjo
+                  </h2>
+                  <p className="font-serif text-xs sm:text-sm text-amber-200/80 leading-relaxed max-w-xl">
+                    40 dias de oração, penitência e combate espiritual. Garanta sua presença para vivenciarmos juntos esta santa caminhada a partir de 15 de Agosto!
+                  </p>
+                </div>
+
+                <div className="shrink-0">
+                  <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-serif font-bold text-xs sm:text-sm px-5 py-2.5 shadow-lg group-hover:shadow-amber-500/20 transition-all">
+                    <span>Garantir Presença / Acessar</span>
+                    <ChevronRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
 
         {/* Destaques Principais - Layout Editorial Assimétrico */}
