@@ -126,7 +126,7 @@ export const SAINT_MICHAEL_LENT: SpiritualJourney = {
   id: "quaresma-sao-miguel-arcanjo",
   title: "Quaresma de São Miguel Arcanjo",
   description: "Quarenta dias de oração, penitência e combate espiritual sob a proteção de São Miguel Arcanjo.",
-  image: "/assets/dashboard/novenas.webp",
+  image: "/assets/dashboard/quaresma-sao-miguel.webp",
   totalDays: 40,
   traditionalStart: { month: 8, day: 15 },
   traditionalEnd: { month: 9, day: 29 },
