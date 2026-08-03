@@ -548,16 +548,16 @@ export default function SaintMichaelLent() {
                   {!isContentUnlocked ? (
                     <div className="py-12 text-center space-y-4">
                       <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
-                        <Lock size={24} className="text-amber-400" />
+                        <Headphones size={24} className="text-amber-400" />
                       </div>
                       <span className="text-xs uppercase tracking-widest font-bold text-amber-400 font-serif">
-                        Áudios Desabilitados • Início em 15/08/2026
+                        ✦ PREPARAÇÃO ESPIRITUAL • INÍCIO EM 15 DE AGOSTO
                       </span>
                       <h3 className="font-serif text-xl sm:text-2xl font-bold text-white max-w-md mx-auto">
-                        Áudios da Quaresma de São Miguel Desabilitados
+                        Orações Guiadas em Áudio
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                        Os áudios guiados das orações e reflexões diárias estarão disponíveis para todos os fiéis no dia <strong>15 de Agosto de 2026</strong>.
+                      <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed font-serif">
+                        Estamos preparando com zelo os áudios e reflexões para acompanhar a sua caminhada. No dia <strong>15 de Agosto</strong>, na Solenidade da Assunção, daremos início juntos aos 40 dias de oração sob a proteção do Arcanjo São Miguel.
                       </p>
                     </div>
                   ) : isAudioLocked ? (
@@ -706,16 +706,16 @@ export default function SaintMichaelLent() {
                   {!isContentUnlocked ? (
                     <div className="py-12 text-center space-y-4">
                       <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
-                        <Lock size={24} className="text-amber-600 dark:text-amber-400" />
+                        <BookOpen size={24} className="text-amber-600 dark:text-amber-400" />
                       </div>
                       <span className="text-xs uppercase tracking-widest font-bold text-amber-600 dark:text-amber-400 font-serif">
-                        Conteúdo Desabilitado • Início em 15/08/2026
+                        ✦ CAMINHO DE RECOLHIMENTO • INÍCIO EM 15 DE AGOSTO
                       </span>
                       <h3 className="font-serif text-xl sm:text-2xl font-bold text-foreground max-w-md mx-auto">
-                        Meditações Diárias Desabilitadas
+                        Meditações da Quaresma de São Miguel
                       </h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-                        As reflexões bíblicas, orações e aprofundamentos espirituais dos 40 dias serão liberados oficialmente no dia <strong>15 de Agosto de 2026</strong>.
+                      <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed font-serif">
+                        De 15 de agosto a 29 de setembro, viveremos 40 dias de oração, penitência e combate espiritual. As reflexões diárias e os exercícios devocionais estarão disponíveis no dia da Assunção de Nossa Senhora. Garanta sua presença acima!
                       </p>
                     </div>
                   ) : (
