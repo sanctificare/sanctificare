@@ -902,7 +902,7 @@ export default function SaintMichaelLent() {
                   <div id="sec-entrega" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
                     <h3 className="font-serif text-lg font-bold text-foreground">11. Oração de Entrega a São Miguel</h3>
                     <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
-                      {currentDayData.surrenderPrayer}
+                      {SAINT_MICHAEL_CONSECRATION}
                     </p>
                   </div>
 
@@ -929,11 +929,11 @@ export default function SaintMichaelLent() {
                   )}
 
                   {/* 14. Exame de Consciência */}
-                  {currentDayData.examinationQuestions && currentDayData.examinationQuestions.length > 0 && (
+                  {currentDayData.examination && currentDayData.examination.length > 0 && (
                     <div id="sec-exame" className="scroll-mt-16 space-y-3 pt-2 border-t border-border">
                       <h3 className="font-serif text-lg font-bold text-foreground">14. Exame de Consciência</h3>
                       <div className="space-y-2">
-                        {currentDayData.examinationQuestions.map((q, idx) => (
+                        {currentDayData.examination.map((q: string, idx: number) => (
                           <div key={idx} className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 flex items-start gap-2.5">
                             <span className="text-amber-600 font-serif font-bold text-sm shrink-0">{idx + 1}.</span>
                             <p className={`font-serif italic text-muted-foreground ${fontSize}`}>"{q}"</p>
@@ -1014,10 +1014,12 @@ export default function SaintMichaelLent() {
                     </Button>
                   </div>
                 </div>
-                  </>
-                  )}
-                </div>
-              )}
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
 
           {/* Coluna Lateral: Lista de Meditações (40 Dias) - Opção 2: Clean & Cremoso */}
           <div className="hidden lg:block space-y-4">
