@@ -1,8 +1,8 @@
 export interface ChurchTraditionSection {
   cic?: { code: string; text: string }[];
   fathers?: { author: string; text: string; source?: string }[];
-  doctors?: { author: string; text: string }[];
-  magisterium?: { author: string; text: string }[];
+  doctors?: { author: string; text: string; source?: string }[];
+  magisterium?: { author: string; text: string; source?: string }[];
 }
 
 export interface SaintQuoteItem {
@@ -26,7 +26,7 @@ export interface JourneyDay {
   suggestedPenance: string;
   spiritualExercise: string;
   examination: string[];
-  saintQuote: string;
+  saintQuote?: string;
   saintQuotesList?: SaintQuoteItem[];
   churchTradition?: ChurchTraditionSection;
   deliveryPrayer?: string;
@@ -228,28 +228,6 @@ Enviai o Vosso Arcanjo São Miguel para defender o meu coração neste combate. 
           source: "Cartas Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Bernardo de Claraval",
-          quote: "A humildade é a pedra angular de todas as virtudes cristãs. Sem ela, nenhuma outra virtude pode subsistir na alma.",
-          source: "Sermões sobre o Cântico dos Cânticos",
-        },
-        {
-          author: "Santo Afonso Maria de Ligório",
-          quote: "Um coração cheio de si mesmo não deixa espaço para Deus; esvazia-te de ti mesmo para que Deus possa te preencher com Sua presença.",
-          source: "A Prática do Amor a Jesus Cristo",
-        },
-        {
-          author: "São Tomás de Aquino",
-          quote: "A verdadeira humildade não consiste em fingir que não temos dons, mas em reconhecer que tudo o que temos vem de Deus e a Ele pertence.",
-          source: "Suma Teológica",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não te inquietes se fores esquecido ou pouco estimado pelos homens. Se Deus te ama e te guarda sob Suas asas, o que mais podes desejar?",
-          source: "Introdução à Vida Devota",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -338,28 +316,6 @@ Alcançai-me do Espírito Santo a força para jamais murmurar ou ceder ao desân
           author: "Santo Inácio de Antioquia",
           quote: "Permanecei firmes como a bigorna sob os golpes do martelo. É próprio do grande atleta receber golpes e vencer.",
           source: "Carta a São Policarpo 3",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus. Deveis falar a Jesus também com o coração, além de com os lábios.",
-          source: "Cartas Espirituais",
-        },
-        {
-          author: "São João Maria Vianney (Cura d'Ars)",
-          quote: "O demônio não teme as almas mornas, mas treme diante daquela que reza com perseverança e vive revestida da graça de Deus.",
-          source: "Sermões do Cura d'Ars",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "Determinação, e determinada determinação de nunca parar até alcançar a fonte da água viva, venha o que vier, custe o que custar.",
-          source: "Caminho de Perfeição",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Nas dificuldades e securas espirituais, mantenha a alma em paz e confiança; Deus combate por aqueles que n'Ele esperam.",
-          source: "Ditos de Luz e Amor",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -454,28 +410,6 @@ Alcançai-me do Senhor uma fé viva, operante pela caridade e inabalável nas pr
           source: "Subida do Monte Carmelo",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Tenha fé e confiança; não se preocupe com o amanhã, pois o mesmo Pai Celestial que cuida de você hoje cuidará de você amanhã.",
-          source: "Cartas Espirituais",
-        },
-        {
-          author: "Santo Agostinho",
-          quote: "A fé é crer no que não vês; e a recompensa desta fé é ver o que crês.",
-          source: "Sermões",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Para a alma que caminha na fé, a própria escuridão se torna guia segura para a união com Deus.",
-          source: "Subida do Monte Carmelo",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Uma fé viva não se assusta com as secas espirituais, porque sabe que o Sol da Justiça continua brilhando atrás das nuvens.",
-          source: "Introdução à Vida Devota",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -563,28 +497,6 @@ Alcançai-me a graça da honestidade interior e da mansidão nas palavras. Que a
           source: "Conselhos Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Bento de Nursia",
-          quote: "Não dar testemunho falso; não murmurar; não falar mal de ninguém e pôr a guarda da boca no falar.",
-          source: "Regra de São Bento",
-        },
-        {
-          author: "São Felipe Neri",
-          quote: "Falar mal do próximo é como espalhar penas ao vento: é impossível depois recolhê-las todas.",
-          source: "Máximas Espirituais",
-        },
-        {
-          author: "São Bernardo de Claraval",
-          quote: "A calúnia é uma flecha de três pontas: fere o caluniador, quem a ouve e aquele que é caluniado.",
-          source: "Sermões",
-        },
-        {
-          author: "Santo Afonso Maria de Ligório",
-          quote: "Quem guarda a sua boca guarda a sua alma de muitas aflições e amarguras.",
-          source: "A Prática do Amor a Jesus Cristo",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -670,24 +582,6 @@ Cercai-me com as vossas asas de luz e obtende-me da Virgem Maria a graça de um 
           author: "São Padre Pio de Pietrelcina",
           quote: "Mantém a tua alma como um sacrário imaculado para o Senhor.",
           source: "Cartas Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Domingos Sávio",
-          quote: "A morte, mas não o pecado! A pureza é a flor mais preciosa da alma.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A modéstia é a guardiã da castidade. Quem não cuida dos olhares dificilmente guardará o coração.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "A castidade é o lírio das virtudes; torna os homens semelhantes aos anjos no céu.",
-        },
-        {
-          author: "São João Bosco",
-          quote: "Queridos jovens, guardai a santa pureza, pois ela é a chave para a alegria verdadeira e para o amor de Deus.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -780,24 +674,6 @@ Concedei-me um coração generoso para partilhar com os necessitados e uma alma 
           source: "Sermão 86",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Francisco de Assis",
-          quote: "Lembre-se de que quando você deixar este mundo, não poderá levar nada do que recebeu, mas apenas o que deu.",
-        },
-        {
-          author: "Santo Agostinho",
-          quote: "Deus não precisa do teu dinheiro, mas o teu irmão faminto precisa. Dando ao pobre, dás a Deus.",
-        },
-        {
-          author: "São João Maria Vianney",
-          quote: "O avarento é como um porco que só é útil depois de morto. O generoso já vive a alegria do Céu na terra.",
-        },
-        {
-          author: "São João Crisóstomo",
-          quote: "Não ser ganancioso é uma grande riqueza; ser generoso é a coroa das virtudes cristãs.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -883,24 +759,6 @@ Concedei-me a santa mansidão do Coração de Jesus para perdoar a todos os que 
           author: "São Padre Pio de Pietrelcina",
           quote: "O perdão oferecido de coração é a vitória do amor de Cristo na alma.",
           source: "Conselhos Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Perdoe a todos de coração; o perdão é o perfume que a flor exala sobre o calcanhar que a esmagou.",
-        },
-        {
-          author: "Santa Faustina Kowalska",
-          quote: "Se a alma não praticar a misericórdia e o perdão, não alcançará a misericórdia de Deus no dia do julgamento.",
-        },
-        {
-          author: "São Josemaría Escrivá",
-          quote: "Não guardes ressentimentos na alma: perdoa imediatamente e esquece o mal, vencendo o mal com o bem.",
-        },
-        {
-          author: "São Francisco de Assis",
-          quote: "Onde há caridade e sabedoria, não há temor nem ignorância. Onde há paciência e humildade, não há ira nem perturbação.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -992,24 +850,6 @@ Alcançai-me a graça de ver o meu próximo com os olhos misericordiosos de Cris
           source: "Ditos de Luz e Amor",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São João da Cruz",
-          quote: "No anoitecer da vida, seremos examinados sobre o amor.",
-        },
-        {
-          author: "São Vicente de Paulo",
-          quote: "A caridade é o paraíso das almas e o vínculo da perfeição; onde há amor verdadeiro, Deus aí habita.",
-        },
-        {
-          author: "Santa Teresinha do Menino Jesus",
-          quote: "Compreendi que a caridade não deve ficar encerrada no fundo do coração; deve iluminar a todos.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Querubins e serafins amam a Deus acima de tudo, mas os homens têm o privilégio de amar a Deus amando o próximo.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -1095,24 +935,6 @@ Fortalecei a minha vontade para praticar o jejum e a mortificação com alegria 
           author: "São Padre Pio de Pietrelcina",
           quote: "Domina o teu corpo pela sobriedade para que o teu espírito possa voar até Deus.",
           source: "Cartas Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A mortificação dos sentidos e da boca é o caminho mais curto para unir a alma a Deus na oração.",
-        },
-        {
-          author: "São João Maria Vianney",
-          quote: "O diabo não tem medo de um estômago cheio, mas treme diante do cristão que sabe jejuar e orar.",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "Não sejamos escravos do nosso corpo; o corpo deve servir à alma para alcançar a vida eterna.",
-        },
-        {
-          author: "São Francisco de Assis",
-          quote: "Devemos ser severos com o nosso irmão jumento (o corpo), mas cheios de amor pela alma remida por Cristo.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -1204,24 +1026,6 @@ Ensina-me a abandonar a minha vida, a minha família e todas as minhas preocupa�
           source: "Conselhos Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Reze, espere e não se preocupe. A preocupação é inútil. Deus é misericordioso e ouvirá a sua oração.",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "Nada te perturbe, nada te espante; tudo passa, Deus não muda. A paciência tudo alcança; quem a Deus tem, nada lhe falta.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não temas o que possa acontecer amanhã; o mesmo Pai Eterno que cuida de ti hoje cuidará de ti amanhã.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Quem confia plenamente em Deus não teme as tempestades deste mundo, pois sua ancoragem está no Céu.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -1307,24 +1111,6 @@ Ensinai-me a imitar a vossa pronta prontidão em cumprir os mandamentos divinos.
           author: "São Francisco de Sales",
           quote: "A obediência doce e pronta é o sinal da verdadeira maturidade espiritual.",
           source: "Introdução à Vida Devota",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Bento de Nursia",
-          quote: "A obediência prestada aos superiores é oferecida a Deus, pois Ele mesmo disse: 'Quem vos ouve, a Mim ouve'.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A obediência é o único caminho seguro para a santidade. Onde não há obediência, não há virtude.",
-        },
-        {
-          author: "Santa Faustina Kowalska",
-          quote: "O diabo pode imitar a oração, o jejum e a esmola, mas jamais conseguirá imitar a santa obediência.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Quem renuncia à sua própria vontade por amor a Deus colhe a paz e a verdadeira liberdade dos filhos de Deus.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -1414,24 +1200,6 @@ Alcançai-me a graça da santa simplicidade e da intenção reta em todas as min
           source: "Sermões sobre o Evangelho",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "Santo Agostinho",
-          quote: "Se buscas os aplausos dos homens, estás vendendo o teu tesouro divino por uma moeda de cinza.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Para que a oração e as obras tenham valor diante de Deus, devem ser feitas no segredo do puro amor.",
-        },
-        {
-          author: "Santa Teresinha do Menino Jesus",
-          quote: "O que me importa a opinião do mundo? Minha única alegria é agradar a Jesus no silêncio da minha alma.",
-        },
-        {
-          author: "São Francisco de Assis",
-          quote: "O homem é apenas o que ele é diante de Deus, e nada mais.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -1515,24 +1283,6 @@ Concedei-me o santo temor de Deus para jamais me aproximar da Eucaristia indigna
           author: "São Padre Pio de Pietrelcina",
           quote: "Aproxima-te da Santa Comunhão com amor, tremor e profunda pureza de alma.",
           source: "Cartas Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Seria mais fácil para o mundo existir sem o sol do que existir sem o Santo Sacrifício da Missa.",
-        },
-        {
-          author: "São João Crisóstomo",
-          quote: "Os Anjos cercam o sacerdote durante a Missa; todo o presbitério fica repleto de celestes inteligências para honrar Aquele que é imolado no altar.",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "Se conhecêssemos o valor do Santo Sacrifício da Missa, que zelo e que amor teríamos por cada celebração!",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "A Eucaristia é o sol dos sacramentos; por ela a alma é iluminada, aquecida e divinizada.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -1622,24 +1372,6 @@ Bani do meu coração a impaciência, a irritabilidade e a tentação de murmura
           source: "Conselhos Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "As provações são as joias com as quais Deus adorna a alma que Ele mais ama.",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "Quem tem paciência nada lhe falta; Deus não muda e a paciência tudo alcança.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Para sofrer com paciência as tribulações, considera o muito que Jesus sofreu por ti no Calvário.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Tende paciência com todas as coisas, mas principalmente tende paciência convosco mesmos.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -1725,24 +1457,6 @@ Bani do meu espírito toda distração voluntária, a preguiça espiritual e o d
           author: "São Padre Pio de Pietrelcina",
           quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus.",
           source: "Conselhos Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A oração é a melhor arma que temos; é a chave que abre o Coração de Deus.",
-        },
-        {
-          author: "Santa Teresa d'Ávila",
-          quote: "A oração mental não é outra coisa senão um tratar de amizade com Deus, estando muitas vezes a sós com Ele.",
-        },
-        {
-          author: "São João Maria Vianney",
-          quote: "A oração do homem é o terror do diabo e a alegria do Coração de Deus.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não há nada que o demônio tema tanto quanto a alma que busca a Deus no silêncio da oração.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -1834,24 +1548,6 @@ Expulsai da nossa casa todo espírito de discórdia, violência, incompreensão 
           source: "Escritos Educativos",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São João Paulo II",
-          quote: "A família que reza unida permanece unida. Que a oração seja o coração de cada lar.",
-        },
-        {
-          author: "São João Crisóstomo",
-          quote: "Quando o marido e a mulher se unem em santa concórdia, formam uma imagem viva do amor de Cristo pela Igreja.",
-        },
-        {
-          author: "São Josemaría Escrivá",
-          quote: "O segredo da felicidade conjugal e familiar está no cotidiano: em saber perdoar, ceder e sorrir.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Abençoo a vossa família; que o Senhor viva em vosso lar e que São Miguel defenda a vossa casa de todo o mal.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -1939,24 +1635,6 @@ Libertai a minha alma de toda presunção, tibieza e banalização do pecado. Qu
           author: "São Padre Pio de Pietrelcina",
           quote: "Conserva o santo temor de Deus e não terás medo das ameaças do mundo.",
           source: "Cartas Espirituais",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "Santo Agostinho",
-          quote: "Teme a Deus e guarda os Seus mandamentos, pois nisso consiste todo o bem do homem.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Caminhai na presença de Deus com santo temor e profunda confiança na Sua misericórdia.",
-        },
-        {
-          author: "São João Crisóstomo",
-          quote: "O temor de Deus é como um fogo purificador que consome as más paixões e ilumina a mente.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "O verdadeiro temor de Deus é cheio de amor; ele nos faz fugir do pecado como o filho foge de magoar o seu amado pai.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -2047,24 +1725,6 @@ Bani da minha vida a negligência, a procrastinação, a preguiça e o desleixo 
           source: "Caminho",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "Santa Teresinha do Menino Jesus",
-          quote: "Não tenho outro meio de provar o meu amor a Jesus senão não deixar escapar nenhum pequeno sacrifício.",
-        },
-        {
-          author: "São Josemaría Escrivá",
-          quote: "Queres ser grande? Começa pelas coisas pequenas. Queres construir um edifício alto? Pensa primeiro nas fundações da humildade.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não busqueis grandes cruzes; carregai com amor as pequenas cruzes que a vida de cada dia vos apresenta.",
-        },
-        {
-          author: "São João Bosco",
-          quote: "Fazei bem e com alegria todas as vossas obrigações ordinárias, e tereis alcançado a santidade.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -2150,24 +1810,6 @@ Bani do meu espírito a curiosidade desordenada e o vício de buscar novidades f
           author: "Papa Bento XVI",
           quote: "Sem o silêncio não se escuta a voz de Deus e não se encontra a paz interior.",
           source: "Verbum Domini",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São João da Cruz",
-          quote: "Para alcançar a união com Deus, a alma deve guardar um profundo silêncio nas potências e nos afetos.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "O silêncio é o grande custódio do espírito interior. Quem fala muito não evita o pecado.",
-        },
-        {
-          author: "Santa Teresa de Calcutá",
-          quote: "Deus é o amigo do silêncio. Vede como a natureza — as árvores, as flores, a relva — cresce em profundo silêncio.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não há nada que edifique tanto o próximo quanto uma alma pacífica e recolhida no Senhor.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -2257,24 +1899,6 @@ Alcançai-me do Senhor a suprema graça da perseverança final. Que nenhuma arid
           source: "Conselhos Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Não te preocupes com o futuro; cumpre o teu dever hoje e confia na perseverança que Deus te dará.",
-        },
-        {
-          author: "Santo Afonso Maria de Ligório",
-          quote: "O maior dom que podemos pedir a Deus nesta vida é a perseverança final na Sua graça.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "Para alcançar a coroa da glória, não basta combater no início; é preciso vencer e perseverar até ao fim.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "A perseverança é a joia mais preciosa da santidade; sem ela, os mais belos começos perdem todo o valor.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -2360,24 +1984,6 @@ Alcançai-me a graça de amar e perdoar os meus inimigos, rezando sinceramente p
           author: "Papa Bento XVI",
           quote: "O amor aos inimigos é a Carta Magna do Reino dos Céus.",
           source: "Angelus 18 fev 2007",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Reze pelos seus inimigos; o perdão sincero atrai o olhar compadecido de Deus sobre a sua vida.",
-        },
-        {
-          author: "Santo Agostinho",
-          quote: "Vence a raiva com a mansidão; o único modo de derrotar o teu inimigo é transformá-lo em amigo pela caridade.",
-        },
-        {
-          author: "São João Maria Vianney",
-          quote: "Aquele que ama os seus inimigos não tem o que temer no dia do Juízo Final.",
-        },
-        {
-          author: "São Francisco de Assis",
-          quote: "Onde há amor e sabedoria, não há temor nem ignorância. Onde há misericórdia, aí habita o Senhor.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -2467,24 +2073,6 @@ Ajudai-me a submeter todas as minhas ideias e afetos ao senhorio de Nosso Senhor
           source: "Cartas Espirituais",
         },
       ],
-      saintQuotesList: [
-        {
-          author: "São João da Cruz",
-          quote: "Os pensamentos puros e o silêncio da mente atrem a presença do Espírito Santo para a alma.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Não dês ouvidos às insinuações do demônio na tua imaginação; despreza o tentador e fixa os teus olhos em Jesus.",
-        },
-        {
-          author: "São Josemaría Escrivá",
-          quote: "Guarda os teus sentidos e a tua imaginação; uma alma dispersa nos pensamentos é uma fortaleza sem muros.",
-        },
-        {
-          author: "São Bernardo de Claraval",
-          quote: "O pensamento bom é um anjo de Deus; o pensamento mau é um dardo do inimigo. Acolhe um e repele o outro.",
-        },
-      ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
     },
     {
@@ -2568,24 +2156,6 @@ Ensinai-me a correr imediatamente para os braços misericordiosos do meu Salvado
           author: "São João Paulo II",
           quote: "A misericórdia é o segundo nome do Amor de Deus manifestado na Paixão de Cristo.",
           source: "Dives in Misericordia",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "Santa Faustina Kowalska",
-          quote: "Quanto maior a miséria da alma, maior é o seu direito à misericórdia de Deus.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "A misericórdia de Deus é infinitamente maior do que a tua culpa; vai com confiança à Confissão.",
-        },
-        {
-          author: "São João Maria Vianney",
-          quote: "O nosso bom Deus está sempre pronto a nos perdoar; basta uma lágrima de contrição sincera.",
-        },
-        {
-          author: "São Francisco de Sales",
-          quote: "Não te assustes com as tuas imperfeições; levanta-te com humildade e recomeça sempre na graça de Deus.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",
@@ -2673,24 +2243,6 @@ Concedei-me a santa coragem de professar a minha fé católica sem vergonha nem 
           author: "Papa Bento XVI",
           quote: "O cristão não deve ter medo do desacordo da cultura dominante quando está em jogo a verdade.",
           source: "Discurso aos Bispos",
-        },
-      ],
-      saintQuotesList: [
-        {
-          author: "São Francisco de Assis",
-          quote: "O homem é apenas o que é diante de Deus, e nada mais.",
-        },
-        {
-          author: "São Padre Pio de Pietrelcina",
-          quote: "Caminha de cabeça erguida na fé; não te importes com os risos e murmurações do mundo.",
-        },
-        {
-          author: "São Josemaría Escrivá",
-          quote: "O respeito humano é a covardia dos que têm medo de testemunhar a Cristo no cotidiano.",
-        },
-        {
-          author: "São João da Cruz",
-          quote: "A alma que busca agradar às criaturas perde a capacidade de se unir ao Criador.",
         },
       ],
       complementaryPrayer: "Deus Todo-Poderoso e Eterno, que por um prodígio de bondade e misericórdia para a salvação dos homens, escolhestes para Príncipe de vossa Igreja o gloriosíssimo Arcanjo São Miguel, tornai-nos dignos, nós vos pedimos, de sermos preservados de todos os nossos inimigos, a fim de que, na hora da nossa morte, nenhum deles nos possa inquietar, mas que nos seja dado ser introduzidos por ele na presença da vossa excelsa e divina Majestade. Por Jesus Cristo, nosso Senhor. Amém.",

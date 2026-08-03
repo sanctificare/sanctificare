@@ -47,10 +47,24 @@ export default function SaintMichaelLentLanding() {
     const previousDescription = description?.content;
     document.title = "Quaresma de São Miguel 2026 | Sanctificare";
     if (description) description.content = "Viva a Quaresma de São Miguel de 15 de agosto a 29 de setembro com orações, meditações, progresso e lembretes no Sanctificare.";
+    
+    // Preload dinâmico da imagem Hero AVIF
+    const preloadLink = document.createElement("link");
+    preloadLink.rel = "preload";
+    preloadLink.as = "image";
+    preloadLink.href = "/assets/quaresma-sao-miguel/hero-sao-miguel-classico.avif";
+    preloadLink.type = "image/avif";
+    document.head.appendChild(preloadLink);
+
     void trackEvent("qsm_landing_view", { campaign: "quaresma_sao_miguel_2026" });
     return () => {
       document.title = previousTitle;
       if (description && previousDescription) description.content = previousDescription;
+      try {
+        document.head.removeChild(preloadLink);
+      } catch (e) {
+        // Ignora se já tiver sido removido
+      }
     };
   }, []);
 
@@ -58,7 +72,7 @@ export default function SaintMichaelLentLanding() {
     <main className="qsm-landing">
       <header className="qsm-header">
         <Link className="qsm-brand" href="/" aria-label="Sanctificare — início">
-          <img src="/assets/sanctificare-logo-v2.webp" alt="" />
+          <img src="/assets/sanctificare-logo-v2.webp" alt="Sanctificare" width="48" height="48" loading="eager" />
           <span>Sanctificare</span>
         </Link>
         <nav aria-label="Navegação da página">
@@ -137,7 +151,7 @@ export default function SaintMichaelLentLanding() {
 
       <section className="qsm-final"><div className="qsm-halo"><Cross /></div><p>15 DE AGOSTO A 29 DE SETEMBRO</p><h2>Prepare o coração<br />para começar esta jornada</h2><span>Orações organizadas, meditação diária, progresso e lembretes para ajudar você a perseverar.</span><div className="qsm-actions"><button className="qsm-button qsm-gold" onClick={() => participate("final")}>Quero participar</button><button className="qsm-button qsm-outline" onClick={login}>Já tenho uma conta</button></div></section>
 
-      <footer className="qsm-footer"><Link className="qsm-brand" href="/"><img src="/assets/sanctificare-logo-v2.webp" alt="" /><span>Sanctificare</span></Link><p>Um apoio para sua vida de oração.</p><small>O Sanctificare é uma iniciativa independente de apoio à vida de oração.</small></footer>
+      <footer className="qsm-footer"><Link className="qsm-brand" href="/"><img src="/assets/sanctificare-logo-v2.webp" alt="Sanctificare" width="48" height="48" loading="lazy" /><span>Sanctificare</span></Link><p>Um apoio para sua vida de oração.</p><small>O Sanctificare é uma iniciativa independente de apoio à vida de oração.</small></footer>
     </main>
   );
 }
