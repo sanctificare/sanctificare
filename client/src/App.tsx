@@ -210,8 +210,8 @@ function Router() {
         <Route path="/biblia" component={Bible} />
         <Route path="/novenas" component={Novenas} />
         <Route path="/novenas/:slug" component={NovenaDetails} />
-        <Route path="/quaresma-de-sao-miguel" component={ProtectedSaintMichaelLentLandingRoute} />
-        <Route path="/quaresma-sao-miguel" component={ProtectedSaintMichaelLentRoute} />
+        <Route path="/quaresma-de-sao-miguel" component={SaintMichaelLentLanding} />
+        <Route path="/quaresma-sao-miguel" component={SaintMichaelLent} />
         <Route path="/intencoes" component={ProtectedIntentionsRoute} />
         <Route path="/perfil" component={ProtectedProfileRoute} />
         <Route path="/profile" component={ProtectedProfileRoute} />

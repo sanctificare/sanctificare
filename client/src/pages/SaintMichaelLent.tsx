@@ -41,6 +41,7 @@ import {
   SAINT_MICHAEL_TRADITIONAL_PRAYERS,
   type JourneyDay,
 } from "@/data/saint-michael-lent";
+import { isSaintMichaelContentUnlocked } from "@/lib/saintMichaelConfig";
 
 type JourneyState = {
   startDate: string;
@@ -113,8 +114,91 @@ function formatAudioTime(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
+function SaintMichaelInterestCapture({ user }: { user: any }) {
+  const [name, setName] = useState(() => {
+    return localStorage.getItem("sanctificare.qsm.registered_name") || user?.name || "";
+  });
+  const [confirmed, setConfirmed] = useState(() => {
+    return localStorage.getItem("sanctificare.qsm.registered") === "true";
+  });
+
+  const handleConfirm = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    localStorage.setItem("sanctificare.qsm.registered_name", name.trim());
+    localStorage.setItem("sanctificare.qsm.registered", "true");
+    setConfirmed(true);
+    toast.success("Presença confirmada na Quaresma de São Miguel!");
+  };
+
+  if (confirmed) {
+    return (
+      <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-amber-600/5 to-transparent p-5 shadow-md text-center space-y-2.5 mb-6">
+        <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto text-lg font-bold">
+          ✓
+        </div>
+        <h3 className="font-serif text-lg font-bold text-amber-700 dark:text-amber-300">
+          Presença Confirmada para 15 de Agosto!
+        </h3>
+        <p className="font-serif text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+          Salve, <strong>{name}</strong>! Seu nome foi incluído na lista de devotos para a Quaresma de São Miguel Arcanjo.
+          Assim que os 40 dias começarem em 15 de agosto, você poderá realizar todas as orações e reflexões diárias aqui no Sanctificare.
+        </p>
+        <button
+          type="button"
+          onClick={() => setConfirmed(false)}
+          className="text-[11px] text-amber-700/70 dark:text-amber-400/70 hover:underline pt-1 cursor-pointer"
+        >
+          Editar nome cadastrado
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-amber-100 p-5 sm:p-6 shadow-xl space-y-3.5 mb-6">
+      <div className="flex items-center gap-3 border-b border-amber-500/20 pb-3">
+        <span className="text-2xl">⚔️</span>
+        <div>
+          <h3 className="font-serif text-base sm:text-lg font-bold text-amber-300">
+            Demonstre seu interesse na Quaresma de São Miguel
+          </h3>
+          <p className="text-xs text-slate-300">
+            Inscreva seu nome para acompanhar a jornada de 40 dias a partir de 15 de agosto.
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={handleConfirm} className="space-y-3">
+        <div>
+          <label className="block text-xs font-semibold text-amber-200 mb-1 font-serif">
+            Seu nome completo ou como deseja ser chamado(a):
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Digite seu nome"
+            required
+            className="w-full rounded-xl border border-amber-500/30 bg-black/40 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-3 px-4 rounded-xl font-serif font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>✦</span> Garantir Minha Presença na Quaresma
+        </button>
+      </form>
+    </div>
+  );
+}
+
 export default function SaintMichaelLent() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const isContentUnlocked = isSaintMichaelContentUnlocked(user);
+  const isAdmin = user?.role === "admin";
 
   // Subscription Status Query
   const { data: subscription } = trpc.subscriptions.get.useQuery(undefined, { enabled: isAuthenticated });
@@ -340,6 +424,21 @@ export default function SaintMichaelLent() {
           </div>
         </div>
 
+        {/* Banner de Modo Admin ou Componente de Captura de Interesse */}
+        {isAdmin && (
+          <div className="mb-5 rounded-xl border border-blue-500/30 bg-blue-500/10 dark:bg-blue-950/40 p-3.5 text-xs text-blue-700 dark:text-blue-300 flex items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-2">
+              <span className="text-base">⚡</span>
+              <span><strong>Modo Administrador:</strong> Áudios e meditações desbloqueados para visualização prévia.</span>
+            </div>
+            <span className="shrink-0 px-2 py-0.5 rounded bg-blue-500/20 font-mono text-[10px] font-bold">Admin</span>
+          </div>
+        )}
+
+        {!isContentUnlocked && (
+          <SaintMichaelInterestCapture user={user} />
+        )}
+
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
         <div className="block lg:hidden mb-5">
           <div className="flex items-center justify-between mb-2 px-0.5">
@@ -446,8 +545,22 @@ export default function SaintMichaelLent() {
               {/* ABA ÁUDIO */}
               {activeTab === "audio" && (
                 <div className="space-y-6 animate-fade-in">
-                  {/* Se o áudio estiver bloqueado (Dias 8-40 sem Premium) */}
-                  {isAudioLocked ? (
+                  {!isContentUnlocked ? (
+                    <div className="py-12 text-center space-y-4">
+                      <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
+                        <Lock size={24} className="text-amber-400" />
+                      </div>
+                      <span className="text-xs uppercase tracking-widest font-bold text-amber-400 font-serif">
+                        Áudios Desabilitados • Início em 15/08/2026
+                      </span>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-white max-w-md mx-auto">
+                        Áudios da Quaresma de São Miguel Desabilitados
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                        Os áudios guiados das orações e reflexões diárias estarão disponíveis para todos os fiéis no dia <strong>15 de Agosto de 2026</strong>.
+                      </p>
+                    </div>
+                  ) : isAudioLocked ? (
                     <div className="py-12 text-center space-y-4">
                       <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
                         <Lock size={24} className="text-amber-400" />
@@ -590,6 +703,23 @@ export default function SaintMichaelLent() {
               {/* ABA TEXTO (100% Gratuita para todos os 40 dias) */}
               {activeTab === "text" && (
                 <div className="space-y-6 animate-fade-in">
+                  {!isContentUnlocked ? (
+                    <div className="py-12 text-center space-y-4">
+                      <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
+                        <Lock size={24} className="text-amber-600 dark:text-amber-400" />
+                      </div>
+                      <span className="text-xs uppercase tracking-widest font-bold text-amber-600 dark:text-amber-400 font-serif">
+                        Conteúdo Desabilitado • Início em 15/08/2026
+                      </span>
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-foreground max-w-md mx-auto">
+                        Meditações Diárias Desabilitadas
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+                        As reflexões bíblicas, orações e aprofundamentos espirituais dos 40 dias serão liberados oficialmente no dia <strong>15 de Agosto de 2026</strong>.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-3">
                     <div>
                       <span className="text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 font-serif">
@@ -751,14 +881,14 @@ export default function SaintMichaelLent() {
                             onClick={() => toggleTradition("magisterium")}
                             className="w-full p-4 flex items-center justify-between font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 cursor-pointer hover:bg-muted/40 transition-colors"
                           >
-                            <span>• Magistério ({currentDayData.churchTradition.magisterium.length})</span>
+                            <span>• Magistério da Igreja ({currentDayData.churchTradition.magisterium.length})</span>
                             {expandedTraditions.magisterium ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                           </button>
                           {expandedTraditions.magisterium && (
                             <div className="p-4 pt-0 space-y-2 border-t border-border/40">
                               {currentDayData.churchTradition.magisterium.map((item, idx) => (
                                 <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
-                                  <strong>{item.author}: </strong>"{item.text}"
+                                  <strong>{item.source}: </strong>"{item.text}"
                                 </p>
                               ))}
                             </div>
@@ -768,72 +898,52 @@ export default function SaintMichaelLent() {
                     </div>
                   )}
 
-                  {/* 11. Oração: Entrega a São Miguel */}
+                  {/* 11. Oração de Entrega */}
+                  <div id="sec-entrega" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
+                    <h3 className="font-serif text-lg font-bold text-foreground">11. Oração de Entrega a São Miguel</h3>
+                    <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
+                      {currentDayData.surrenderPrayer}
+                    </p>
+                  </div>
+
+                  {/* 12. Ladainha de São Miguel Arcanjo */}
+                  <div id="sec-ladainha" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
+                    <h3 className="font-serif text-lg font-bold text-foreground">12. Ladainha de São Miguel Arcanjo</h3>
+                    <div className="space-y-1.5 rounded-xl border border-border bg-muted/20 p-4">
+                      {SAINT_MICHAEL_TRADITIONAL_PRAYERS.find((p) => p.title.includes("Ladainha"))?.content.split("\n").map((line, idx) => (
+                        <p key={idx} className={`font-serif ${line.startsWith("São Miguel") ? "font-semibold text-amber-700 dark:text-amber-400" : "text-muted-foreground"} ${fontSize}`}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 13. Oração de Libertação */}
                   {currentDayData.deliveryPrayer && (
-                    <div id="sec-entrega" className="scroll-mt-16 rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3 border-t border-border">
-                      <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
-                        11. Oração: Entrega a São Miguel
-                      </h3>
-                      <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
+                    <div id="sec-libertacao" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
+                      <h3 className="font-serif text-lg font-bold text-foreground">13. Oração de Libertação</h3>
+                      <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
                         {currentDayData.deliveryPrayer}
                       </p>
                     </div>
                   )}
 
-                  {/* 12. Exercício Espiritual */}
-                  <div id="sec-exercicio" className="scroll-mt-16 rounded-xl border border-border bg-muted/30 p-4 space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
-                      12. Exercício Espiritual
-                    </span>
-                    <p className={`font-serif leading-relaxed text-foreground ${fontSize}`}>
-                      "{currentDayData.spiritualExercise}"
-                    </p>
-                  </div>
-
-                  {/* 13. Citações dos Santos */}
-                  <div id="sec-santos" className="scroll-mt-16 space-y-3 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">13. Citações dos Santos</h3>
-                    {currentDayData.saintQuotesList ? (
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        {currentDayData.saintQuotesList.map((sq, idx) => (
-                          <div key={idx} className="rounded-xl border border-border bg-card p-4 space-y-1.5">
-                            <span className="text-sm font-serif font-bold text-amber-700 dark:text-amber-400">
-                              {idx + 1}. {sq.author}
-                            </span>
-                            <p className={`font-serif italic text-muted-foreground leading-relaxed ${fontSize}`}>
-                              "{sq.quote}"
-                            </p>
-                            {sq.source && (
-                              <p className="text-xs font-serif text-muted-foreground/80">
-                                ({sq.source})
-                              </p>
-                            )}
+                  {/* 14. Exame de Consciência */}
+                  {currentDayData.examinationQuestions && currentDayData.examinationQuestions.length > 0 && (
+                    <div id="sec-exame" className="scroll-mt-16 space-y-3 pt-2 border-t border-border">
+                      <h3 className="font-serif text-lg font-bold text-foreground">14. Exame de Consciência</h3>
+                      <div className="space-y-2">
+                        {currentDayData.examinationQuestions.map((q, idx) => (
+                          <div key={idx} className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 flex items-start gap-2.5">
+                            <span className="text-amber-600 font-serif font-bold text-sm shrink-0">{idx + 1}.</span>
+                            <p className={`font-serif italic text-muted-foreground ${fontSize}`}>"{q}"</p>
                           </div>
                         ))}
                       </div>
-                    ) : (
-                      <div className="rounded-xl border border-border bg-card p-4">
-                        <p className={`font-serif italic text-muted-foreground ${fontSize}`}>
-                          "{currentDayData.saintQuote}"
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
-                  {/* 14. Exame de Consciência (3 Perguntas Diárias) */}
-                  <div id="sec-exame" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">14. Exame de Consciência (3 Perguntas Diárias)</h3>
-                    <ul className="space-y-2 font-serif text-sm text-muted-foreground">
-                      {currentDayData.examination.map((q, idx) => (
-                        <li key={idx} className="flex items-start gap-2 bg-muted/20 p-2.5 rounded-lg border border-border">
-                          <span className="text-amber-600 font-bold font-mono">{idx + 1}.</span>
-                          <span className={fontSize}>{q}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* 15. Penitência para hoje */}
+                  {/* 15. Penitência para Hoje */}
                   <div id="sec-penitencia" className="scroll-mt-16 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
                       15. Penitência para hoje
@@ -904,10 +1014,10 @@ export default function SaintMichaelLent() {
                     </Button>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+                  </>
+                  )}
+                </div>
+              )}
 
           {/* Coluna Lateral: Lista de Meditações (40 Dias) - Opção 2: Clean & Cremoso */}
           <div className="hidden lg:block space-y-4">
