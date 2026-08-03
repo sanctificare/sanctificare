@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { Search, Compass, Lock } from "lucide-react";
 import { openRouteInApp } from "@/lib/deepLink";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
+import { isSaintMichaelLentActive } from "@/lib/saintMichaelConfig";
 
 type ExploreCard = {
   href: string;
@@ -51,15 +52,17 @@ export function filterExploreCards(cards: ExploreCard[], search: string, selecte
 }
 
 export default function Explore() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-
-
   const categories = ["Todos", "Devocional", "Estudo", "Práticas", "Comunidade"];
 
-  const filteredCards = filterExploreCards(exploreCards, search, selectedCategory);
+  const availableCards = exploreCards.filter(
+    (card) => card.href !== "/quaresma-sao-miguel" || isSaintMichaelLentActive(user)
+  );
+
+  const filteredCards = filterExploreCards(availableCards, search, selectedCategory);
 
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden pb-12">

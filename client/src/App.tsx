@@ -4,12 +4,13 @@ import NotFound from "@/pages/NotFound";
 import { Suspense, lazy, useEffect, useRef } from "react";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileTopMenu from "@/components/MobileTopMenu";
-import { Route, Switch, useLocation } from "wouter";
+import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { useUserTemplate } from "./hooks/useUserTemplate";
 import { isMobileApp } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
+import { isSaintMichaelLentActive } from "./lib/saintMichaelConfig";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
 import { setAnalyticsUserId, trackPageView } from "./lib/analytics";
@@ -148,6 +149,34 @@ function ApoieMissaoRoute(props: any) {
   return <ApoieMissao {...props} />;
 }
 
+function ProtectedSaintMichaelLentLandingRoute(props: any) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <SuspenseLoader />;
+  }
+
+  if (!isSaintMichaelLentActive(user)) {
+    return <Redirect to="/explore" replace />;
+  }
+
+  return <SaintMichaelLentLanding {...props} />;
+}
+
+function ProtectedSaintMichaelLentRoute(props: any) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <SuspenseLoader />;
+  }
+
+  if (!isSaintMichaelLentActive(user)) {
+    return <Redirect to="/explore" replace />;
+  }
+
+  return <SaintMichaelLent {...props} />;
+}
+
 function ProtectedAdminRoute(props: any) {
   const { user } = useAuth();
   
@@ -181,8 +210,8 @@ function Router() {
         <Route path="/biblia" component={Bible} />
         <Route path="/novenas" component={Novenas} />
         <Route path="/novenas/:slug" component={NovenaDetails} />
-        <Route path="/quaresma-de-sao-miguel" component={SaintMichaelLentLanding} />
-        <Route path="/quaresma-sao-miguel" component={SaintMichaelLent} />
+        <Route path="/quaresma-de-sao-miguel" component={ProtectedSaintMichaelLentLandingRoute} />
+        <Route path="/quaresma-sao-miguel" component={ProtectedSaintMichaelLentRoute} />
         <Route path="/intencoes" component={ProtectedIntentionsRoute} />
         <Route path="/perfil" component={ProtectedProfileRoute} />
         <Route path="/profile" component={ProtectedProfileRoute} />
