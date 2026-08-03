@@ -17,6 +17,7 @@ import { PrayingHandsIcon } from "@/components/PrayingHandsIcon";
 import { Cross } from "@/components/CrossIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { GOOGLE_PLAY_URL } from "@/components/GooglePlayBanner";
+import GooglePlayBadge from "@/components/GooglePlayBadge";
 
 const mainLinks = [
   { href: "/explore", label: "Explore", icon: Compass },
@@ -195,17 +196,9 @@ export default function AppNav() {
                     </DropdownMenuItem>
 
                     {!isMobileApp() && (
-                      <DropdownMenuItem asChild>
-                        <a
-                          href={GOOGLE_PLAY_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-amber-400 hover:text-amber-300 font-medium"
-                        >
-                          <Smartphone size={14} />
-                          <span>Baixar App Android</span>
-                        </a>
-                      </DropdownMenuItem>
+                      <div className="px-2 py-1.5 flex justify-center">
+                        <GooglePlayBadge size="sm" className="w-full justify-center" />
+                      </div>
                     )}
 
                     {user?.role === "admin" && (

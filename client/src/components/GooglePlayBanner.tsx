@@ -1,6 +1,7 @@
 import { isMobileApp } from "@/const";
-import { QrCode, Smartphone, Bell, Flame, Download, ExternalLink, X } from "lucide-react";
+import { QrCode, Smartphone, Bell, Flame, Download, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import GooglePlayBadge from "@/components/GooglePlayBadge";
 
 export const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.sanctificare.app";
 export const QR_CODE_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=0c1327&bgcolor=ffffff&data=${encodeURIComponent(GOOGLE_PLAY_URL)}`;
@@ -77,16 +78,7 @@ export default function GooglePlayBanner({
             </p>
 
             <div className="pt-1 flex flex-wrap items-center gap-3 justify-center sm:justify-start">
-              <a
-                href={GOOGLE_PLAY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs shadow-lg hover:scale-[1.02] transition-all group"
-              >
-                <Download size={15} className="group-hover:translate-y-0.5 transition-transform" />
-                <span>Baixar na Google Play</span>
-                <ExternalLink size={12} className="opacity-70" />
-              </a>
+              <GooglePlayBadge size="md" />
             </div>
           </div>
         </div>
@@ -101,15 +93,7 @@ export default function GooglePlayBanner({
           <Smartphone size={16} className="text-amber-400 shrink-0" />
           <span>Baixe o app oficial do <strong>Sanctificare</strong> no seu celular Android.</span>
         </div>
-        <a
-          href={GOOGLE_PLAY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition-colors shrink-0"
-        >
-          <span>Google Play</span>
-          <ExternalLink size={12} />
-        </a>
+        <GooglePlayBadge size="sm" className="shrink-0" />
       </div>
     );
   }
@@ -168,22 +152,9 @@ export default function GooglePlayBanner({
                 </div>
               </div>
 
-              {/* Botão Oficial Google Play */}
+              {/* Badge Oficial Google Play */}
               <div className="pt-4 flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-                <a
-                  href={GOOGLE_PLAY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-gold hover:scale-[1.03] transition-all group"
-                >
-                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                    <path d="M3.609 1.814L13.792 12 3.61 22.186a1.928 1.928 0 0 1-.61-1.378V3.192c0-.528.22-1.025.609-1.378zm11.6 11.6l2.368 2.368-12.28 7.087 9.912-9.455zm3.784-2.164l3.187 1.834c.784.452.784 1.186 0 1.638l-3.187 1.834-2.6-2.652 2.6-2.654zM5.298 1.1l12.28 7.087-2.368 2.368L5.298 1.1z"/>
-                  </svg>
-                  <div className="text-left leading-tight">
-                    <div className="text-[10px] uppercase tracking-wider font-semibold opacity-90">DISPONÍVEL NO</div>
-                    <div className="text-base font-extrabold tracking-wide">Google Play</div>
-                  </div>
-                </a>
+                <GooglePlayBadge size="lg" />
               </div>
             </div>
 
