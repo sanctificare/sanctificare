@@ -28,46 +28,41 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 03/08/26", () => {
-    // 01/08/2026
-    const audio01 = getLiturgyReadingsAudioByDate("2026-08-01");
-    expect(audio01.firstReading).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura010826.mp3"
-    );
-    expect(audio01.gospel).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho010826.mp3"
-    );
-    expect(audio01.singedPsalm).toBe(
-      "/r2-storage/salmos-cantados/agosto26/salmos010826.mp3"
-    );
-    expect(audio01.secondReading).toBeUndefined();
+  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 09/08/26", () => {
+    const dates = [
+      "2026-08-01",
+      "2026-08-02",
+      "2026-08-03",
+      "2026-08-04",
+      "2026-08-05",
+      "2026-08-06",
+      "2026-08-07",
+      "2026-08-08",
+      "2026-08-09",
+    ];
 
-    // 02/08/2026 (Domingo - possui 2ª leitura)
-    const audio02 = getLiturgyReadingsAudioByDate("2026-08-02");
-    expect(audio02.firstReading).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura020826.mp3"
-    );
-    expect(audio02.secondReading).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/2leitura020826.mp3"
-    );
-    expect(audio02.gospel).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho020826.mp3"
-    );
-    expect(audio02.singedPsalm).toBe(
-      "/r2-storage/salmos-cantados/agosto26/salmos020826.mp3"
-    );
+    for (const dateIso of dates) {
+      const [year, month, day] = dateIso.split("-");
+      const formattedDate = `${day}${month}26`;
+      const audios = getLiturgyReadingsAudioByDate(dateIso);
 
-    // 03/08/2026
-    const audio03 = getLiturgyReadingsAudioByDate("2026-08-03");
-    expect(audio03.firstReading).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura030826.mp3"
-    );
-    expect(audio03.gospel).toBe(
-      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho030826.mp3"
-    );
-    expect(audio03.singedPsalm).toBe(
-      "/r2-storage/salmos-cantados/agosto26/salmos030826.mp3"
-    );
-    expect(audio03.secondReading).toBeUndefined();
+      expect(audios.firstReading).toBe(
+        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura${formattedDate}.mp3`
+      );
+      expect(audios.gospel).toBe(
+        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`
+      );
+      expect(audios.singedPsalm).toBe(
+        `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
+      );
+
+      if (dateIso === "2026-08-02" || dateIso === "2026-08-09") {
+        expect(audios.secondReading).toBe(
+          `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/2leitura${formattedDate}.mp3`
+        );
+      } else {
+        expect(audios.secondReading).toBeUndefined();
+      }
+    }
   });
 });

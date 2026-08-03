@@ -71,8 +71,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         return audio;
       }
     } else if (monthStr === "08") {
-      // Temos áudios individuais na pasta de agosto26 de 01 a 03 de agosto
-      if (dayNum >= 1 && dayNum <= 3) {
+      // Temos áudios individuais na pasta de agosto26 de 01 a 09 de agosto
+      if (dayNum >= 1 && dayNum <= 9) {
         const formattedDate = `${dayStr}${monthStr}26`; // ex: 010826
 
         const audio: LiturgyReadingsAudio = {
@@ -81,8 +81,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           singedPsalm: `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
         };
 
-        // Apenas 02/08 tem segunda leitura (domingo)
-        if (dayNum === 2) {
+        // Domingos (02/08 e 09/08) têm segunda leitura
+        if (dayNum === 2 || dayNum === 9) {
           audio.secondReading = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/2leitura${formattedDate}.mp3`;
         }
 

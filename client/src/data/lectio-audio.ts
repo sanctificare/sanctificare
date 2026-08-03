@@ -184,7 +184,7 @@ export function getGuidedLectioAudioTracks(passageId: string, dateIso: string): 
       }
     } else if (month === 8 && yearTwoDigits === "26") {
       const dayNum = day;
-      if (dayNum >= 1 && dayNum <= 3) {
+      if (dayNum >= 1 && dayNum <= 9) {
         audioUrl = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${dayStr}${monthStr}${yearTwoDigits}.mp3`;
         duration = 180;
       }
