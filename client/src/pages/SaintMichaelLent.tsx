@@ -11,7 +11,6 @@ import {
   Volume2,
   VolumeX,
   Share2,
-  Heart,
   Calendar,
   Sparkles,
   Minus,
@@ -92,7 +91,7 @@ function defaultState(): JourneyState {
     startDate: getTraditionalStartDateIso(),
     completedDays: [],
     selectedDay: 1,
-    penance: "Oferecer minhas orações e mortificações pela conversão dos pecadores.",
+    penance: "",
     reminderTime: "20:00",
     journals: {},
   };
@@ -489,21 +488,6 @@ export default function SaintMichaelLent() {
                         <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight">
                           {currentDayData.theme}
                         </h2>
-                      </div>
-
-                      {/* Intenção / Penitência – Box igual ao anexo */}
-                      <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3.5 flex gap-2.5 items-start">
-                        <Heart size={14} className="text-amber-400 fill-amber-400/20 mt-0.5 shrink-0" />
-                        <div className="w-full">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] uppercase tracking-wider font-bold text-amber-300">
-                              Rezando Por / Penitência Escolhida:
-                            </span>
-                          </div>
-                          <p className="text-xs sm:text-sm font-serif italic text-amber-100/90 leading-normal mt-0.5">
-                            "{state.penance || "Registre sua penitência para acompanhar sua jornada."}"
-                          </p>
-                        </div>
                       </div>
 
                       {/* Visual de Capa com aura luminosa */}
