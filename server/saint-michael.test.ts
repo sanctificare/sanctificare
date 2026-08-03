@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   isSaintMichaelLentActive,
   isSaintMichaelContentUnlocked,
+  calculateSaintMichaelEndDateIso,
   SAINT_MICHAEL_ACTIVATION_DATE,
 } from "../client/src/lib/saintMichaelConfig";
 
-describe("Saint Michael Lent Feature Flags", () => {
+describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
   const dateBeforeActivation = new Date("2026-08-03T12:00:00-03:00");
   const dateOnActivation = new Date("2026-08-15T00:00:00-03:00");
   const dateAfterActivation = new Date("2026-08-20T12:00:00-03:00");
@@ -33,5 +34,10 @@ describe("Saint Michael Lent Feature Flags", () => {
     const normalUser = { role: "user" };
     expect(isSaintMichaelContentUnlocked(normalUser, dateOnActivation)).toBe(true);
     expect(isSaintMichaelContentUnlocked(normalUser, dateAfterActivation)).toBe(true);
+  });
+
+  it("calcula o término em 29/09/2026 excluindo os 6 domingos a partir de 15/08/2026", () => {
+    const endDate = calculateSaintMichaelEndDateIso("2026-08-15", 40);
+    expect(endDate).toBe("2026-09-29");
   });
 });

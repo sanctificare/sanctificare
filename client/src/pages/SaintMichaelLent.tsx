@@ -41,7 +41,7 @@ import {
   SAINT_MICHAEL_TRADITIONAL_PRAYERS,
   type JourneyDay,
 } from "@/data/saint-michael-lent";
-import { isSaintMichaelContentUnlocked } from "@/lib/saintMichaelConfig";
+import { isSaintMichaelContentUnlocked, calculateSaintMichaelEndDateIso } from "@/lib/saintMichaelConfig";
 
 type JourneyState = {
   startDate: string;
@@ -71,15 +71,7 @@ function formatDateBr(isoDateStr: string): string {
 }
 
 function calculateEndDateIso(startDateIso: string, durationDays: number = 40): string {
-  if (!startDateIso) return "";
-  try {
-    const parts = startDateIso.split("-").map(Number);
-    const date = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
-    date.setDate(date.getDate() + (durationDays - 1));
-    return date.toISOString().slice(0, 10);
-  } catch {
-    return "";
-  }
+  return calculateSaintMichaelEndDateIso(startDateIso, durationDays);
 }
 
 function getTraditionalStartDateIso(): string {
@@ -419,7 +411,7 @@ export default function SaintMichaelLent() {
               {SAINT_MICHAEL_LENT.title}
             </h1>
             <p className="font-serif text-xs sm:text-sm text-muted-foreground mt-0.5">
-              40 Dias de Oração, Penitência e Combate Espiritual • Início Tradicional em 15/08 (Assunção)
+              40 Dias Penitenciais (Segunda a Sábado) • 15 de Agosto a 29 de Setembro (Domingos são Dias do Senhor e Celebração)
             </p>
           </div>
         </div>

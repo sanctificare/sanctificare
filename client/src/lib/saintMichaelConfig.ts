@@ -1,10 +1,11 @@
 /**
- * Quaresma de São Miguel - Configuração de Acesso e Bloqueio Conteúdo
+ * Quaresma de São Miguel - Configuração de Acesso e Regras Devocionais
  * 
- * Regra do projeto:
- * 1. O recurso da Quaresma de São Miguel fica ativado no app para todos os usuários.
- * 2. Áudios e textos de meditação permanecem bloqueados para usuários comuns até 15/08/2026.
- * 3. Administradores (role === "admin") mantêm áudios e textos desbloqueados a qualquer momento.
+ * Regra da Tradição Católica:
+ * - A Quaresma de São Miguel vai de 15 de Agosto (Assunção) a 29 de Setembro (Arcanjos).
+ * - Abrange 46 dias corridos, dos quais os 6 DOMINGOS são excluídos da penitência,
+ *   pois o domingo é o Dia do Senhor e dia de celebração da Ressurreição.
+ * - Isso resulta exatamente em 40 dias penitenciais (segunda a sábado).
  */
 
 export const SAINT_MICHAEL_ACTIVATION_DATE = new Date("2026-08-15T00:00:00-03:00");
@@ -31,4 +32,29 @@ export function isSaintMichaelContentUnlocked(
     return true;
   }
   return nowDate >= SAINT_MICHAEL_ACTIVATION_DATE;
+}
+
+/**
+ * Calcula a data de término dos 40 dias penitenciais excluindo os domingos,
+ * respeitando a tradição católica em que o domingo é o Dia do Senhor (sem jejum/penitência).
+ */
+export function calculateSaintMichaelEndDateIso(startDateIso: string, durationDays: number = 40): string {
+  if (!startDateIso) return "";
+  try {
+    const parts = startDateIso.split("-").map(Number);
+    const date = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+    let count = 0;
+    while (count < durationDays) {
+      // Domingo é dia 0 — os domingos são dias do Senhor e não contam na penitência
+      if (date.getDay() !== 0) {
+        count++;
+      }
+      if (count < durationDays) {
+        date.setDate(date.getDate() + 1);
+      }
+    }
+    return date.toISOString().slice(0, 10);
+  } catch {
+    return "";
+  }
 }
