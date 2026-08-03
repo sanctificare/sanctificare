@@ -124,27 +124,7 @@ function SaintMichaelInterestCapture({ user }: { user: any }) {
   };
 
   if (confirmed) {
-    return (
-      <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-amber-600/5 to-transparent p-5 shadow-md text-center space-y-2.5 mb-6">
-        <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto text-lg font-bold">
-          ✓
-        </div>
-        <h3 className="font-serif text-lg font-bold text-amber-700 dark:text-amber-300">
-          Presença Confirmada para 15 de Agosto!
-        </h3>
-        <p className="font-serif text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-          Salve, <strong>{name}</strong>! Seu nome foi incluído na lista de devotos para a Quaresma de São Miguel Arcanjo.
-          Assim que os 40 dias começarem em 15 de agosto, você poderá realizar todas as orações e reflexões diárias aqui no Sanctificare.
-        </p>
-        <button
-          type="button"
-          onClick={() => setConfirmed(false)}
-          className="text-[11px] text-amber-700/70 dark:text-amber-400/70 hover:underline pt-1 cursor-pointer"
-        >
-          Editar nome cadastrado
-        </button>
-      </div>
-    );
+    return null;
   }
 
   return (
