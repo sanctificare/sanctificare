@@ -113,6 +113,7 @@ function SaintMichaelInterestCapture({ user }: { user: any }) {
   const [confirmed, setConfirmed] = useState(() => {
     return localStorage.getItem("sanctificare.qsm.registered") === "true";
   });
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleConfirm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,25 +121,65 @@ function SaintMichaelInterestCapture({ user }: { user: any }) {
     localStorage.setItem("sanctificare.qsm.registered_name", name.trim());
     localStorage.setItem("sanctificare.qsm.registered", "true");
     setConfirmed(true);
+    setIsEditing(false);
     toast.success("Presença confirmada na Quaresma de São Miguel!");
   };
 
-  if (confirmed) {
-    return null;
+  if (confirmed && !isEditing) {
+    return (
+      <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-amber-100 p-4 sm:p-5 shadow-xl mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl shrink-0">
+            ⚔️
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-serif text-sm sm:text-base font-bold text-amber-300">
+                Presença Confirmada na Quaresma
+              </h3>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold">
+                ✓ Confirmado
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Participante: <strong className="text-amber-200">{name}</strong>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="text-xs text-amber-400 hover:text-amber-300 underline font-medium px-2 py-1 rounded hover:bg-white/5 transition-colors self-end sm:self-center shrink-0"
+        >
+          Editar nome
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-amber-100 p-5 sm:p-6 shadow-xl space-y-3.5 mb-6">
-      <div className="flex items-center gap-3 border-b border-amber-500/20 pb-3">
-        <span className="text-2xl">⚔️</span>
-        <div>
-          <h3 className="font-serif text-base sm:text-lg font-bold text-amber-300">
-            Demonstre seu interesse na Quaresma de São Miguel
-          </h3>
-          <p className="text-xs text-slate-300">
-            Inscreva seu nome para acompanhar a jornada de 40 dias a partir de 15 de agosto.
-          </p>
+      <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">⚔️</span>
+          <div>
+            <h3 className="font-serif text-base sm:text-lg font-bold text-amber-300">
+              Inscrição na Quaresma de São Miguel
+            </h3>
+            <p className="text-xs text-slate-300">
+              Inscreva seu nome para acompanhar a jornada de 40 dias a partir de 15 de agosto.
+            </p>
+          </div>
         </div>
+        {confirmed && (
+          <button
+            type="button"
+            onClick={() => setIsEditing(false)}
+            className="text-xs text-slate-400 hover:text-white underline shrink-0"
+          >
+            Voltar
+          </button>
+        )}
       </div>
 
       <form onSubmit={handleConfirm} className="space-y-3">
@@ -160,7 +201,7 @@ function SaintMichaelInterestCapture({ user }: { user: any }) {
           type="submit"
           className="w-full py-3 px-4 rounded-xl font-serif font-bold text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-600 shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
         >
-          <span>✦</span> Garantir Minha Presença na Quaresma
+          <span>✦</span> {confirmed ? "Salvar Alterações" : "Garantir Minha Presença na Quaresma"}
         </button>
       </form>
     </div>
@@ -407,9 +448,7 @@ export default function SaintMichaelLent() {
           </div>
         )}
 
-        {!isContentUnlocked && (
-          <SaintMichaelInterestCapture user={user} />
-        )}
+        <SaintMichaelInterestCapture user={user} />
 
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
         <div className="block lg:hidden mb-5">
