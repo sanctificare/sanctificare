@@ -242,12 +242,11 @@ export function registerStorageProxy(app: Express) {
       }
 
       if (foundInR2) {
-        const signedUrl = await storageGetSignedUrl(cleanKey, bucket);
-        res.json({ url: signedUrl });
+        res.json({ url: `/r2-storage/${key}` });
         return;
       }
     } catch (err) {
-      console.warn("[ResolveR2Proxy] R2 signed URL resolution failed:", err);
+      console.warn("[ResolveR2Proxy] R2 key check failed:", err);
     }
 
     // Fallback to absolute local asset URL

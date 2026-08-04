@@ -159,7 +159,7 @@ export const resolveR2Redirect = async (url: string | undefined): Promise<string
     if (res.ok) {
       const data = await res.json();
       if (data && data.url) {
-        return data.url;
+        return resolveMediaUrl(data.url);
       }
     }
   } catch (err) {
