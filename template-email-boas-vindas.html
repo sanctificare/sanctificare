@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seja bem-vindo ao Sanctificare</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0f1117; font-family: 'Georgia', 'Times New Roman', serif; -webkit-font-smoothing: antialiased;">
+  <!-- Container Principal -->
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f1117; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <!-- Cartão do E-mail -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 580px; background-color: #181c2a; border-radius: 20px; overflow: hidden; border: 1px solid rgba(195, 160, 80, 0.25); box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
+          
+          <!-- Cabeçalho / Banner Sanctificare -->
+          <tr>
+            <td align="center" style="padding: 40px 32px 30px; background: linear-gradient(180deg, #1f253a 0%, #181c2a 100%); border-bottom: 1px solid rgba(195, 160, 80, 0.15);">
+              <img src="https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/sanctificare-logo.webp" 
+                   alt="Sanctificare Logo" 
+                   width="72" 
+                   height="72" 
+                   style="border-radius: 50%; border: 2px solid #c8a050; display: block; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(200, 160, 80, 0.3);" />
+              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; font-family: 'Georgia', serif;">SANCTIFICARE</h1>
+              <p style="margin: 6px 0 0; color: #c8a050; font-size: 13px; font-style: italic; letter-spacing: 1px;">Ad Majorem Dei Gloriam</p>
+            </td>
+          </tr>
+
+          <!-- Corpo do E-mail -->
+          <tr>
+            <td style="padding: 36px 36px 28px;">
+              <!-- Saudação com Variável do Resend -->
+              <p style="margin: 0 0 18px; color: #ffffff; font-size: 18px; font-weight: bold; line-height: 1.5;">
+                Salve Maria, {{ first_name | default: 'Fiel' }}! ✝
+              </p>
+              
+              <p style="margin: 0 0 20px; color: #c8cde0; font-size: 15px; line-height: 1.7;">
+                É com imensa alegria espiritual que acolhemos você no <strong>Sanctificare</strong>. A partir de hoje, você faz parte de uma comunidade dedicada à santificação diária e ao fortalecimento da fé católica.
+              </p>
+
+              <p style="margin: 0 0 28px; color: #c8cde0; font-size: 15px; line-height: 1.7;">
+                Preparamos um espaço sagrado e sereno para que a sua oração diária seja profunda, constante e frutuosa.
+              </p>
+
+              <!-- Bloco de Destaques / Funcionalidades -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 32px;">
+                <!-- Item 1 -->
+                <tr>
+                  <td style="padding: 14px 16px; background-color: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 3px solid #c8a050; margin-bottom: 10px;">
+                    <strong style="color: #ffffff; font-size: 15px;">📖 Liturgia Diária & Santo do Dia</strong>
+                    <p style="margin: 4px 0 0; color: #9aa1b9; font-size: 13px; line-height: 1.5;">Medite as leituras do dia, o Evangelho comentado e a vida dos santos.</p>
+                  </td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <!-- Item 2 -->
+                <tr>
+                  <td style="padding: 14px 16px; background-color: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 3px solid #c8a050;">
+                    <strong style="color: #ffffff; font-size: 15px;">📿 Santo Rosário & Meditações em Áudio</strong>
+                    <p style="margin: 4px 0 0; color: #9aa1b9; font-size: 13px; line-height: 1.5;">Reze os mistérios do Rosário com acompanhamento guiado e trilhas sacras serenantes.</p>
+                  </td>
+                </tr>
+                <tr><td height="10"></td></tr>
+                <!-- Item 3 -->
+                <tr>
+                  <td style="padding: 14px 16px; background-color: rgba(255, 255, 255, 0.03); border-radius: 12px; border-left: 3px solid #c8a050;">
+                    <strong style="color: #ffffff; font-size: 15px;">🕯️ Vela Virtual & Intenções de Oração</strong>
+                    <p style="margin: 4px 0 0; color: #9aa1b9; font-size: 13px; line-height: 1.5;">Acenda velas virtuais e partilhe intenções com a comunidade fiel.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Botão Principal Chamada para Ação (CTA) -->
+              <div style="text-align: center; margin: 36px 0 28px;">
+                <a href="https://sanctificare.app" 
+                   target="_blank"
+                   style="display: inline-block; background: linear-gradient(135deg, #d4af37 0%, #c8a050 100%); color: #0f1117; text-decoration: none; font-family: 'Georgia', serif; font-weight: bold; font-size: 16px; letter-spacing: 1px; padding: 16px 40px; border-radius: 50px; box-shadow: 0 4px 20px rgba(200, 160, 80, 0.4); text-transform: uppercase;">
+                  ✝ Acessar o Sanctificare
+                </a>
+              </div>
+
+              <!-- Mensagem Espiritual de Encerramento -->
+              <p style="margin: 24px 0 0; color: #8c94ac; font-size: 14px; line-height: 1.6; text-align: center; font-style: italic;">
+                "Que a graça de Nosso Senhor Jesus Cristo e o amor de Nossa Senhora estejam sempre com você."
+              </p>
+            </td>
+          </tr>
+
+          <!-- Rodapé do E-mail -->
+          <tr>
+            <td style="padding: 24px 36px 32px; background-color: #121520; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center;">
+              <!-- Citação Bíblica -->
+              <p style="margin: 0 0 16px; color: #c8a050; font-size: 13px; font-style: italic;">
+                "Buscai em primeiro lugar o Reino de Deus e a sua justiça." — Mt 6,33
+              </p>
+              
+              <!-- Informações de Copyright e Unsubscribe -->
+              <p style="margin: 0 0 8px; color: #5a627d; font-size: 12px; font-family: sans-serif;">
+                © 2026 Sanctificare — Todos os direitos reservados.
+              </p>
+              <p style="margin: 0; color: #5a627d; font-size: 11px; font-family: sans-serif;">
+                Você recebeu este e-mail por ter se cadastrado no aplicativo Sanctificare.<br />
+                <a href="{{ unsubscribe_url }}" style="color: #8c94ac; text-decoration: underline;">Cancelar inscrição</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
