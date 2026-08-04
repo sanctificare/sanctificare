@@ -6,6 +6,7 @@ import { getCsrfCookieOptions, getSessionCookieOptions } from "./cookies";
 import { ENV } from "./env";
 import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./security";
 import { sdk } from "./sdk";
+import { syncUserToResend } from "./email";
 
 const OAUTH_STATE_COOKIE_NAME = "oauth_state_nonce";
 const OAUTH_STATE_TTL_MS = 1000 * 60 * 10;
@@ -164,6 +165,8 @@ export function registerOAuthRoutes(app: Express) {
         return;
       }
 
+      const existingUser = await db.getUserByOpenId(userInfo.openId);
+
       await db.upsertUser({
         openId: userInfo.openId,
         name: userInfo.name || null,
@@ -171,6 +174,10 @@ export function registerOAuthRoutes(app: Express) {
         loginMethod: userInfo.loginMethod ?? userInfo.platform ?? null,
         lastSignedIn: new Date(),
       });
+
+      if (!existingUser && userInfo.email) {
+        void syncUserToResend(userInfo.email, userInfo.name || "Fiel");
+      }
 
       const sessionToken = await sdk.createSessionToken(userInfo.openId, {
         name: userInfo.name || "",
