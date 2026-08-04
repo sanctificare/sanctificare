@@ -1,5 +1,9 @@
 import { Resend } from "resend";
 
+if (process.env.NODE_ENV !== "production") {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_for_testing");
 
 const FROM = "Sanctificare <noreply@sanctificare.app>";
@@ -144,6 +148,9 @@ export async function syncUserToResend(toEmail: string, name: string): Promise<v
 
     if (contactError) {
       console.error("[Email Sync] Erro ao criar contato no Resend:", contactError);
+      if ((contactError as any)?.name === "restricted_api_key" || (contactError as any)?.message?.includes("restricted to only send")) {
+        console.warn("[Email Sync] Dica: Sua RESEND_API_KEY atual no .env é do tipo 'Sending access' (apenas envio). Para cadastrar contatos automaticamente na Audiência, crie uma chave com permissão 'Full Access' no painel do Resend (resend.com/api-keys).");
+      }
     } else {
       console.log(`[Email Sync] Contato ${toEmail} sincronizado com sucesso no Resend.`);
     }
