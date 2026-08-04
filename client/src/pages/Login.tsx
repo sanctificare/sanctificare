@@ -13,7 +13,7 @@ import { Mail, Lock, User, Eye, EyeOff, ChevronLeft, ArrowLeft, CheckCircle2 } f
 import { getApiBaseUrl, sanitizeAppPath, isMobileApp, setStoredCsrfToken, setStoredSessionToken, getStoredCsrfToken, getStoredSessionToken } from "@/const";
 import { Cross } from "@/components/CrossIcon";
 
-const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
+const LOGO_IMG = "/assets/sanctificare-logo-new.png";
 
 async function performLogin(input: any) {
   const base = getApiBaseUrl();
@@ -278,7 +278,7 @@ export default function Login() {
             <img
               src={LOGO_IMG}
               alt="Sanctificare Logo"
-              className="w-14 h-14 md:w-20 md:h-20 rounded-full mx-auto mb-2 md:mb-4 border border-[oklch(0.75_0.12_75/0.3)] shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+              className="w-16 h-16 md:w-24 md:h-24 object-contain rounded-2xl mx-auto mb-2 md:mb-4 shadow-xl hover:scale-105 transition-transform duration-300 cursor-pointer"
             />
           </Link>
           <h1 className="font-display text-2xl md:text-3xl font-bold tracking-wide text-white mb-1 md:mb-2">
