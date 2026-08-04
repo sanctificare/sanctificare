@@ -6,7 +6,7 @@ import { ENV } from "./env";
 import { sdk } from "./sdk";
 import { hashPassword, comparePassword } from "./authUtils";
 import { createMemoryRateLimiter } from "./rateLimit";
-import { sendPasswordResetEmail } from "./email";
+import { sendPasswordResetEmail, syncUserToResend } from "./email";
 import { nanoid } from "nanoid";
 import { parse as parseCookie } from "cookie";
 import {
@@ -137,6 +137,9 @@ router.post("/register", async (req, res) => {
       loginMethod: "credentials",
       role: email === "contato@sanctificare.app" ? "admin" : "user",
     });
+
+    // Sincroniza o novo usuário com o Resend de forma assíncrona
+    void syncUserToResend(newUser.email, newUser.name);
 
     const token = await sdk.createSessionToken(newUser.openId, { name: newUser.name || "" });
     const cookieOptions = getSessionCookieOptions(req);
