@@ -117,8 +117,8 @@ export async function sendPasswordResetEmail(
 }
 
 /**
- * Sincroniza o usuário cadastrado no Resend (cria o contato no Segmento do Resend).
- * A automação do Resend configurada no painel cuidará do envio do e-mail de boas-vindas.
+ * Sincroniza o usuário cadastrado no Resend (cria o contato no Segmento do Resend
+ * e dispara o evento customizado 'cadastro sanctificare' para acionar a Automação).
  * Executado de forma assíncrona para não travar o cadastro do usuário.
  */
 export async function syncUserToResend(toEmail: string, name?: string | null): Promise<void> {
@@ -127,7 +127,7 @@ export async function syncUserToResend(toEmail: string, name?: string | null): P
     return;
   }
 
-  // Adiciona/sincroniza o contato no Segmento Geral do Resend para disparar a Automação
+  // 1. Adiciona/sincroniza o contato no Segmento Geral do Resend
   try {
     const segmentId =
       process.env.RESEND_SEGMENT_ID ||
@@ -157,10 +157,22 @@ export async function syncUserToResend(toEmail: string, name?: string | null): P
         console.warn("[Email Sync] Dica: Sua RESEND_API_KEY atual no .env é do tipo 'Sending access' (apenas envio). Para cadastrar contatos automaticamente nos Segmentos, crie uma chave com permissão 'Full Access' no painel do Resend (resend.com/api-keys).");
       }
     } else {
-      console.log(`[Email Sync] Contato ${toEmail} sincronizado com sucesso no Segmento ${segmentId} do Resend (Automações acionadas).`);
+      console.log(`[Email Sync] Contato ${toEmail} sincronizado com sucesso no Segmento ${segmentId} do Resend.`);
+    }
+
+    // 2. Dispara o evento customizado 'cadastro sanctificare' exigido pela Automação 'Boas Vindas' do Resend
+    const { error: eventError } = await resend.events.send({
+      event: "cadastro sanctificare",
+      email: toEmail,
+    });
+
+    if (eventError) {
+      console.error("[Email Sync] Erro ao disparar evento 'cadastro sanctificare' no Resend:", eventError);
+    } else {
+      console.log(`[Email Sync] Evento 'cadastro sanctificare' disparado com sucesso para ${toEmail} (Automação acionada).`);
     }
   } catch (err) {
-    console.error("[Email Sync] Falha na sincronização de contato com Resend:", err);
+    console.error("[Email Sync] Falha na sincronização com Resend:", err);
   }
 }
 
