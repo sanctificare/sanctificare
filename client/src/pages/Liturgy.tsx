@@ -805,7 +805,7 @@ export default function Liturgy() {
                 </span>
               </div>
             )}
-            <audio ref={audioRef} src={playingUrl} preload="metadata" />
+            {isAuthenticated && <audio ref={audioRef} src={playingUrl} preload="metadata" />}
 
             <div className={`rounded-2xl border transition-all duration-500 p-6 ${
               activeTab === "audio" && playlist.length > 0
@@ -886,83 +886,85 @@ export default function Liturgy() {
                     </p>
                   </div>
 
-                  {/* Controles de Áudio (Navy + Gold + Glassmorphism) */}
-                  <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
-                    {/* Progress bar */}
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
-                        {formatTime(currentTime)}
-                      </span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={duration || 100}
-                        step={0.1}
-                        value={currentTime}
-                        onChange={(e) => handleSeek(Number(e.target.value))}
-                        className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
-                        style={{
-                          background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
-                            duration > 0 ? (currentTime / duration) * 100 : 0
-                          }%, rgba(255,255,255,0.2) ${
-                            duration > 0 ? (currentTime / duration) * 100 : 0
-                          }%)`,
-                        }}
-                      />
-                      <span className="text-[10px] text-slate-300 w-8 font-sans">
-                        -{formatTime(Math.max(duration - currentTime, 0))}
-                      </span>
-                    </div>
+                  {isAuthenticated ? (
+                    /* Controles de Áudio Reais (Apenas Usuários Logados) */
+                    <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
+                      {/* Progress bar */}
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-slate-300 w-8 text-right font-sans">
+                          {formatTime(currentTime)}
+                        </span>
+                        <input
+                          type="range"
+                          min={0}
+                          max={duration || 100}
+                          step={0.1}
+                          value={currentTime}
+                          onChange={(e) => handleSeek(Number(e.target.value))}
+                          className="flex-1 h-1 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
+                          style={{
+                            background: `linear-gradient(to right, oklch(0.75 0.12 75) ${
+                              duration > 0 ? (currentTime / duration) * 100 : 0
+                            }%, rgba(255,255,255,0.2) ${
+                              duration > 0 ? (currentTime / duration) * 100 : 0
+                            }%)`,
+                          }}
+                        />
+                        <span className="text-[10px] text-slate-300 w-8 font-sans">
+                          -{formatTime(Math.max(duration - currentTime, 0))}
+                        </span>
+                      </div>
 
-                    {/* Controls Buttons */}
-                    <div className="flex items-center justify-between px-2">
-                      <button
-                        onClick={handleRestart}
-                        className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
-                        title="Reiniciar áudio"
-                      >
-                        <RotateCcw size={15} />
-                      </button>
-
-                      <button
-                        onClick={handleShareLiturgy}
-                        className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
-                        title="Compartilhar áudio"
-                      >
-                        <Share2 size={15} />
-                      </button>
-
-                      <button
-                        onClick={togglePlay}
-                        className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
-                        title={isPlaying ? "Pausar" : "Reproduzir"}
-                      >
-                        {isPlaying ? (
-                          <Pause size={16} fill="currentColor" />
-                        ) : (
-                          <Play size={16} fill="currentColor" className="ml-0.5" />
-                        )}
-                      </button>
-
-                      <div className="flex items-center gap-1 group">
+                      {/* Controls Buttons */}
+                      <div className="flex items-center justify-between px-2">
                         <button
-                          onClick={() => setIsMuted(!isMuted)}
+                          onClick={handleRestart}
                           className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                          title="Reiniciar áudio"
                         >
-                          {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                          <RotateCcw size={15} />
                         </button>
+
+                        <button
+                          onClick={handleShareLiturgy}
+                          className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                          title="Compartilhar áudio"
+                        >
+                          <Share2 size={15} />
+                        </button>
+
+                        <button
+                          onClick={togglePlay}
+                          className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                          title={isPlaying ? "Pausar" : "Reproduzir"}
+                        >
+                          {isPlaying ? (
+                            <Pause size={16} fill="currentColor" />
+                          ) : (
+                            <Play size={16} fill="currentColor" className="ml-0.5" />
+                          )}
+                        </button>
+
+                        <div className="flex items-center gap-1 group">
+                          <button
+                            onClick={() => setIsMuted(!isMuted)}
+                            className="text-slate-300 hover:text-white p-1.5 rounded-full hover:bg-white/5 transition-colors"
+                          >
+                            {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Botão Escutar de Graça (Direciona para Cadastro) */}
-                  <a
-                    href="/login?tab=cadastrar&path=/liturgia"
-                    className="w-full max-w-sm mx-auto mt-4 py-3 px-6 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 group cursor-pointer"
-                  >
-                    <Play className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
-                    <span>Escutar de Graça</span>
-                  </a>
+                  ) : (
+                    /* Botão Escutar de Graça no local do Player (Modo Público) */
+                    <a
+                      href="/login?tab=cadastrar&path=/liturgia"
+                      className="w-full max-w-sm mx-auto py-3.5 px-8 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-sm shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2.5 group cursor-pointer border border-white/20"
+                    >
+                      <Play className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                      <span>Escutar de Graça</span>
+                    </a>
+                  )}
                 </div>
               ) : (
                 /* ==========================================
@@ -1008,65 +1010,71 @@ export default function Liturgy() {
                             Salmo Responsorial Cantado
                           </h4>
                           <p className="text-[10px] text-amber-600/70 dark:text-amber-400/70 mt-0.5">
-                            Ouça a versão cantada deste salmo
+                            {isAuthenticated ? "Ouça a versão cantada deste salmo" : "Versão cantada em áudio de alta fidelidade"}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={handleSharePsalm}
-                          className="w-9 h-9 rounded-full border border-amber-400/50 flex items-center justify-center text-amber-600 dark:text-amber-400 bg-white dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-all cursor-pointer shadow-sm hover:scale-105 shrink-0"
-                          title="Compartilhar salmo"
-                        >
-                          <Share2 className="w-4 h-4" />
-                        </button>
+                      {isAuthenticated && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={handleSharePsalm}
+                            className="w-9 h-9 rounded-full border border-amber-400/50 flex items-center justify-center text-amber-600 dark:text-amber-400 bg-white dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-all cursor-pointer shadow-sm hover:scale-105 shrink-0"
+                            title="Compartilhar salmo"
+                          >
+                            <Share2 className="w-4 h-4" />
+                          </button>
 
-                        <button
-                          type="button"
-                          onClick={togglePlayPsalm}
-                          className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-white flex items-center justify-center shadow-lg shadow-amber-500/40 transition-transform hover:scale-105 cursor-pointer shrink-0"
-                          title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
-                        >
-                          {isPsalmPlaying ? (
-                            <Pause size={14} fill="currentColor" />
-                          ) : (
-                            <Play size={14} fill="currentColor" className="ml-0.5" />
-                          )}
-                        </button>
-                      </div>
+                          <button
+                            type="button"
+                            onClick={togglePlayPsalm}
+                            className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-400 text-white flex items-center justify-center shadow-lg shadow-amber-500/40 transition-transform hover:scale-105 cursor-pointer shrink-0"
+                            title={isPsalmPlaying ? "Pausar" : "Reproduzir"}
+                          >
+                            {isPsalmPlaying ? (
+                              <Pause size={14} fill="currentColor" />
+                            ) : (
+                              <Play size={14} fill="currentColor" className="ml-0.5" />
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
 
-                    <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
+                    {isAuthenticated ? (
+                      <>
+                        <audio ref={psalmAudioRef} src={psalmPlayingUrl} preload="metadata" />
 
-                    {/* Timeline/Progress Bar Row */}
-                    <div className="flex items-center gap-3 bg-amber-100/60 dark:bg-amber-950/40 border border-amber-300/40 dark:border-amber-700/30 p-2 rounded-xl">
-                      <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
-                        {formatTime(psalmCurrentTime)}
-                      </span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={psalmDuration || 100}
-                        step={0.1}
-                        value={psalmCurrentTime}
-                        onChange={(e) => handleSeekPsalm(Number(e.target.value))}
-                        className="flex-1 h-1 bg-amber-200 dark:bg-amber-900 rounded-lg appearance-none cursor-pointer accent-amber-500"
-                      />
-                      <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
-                        {formatTime(psalmDuration)}
-                      </span>
-                    </div>
-
-                    {/* Botão Escutar de Graça Salmo (Direciona para Cadastro) */}
-                    <a
-                      href="/login?tab=cadastrar&path=/liturgia"
-                      className="w-full py-2.5 px-5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs shadow-md transition-all transform hover:scale-105 flex items-center justify-center gap-2 mt-1 group cursor-pointer"
-                    >
-                      <Play className="w-3.5 h-3.5 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
-                      <span>Escutar de Graça</span>
-                    </a>
+                        {/* Timeline/Progress Bar Row */}
+                        <div className="flex items-center gap-3 bg-amber-100/60 dark:bg-amber-950/40 border border-amber-300/40 dark:border-amber-700/30 p-2 rounded-xl">
+                          <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
+                            {formatTime(psalmCurrentTime)}
+                          </span>
+                          <input
+                            type="range"
+                            min={0}
+                            max={psalmDuration || 100}
+                            step={0.1}
+                            value={psalmCurrentTime}
+                            onChange={(e) => handleSeekPsalm(Number(e.target.value))}
+                            className="flex-1 h-1 bg-amber-200 dark:bg-amber-900 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                          />
+                          <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400 w-8 shrink-0 text-center select-none">
+                            {formatTime(psalmDuration)}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      /* Botão Escutar de Graça Salmo (Modo Público no local do Player) */
+                      <a
+                        href="/login?tab=cadastrar&path=/liturgia"
+                        className="w-full py-2.5 px-5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs shadow-md transition-all transform hover:scale-105 flex items-center justify-center gap-2 mt-1 group cursor-pointer border border-amber-300/40"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                        <span>Escutar de Graça</span>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
