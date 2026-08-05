@@ -3,7 +3,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
 import { Search, Compass, Lock } from "lucide-react";
-import { openRouteInApp } from "@/lib/deepLink";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
 import { isSaintMichaelLentActive } from "@/lib/saintMichaelConfig";
 
@@ -81,24 +80,6 @@ export default function Explore() {
           <p className="text-sm text-muted-foreground max-w-xl">
             Acesse todas as orações, leituras, acompanhamentos e ferramentas disponíveis para nutrir sua fé e perseverança.
           </p>
-
-          {!isAuthenticated && (
-            <div className="mt-4 max-w-3xl rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 px-4 py-3 shadow-sm">
-              <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)]">
-                Você está no modo de visita. Quase todo o conteúdo já pode ser explorado sem login.
-                Recursos pessoais e de comunidade continuam protegidos.
-              </p>
-              <div className="mt-2 flex items-center gap-3">
-                <button
-                  onClick={() => openRouteInApp("/explore")}
-                  className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline"
-                >
-                  Abrir no app
-                </button>
-                <span className="text-[10px] text-muted-foreground">Se o app não abrir, você seguirá no web.</span>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Banner Google Play (apenas na web desktop) */}
