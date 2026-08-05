@@ -640,7 +640,7 @@ export default function Liturgy() {
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isZenMode ? "bg-stone-50 dark:bg-stone-950 py-10" : "bg-background"}`}>
       {/* Landing Page Top Navigation Header (For Paid Ads Traffic & Visitors) */}
-      {!isZenMode && (
+      {!isZenMode && !isAuthenticated && (
         <header className="w-full border-b border-amber-500/20 bg-[#070c19] text-white py-3 px-4 sticky top-0 z-40 shadow-lg backdrop-blur-md bg-opacity-95">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
             <a href="/" className="flex items-center gap-2.5 group">
@@ -686,7 +686,7 @@ export default function Liturgy() {
         className={`mx-auto px-4 py-6 space-y-6 transition-all duration-500 ${isZenMode ? "max-w-2xl" : "max-w-3xl"}`}
       >
         {/* Landing Hero Title (SEO H1 & Value Proposition) */}
-        {!isZenMode && (
+        {!isZenMode && !isAuthenticated && (
           <div className="text-center pt-2 pb-1 space-y-2 max-w-2xl mx-auto">
             <h1 className="font-serif text-2xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
               Liturgia Diária em Áudio e Texto
@@ -1081,7 +1081,7 @@ export default function Liturgy() {
             )}
 
             {/* LANDING PAGE SECTIONS AROUND PLAYER (CRO & SEO) */}
-            {!isZenMode && (
+            {!isZenMode && !isAuthenticated && (
               <>
                 {/* 1. Value Proposition Cards */}
                 <div className="pt-8 pb-4 space-y-6">
@@ -1236,7 +1236,7 @@ export default function Liturgy() {
       </div>
 
       {/* STICKY MOBILE BOTTOM CTA BAR */}
-      {!isZenMode && (
+      {!isZenMode && !isAuthenticated && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-[#070c19]/95 backdrop-blur-md border-t border-amber-500/20 shadow-2xl flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <img src={LOGO_IMG} alt="Sanctificare" className="w-7 h-7 rounded-lg" />
