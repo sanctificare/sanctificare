@@ -37,6 +37,7 @@ module.exports = {
         FCM_SERVICE_ACCOUNT_JSON: process.env.FCM_SERVICE_ACCOUNT_JSON,
         // Resend e-mail
         RESEND_API_KEY: process.env.RESEND_API_KEY,
+        RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
         // Bunny Stream
         VITE_BUNNY_LIBRARY_ID: process.env.VITE_BUNNY_LIBRARY_ID,
         BUNNY_API_KEY: process.env.BUNNY_API_KEY,
