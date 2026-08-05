@@ -955,7 +955,14 @@ export default function Liturgy() {
                     </div>
                   </div>
 
-
+                  {/* Botão Escutar de Graça (Direciona para Cadastro) */}
+                  <a
+                    href="/login?tab=cadastrar&path=/liturgia"
+                    className="w-full max-w-sm mx-auto mt-4 py-3 px-6 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2 group cursor-pointer"
+                  >
+                    <Play className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                    <span>Escutar de Graça</span>
+                  </a>
                 </div>
               ) : (
                 /* ==========================================
@@ -1051,6 +1058,15 @@ export default function Liturgy() {
                         {formatTime(psalmDuration)}
                       </span>
                     </div>
+
+                    {/* Botão Escutar de Graça Salmo (Direciona para Cadastro) */}
+                    <a
+                      href="/login?tab=cadastrar&path=/liturgia"
+                      className="w-full py-2.5 px-5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs shadow-md transition-all transform hover:scale-105 flex items-center justify-center gap-2 mt-1 group cursor-pointer"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                      <span>Escutar de Graça</span>
+                    </a>
                   </div>
                 </div>
               </div>
