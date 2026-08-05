@@ -117,7 +117,7 @@ export async function sendPasswordResetEmail(
 }
 
 /**
- * Sincroniza o usuário cadastrado no Resend (cria o contato na Audiência do Resend).
+ * Sincroniza o usuário cadastrado no Resend (cria o contato no Segmento do Resend).
  * A automação do Resend configurada no painel cuidará do envio do e-mail de boas-vindas.
  * Executado de forma assíncrona para não travar o cadastro do usuário.
  */
@@ -127,9 +127,13 @@ export async function syncUserToResend(toEmail: string, name: string): Promise<v
     return;
   }
 
-  // Adiciona/sincroniza o contato na Audiência do Resend para disparar a Automação
+  // Adiciona/sincroniza o contato no Segmento Geral do Resend para disparar a Automação
   try {
-    const audienceId = process.env.RESEND_AUDIENCE_ID;
+    const segmentId =
+      process.env.RESEND_SEGMENT_ID ||
+      process.env.RESEND_AUDIENCE_ID ||
+      "04ac6e1c-5fad-46a3-baf5-4bade5a15f9b";
+
     const nameParts = (name || "").trim().split(" ");
     const firstName = nameParts[0] || name || "Fiel";
     const lastName = nameParts.slice(1).join(" ") || undefined;
@@ -141,8 +145,8 @@ export async function syncUserToResend(toEmail: string, name: string): Promise<v
       unsubscribed: false,
     };
 
-    if (audienceId) {
-      contactPayload.audienceId = audienceId;
+    if (segmentId) {
+      contactPayload.segments = [{ id: segmentId }];
     }
 
     const { error: contactError } = await resend.contacts.create(contactPayload);
@@ -150,10 +154,10 @@ export async function syncUserToResend(toEmail: string, name: string): Promise<v
     if (contactError) {
       console.error("[Email Sync] Erro ao criar contato no Resend:", contactError);
       if ((contactError as any)?.name === "restricted_api_key" || (contactError as any)?.message?.includes("restricted to only send")) {
-        console.warn("[Email Sync] Dica: Sua RESEND_API_KEY atual no .env é do tipo 'Sending access' (apenas envio). Para cadastrar contatos automaticamente na Audiência, crie uma chave com permissão 'Full Access' no painel do Resend (resend.com/api-keys).");
+        console.warn("[Email Sync] Dica: Sua RESEND_API_KEY atual no .env é do tipo 'Sending access' (apenas envio). Para cadastrar contatos automaticamente nos Segmentos, crie uma chave com permissão 'Full Access' no painel do Resend (resend.com/api-keys).");
       }
     } else {
-      console.log(`[Email Sync] Contato ${toEmail} sincronizado com sucesso na Audiência do Resend (Automações acionadas).`);
+      console.log(`[Email Sync] Contato ${toEmail} sincronizado com sucesso no Segmento ${segmentId} do Resend (Automações acionadas).`);
     }
   } catch (err) {
     console.error("[Email Sync] Falha na sincronização de contato com Resend:", err);
