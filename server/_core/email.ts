@@ -121,7 +121,7 @@ export async function sendPasswordResetEmail(
  * A automação do Resend configurada no painel cuidará do envio do e-mail de boas-vindas.
  * Executado de forma assíncrona para não travar o cadastro do usuário.
  */
-export async function syncUserToResend(toEmail: string, name: string): Promise<void> {
+export async function syncUserToResend(toEmail: string, name?: string | null): Promise<void> {
   if (!process.env.RESEND_API_KEY) {
     console.log(`[DEV] Novo usuário registrado (sem RESEND_API_KEY): ${name} <${toEmail}>`);
     return;
