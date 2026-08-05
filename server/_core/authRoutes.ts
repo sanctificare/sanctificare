@@ -139,7 +139,9 @@ router.post("/register", async (req, res) => {
     });
 
     // Sincroniza o novo usuário com o Resend de forma assíncrona
-    void syncUserToResend(newUser.email, newUser.name);
+    if (newUser.email) {
+      void syncUserToResend(newUser.email, newUser.name);
+    }
 
     const token = await sdk.createSessionToken(newUser.openId, { name: newUser.name || "" });
     const cookieOptions = getSessionCookieOptions(req);
