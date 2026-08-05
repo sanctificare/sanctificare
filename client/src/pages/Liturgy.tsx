@@ -1138,21 +1138,7 @@ export default function Liturgy() {
                   </div>
                 </div>
 
-                {/* 2. Depoimento / Prova Social */}
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0c162d] to-[#070c19] text-white border border-amber-500/20 shadow-xl space-y-3 text-center my-6">
-                  <div className="flex items-center justify-center gap-1 text-amber-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
-                    ))}
-                    <span className="text-xs font-bold text-amber-300 ml-2">4.9 / 5.0 (Mais de 10.000 fiéis)</span>
-                  </div>
-                  <p className="font-serif italic text-xs md:text-sm text-slate-200 max-w-lg mx-auto leading-relaxed">
-                    "O Sanctificare mudou meu dia a dia. Começo todas as manhãs ouvindo a liturgia e o evangelho meditados no caminho do trabalho. Paz incomparável!"
-                  </p>
-                  <span className="text-[10px] uppercase tracking-wider text-amber-400/80 font-bold block">
-                    — Maria E., São Paulo / SP
-                  </span>
-                </div>
+
 
                 {/* 3. Perguntas Frequentes (FAQ SEO & Conversion) */}
                 <div className="pt-6 pb-4 space-y-4 border-t border-border">
