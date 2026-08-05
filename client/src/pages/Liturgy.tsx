@@ -1054,18 +1054,6 @@ export default function Liturgy() {
                       </div>
                     </div>
                   </div>
-                )}
-                <Button
-                  onClick={handleLogLiturgy}
-                  disabled={logPrayer.isPending}
-                  className="w-full"
-                >
-                  <Heart className="w-4 h-4 mr-2" />
-                  {logPrayer.isPending ? "Registrando..." : "Registrar que rezei hoje"}
-                </Button>
-                <p className="text-xs text-muted-foreground text-center mt-2">
-                  Compartilhe sua fé e celebre com a comunidade.
-                </p>
               </div>
             )}
 
