@@ -688,10 +688,6 @@ export default function Liturgy() {
         {/* Landing Hero Title (SEO H1 & Value Proposition) */}
         {!isZenMode && (
           <div className="text-center pt-2 pb-1 space-y-2 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-semibold">
-              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-              <span>O Maior App Católico de Oração e Meditação</span>
-            </div>
             <h1 className="font-serif text-2xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
               Liturgia Diária em Áudio e Texto
             </h1>
