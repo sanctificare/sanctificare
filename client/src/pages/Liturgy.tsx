@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveR2Redirect } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX, Music, Share2 } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX, Music, Share2, Sparkles, Star, Headphones, BookOpen, ShieldCheck, ArrowRight, CheckCircle2, UserCheck } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { trpc } from "@/lib/trpc";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { toast } from "sonner";
 import LiturgyReadings from "@/components/LiturgyReadings";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { getPrayerArt } from "@/lib/cardArt";
 import { getLiturgyAudioByDate, getLiturgyReadingsAudioByDate, type LiturgyDailyAudioTrack } from "@/data/liturgy-audio";
 import { getDailyContent } from "@/data/daily";
@@ -552,10 +553,121 @@ export default function Liturgy() {
   const theme = getLiturgicalTheme(liturgy?.color);
   const dailyContent = getDailyContent(selectedDate);
 
+  // Dynamic SEO & Structured Data (JSON-LD) for Google Ranqueamento & Rich Snippets
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const celebrationTitle = liturgy?.celebration ? ` - ${liturgy.celebration}` : "";
+    document.title = `Liturgia Diária em Áudio e Texto | Sanctificare${celebrationTitle}`;
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement("meta");
+      metaDesc.setAttribute("name", "description");
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute(
+      "content",
+      `Acompanhe a Liturgia Diária de hoje com narração em áudio de alta fidelidade, 1ª leitura, Salmo Responsorial cantado e Evangelho proclamado. Fortaleça sua vida espiritual no Sanctificare.`
+    );
+
+    const schemaId = "sanctificare-liturgy-jsonld";
+    let scriptEl = document.getElementById(schemaId) as HTMLScriptElement | null;
+    if (!scriptEl) {
+      scriptEl = document.createElement("script");
+      scriptEl.id = schemaId;
+      scriptEl.type = "application/ld+json";
+      document.head.appendChild(scriptEl);
+    }
+
+    const currentTrack = playlist[currentTrackIndex];
+    const jsonLdData = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://sanctificare.app/liturgia",
+          "url": "https://sanctificare.app/liturgia",
+          "name": `Liturgia Diária em Áudio e Texto${celebrationTitle}`,
+          "description": "Liturgia Diária completa com áudio narrado, Salmo Responsorial cantado e texto integral do Evangelho do Dia.",
+          "inLanguage": "pt-BR"
+        },
+        {
+          "@type": "AudioObject",
+          "name": liturgy?.celebration ? `Áudio Liturgia Diária - ${liturgy.celebration}` : "Liturgia Diária em Áudio",
+          "description": "Narração em áudio das leituras da Liturgia Diária católica.",
+          "contentUrl": currentTrack?.url || "https://sanctificare.app/liturgia",
+          "encodingFormat": "audio/mpeg",
+          "inLanguage": "pt-BR"
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é a Liturgia Diária?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A Liturgia Diária é a sequência oficial de leituras bíblicas oferecidas pela Igreja Católica para cada dia do ano litúrgico, composta por Leitura, Salmo Responsorial e Evangelho."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "A Liturgia Diária no Sanctificare é gratuita?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim! A leitura e o áudio da Liturgia Diária estão disponíveis gratuitamente no site e aplicativo Sanctificare para todos os fiéis."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quais outros recursos o app Sanctificare oferece?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O Sanctificare oferece o Santo Rosário Guiado em Áudio, Lectio Divina diária, Quaresma de São Miguel Arcanjo, Exame de Consciência e acompanhamento do seu hábito espiritual."
+              }
+            }
+          ]
+        }
+      ]
+    };
+
+    scriptEl.textContent = JSON.stringify(jsonLdData);
+  }, [liturgy, playlist, currentTrackIndex]);
+
 
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isZenMode ? "bg-stone-50 dark:bg-stone-950 py-10" : "bg-background"}`}>
+      {/* Landing Page Top Navigation Header (For Paid Ads Traffic & Visitors) */}
+      {!isZenMode && (
+        <header className="w-full border-b border-amber-500/20 bg-[#070c19] text-white py-3 px-4 sticky top-0 z-40 shadow-lg backdrop-blur-md bg-opacity-95">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
+            <a href="/" className="flex items-center gap-2.5 group">
+              <img src={LOGO_IMG} alt="Sanctificare Logo" className="w-8 h-8 rounded-lg object-contain border border-amber-500/30 shadow-md group-hover:scale-105 transition-transform" />
+              <div className="text-left">
+                <span className="font-serif font-bold text-base tracking-tight text-white block leading-none">Sanctificare</span>
+                <span className="text-[10px] text-amber-400 font-sans tracking-wide">Liturgia Diária & Oração</span>
+              </div>
+            </a>
+            
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-flex items-center gap-1 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full font-medium">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                100% Gratuito
+              </span>
+              <a
+                href="/login?tab=cadastrar&path=/liturgia"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl shadow-md transition-all transform hover:scale-105 flex items-center gap-1.5"
+              >
+                <span>Criar Conta Grátis</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </header>
+      )}
+
       {isZenMode && (
         <div className="fixed top-4 left-4 z-50">
           <Button
@@ -573,7 +685,23 @@ export default function Liturgy() {
       <div 
         className={`mx-auto px-4 py-6 space-y-6 transition-all duration-500 ${isZenMode ? "max-w-2xl" : "max-w-3xl"}`}
       >
-        {/* Header */}
+        {/* Landing Hero Title (SEO H1 & Value Proposition) */}
+        {!isZenMode && (
+          <div className="text-center pt-2 pb-1 space-y-2 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-semibold">
+              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <span>O Maior App Católico de Oração e Meditação</span>
+            </div>
+            <h1 className="font-serif text-2xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
+              Liturgia Diária em Áudio e Texto
+            </h1>
+            <p className="text-xs md:text-sm text-muted-foreground max-w-lg mx-auto">
+              Acompanhe as leituras do dia, o Salmo Responsorial cantado e proclamado com narração em áudio de alta fidelidade.
+            </p>
+          </div>
+        )}
+
+        {/* Header / Date Selector */}
         <div className="text-center space-y-2 mb-8 select-none">
           <div className="flex items-center justify-center gap-2 mb-2">
             <LiturgyIcon className={`w-5 h-5 ${theme.primary}`} />
@@ -944,9 +1072,194 @@ export default function Liturgy() {
                 </p>
               </div>
             )}
+
+            {/* LANDING PAGE SECTIONS AROUND PLAYER (CRO & SEO) */}
+            {!isZenMode && (
+              <>
+                {/* 1. Value Proposition Cards */}
+                <div className="pt-8 pb-4 space-y-6">
+                  <div className="text-center space-y-1">
+                    <h3 className="font-serif text-xl font-bold text-foreground">
+                      Por que cultivar sua vida de oração no Sanctificare?
+                    </h3>
+                    <p className="text-xs text-muted-foreground max-w-lg mx-auto">
+                      Um ambiente sacro e sem distrações projetado para aproximar você do Evangelho todos os dias.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3 shadow-sm hover:border-amber-500/40 transition-colors">
+                      <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+                        <Headphones className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-foreground">Áudios Narrados & Salmo Cantado</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Ouça a liturgia diária completa enquanto se desloca para o trabalho, no carro ou no seu momento devocional.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3 shadow-sm hover:border-amber-500/40 transition-colors">
+                      <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+                        <BookOpen className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-foreground">Lectio Divina & Meditações</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Reflexões profundas com o método secular da Igreja para meditar no Evangelho de hoje.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3 shadow-sm hover:border-amber-500/40 transition-colors">
+                      <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+                        <Sparkles className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-foreground">Santo Rosário Guiado</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Reze os mistérios do dia com áudios mediativos, dezenas passo a passo e intenções da comunidade.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex items-start gap-3 shadow-sm hover:border-amber-500/40 transition-colors">
+                      <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+                        <ShieldCheck className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-foreground">Quaresma de São Miguel & Orações</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Catálogo completo de orações em áudio, novenas e guia prático de exame de consciência.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Depoimento / Prova Social */}
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0c162d] to-[#070c19] text-white border border-amber-500/20 shadow-xl space-y-3 text-center my-6">
+                  <div className="flex items-center justify-center gap-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    ))}
+                    <span className="text-xs font-bold text-amber-300 ml-2">4.9 / 5.0 (Mais de 10.000 fiéis)</span>
+                  </div>
+                  <p className="font-serif italic text-xs md:text-sm text-slate-200 max-w-lg mx-auto leading-relaxed">
+                    "O Sanctificare mudou meu dia a dia. Começo todas as manhãs ouvindo a liturgia e o evangelho meditados no caminho do trabalho. Paz incomparável!"
+                  </p>
+                  <span className="text-[10px] uppercase tracking-wider text-amber-400/80 font-bold block">
+                    — Maria E., São Paulo / SP
+                  </span>
+                </div>
+
+                {/* 3. Perguntas Frequentes (FAQ SEO & Conversion) */}
+                <div className="pt-6 pb-4 space-y-4 border-t border-border">
+                  <div className="text-center space-y-1">
+                    <h3 className="font-serif text-xl font-bold text-foreground">
+                      Perguntas Frequentes sobre a Liturgia Diária
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Tire suas dúvidas e saiba como rezar melhor com o Sanctificare.
+                    </p>
+                  </div>
+
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="faq-1">
+                      <AccordionTrigger className="text-xs md:text-sm font-semibold">
+                        O que é a Liturgia Diária da Igreja Católica?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
+                        A Liturgia Diária é a sequência oficial de leituras bíblicas oferecidas pela Igreja Católica para cada dia do ano. Ela é composta pela 1ª Leitura, Salmo Responsorial (frequentemente cantado), 2ª Leitura (em domingos e solenidades) e a Proclamação do Santo Evangelho.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="faq-2">
+                      <AccordionTrigger className="text-xs md:text-sm font-semibold">
+                        O acesso à Liturgia Diária no Sanctificare é gratuito?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
+                        Sim! Você pode ouvir o áudio narrado e ler o texto integral da Liturgia Diária todos os dias de forma totalmente gratuita, diretamente no navegador ou no aplicativo Sanctificare.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="faq-3">
+                      <AccordionTrigger className="text-xs md:text-sm font-semibold">
+                        Quais os benefícios de criar uma conta no Sanctificare?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
+                        Ao criar sua conta gratuita, você desbloqueia o acompanhamento do seu plano diário de oração, histórico de leituras concluídas, acesso ao Santo Rosário meditativo em áudio, Quaresma de São Miguel, Lectio Divina e lembretes diários para não perder seu momento de reflexão.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="faq-4">
+                      <AccordionTrigger className="text-xs md:text-sm font-semibold">
+                        Como funciona o aplicativo no celular?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground leading-relaxed">
+                        O Sanctificare pode ser acessado em qualquer smartphone, tablet ou computador. Você também pode salvar o aplicativo na sua tela inicial para acesso rápido aos áudios e leituras.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+
+                {/* 4. Banner Final de Conversão */}
+                <div className="my-8 p-6 md:p-8 rounded-3xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 text-slate-950 shadow-2xl relative overflow-hidden text-center space-y-4">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+                  
+                  <span className="inline-block bg-slate-950/20 text-slate-950 font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">
+                    ✦ Experimente sem compromisso
+                  </span>
+
+                  <h3 className="font-serif text-2xl md:text-3xl font-extrabold tracking-tight">
+                    Fortaleça sua vida espiritual diariamente
+                  </h3>
+
+                  <p className="text-xs md:text-sm text-slate-900 max-w-md mx-auto font-medium">
+                    Junte-se a milhares de católicos que transformaram sua rotina com a Liturgia em Áudio, Santo Rosário e Meditações Diárias.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <a
+                      href="/login?tab=cadastrar&path=/liturgia"
+                      className="w-full sm:w-auto bg-slate-950 hover:bg-slate-900 text-white font-bold text-sm px-6 py-3 rounded-2xl shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                    >
+                      <span>Criar Minha Conta Grátis</span>
+                      <ArrowRight className="w-4 h-4 text-amber-400" />
+                    </a>
+                    <a
+                      href="/explore"
+                      className="w-full sm:w-auto bg-white/20 hover:bg-white/30 text-slate-950 font-bold text-sm px-6 py-3 rounded-2xl transition-all flex items-center justify-center gap-2"
+                    >
+                      <span>Conhecer Recursos</span>
+                    </a>
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
+
+      {/* STICKY MOBILE BOTTOM CTA BAR */}
+      {!isZenMode && (
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-[#070c19]/95 backdrop-blur-md border-t border-amber-500/20 shadow-2xl flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <img src={LOGO_IMG} alt="Sanctificare" className="w-7 h-7 rounded-lg" />
+            <div>
+              <p className="text-xs font-bold text-white leading-none">Sanctificare App</p>
+              <p className="text-[10px] text-amber-400 mt-0.5 font-medium">Liturgia & Rosário em Áudio</p>
+            </div>
+          </div>
+          <a
+            href="/login?tab=cadastrar&path=/liturgia"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl shadow-md whitespace-nowrap"
+          >
+            Criar Conta Grátis
+          </a>
+        </div>
+      )}
 
       {/* Floating Toolbar */}
       {liturgy && activeTab === "text" && (
