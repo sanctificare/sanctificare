@@ -896,32 +896,20 @@ export default function SaintMichaelLent() {
                     </p>
                   </div>
 
-                  {/* 12. Ladainha de São Miguel Arcanjo */}
-                  <div id="sec-ladainha" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
-                    <h3 className="font-serif text-lg font-bold text-foreground">12. Ladainha de São Miguel Arcanjo</h3>
-                    <div className="space-y-1.5 rounded-xl border border-border bg-muted/20 p-4">
-                      {SAINT_MICHAEL_TRADITIONAL_PRAYERS.find((p) => p.title.includes("Ladainha"))?.content.split("\n").map((line, idx) => (
-                        <p key={idx} className={`font-serif ${line.startsWith("São Miguel") ? "font-semibold text-amber-700 dark:text-amber-400" : "text-muted-foreground"} ${fontSize}`}>
-                          {line}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 13. Oração de Libertação */}
+                  {/* 12. Oração de Libertação */}
                   {currentDayData.deliveryPrayer && (
                     <div id="sec-libertacao" className="scroll-mt-16 space-y-2 pt-2 border-t border-border">
-                      <h3 className="font-serif text-lg font-bold text-foreground">13. Oração de Libertação</h3>
+                      <h3 className="font-serif text-lg font-bold text-foreground">12. Oração de Libertação</h3>
                       <p className={`font-serif whitespace-pre-line leading-relaxed text-muted-foreground ${fontSize}`}>
                         {currentDayData.deliveryPrayer}
                       </p>
                     </div>
                   )}
 
-                  {/* 14. Exame de Consciência */}
+                  {/* 13. Exame de Consciência */}
                   {currentDayData.examination && currentDayData.examination.length > 0 && (
                     <div id="sec-exame" className="scroll-mt-16 space-y-3 pt-2 border-t border-border">
-                      <h3 className="font-serif text-lg font-bold text-foreground">14. Exame de Consciência</h3>
+                      <h3 className="font-serif text-lg font-bold text-foreground">13. Exame de Consciência</h3>
                       <div className="space-y-2">
                         {currentDayData.examination.map((q: string, idx: number) => (
                           <div key={idx} className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 flex items-start gap-2.5">
@@ -933,23 +921,23 @@ export default function SaintMichaelLent() {
                     </div>
                   )}
 
-                  {/* 15. Penitência para Hoje */}
+                  {/* 14. Penitência para Hoje */}
                   <div id="sec-penitencia" className="scroll-mt-16 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
-                      15. Penitência para hoje
+                      14. Penitência para hoje
                     </span>
                     <p className={`font-serif font-semibold italic text-foreground ${fontSize}`}>
                       "{currentDayData.suggestedPenance}"
                     </p>
                   </div>
 
-                  {/* 16-17. Consagrações & Oração Final */}
+                  {/* 15-16. Consagrações & Oração Final */}
                   <div id="sec-consagracao" className="scroll-mt-16 space-y-4">
-                    {/* 16. Consagração da Família a São Miguel Arcanjo */}
+                    {/* 15. Consagração da Família a São Miguel Arcanjo */}
                     {currentDayData.familyConsecration && (
                       <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 space-y-2 border-t border-border">
                         <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
-                          16. Consagração da Família a São Miguel Arcanjo
+                          15. Consagração da Família a São Miguel Arcanjo
                         </h3>
                         <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
                           {currentDayData.familyConsecration}
@@ -957,10 +945,10 @@ export default function SaintMichaelLent() {
                       </div>
                     )}
 
-                    {/* 17. Oração */}
+                    {/* 16. Oração */}
                     <div className="rounded-xl border-2 border-amber-600/40 bg-amber-500/10 p-5 space-y-2">
                       <h3 className="font-serif text-lg font-bold text-amber-800 dark:text-amber-300">
-                        17. Oração
+                        16. Oração
                       </h3>
                       <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
                         {currentDayData.complementaryPrayer}
