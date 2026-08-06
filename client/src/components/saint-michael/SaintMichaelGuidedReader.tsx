@@ -213,11 +213,11 @@ export function SaintMichaelGuidedReader({
         {/* STEP 4: PRÁTICA ESPIRITUAL */}
         {currentStep === 3 && (
           <div className="space-y-4 animate-fade-in">
-            {/* Oração de Entrega */}
+            {/* Oração de Libertação */}
             {dayData.deliveryPrayer && (
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif">
-                  Passo 11 • Oração de Entrega a São Miguel
+                  Passo 11 • Oração de Libertação
                 </span>
                 <p className={`font-serif whitespace-pre-line leading-relaxed text-foreground ${fontSize}`}>
                   {dayData.deliveryPrayer}
