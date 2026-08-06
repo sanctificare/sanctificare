@@ -2,7 +2,6 @@ export interface ChurchTraditionSection {
   cic?: { code: string; text: string }[];
   fathers?: { author: string; text: string; source?: string }[];
   doctors?: { author: string; text: string; source?: string }[];
-  magisterium?: { author: string; text: string; source?: string }[];
 }
 
 export interface SaintQuoteItem {
@@ -278,12 +277,6 @@ São Miguel Arcanjo é o grande estrategista do Céu. Ele não combate com armas
             source: "Carta a São Policarpo",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa São Leão Magno",
-            text: "O combate espiritual é inevitável aos filhos de Deus. Ninguém pode alcançar a vitória se recusar entrar no combate das virtudes contra os vícios.",
-          },
-        ],
       },
       deliveryPrayer: `Feche suavemente os olhos. Coloque a mão sobre o peito e respire fundo na presença de Deus.
 
@@ -370,12 +363,6 @@ Em nossa caminhada diária, ter fé não significa ausência de trevas ou sentim
             text: "Crer é um ato da inteligência que assente à verdade divina por imperativo da vontade movida por Deus mediante a graça.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A fé é um encontro pessoal com Jesus Cristo que transforma a existência e nos concede o olhar com o qual Deus vê a realidade.",
-          },
-        ],
       },
       deliveryPrayer: `Feche suavemente os olhos e coloque a mão sobre a Sagrada Escritura ou sobre o coração.
 
@@ -459,12 +446,6 @@ Combater a mentira exige coragem para assumir os próprios erros, moderação ao
             text: "A mentira é um vício oposto à veracidade. Todo engano nas palavras fere a justiça e a ordem devida nas relações humanas.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "A fofoca é um terrorismo de palavras. Quem fofoca mata a reputação do irmão e destrói a comunhão da Igreja.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, guerreiro da Verdade Altíssima, purificai a minha boca e o meu coração. Bani da minha vida toda mentira, engano, falsidade e o hábito destrutivo de falar dos defeitos dos outros.
 
@@ -544,12 +525,6 @@ O combate pela castidade não é apenas uma renúncia negativa, mas uma afirmaç
           {
             author: "São Tomás de Aquino",
             text: "A luxúria enfraquece a razão e gera a cegueira da alma, enquanto a pureza conserva a clareza do julgamento moral.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "O corpo humano traz em si a marca do mistério da criação e da redenção. Ele deve ser tratado com profundo respeito e santidade.",
           },
         ],
       },
@@ -636,12 +611,6 @@ Ser desapegado não significa desprezar o trabalho ou a providência, mas viver 
             source: "Legenda Maior",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Leão XIII",
-            text: "Os bens materiais são dados por Deus para a utilidade comum. Quem recebeu mais riquezas tem a obrigação moral de usá-las para o bem dos necessitados.",
-          },
-        ],
       },
       deliveryPrayer: `Glorioso São Miguel Arcanjo, libertai o meu coração de todo apego ganancioso ao dinheiro, aos bens e aos confortos deste mundo. Ensinai-me a buscar em primeiro lugar o Reino de Deus e a Sua justiça.
 
@@ -721,12 +690,6 @@ São Miguel Arcanjo é o guardião da paz divina. Ele nos ensina que a verdadeir
           {
             author: "São Tomás de Aquino",
             text: "O perdão das ofensas é uma obra de misericórdia espiritual superior a dar bens materiais, pois cura a alma da divisão e da amargura.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "Não há paz sem perdão. O perdão é a chave para curar as feridas da história e dos relacionamentos humanos.",
           },
         ],
       },
@@ -812,12 +775,6 @@ São Miguel Arcanjo e a corte dos anjos fiéis vivem em perfeita harmonia e aleg
             text: "Da inveja nascem a mágoa, a murmuração, a calúnia, a alegria na adversidade do próximo e o desgosto na sua prosperidade.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A caridade é o coração da Igreja e da vida cristã. Sem o amor fraterno, todas as nossas obras e orações perdem o valor diante de Deus.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe do Amor e da Harmonia Celeste, expulsai da minha alma todo germe de inveja, ciúme, rivalidade e julgamento temerário.
 
@@ -897,12 +854,6 @@ São Miguel Arcanjo nos convida à sobriedade dos filhos de Deus. O jejum e a ab
           {
             author: "São Tomás de Aquino",
             text: "A gula embota o sentido espiritual e inclina o homem à preguiça e à imoralidade, enquanto a sobriedade eleva a mente à contemplação.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa São Paulo VI",
-            text: "A penitência corporal é uma exigência permanente da vida cristã para reprimir os impulsos da natureza decaída e viver no Espírito.",
           },
         ],
       },
@@ -988,12 +939,6 @@ São Miguel Arcanjo é o mensageiro da paz e da vitória de Deus. Ele nos record
             text: "A esperança apoia-se na omnipotência e na misericórdia de Deus; por isso, para quem confia no Senhor, nada é impossível.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "Quem tem esperança vive de modo diferente; foi-lhe dada uma vida nova pela certeza de que a história está nas mãos de Deus.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, poderoso defensor e anjo da Paz Divina, afastai do meu coração toda a ansiedade sufocante, o medo do futuro, a agitação interior e o desespero.
 
@@ -1073,12 +1018,6 @@ São Miguel Arcanjo é o protótipo da pronta obediência celeste. Quando o Senh
           {
             author: "São Tomás de Aquino",
             text: "A obediência é a maior das virtudes morais, pois despreza a própria vontade por amor a Deus, o que é superior a sacrificar bens materiais.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa São Paulo VI",
-            text: "A obediência cristã não destrói a liberdade humana, mas a purifica e a eleva ao nível da divina vontade.",
           },
         ],
       },
@@ -1162,12 +1101,6 @@ São Miguel Arcanjo nos convida à transparência da alma. No Céu não existem 
             text: "A intenção é dita pura quando busca a Deus como fim último, sem mistura de vaidade ou interesse egoísta.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A pureza de coração é a condição para ver a Deus e para viver na verdade com o próprio próximo.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe da Verdade e Espelho da Glória Divina, purificai o meu coração de toda vaidade, busca de aplausos e hipocrisia.
 
@@ -1245,12 +1178,6 @@ São Miguel Arcanjo é o zelador dos mistérios divinos. Na Santa Missa, o céu 
           {
             author: "São Tomás de Aquino",
             text: "Nenhum outro sacramento é mais salutar que a Eucaristia, pois nele não se recebe apenas a graça, mas o próprio Autor da graça.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa São Pio X",
-            text: "A Eucaristia é o caminho mais curto e seguro para ir ao Céu. Frequentai a Santa Comunhão com amor e pureza de alma.",
           },
         ],
       },
@@ -1334,12 +1261,6 @@ São Miguel Arcanjo nos convida à fortaleza serena. A vitória espiritual não 
             text: "A paciência é a virtude moral que nos impede de deixar que a tristeza nos afaste do bem da razão e da graça divina.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A paciência é a forma diária do amor. Aprender a ter paciência é o caminho para transformar o mundo com a força da fé.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Invencível General dos Exércitos do Senhor, alcançai-me a graça da santa paciência no meio de todas as tribulações e cruzes da vida.
 
@@ -1419,12 +1340,6 @@ São Miguel Arcanjo é um anjo de oração e adoração incessante. Ele nos ensi
           {
             author: "Santo Afonso Maria de Ligório",
             text: "Quem reza se salva, quem não reza se condena. Toda a nossa salvação depende da oração.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A oração não é um tempo perdido, mas o tempo em que abrimos a porta da nossa vida a Deus para que Ele a transforme.",
           },
         ],
       },
@@ -1510,12 +1425,6 @@ São Miguel Arcanjo é o protetor das famílias tementes a Deus. Ele foi enviado
             text: "A paz de uma família depende da capacidade que cada um tem de suportar os defeitos do outro por amor a Deus.",
           },
         ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "O futuro da humanidade passa pela família. Defendei a família contra todas as ameaças do egoísmo e da divisão.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Defensor das Famílias Cristãs e Príncipe da Paz, venho colocar o meu lar e todos os meus familiares sob a vossa especial proteção.
 
@@ -1599,12 +1508,6 @@ O Santo Temor de Deus é um dos Sete Dons do Espírito Santo. Ele nos concede a 
             text: "O temor reverencial é a porta que abre a alma para o amor perfeito. Quem ama a Deus teme contristar o Seu Espírito.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa São João Paulo II",
-            text: "O temor de Deus é o respeito filial diante da majestade divina. Ele nos liberta do medo do mundo e do pecado.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe Glorioso diante do Trono de Deus, infundi no meu coração o dom do Santo Temor de Deus.
 
@@ -1684,13 +1587,6 @@ São Miguel Arcanjo é um modelo de fidelidade incondicional aos pequenos e gran
           {
             author: "Santa Teresa de Lisieux",
             text: "Apanhar um alfinete do chão por amor a Deus pode salvar uma alma. Tudo tem valor imenso quando feito por amor.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "O trabalho humano é a vocação originária do homem, pelo qual ele se torna cooperador da criação e atinge a santificação no cotidiano.",
-            source: "Laborem Exercens 1",
           },
         ],
       },
@@ -1774,12 +1670,6 @@ São Miguel Arcanjo vive no silêncio adorador dos Céus. O silêncio dos anjos 
             text: "O Pai disse uma só Palavra, que foi o Seu Filho, e a diz sempre no eterno silêncio; e no silêncio ela deve ser ouvida pela alma.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "O silêncio é essencial para a vida de oração. Sem o silêncio não se escuta a voz de Deus e não se encontra a paz interior.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe do Silêncio e da Paz Celeste, libertai o meu coração de todo o agito, dispersão e barulho deste mundo.
 
@@ -1859,12 +1749,6 @@ São Miguel Arcanjo é o anjo da perseverança invencível. Ele permaneceu inaba
           {
             author: "São Tomás de Aquino",
             text: "Nenhuma virtude é premiada sem a perseverança, pois somente quem persevera até o fim alcança a coroa da vida eterna.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa São Pio X",
-            text: "A perseverança na oração e na frequência aos sacramentos é a única garantia de salvação no meio do mundo corrupto.",
           },
         ],
       },
@@ -1948,12 +1832,6 @@ São Miguel Arcanjo é o campeão da caridade divina. Ele combateu o dragão por
             text: "Amar o inimigo enquanto homem criado à imagem de Deus é preceito de caridade; amar o seu pecado é ilícito.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "O amor aos inimigos é a Carta Magna do Reino dos Céus. É a força desarmada que vence a violência do mundo.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe da Caridade Divina, purificai a minha alma de toda aversão, rancor e desejo de vingança.
 
@@ -2035,12 +1913,6 @@ São Miguel Arcanjo é o iluminador dos espíritos. Ele nos ensina a rejeitar pr
             text: "Não está em nosso poder impedir que os pensamentos surjam na mente, mas está em nosso poder rejeitá-los ou acolhê-los.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "Guardar a mente com a Palavra de Deus é a defesa suprema contra as ilusões e ideologias do mundo contemporâneo.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Defensor da Verdade e Guarda da Mente, purificai a minha imaginação de todo pensamento de orgulho, ressentimento, vaidade e impureza.
 
@@ -2118,12 +1990,6 @@ São Miguel Arcanjo é o mensageiro da compaixão e da verdade divina. Ele nos r
           {
             code: "CIC §2843",
             text: "A recusa de perdoar aos nossos irmãos fecha o nosso coração; a sua dureza torna-o impermeável ao amor misericordioso do Pai.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "A misericórdia é o segundo nome do Amor de Deus manifestado na Paixão de Nosso Senhor Jesus Cristo.",
           },
         ],
       },
@@ -2207,12 +2073,6 @@ São Miguel Arcanjo vive para a glória de Deus e nada mais. Ele não busca a ad
             text: "O respeito humano é uma forma de timidez moral que submete o julgamento da razão e da fé ao medo dos homens.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "O cristão não deve ter medo do desacordo da cultura dominante quando está em jogo a verdade do Evangelho.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Guerreiro da Glória Divina, libertai a minha alma de toda a escravidão do respeito humano e do medo do julgamento dos homens.
 
@@ -2294,12 +2154,6 @@ São Miguel Arcanjo lidera a oração de ação de graças dos anjos no Céu. El
             text: "Que coisa melhor podemos trazer no coração, pronunciar com a boca e escrever com a pena do que esta palavra: 'Graças a Deus'?",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "A gratidão é o traço característico do coração santificado. Dizer 'obrigado' a Deus transforma a nossa vida.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe do Louvor e da Adoração Celeste, ensinai-me a ter um coração continuamente grato a Deus.
 
@@ -2376,12 +2230,6 @@ São Miguel Arcanjo é o anjo da justiça reta de Deus. Ele nos ensina que a nó
           {
             author: "São Tomás de Aquino",
             text: "O julgamento temerário fere a justiça e a caridade, pois retira injustamente a boa reputação do irmão no tribunal interior da alma.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "Julgar os outros é uma atitude feia que nos afasta de Deus. A misericórdia nos ensina a olhar para o irmão com compaixão.",
           },
         ],
       },
@@ -2467,12 +2315,6 @@ São Miguel Arcanjo é o grande cavaleiro da Virgem Maria. Ele coloca toda a sua
             source: "Super Missus Est",
           },
         ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "Totus Tuus! Sou todo teu, Maria, e tudo o que é meu te pertence. Caminhai conosco no combate da fé.",
-          },
-        ],
       },
       deliveryPrayer: `Ó Glorioso São Miguel Arcanjo, fiel servo da Rainha dos Céus, ensinai-me a amar e a venerar a Santíssima Virgem Maria com o mesmo ardor das legiões angélicas.
 
@@ -2549,12 +2391,6 @@ São Miguel Arcanjo é o administrador dos bens de Deus e protetor dos necessita
           {
             author: "São João Crisóstomo",
             text: "Queres honrar o Corpo de Cristo? Não O desprezes quando O vires nu nos teus irmãos necessitados.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "As obras de misericórdia são o coração do Evangelho. Não podemos fechar os olhos diante dos que sofrem.",
           },
         ],
       },
@@ -2635,12 +2471,6 @@ São Miguel Arcanjo é o anjo do ardor e do zelo divino. Ele não aceita meias m
           {
             author: "São Tomás de Aquino",
             text: "A perfeição da vida cristã consiste na caridade; quanto mais a alma ama a Deus e ao próximo, mais perfeita ela se torna.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A santidade não consiste em não cometer erros, mas na capacidade de conversão e recomeço contínuo no amor de Cristo.",
           },
         ],
       },
@@ -2729,12 +2559,6 @@ São Miguel Arcanjo e as legiões celestes vivem na alegria radiante da visão b
             source: "Suma Teológica II-II, q. 28",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "A alegria do Evangelho enche o coração e a vida inteira daqueles que se encontram com Jesus. Com Cristo a alegria renasce sempre.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Príncipe da Alegria Celestial, afastai da minha alma todo o espírito de tristeza azeda, melancolia e amargura.
 
@@ -2809,12 +2633,6 @@ São Miguel Arcanjo é o Supremo Comandante dos Exércitos do Senhor. Ele nos co
           {
             code: "CIC §1808",
             text: "A fortaleza é a virtude moral que assegura a firmeza e a constância na busca do bem. Ela torna o homem capaz de vencer o medo das críticas e da perseguição.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "O combate espiritual não é uma metáfora, é uma realidade. Devemos estar vigilantes e armados com a Palavra de Deus.",
           },
         ],
       },
@@ -2899,12 +2717,6 @@ São Miguel Arcanjo é o modelo de sobriedade espiritual. Ele nos ensina a jejua
             source: "Suma Teológica II-II, q. 147",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Paulo VI",
-            text: "A mortificação cristã é a resposta do amor ao mistério do sofrimento da Cruz de Nosso Senhor Jesus Cristo.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Espelho de Sobriedade e Pureza, ensinai-me a mortificar as minhas paixões e desejos desordenados.
 
@@ -2981,12 +2793,6 @@ São Miguel Arcanjo é o defensor da Doutrina Eterna. Ele nos convida a ler a B�
           {
             author: "São Tomás de Aquino",
             text: "A Sagrada Escritura é a regra infalível da fé católica, dada por Deus para iluminar a razão humana.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A Lectio Divina abre a alma para o encontro pessoal com o Cristo Vivo que nos fala no texto sagrado.",
           },
         ],
       },
@@ -3068,12 +2874,6 @@ São Miguel Arcanjo é o Príncipe de todos os Anjos da Guarda. Ele nos encoraja
           {
             author: "São Tomás de Aquino",
             text: "O Anjo da Guarda é designado por Deus para guiar o homem pelo caminho da salvação e afastar os perigos do corpo e da alma.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Francisco",
-            text: "O Anjo da Guarda não é uma doutrina imaginária, é um companheiro de viagem que Deus colocou ao nosso lado.",
           },
         ],
       },
@@ -3158,12 +2958,6 @@ São Miguel Arcanjo é o defensor das almas e o encarregado de introduzi-las no 
             source: "Cartas Espirituais",
           },
         ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "A nova evangelização exige cristãos apaixonados por Cristo e cheios de zelo pela salvação dos homens do nosso tempo.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Condutor das Almas ao Paraíso, infundi no meu coração um ardoroso e incansável zelo pela salvação dos pecadores.
 
@@ -3232,12 +3026,6 @@ São Miguel Arcanjo e os anjos da corte celeste adoram a Jesus Eucarístico com 
           {
             author: "São Tomás de Aquino",
             text: "Nenhum outro sacramento é mais salutar do que a Eucaristia; por ele os pecados são purificados e as virtudes aumentadas na alma.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "A Igreja vive da Eucaristia. Este mistério é o coração pulsante do Corpo Místico de Cristo.",
           },
         ],
       },
@@ -3320,12 +3108,6 @@ São Miguel Arcanjo é o guardião da paz das almas. Ele nos ensina a descansar 
             text: "Não te preocupes com o que acontecerá amanhã; o mesmo Pai Eterno que cuida de ti hoje cuidará de ti amanhã e sempre.",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "Quem confia em Deus não tem medo do futuro; a esperança cristã é a ancoragem da alma no Céu.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Anjo da Paz Divina, afugentai do meu coração todo o medo do futuro, ansiedade e perturbação da mente.
 
@@ -3400,12 +3182,6 @@ São Miguel Arcanjo vem com a sua espada de luz cortar as correntes do rancor e 
           {
             code: "CIC §1468",
             text: "Todo o valor do sacramento da Penitência consiste em reestabelecer-nos na graça de Deus e unir-nos a Ele numa santa amizade.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "São João Paulo II",
-            text: "Não há paz sem justiça, não há justiça sem perdão. O perdão é a força divina que cura o passado.",
           },
         ],
       },
@@ -3488,12 +3264,6 @@ São Miguel Arcanjo é o advogado defensor dos fiéis no tribunal do Juízo e o 
             source: "Dialogorum Libri",
           },
         ],
-        magisterium: [
-          {
-            author: "Papa Bento XVI",
-            text: "A esperança da vida eterna dá sentido e luz a todas as tribulações e cruzes da nossa existência terrena.",
-          },
-        ],
       },
       deliveryPrayer: `São Miguel Arcanjo, Protetor na Hora da Morte e Advogado no Juízo, vinde em meu auxílio no momento supremo em que a minha alma deixar este mundo.
 
@@ -3568,12 +3338,6 @@ Mas o encerramento desta Quaresma não é um fim, é um novo começo! Continuemo
           {
             code: "CIC §2016",
             text: "Os filhos da Santa Mãe Igreja esperam legitimamente a graça da perseverança final e a recompensa de Deus seu Pai pelas boas obras realizadas com a Sua graça em comunhão com Jesus.",
-          },
-        ],
-        magisterium: [
-          {
-            author: "Papa Leão XIII",
-            text: "São Miguel Arcanjo, defendei-nos no combate; sede o nosso refúgio contra as maldades e ciladas do demônio!",
           },
         ],
       },

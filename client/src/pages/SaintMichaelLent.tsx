@@ -231,7 +231,7 @@ export default function SaintMichaelLent() {
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
-  const [expandedTraditions, setExpandedTraditions] = useState<Record<string, boolean>>({ cic: true, fathers: true, doctors: true, magisterium: true });
+  const [expandedTraditions, setExpandedTraditions] = useState<Record<string, boolean>>({ cic: true, fathers: true, doctors: true });
   const toggleTradition = (key: string) => setExpandedTraditions((prev) => ({ ...prev, [key]: !prev[key] }));
   const pillNavRef = useRef<HTMLDivElement | null>(null);
 
@@ -879,27 +879,6 @@ export default function SaintMichaelLent() {
                               {currentDayData.churchTradition.doctors.map((item, idx) => (
                                 <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
                                   <strong>{item.author}: </strong>"{item.text}"
-                                </p>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {currentDayData.churchTradition.magisterium && (
-                        <div className="rounded-xl border border-border bg-muted/20 overflow-hidden">
-                          <button
-                            onClick={() => toggleTradition("magisterium")}
-                            className="w-full p-4 flex items-center justify-between font-serif font-bold text-xs uppercase tracking-wider text-amber-700 dark:text-amber-400 cursor-pointer hover:bg-muted/40 transition-colors"
-                          >
-                            <span>• Magistério da Igreja ({currentDayData.churchTradition.magisterium.length})</span>
-                            {expandedTraditions.magisterium ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                          </button>
-                          {expandedTraditions.magisterium && (
-                            <div className="p-4 pt-0 space-y-2 border-t border-border/40">
-                              {currentDayData.churchTradition.magisterium.map((item, idx) => (
-                                <p key={idx} className={`font-serif text-muted-foreground ${fontSize}`}>
-                                  <strong>{item.source}: </strong>"{item.text}"
                                 </p>
                               ))}
                             </div>
