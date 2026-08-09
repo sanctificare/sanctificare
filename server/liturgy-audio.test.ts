@@ -28,7 +28,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 09/08/26", () => {
+  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 12/08/26", () => {
     const dates = [
       "2026-08-01",
       "2026-08-02",
@@ -39,6 +39,9 @@ describe("liturgy-audio", () => {
       "2026-08-07",
       "2026-08-08",
       "2026-08-09",
+      "2026-08-10",
+      "2026-08-11",
+      "2026-08-12",
     ];
 
     for (const dateIso of dates) {

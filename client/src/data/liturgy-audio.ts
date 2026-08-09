@@ -71,8 +71,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         return audio;
       }
     } else if (monthStr === "08") {
-      // Temos áudios individuais na pasta de agosto26 de 01 a 09 de agosto
-      if (dayNum >= 1 && dayNum <= 9) {
+      // Temos áudios individuais na pasta de agosto26 de 01 a 12 de agosto
+      if (dayNum >= 1 && dayNum <= 12) {
         const formattedDate = `${dayStr}${monthStr}26`; // ex: 010826
 
         const audio: LiturgyReadingsAudio = {
