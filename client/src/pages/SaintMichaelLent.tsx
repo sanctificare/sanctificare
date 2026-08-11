@@ -691,17 +691,14 @@ export default function SaintMichaelLent() {
                         muted={isMuted}
                       />
 
-                      {/* Cabeçalho do Dia & Segmento Atual */}
+                      {/* Cabeçalho do Dia */}
                       <div className="text-center space-y-1">
                         <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/90 font-serif">
-                          Dia {selectedDayNum} • Parte {currentSegmentIndex + 1} de {audioSegments.length}
+                          Dia {selectedDayNum} • Oração Guiada em Áudio
                         </span>
-                        <h2 className="font-serif text-lg md:text-xl font-bold text-amber-300 leading-tight">
-                          {currentSegment?.title}
+                        <h2 className="font-serif text-xl md:text-2xl font-bold text-amber-300 leading-tight">
+                          {currentDayData.theme}
                         </h2>
-                        <p className="font-serif text-xs text-slate-300 italic max-w-md mx-auto">
-                          "{currentDayData.theme}"
-                        </p>
                       </div>
 
                       {/* Visual de Capa com aura luminosa */}
@@ -722,7 +719,7 @@ export default function SaintMichaelLent() {
                         </div>
                       </div>
 
-                      {/* Controles de Áudio (Player Real com Seek e Playlist) */}
+                      {/* Controles de Áudio (Player Real com Seek e Transição Automática de Faixas) */}
                       <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
                         {/* Progress Bar & Seeker */}
                         <div className="flex items-center gap-2.5">
@@ -852,49 +849,6 @@ export default function SaintMichaelLent() {
                           >
                             <Share2 size={16} />
                           </button>
-                        </div>
-                      </div>
-
-                      {/* Lista de Partes / Playlist do Dia */}
-                      <div className="w-full max-w-sm mx-auto space-y-2 pt-2">
-                        <span className="text-[11px] font-serif font-bold text-amber-400/90 uppercase tracking-wider block text-center">
-                          Sequência das Orações em Áudio ({audioSegments.length} Partes)
-                        </span>
-                        <div className="space-y-1.5">
-                          {audioSegments.map((seg, idx) => {
-                            const isCurrent = idx === currentSegmentIndex;
-                            return (
-                              <button
-                                key={seg.id}
-                                onClick={() => {
-                                  setCurrentSegmentIndex(idx);
-                                  setCurrentTime(0);
-                                  setIsPlaying(true);
-                                }}
-                                className={`w-full px-3.5 py-2.5 rounded-xl text-xs font-serif flex items-center justify-between transition-all cursor-pointer border ${
-                                  isCurrent
-                                    ? "bg-amber-500/20 border-amber-500/50 text-amber-300 font-bold shadow-sm"
-                                    : "bg-white/5 hover:bg-white/10 border-white/5 text-slate-300"
-                                }`}
-                              >
-                                <div className="flex items-center gap-2.5 truncate">
-                                  <span
-                                    className={`w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${
-                                      isCurrent ? "bg-amber-500 text-slate-950" : "bg-white/10 text-slate-400"
-                                    }`}
-                                  >
-                                    {idx + 1}
-                                  </span>
-                                  <span className="truncate">{seg.title}</span>
-                                </div>
-                                {isCurrent && isPlaying ? (
-                                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
-                                ) : isCurrent ? (
-                                  <span className="text-[10px] font-mono text-amber-400/80 shrink-0">tocando</span>
-                                ) : null}
-                              </button>
-                            );
-                          })}
                         </div>
                       </div>
                     </>
