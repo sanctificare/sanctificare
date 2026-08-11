@@ -72,6 +72,53 @@ export function getSaintMichaelAudioSegments(dayNumber: number): SaintMichaelAud
   ];
 }
 
+export const SAINT_MICHAEL_DAY_DURATIONS: Record<number, string> = {
+  1: "12:35",
+  2: "12:06",
+  3: "11:49",
+  4: "11:38",
+  5: "11:23",
+  6: "11:23",
+  7: "11:02",
+  8: "10:44",
+  9: "11:02",
+  10: "11:11",
+  11: "11:45",
+  12: "11:23",
+  13: "11:23",
+  14: "11:32",
+  15: "11:22",
+  16: "11:32",
+  17: "11:34",
+  18: "11:26",
+  19: "11:29",
+  20: "11:31",
+  21: "11:15",
+  22: "11:19",
+  23: "11:11",
+  24: "11:03",
+  25: "11:10",
+  26: "11:10",
+  27: "11:09",
+  28: "11:03",
+  29: "11:04",
+  30: "11:18",
+  31: "11:08",
+  32: "11:19",
+  33: "11:14",
+  34: "11:04",
+  35: "11:12",
+  36: "10:50",
+  37: "10:58",
+  38: "11:08",
+  39: "11:06",
+  40: "11:40",
+};
+
+export function getSaintMichaelDayDurationFormatted(dayNumber: number): string {
+  return SAINT_MICHAEL_DAY_DURATIONS[dayNumber] || "11:30";
+}
+
 export interface SpiritualJourney {
   id: string;
   title: string;

@@ -41,6 +41,7 @@ import {
   SAINT_MICHAEL_LENT,
   SAINT_MICHAEL_TRADITIONAL_PRAYERS,
   getSaintMichaelAudioSegments,
+  getSaintMichaelDayDurationFormatted,
   type JourneyDay,
   type SaintMichaelAudioSegment,
 } from "@/data/saint-michael-lent";
@@ -1210,7 +1211,7 @@ export default function SaintMichaelLent() {
                       <div className="flex flex-col items-end gap-1.5 shrink-0 pt-0.5">
                         <span className="text-[10px] font-mono font-medium text-amber-900/70 dark:text-amber-300/80 bg-amber-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
                           <Headphones size={10} className={active ? "text-amber-600 dark:text-amber-400" : "text-amber-700/60"} />
-                          05:15
+                          {getSaintMichaelDayDurationFormatted(dayNum)}
                         </span>
                         {isAudioLockedDay && (
                           <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/50 px-2 py-0.5 rounded-full border border-amber-300/60 dark:border-amber-700/50">
