@@ -35,10 +35,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { UpgradeDialog } from "@/components/UpgradeDialog";
+import { resolveR2Redirect } from "@/const";
+import { useAudioKeepAwake } from "@/hooks/useAudioKeepAwake";
 import {
   SAINT_MICHAEL_LENT,
   SAINT_MICHAEL_TRADITIONAL_PRAYERS,
+  getSaintMichaelAudioSegments,
   type JourneyDay,
+  type SaintMichaelAudioSegment,
 } from "@/data/saint-michael-lent";
 import { isSaintMichaelContentUnlocked, calculateSaintMichaelEndDateIso } from "@/lib/saintMichaelConfig";
 
@@ -234,30 +238,108 @@ export default function SaintMichaelLent() {
   const toggleTradition = (key: string) => setExpandedTraditions((prev) => ({ ...prev, [key]: !prev[key] }));
   const pillNavRef = useRef<HTMLDivElement | null>(null);
 
-  // Audio Player State
+  // Audio Player State & Segment Queue
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const duration = 315; // 5:15 simulated audio length
+  const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [currentSegmentIndex, setCurrentSegmentIndex] = useState(0);
+  const [resolvedAudioUrl, setResolvedAudioUrl] = useState<string>("");
 
-  // Audio simulation timer
+  const selectedDayNum = state.selectedDay;
+
+  const audioSegments: SaintMichaelAudioSegment[] = useMemo(() => {
+    return getSaintMichaelAudioSegments(selectedDayNum);
+  }, [selectedDayNum]);
+
+  const currentSegment = audioSegments[currentSegmentIndex] ?? audioSegments[0];
+
+  // Resolve audio URL when current segment changes
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentTime((prev) => {
-          if (prev >= duration) {
-            setIsPlaying(false);
-            return 0;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    }
+    if (!currentSegment?.url) return;
+    let isCancelled = false;
+    resolveR2Redirect(currentSegment.url).then((url) => {
+      if (!isCancelled) {
+        setResolvedAudioUrl(url);
+      }
+    });
     return () => {
-      if (interval) clearInterval(interval);
+      isCancelled = true;
     };
-  }, [isPlaying, duration]);
+  }, [currentSegment]);
+
+  // Handle HTMLAudioElement lifecycle & events
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const onLoadedMetadata = () => setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
+    const onEnded = () => {
+      if (currentSegmentIndex < audioSegments.length - 1) {
+        // Advance to next segment in queue
+        setCurrentSegmentIndex((prev) => prev + 1);
+        setCurrentTime(0);
+      } else {
+        // Queue finished
+        setIsPlaying(false);
+        setCurrentSegmentIndex(0);
+        setCurrentTime(0);
+      }
+    };
+    const onError = (e: any) => {
+      console.error("[SaintMichaelAudio] Playback error:", e);
+      setIsPlaying(false);
+    };
+
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    audio.addEventListener("loadedmetadata", onLoadedMetadata);
+    audio.addEventListener("ended", onEnded);
+    audio.addEventListener("error", onError);
+
+    return () => {
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("ended", onEnded);
+      audio.removeEventListener("error", onError);
+    };
+  }, [currentSegmentIndex, audioSegments.length]);
+
+  // Keep Awake & Lockscreen MediaSession controls
+  useAudioKeepAwake({
+    isPlaying,
+    title: `${currentSegment?.title || "Áudio"} • Dia ${selectedDayNum}`,
+    artist: "Quaresma de São Miguel Arcanjo",
+    album: "Sanctificare",
+    artworkUrl: SAINT_MICHAEL_LENT.image,
+    onPlay: () => {
+      audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => {});
+    },
+    onPause: () => {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+    },
+    onSeekTo: (time) => {
+      if (audioRef.current) {
+        audioRef.current.currentTime = time;
+        setCurrentTime(time);
+      }
+    },
+  });
+
+  // Trigger play/pause when resolved URL or isPlaying state changes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !resolvedAudioUrl) return;
+
+    if (isPlaying) {
+      audio.play().catch((err) => {
+        console.warn("[SaintMichaelAudio] Play interrupted:", err);
+        setIsPlaying(false);
+      });
+    }
+  }, [resolvedAudioUrl, isPlaying]);
 
   // Deep link: open a shared "?dia=N" link directly on that day
   useEffect(() => {
@@ -306,8 +388,6 @@ export default function SaintMichaelLent() {
       return next;
     });
   };
-
-  const selectedDayNum = state.selectedDay;
 
   // Day data resolver (Dia 1 e Dia 2 completos, dias 3-40 estruturados)
   const currentDayData: JourneyDay = useMemo(() => {
@@ -603,35 +683,46 @@ export default function SaintMichaelLent() {
                     </div>
                   ) : (
                     <>
-                      {/* Cabeçalho do Dia */}
-                      <div className="text-center">
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80 font-serif">
-                          Dia {selectedDayNum}
+                      {/* Hidden HTML5 Audio Element */}
+                      <audio
+                        ref={audioRef}
+                        src={resolvedAudioUrl}
+                        preload="metadata"
+                        muted={isMuted}
+                      />
+
+                      {/* Cabeçalho do Dia & Segmento Atual */}
+                      <div className="text-center space-y-1">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/90 font-serif">
+                          Dia {selectedDayNum} • Parte {currentSegmentIndex + 1} de {audioSegments.length}
                         </span>
-                        <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight">
-                          {currentDayData.theme}
+                        <h2 className="font-serif text-lg md:text-xl font-bold text-amber-300 leading-tight">
+                          {currentSegment?.title}
                         </h2>
+                        <p className="font-serif text-xs text-slate-300 italic max-w-md mx-auto">
+                          "{currentDayData.theme}"
+                        </p>
                       </div>
 
                       {/* Visual de Capa com aura luminosa */}
-                      <div className="flex flex-col items-center justify-center my-6">
-                        <div className="relative w-40 h-40">
+                      <div className="flex flex-col items-center justify-center my-5">
+                        <div className="relative w-36 h-36 sm:w-40 sm:h-40">
                           <div
                             className={`absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 blur-md transition-opacity duration-1000 ${
-                              isPlaying ? "opacity-90 animate-pulse" : "opacity-40"
+                              isPlaying ? "opacity-90 animate-pulse" : "opacity-30"
                             }`}
                           />
                           <img
                             src={SAINT_MICHAEL_LENT.image}
                             alt="São Miguel Arcanjo"
-                            className={`relative w-40 h-40 rounded-3xl object-cover z-10 border border-white/20 shadow-2xl transition-transform duration-500 ${
+                            className={`relative w-36 h-36 sm:w-40 sm:h-40 rounded-3xl object-cover z-10 border border-white/20 shadow-2xl transition-transform duration-500 ${
                               isPlaying ? "scale-105" : "scale-100"
                             }`}
                           />
                         </div>
                       </div>
 
-                      {/* Controles de Áudio (Player estilo anexo) */}
+                      {/* Controles de Áudio (Player Real com Seek e Playlist) */}
                       <div className="w-full max-w-sm mx-auto bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg flex flex-col gap-3">
                         {/* Progress Bar & Seeker */}
                         <div className="flex items-center gap-2.5">
@@ -641,25 +732,103 @@ export default function SaintMichaelLent() {
                           <input
                             type="range"
                             min={0}
-                            max={duration}
-                            step={1}
+                            max={duration || 100}
+                            step={0.1}
                             value={currentTime}
-                            onChange={(e) => setCurrentTime(Number(e.target.value))}
+                            onChange={(e) => {
+                              const newTime = Number(e.target.value);
+                              if (audioRef.current) {
+                                audioRef.current.currentTime = newTime;
+                              }
+                              setCurrentTime(newTime);
+                            }}
                             className="flex-1 h-1.5 rounded-full accent-amber-500 bg-white/20 cursor-pointer outline-none"
                           />
                           <span className="text-[10px] text-slate-300 w-9 font-mono">
-                            -{formatAudioTime(duration - currentTime)}
+                            -{formatAudioTime(Math.max(0, duration - currentTime))}
                           </span>
                         </div>
 
                         {/* Botões do Player */}
-                        <div className="flex items-center justify-center gap-5 pt-1">
+                        <div className="flex items-center justify-center gap-3 pt-1">
                           <button
-                            onClick={() => setCurrentTime(0)}
-                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
-                            aria-label="Reiniciar"
+                            onClick={() => {
+                              if (audioRef.current) {
+                                audioRef.current.currentTime = 0;
+                              }
+                              setCurrentTime(0);
+                            }}
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5"
+                            title="Reiniciar faixa"
+                            aria-label="Reiniciar faixa"
                           >
                             <RotateCcw size={16} />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              if (audioRef.current) {
+                                audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 10);
+                              }
+                            }}
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 font-mono text-[11px] font-bold"
+                            title="Voltar 10s"
+                            aria-label="Voltar 10 segundos"
+                          >
+                            -10s
+                          </button>
+
+                          {/* Play/Pause Gold Button */}
+                          <button
+                            onClick={() => {
+                              const audio = audioRef.current;
+                              if (!audio) return;
+                              if (isPlaying) {
+                                audio.pause();
+                                setIsPlaying(false);
+                              } else {
+                                audio.play().then(() => setIsPlaying(true)).catch((err) => {
+                                  console.warn("[SaintMichaelAudio] Play error:", err);
+                                  toast.error("Erro ao carregar o áudio. Verifique sua conexão.");
+                                  setIsPlaying(false);
+                                });
+                              }
+                            }}
+                            className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer mx-1"
+                            aria-label={isPlaying ? "Pausar" : "Reproduzir"}
+                          >
+                            {isPlaying ? (
+                              <Pause size={22} className="fill-slate-950" />
+                            ) : (
+                              <Play size={22} className="fill-slate-950 ml-0.5" />
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              if (audioRef.current) {
+                                audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + 10);
+                              }
+                            }}
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 font-mono text-[11px] font-bold"
+                            title="Avançar 10s"
+                            aria-label="Avançar 10 segundos"
+                          >
+                            +10s
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              if (audioRef.current) {
+                                audioRef.current.muted = !isMuted;
+                              }
+                              setIsMuted(!isMuted);
+                            }}
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5"
+                            title={isMuted ? "Ativar som" : "Desativar som"}
+                            aria-label="Mudo"
+                          >
+                            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
                           </button>
 
                           <button
@@ -677,32 +846,55 @@ export default function SaintMichaelLent() {
                                 toast.success("Link da oração copiado para a área de transferência!");
                               }
                             }}
-                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5"
+                            title="Compartilhar"
                             aria-label="Compartilhar"
                           >
                             <Share2 size={16} />
                           </button>
+                        </div>
+                      </div>
 
-                          {/* Play/Pause Gold Button */}
-                          <button
-                            onClick={() => setIsPlaying(!isPlaying)}
-                            className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-95"
-                            aria-label={isPlaying ? "Pausar" : "Reproduzir"}
-                          >
-                            {isPlaying ? (
-                              <Pause size={22} className="fill-slate-950" />
-                            ) : (
-                              <Play size={22} className="fill-slate-950 ml-0.5" />
-                            )}
-                          </button>
-
-                          <button
-                            onClick={() => setIsMuted(!isMuted)}
-                            className="text-slate-400 hover:text-white transition-colors p-3.5 -m-1 rounded-full"
-                            aria-label="Mudo"
-                          >
-                            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                          </button>
+                      {/* Lista de Partes / Playlist do Dia */}
+                      <div className="w-full max-w-sm mx-auto space-y-2 pt-2">
+                        <span className="text-[11px] font-serif font-bold text-amber-400/90 uppercase tracking-wider block text-center">
+                          Sequência das Orações em Áudio ({audioSegments.length} Partes)
+                        </span>
+                        <div className="space-y-1.5">
+                          {audioSegments.map((seg, idx) => {
+                            const isCurrent = idx === currentSegmentIndex;
+                            return (
+                              <button
+                                key={seg.id}
+                                onClick={() => {
+                                  setCurrentSegmentIndex(idx);
+                                  setCurrentTime(0);
+                                  setIsPlaying(true);
+                                }}
+                                className={`w-full px-3.5 py-2.5 rounded-xl text-xs font-serif flex items-center justify-between transition-all cursor-pointer border ${
+                                  isCurrent
+                                    ? "bg-amber-500/20 border-amber-500/50 text-amber-300 font-bold shadow-sm"
+                                    : "bg-white/5 hover:bg-white/10 border-white/5 text-slate-300"
+                                }`}
+                              >
+                                <div className="flex items-center gap-2.5 truncate">
+                                  <span
+                                    className={`w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${
+                                      isCurrent ? "bg-amber-500 text-slate-950" : "bg-white/10 text-slate-400"
+                                    }`}
+                                  >
+                                    {idx + 1}
+                                  </span>
+                                  <span className="truncate">{seg.title}</span>
+                                </div>
+                                {isCurrent && isPlaying ? (
+                                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+                                ) : isCurrent ? (
+                                  <span className="text-[10px] font-mono text-amber-400/80 shrink-0">tocando</span>
+                                ) : null}
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
                     </>

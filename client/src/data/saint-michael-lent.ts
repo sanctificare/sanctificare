@@ -35,6 +35,56 @@ export interface JourneyDay {
   audioContemplativeUrl?: string;
 }
 
+export interface SaintMichaelAudioSegment {
+  id: string;
+  title: string;
+  url: string;
+}
+
+export function getSaintMichaelAudioSegments(dayNumber: number): SaintMichaelAudioSegment[] {
+  const R2_BASE = "/r2-storage/quaresma-sao-miguel";
+  const segments: SaintMichaelAudioSegment[] = [];
+
+  // 1. Orações Iniciais (por enquanto coloque só no dia 1)
+  if (dayNumber === 1) {
+    segments.push({
+      id: "inicial",
+      title: "1. Orações Iniciais",
+      url: `${R2_BASE}/todos-dias-inicial.mp3`,
+    });
+  }
+
+  // 2. Parte 1 da Meditação
+  segments.push({
+    id: "parte1",
+    title: dayNumber === 1 ? "2. Meditação — Parte 1" : "1. Meditação — Parte 1",
+    url: `${R2_BASE}/quaresma-parte1-dia${dayNumber}.mp3`,
+  });
+
+  // 3. Parte 2 da Meditação
+  segments.push({
+    id: "parte2",
+    title: dayNumber === 1 ? "3. Meditação — Parte 2" : "2. Meditação — Parte 2",
+    url: `${R2_BASE}/quaresma-parte2-dia${dayNumber}.mp3`,
+  });
+
+  // 4. Exame de Consciência
+  segments.push({
+    id: "exame",
+    title: dayNumber === 1 ? "4. Exame de Consciência" : "3. Exame de Consciência",
+    url: `${R2_BASE}/examedia${dayNumber}.mp3`,
+  });
+
+  // 5. Orações Finais
+  segments.push({
+    id: "final",
+    title: dayNumber === 1 ? "5. Orações Finais" : "4. Orações Finais",
+    url: `${R2_BASE}/todos-dias-final.mp3`,
+  });
+
+  return segments;
+}
+
 export interface SpiritualJourney {
   id: string;
   title: string;
