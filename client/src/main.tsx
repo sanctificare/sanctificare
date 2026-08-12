@@ -347,11 +347,11 @@ if (typeof window !== "undefined" && isMobileApp()) {
           });
         }
 
-        // Use next() instead of set(): set() reloads the WebView immediately,
-        // interrupting whatever the user is doing (e.g. login). next() stages
-        // the bundle to be applied on the next app restart.
-        await CapacitorUpdater.next({ id: bundle.id });
-        console.log(`[OTA] Update version ${updateData.version} staged. Will load on next restart.`);
+        // Activate the new bundle using set(). This sets the active bundle in native storage
+        // and reloads the WebView with the updated JS/CSS bundle, ensuring the update persists
+        // permanently across app restarts.
+        console.log(`[OTA] Activating new update version ${updateData.version}...`);
+        await CapacitorUpdater.set({ id: bundle.id });
       }
     } catch (err) {
       // Do NOT call CapacitorUpdater.reset() here: reset() reloads the WebView
