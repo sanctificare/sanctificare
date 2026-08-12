@@ -28,7 +28,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 12/08/26", () => {
+  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 19/08/26", () => {
     const dates = [
       "2026-08-01",
       "2026-08-02",
@@ -42,6 +42,13 @@ describe("liturgy-audio", () => {
       "2026-08-10",
       "2026-08-11",
       "2026-08-12",
+      "2026-08-13",
+      "2026-08-14",
+      "2026-08-15",
+      "2026-08-16",
+      "2026-08-17",
+      "2026-08-18",
+      "2026-08-19",
     ];
 
     for (const dateIso of dates) {
@@ -59,7 +66,7 @@ describe("liturgy-audio", () => {
         `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
       );
 
-      if (dateIso === "2026-08-02" || dateIso === "2026-08-09") {
+      if (dateIso === "2026-08-02" || dateIso === "2026-08-09" || dateIso === "2026-08-16") {
         expect(audios.secondReading).toBe(
           `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/2leitura${formattedDate}.mp3`
         );
