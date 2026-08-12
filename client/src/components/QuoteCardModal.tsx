@@ -17,6 +17,7 @@ import {
   ImageIcon,
 } from "lucide-react";
 import { toast } from "sonner";
+import { shareImage, shareText, copyImageToClipboard } from "@/lib/share";
 import { isMobileApp, getPublicUrl } from "@/const";
 import { toBlob } from "html-to-image";
 
