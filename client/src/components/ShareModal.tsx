@@ -9,7 +9,7 @@ import { Link2, Mail, MoreHorizontal } from "lucide-react";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
 
-import { isMobileApp } from "@/const";
+import { isMobileApp, getPublicUrl } from "@/const";
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -30,6 +30,8 @@ export default function ShareModal({
   url,
   artworkUrl,
 }: ShareModalProps) {
+  const publicUrl = useMemo(() => getPublicUrl(url), [url]);
+
   const isLogo = useMemo(() => {
     const artUrl = artworkUrl || FALLBACK_ARTWORK_URL;
     const lower = artUrl.toLowerCase();
@@ -47,7 +49,7 @@ export default function ShareModal({
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(publicUrl);
       toast.success("Link copiado para a área de transferência!");
       onClose();
     } catch {
@@ -57,7 +59,7 @@ export default function ShareModal({
 
   const shareToWhatsApp = () => {
     const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-      `${shareTextContent}\n\n${url}`
+      `${shareTextContent}\n\n${publicUrl}`
     )}`;
     window.open(waUrl, "_blank");
     onClose();
@@ -65,7 +67,7 @@ export default function ShareModal({
 
   const shareToFacebook = () => {
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      url
+      publicUrl
     )}`;
     window.open(fbUrl, "_blank");
     onClose();
@@ -73,7 +75,7 @@ export default function ShareModal({
 
   const shareToX = () => {
     const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-      url
+      publicUrl
     )}&text=${encodeURIComponent(shareTextContent)}`;
     window.open(xUrl, "_blank");
     onClose();
@@ -82,7 +84,7 @@ export default function ShareModal({
   const shareToEmail = () => {
     const mailUrl = `mailto:?subject=${encodeURIComponent(
       title
-    )}&body=${encodeURIComponent(`${shareTextContent}\n\n${url}`)}`;
+    )}&body=${encodeURIComponent(`${shareTextContent}\n\n${publicUrl}`)}`;
     window.open(mailUrl, "_blank");
     onClose();
   };
@@ -91,7 +93,7 @@ export default function ShareModal({
     // Falls back to navigator.share/Capacitor share when clicking "Mais"
     const result = await shareText({
       title,
-      text: `${shareTextContent} ${url}`,
+      text: `${shareTextContent} ${publicUrl}`,
     });
 
     if (result.status === "shared" || result.status === "copied" || result.status === "cancelled") {

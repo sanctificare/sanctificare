@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { applyImageFallback, getLoginUrl, resolveR2Redirect, isMobileApp } from "@/const";
+import { applyImageFallback, getLoginUrl, resolveR2Redirect, isMobileApp, getPublicUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { getNovenaBySlug } from "@/data/novenas";
@@ -1053,7 +1053,7 @@ export default function NovenaDetails() {
         onClose={() => setIsShareOpen(false)}
         title={`${selectedNovena?.name || "Novena"} - Dia ${safeDay}`}
         description={`Ouça o Dia ${safeDay} da ${selectedNovena?.name || "Novena"} no Sanctificare.`}
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={getPublicUrl()}
       />
     </div>
   );

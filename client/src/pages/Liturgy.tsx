@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl, resolveR2Redirect } from "@/const";
+import { getLoginUrl, resolveR2Redirect, isMobileApp, getPublicUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX, Music, Share2, Sparkles, Star, Headphones, BookOpen, ShieldCheck, ArrowRight, CheckCircle2, UserCheck } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
@@ -12,7 +12,6 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { getPrayerArt } from "@/lib/cardArt";
 import { getLiturgyAudioByDate, getLiturgyReadingsAudioByDate, type LiturgyDailyAudioTrack } from "@/data/liturgy-audio";
 import { getDailyContent } from "@/data/daily";
-import { isMobileApp } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
@@ -1330,7 +1329,7 @@ export default function Liturgy() {
         onClose={() => setIsShareOpen(false)}
         title={shareData.title}
         description={shareData.description}
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={getPublicUrl()}
       />
     </div>
   );

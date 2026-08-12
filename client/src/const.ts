@@ -53,11 +53,13 @@ export const isMobileApp = () => {
   );
 };
 
+export const PUBLIC_APP_URL = "https://sanctificare.app";
+
 // Production API origin used by the native (Capacitor) app. Configurable at
 // build time via VITE_API_BASE_URL so the domain is not hard-coded.
 const MOBILE_API_BASE_URL =
   (import.meta.env?.VITE_API_BASE_URL as string | undefined)?.replace(/\/+$/, "") ||
-  "https://sanctificare.app";
+  PUBLIC_APP_URL;
 
 export const getApiBaseUrl = () => {
   if (isMobileApp()) {
@@ -65,6 +67,40 @@ export const getApiBaseUrl = () => {
   }
   return "";
 };
+
+/**
+ * Normalizes any share URL or path so that local origins (e.g. localhost, capacitor://localhost)
+ * are converted into canonical https://sanctificare.app URLs.
+ */
+export const getPublicUrl = (pathOrUrl?: string): string => {
+  if (!pathOrUrl) {
+    if (typeof window === "undefined") return PUBLIC_APP_URL;
+    pathOrUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  }
+
+  // Replace any localhost or capacitor origin with the public app domain
+  if (
+    pathOrUrl.startsWith("http://localhost/") ||
+    pathOrUrl.startsWith("http://localhost") ||
+    pathOrUrl.startsWith("capacitor://localhost/") ||
+    pathOrUrl.startsWith("capacitor://localhost") ||
+    pathOrUrl.startsWith("http://127.0.0.1/") ||
+    pathOrUrl.startsWith("http://127.0.0.1")
+  ) {
+    return pathOrUrl.replace(/^(http|capacitor):\/\/(localhost|127\.0\.0\.1)(:\d+)?/, PUBLIC_APP_URL);
+  }
+
+  if (pathOrUrl.startsWith("/")) {
+    return `${PUBLIC_APP_URL}${pathOrUrl}`;
+  }
+
+  if (pathOrUrl.startsWith("https://") || pathOrUrl.startsWith("http://")) {
+    return pathOrUrl;
+  }
+
+  return `${PUBLIC_APP_URL}/${pathOrUrl}`;
+};
+
 
 // CSRF token persistence for native clients (see server /api/auth/csrf).
 export const CSRF_STORAGE_KEY = "sanctificare.csrf_token";

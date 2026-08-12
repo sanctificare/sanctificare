@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl, resolveMediaUrl } from "@/const";
+import { getLoginUrl, resolveMediaUrl, getPublicUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { BIBLE_VIDEOS, type BibleVideo } from "@/data/bible-videos";
@@ -438,7 +438,7 @@ export default function VideosBiblicos() {
 
   const handleShareVideo = async (video: BibleVideo, e: React.MouseEvent) => {
     e.stopPropagation();
-    const shareUrl = `${window.location.origin}${window.location.pathname}?v=${video.id}`;
+    const shareUrl = getPublicUrl(`${window.location.pathname}?v=${video.id}`);
     const result = await shareText({
       title: `Vídeo bíblico: ${video.title}`,
       text: `Assista este vídeo bíblico no Sanctificare: ${shareUrl}`,

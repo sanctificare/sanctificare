@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getLoginUrl, sanitizeAppPath } from "../client/src/const";
+import { getLoginUrl, sanitizeAppPath, getPublicUrl, PUBLIC_APP_URL } from "../client/src/const";
 
 describe("auth path helpers", () => {
   it("sanitizeAppPath aceita path interno seguro", () => {
@@ -35,3 +35,26 @@ describe("auth path helpers", () => {
     expect(getLoginUrl("")).toBe("/login");
   });
 });
+
+describe("getPublicUrl helper", () => {
+  it("substitui origens de localhost ou capacitor pelo domínio público", () => {
+    expect(getPublicUrl("http://localhost/liturgia")).toBe("https://sanctificare.app/liturgia");
+    expect(getPublicUrl("capacitor://localhost/liturgia")).toBe("https://sanctificare.app/liturgia");
+    expect(getPublicUrl("http://localhost:5173/novenas/sao-jose")).toBe("https://sanctificare.app/novenas/sao-jose");
+    expect(getPublicUrl("http://127.0.0.1:3000/videos-biblicos?v=123")).toBe("https://sanctificare.app/videos-biblicos?v=123");
+  });
+
+  it("converte caminhos relativos em URLs públicas completas", () => {
+    expect(getPublicUrl("/liturgia")).toBe("https://sanctificare.app/liturgia");
+    expect(getPublicUrl("/oracoes")).toBe("https://sanctificare.app/oracoes");
+  });
+
+  it("mantém URLs públicas remotas inalteradas", () => {
+    expect(getPublicUrl("https://sanctificare.app/liturgia")).toBe("https://sanctificare.app/liturgia");
+  });
+
+  it("retorna PUBLIC_APP_URL quando nenhum argumento é passado em ambiente sem window", () => {
+    expect(getPublicUrl("")).toBe(PUBLIC_APP_URL);
+  });
+});
+

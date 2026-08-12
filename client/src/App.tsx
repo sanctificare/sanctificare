@@ -266,7 +266,7 @@ function AppShell() {
       )}
       {!isLandingPage && <MobileTopMenu />}
       <div className="theme-contemplative-a mobile-app-viewport min-h-[100dvh]">
-        <div key={location} className="animate-fade-in">
+        <div className="animate-fade-in">
           <Router />
         </div>
         {!isLandingPage && <MobileBottomNav />}

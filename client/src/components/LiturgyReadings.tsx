@@ -6,7 +6,7 @@ import type { LiturgicalTheme } from "../pages/Liturgy";
 import { Button } from "@/components/ui/button";
 import { getLiturgyReadingsAudioByDate } from "../data/liturgy-audio";
 import ShareModal from "@/components/ShareModal";
-import { isMobileApp, resolveR2Redirect } from "@/const";
+import { isMobileApp, resolveR2Redirect, getPublicUrl } from "@/const";
 import { shareText } from "@/lib/share";
 
 
@@ -328,7 +328,7 @@ function SingedPsalmPlayer({ audioUrl }: { audioUrl: string }) {
         onClose={() => setIsShareOpen(false)}
         title="Salmo Responsorial Cantado"
         description="Ouça o Salmo Responsorial Cantado da Liturgia de hoje."
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={getPublicUrl()}
       />
     </div>
   );

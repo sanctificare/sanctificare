@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipForward, Share2, SlidersHorizontal, ListMusic, Volume2, VolumeX } from "lucide-react";
-import { resolveR2Redirect, isMobileApp } from "@/const";
+import { resolveR2Redirect, isMobileApp, getPublicUrl } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 
@@ -213,7 +213,7 @@ export default function NovenaAudioDock({
         onClose={() => setIsShareOpen(false)}
         title={title}
         description={subtitle}
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={getPublicUrl()}
         artworkUrl={coverUrl}
       />
     </div>

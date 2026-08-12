@@ -9,7 +9,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { formatTime } from "@/data/rosary-audio";
-import { resolveR2Redirect, isMobileApp } from "@/const";
+import { resolveR2Redirect, isMobileApp, getPublicUrl } from "@/const";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 import { useAudioKeepAwake } from "@/hooks/useAudioKeepAwake";
@@ -631,7 +631,7 @@ export default function AudioPlayer({
           onClose={() => setIsShareOpen(false)}
           title={title}
           description={description}
-          url={typeof window !== "undefined" ? window.location.href : ""}
+          url={getPublicUrl()}
           artworkUrl={artworkUrl}
         />
       </div>

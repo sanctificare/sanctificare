@@ -17,8 +17,7 @@ import {
   ImageIcon,
 } from "lucide-react";
 import { toast } from "sonner";
-import { shareImage, shareText, copyImageToClipboard } from "@/lib/share";
-import { isMobileApp } from "@/const";
+import { isMobileApp, getPublicUrl } from "@/const";
 import { toBlob } from "html-to-image";
 
 interface QuoteCardModalProps {
@@ -140,7 +139,7 @@ export default function QuoteCardModal({
     return `“${quote}”\n\n— ${author} (${bookTitle} • ${dayTitle})\n\nAcesse: https://sanctificare.app`;
   }, [quote, author, bookTitle, dayTitle]);
 
-  const fullShareUrl = typeof window !== "undefined" ? window.location.href : "https://sanctificare.app";
+  const fullShareUrl = useMemo(() => getPublicUrl(), []);
 
   const captureCardBlob = async (): Promise<Blob | null> => {
     if (!cardRef.current) return null;

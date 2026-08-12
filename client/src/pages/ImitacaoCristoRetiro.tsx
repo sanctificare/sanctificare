@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import { getLoginUrl, isMobileApp } from "@/const";
+import { getLoginUrl, isMobileApp, getPublicUrl } from "@/const";
 import { shareText } from "@/lib/share";
 import { openRouteInApp } from "@/lib/deepLink";
 import ShareModal from "@/components/ShareModal";
@@ -689,7 +689,7 @@ export default function ImitacaoCristoRetiro() {
         onClose={() => setIsShareOpen(false)}
         title={selected.title}
         description={selected.description}
-        url={typeof window !== "undefined" ? window.location.href : ""}
+        url={getPublicUrl()}
       />
 
       <QuoteCardModal
