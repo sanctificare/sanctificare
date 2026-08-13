@@ -5,6 +5,7 @@ import {
   calculateSaintMichaelEndDateIso,
   SAINT_MICHAEL_ACTIVATION_DATE,
 } from "../client/src/lib/saintMichaelConfig";
+import { getSaintMichaelAudioSegments } from "../client/src/data/saint-michael-lent";
 
 describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
   const dateBeforeActivation = new Date("2026-08-03T12:00:00-03:00");
@@ -40,4 +41,17 @@ describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
     const endDate = calculateSaintMichaelEndDateIso("2026-08-15", 40);
     expect(endDate).toBe("2026-09-30");
   });
+
+  it("gera os 5 segmentos de áudio de R2 corretamente para todos os 40 dias", () => {
+    for (let day = 1; day <= 40; day++) {
+      const segments = getSaintMichaelAudioSegments(day);
+      expect(segments).toHaveLength(5);
+      expect(segments[0].url).toBe("/r2-storage/quaresma-sao-miguel/todos-dias-inicial.mp3");
+      expect(segments[1].url).toBe(`/r2-storage/quaresma-sao-miguel/quaresma-parte1-dia${day}.mp3`);
+      expect(segments[2].url).toBe(`/r2-storage/quaresma-sao-miguel/quaresma-parte2-dia${day}.mp3`);
+      expect(segments[3].url).toBe(`/r2-storage/quaresma-sao-miguel/examedia${day}.mp3`);
+      expect(segments[4].url).toBe("/r2-storage/quaresma-sao-miguel/todos-dias-final.mp3");
+    }
+  });
 });
+

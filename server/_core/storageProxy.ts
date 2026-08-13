@@ -244,9 +244,24 @@ export function registerStorageProxy(app: Express) {
           cleanKey = key;
           foundInR2 = true;
         }
+      } else if (key.startsWith("quaresma-sao-miguel/")) {
+        const qKey = key.replace(/^quaresma-sao-miguel\//, "");
+        if (await storageExists(qKey, "quaresma-sao-miguel")) {
+          bucket = "quaresma-sao-miguel";
+          cleanKey = qKey;
+          foundInR2 = true;
+        } else if (await storageExists(key, "quaresma-sao-miguel")) {
+          bucket = "quaresma-sao-miguel";
+          cleanKey = key;
+          foundInR2 = true;
+        }
       } else {
         if (await storageExists(key, ENV.r2BucketName)) {
           bucket = ENV.r2BucketName;
+          cleanKey = key;
+          foundInR2 = true;
+        } else if (await storageExists(key, "quaresma-sao-miguel")) {
+          bucket = "quaresma-sao-miguel";
           cleanKey = key;
           foundInR2 = true;
         } else if (await storageExists(key, "filoteia")) {
