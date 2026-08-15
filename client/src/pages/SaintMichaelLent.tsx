@@ -748,7 +748,7 @@ export default function SaintMichaelLent() {
                         </div>
 
                         {/* Botões do Player */}
-                        <div className="flex items-center justify-center gap-3 pt-1">
+                        <div className="flex items-center justify-center gap-4 sm:gap-6 pt-1">
                           <button
                             onClick={() => {
                               if (audioRef.current) {
@@ -756,24 +756,11 @@ export default function SaintMichaelLent() {
                               }
                               setCurrentTime(0);
                             }}
-                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5"
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 shrink-0"
                             title="Reiniciar faixa"
                             aria-label="Reiniciar faixa"
                           >
-                            <RotateCcw size={16} />
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              if (audioRef.current) {
-                                audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - 10);
-                              }
-                            }}
-                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 font-mono text-[11px] font-bold"
-                            title="Voltar 10s"
-                            aria-label="Voltar 10 segundos"
-                          >
-                            -10s
+                            <RotateCcw size={18} />
                           </button>
 
                           {/* Play/Pause Gold Button */}
@@ -792,27 +779,14 @@ export default function SaintMichaelLent() {
                                 });
                               }
                             }}
-                            className="w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer mx-1"
+                            className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer shrink-0 aspect-square"
                             aria-label={isPlaying ? "Pausar" : "Reproduzir"}
                           >
                             {isPlaying ? (
-                              <Pause size={22} className="fill-slate-950" />
+                              <Pause size={24} className="fill-slate-950" />
                             ) : (
-                              <Play size={22} className="fill-slate-950 ml-0.5" />
+                              <Play size={24} className="fill-slate-950 ml-0.5" />
                             )}
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              if (audioRef.current) {
-                                audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + 10);
-                              }
-                            }}
-                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 font-mono text-[11px] font-bold"
-                            title="Avançar 10s"
-                            aria-label="Avançar 10 segundos"
-                          >
-                            +10s
                           </button>
 
                           <button
@@ -822,11 +796,11 @@ export default function SaintMichaelLent() {
                               }
                               setIsMuted(!isMuted);
                             }}
-                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5"
+                            className="text-slate-400 hover:text-white transition-colors p-2.5 rounded-full hover:bg-white/5 shrink-0"
                             title={isMuted ? "Ativar som" : "Desativar som"}
                             aria-label="Mudo"
                           >
-                            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                           </button>
 
                           <button
