@@ -22,16 +22,13 @@ export function isSaintMichaelLentActive(
 
 /**
  * Retorna se o conteúdo completo (áudios e meditações diárias) está desbloqueado.
- * Administradores têm acesso ilimitado; usuários comuns desbloqueiam em 15/08/2026.
+ * Conteúdo liberado para todos os usuários (áudios e textos).
  */
 export function isSaintMichaelContentUnlocked(
-  user?: { role?: string | null } | null,
-  nowDate: Date = new Date()
+  _user?: { role?: string | null } | null,
+  _nowDate: Date = new Date()
 ): boolean {
-  if (user?.role === "admin") {
-    return true;
-  }
-  return nowDate >= SAINT_MICHAEL_ACTIVATION_DATE;
+  return true;
 }
 
 /**

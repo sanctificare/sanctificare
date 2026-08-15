@@ -419,8 +419,8 @@ export default function SaintMichaelLent() {
   }, [selectedDayNum]);
 
   // Audio accessibility rule:
-  // Days 1-7 are FREE for everyone (text + audio). Days 8-40 require Premium for Audio (unless Admin).
-  const isAudioLocked = !isAdmin && !isPremium && selectedDayNum > 7;
+  // Liberado para todos os usuários (texto + áudio) em todos os 40 dias
+  const isAudioLocked = false;
 
   const isCurrentDayCompleted = state.completedDays.includes(selectedDayNum);
 
@@ -557,7 +557,7 @@ export default function SaintMichaelLent() {
               {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                 const active = dayNum === selectedDayNum;
                 const isDone = state.completedDays.includes(dayNum);
-                const isAudioLockedDay = !isAdmin && !isPremium && dayNum > 7;
+                const isAudioLockedDay = false;
 
                 return (
                   <button
@@ -1164,7 +1164,7 @@ export default function SaintMichaelLent() {
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                   const active = dayNum === selectedDayNum;
                   const isDone = state.completedDays.includes(dayNum);
-                  const isAudioLockedDay = !isAdmin && !isPremium && dayNum > 7;
+                  const isAudioLockedDay = false;
 
                   const dayItem = SAINT_MICHAEL_LENT.days.find((d) => d.number === dayNum);
                   const themeTitle = dayItem ? dayItem.theme : `Dia ${dayNum}: Combate Espiritual e Oração`;

@@ -18,21 +18,12 @@ describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
     expect(isSaintMichaelLentActive({ role: "admin" }, dateBeforeActivation)).toBe(true);
   });
 
-  it("desbloqueia áudios e textos para admin a qualquer momento", () => {
+  it("desbloqueia áudios e textos para todos os usuários a qualquer momento", () => {
     const adminUser = { role: "admin" };
+    const normalUser = { role: "user" };
     expect(isSaintMichaelContentUnlocked(adminUser, dateBeforeActivation)).toBe(true);
-    expect(isSaintMichaelContentUnlocked(adminUser, dateOnActivation)).toBe(true);
-    expect(isSaintMichaelContentUnlocked(adminUser, dateAfterActivation)).toBe(true);
-  });
-
-  it("bloqueia áudios e textos para usuários comuns antes de 15/08/2026", () => {
-    const normalUser = { role: "user" };
-    expect(isSaintMichaelContentUnlocked(normalUser, dateBeforeActivation)).toBe(false);
-    expect(isSaintMichaelContentUnlocked(null, dateBeforeActivation)).toBe(false);
-  });
-
-  it("desbloqueia áudios e textos para usuários comuns a partir de 15/08/2026", () => {
-    const normalUser = { role: "user" };
+    expect(isSaintMichaelContentUnlocked(normalUser, dateBeforeActivation)).toBe(true);
+    expect(isSaintMichaelContentUnlocked(null, dateBeforeActivation)).toBe(true);
     expect(isSaintMichaelContentUnlocked(normalUser, dateOnActivation)).toBe(true);
     expect(isSaintMichaelContentUnlocked(normalUser, dateAfterActivation)).toBe(true);
   });
