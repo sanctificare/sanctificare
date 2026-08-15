@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   isSaintMichaelLentActive,
   isSaintMichaelContentUnlocked,
+  isSaintMichaelAudioLocked,
   calculateSaintMichaelEndDateIso,
   SAINT_MICHAEL_ACTIVATION_DATE,
 } from "../client/src/lib/saintMichaelConfig";
@@ -26,6 +27,17 @@ describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
     expect(isSaintMichaelContentUnlocked(null, dateBeforeActivation)).toBe(true);
     expect(isSaintMichaelContentUnlocked(normalUser, dateOnActivation)).toBe(true);
     expect(isSaintMichaelContentUnlocked(normalUser, dateAfterActivation)).toBe(true);
+  });
+
+  it("libera os 10 primeiros dias de áudio para todos e bloqueia a partir do dia 11 para não-premium", () => {
+    for (let day = 1; day <= 10; day++) {
+      expect(isSaintMichaelAudioLocked(day, false, false)).toBe(false);
+    }
+    for (let day = 11; day <= 40; day++) {
+      expect(isSaintMichaelAudioLocked(day, false, false)).toBe(true);
+      expect(isSaintMichaelAudioLocked(day, true, false)).toBe(false); // premium desbloqueado
+      expect(isSaintMichaelAudioLocked(day, false, true)).toBe(false);  // admin desbloqueado
+    }
   });
 
   it("calcula o término dos 40 dias penitenciais excluindo os domingos a partir de 15/08/2026", () => {

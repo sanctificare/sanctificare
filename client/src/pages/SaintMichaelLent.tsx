@@ -45,7 +45,7 @@ import {
   type JourneyDay,
   type SaintMichaelAudioSegment,
 } from "@/data/saint-michael-lent";
-import { isSaintMichaelContentUnlocked, calculateSaintMichaelEndDateIso } from "@/lib/saintMichaelConfig";
+import { isSaintMichaelContentUnlocked, isSaintMichaelAudioLocked, calculateSaintMichaelEndDateIso } from "@/lib/saintMichaelConfig";
 
 type JourneyState = {
   startDate: string;
@@ -419,8 +419,8 @@ export default function SaintMichaelLent() {
   }, [selectedDayNum]);
 
   // Audio accessibility rule:
-  // Liberado para todos os usuários (texto + áudio) em todos os 40 dias
-  const isAudioLocked = false;
+  // Os primeiros 10 dias são gratuitos para todos. Do dia 11 ao 40, exige Premium.
+  const isAudioLocked = isSaintMichaelAudioLocked(selectedDayNum, isPremium, isAdmin);
 
   const isCurrentDayCompleted = state.completedDays.includes(selectedDayNum);
 
@@ -557,7 +557,7 @@ export default function SaintMichaelLent() {
               {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                 const active = dayNum === selectedDayNum;
                 const isDone = state.completedDays.includes(dayNum);
-                const isAudioLockedDay = false;
+                const isAudioLockedDay = isSaintMichaelAudioLocked(dayNum, isPremium, isAdmin);
 
                 return (
                   <button
@@ -663,7 +663,7 @@ export default function SaintMichaelLent() {
                         Acompanhe as meditações em áudio no Sanctificare Premium
                       </h3>
                       <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                        O texto completo do Dia {selectedDayNum} está disponível gratuitamente na aba <strong>TEXTO</strong>. Se preferir ouvir a oração guiada em áudio, conheça nosso plano Premium.
+                        Os primeiros 10 dias da Quaresma de São Miguel são gratuitos em áudio. O texto completo do Dia {selectedDayNum} está disponível na aba <strong>TEXTO</strong>. Para ouvir a oração guiada em áudio do Dia 11 ao 40, conheça nosso plano Premium.
                       </p>
 
                       <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3">
@@ -1164,7 +1164,7 @@ export default function SaintMichaelLent() {
                 {Array.from({ length: 40 }, (_, i) => i + 1).map((dayNum) => {
                   const active = dayNum === selectedDayNum;
                   const isDone = state.completedDays.includes(dayNum);
-                  const isAudioLockedDay = false;
+                  const isAudioLockedDay = isSaintMichaelAudioLocked(dayNum, isPremium, isAdmin);
 
                   const dayItem = SAINT_MICHAEL_LENT.days.find((d) => d.number === dayNum);
                   const themeTitle = dayItem ? dayItem.theme : `Dia ${dayNum}: Combate Espiritual e Oração`;

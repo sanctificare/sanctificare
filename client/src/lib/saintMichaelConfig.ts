@@ -32,6 +32,22 @@ export function isSaintMichaelContentUnlocked(
 }
 
 /**
+ * Retorna se o áudio de um determinado dia da Quaresma de São Miguel está bloqueado para o usuário.
+ * Os primeiros 10 dias (1-10) são gratuitos em áudio para todos os usuários.
+ * Do dia 11 ao 40, o áudio exige assinatura Premium (ou perfil Admin).
+ */
+export function isSaintMichaelAudioLocked(
+  dayNumber: number,
+  isPremium: boolean = false,
+  isAdmin: boolean = false
+): boolean {
+  if (isAdmin || isPremium) {
+    return false;
+  }
+  return dayNumber > 10;
+}
+
+/**
  * Calcula a data de término dos 40 dias penitenciais excluindo os domingos,
  * respeitando a tradição católica em que o domingo é o Dia do Senhor (sem jejum/penitência).
  */
