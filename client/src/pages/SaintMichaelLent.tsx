@@ -270,6 +270,34 @@ export default function SaintMichaelLent() {
     };
   }, [currentSegment]);
 
+  const markDayComplete = (dayNum: number) => {
+    setState((current) => {
+      if (current.completedDays.includes(dayNum)) {
+        return current;
+      }
+      const nextCompleted = [...current.completedDays, dayNum].sort((a, b) => a - b);
+      toast.success(`Dia ${dayNum} marcado como rezado! Que São Miguel Arcanjo o guarde!`);
+
+      if (isAuthenticated) {
+        saveProgressMutation.mutate({
+          journeyId: JOURNEY_ID,
+          startedAt: current.startDate || getTraditionalStartDateIso(),
+          expectedEndAt: calculateEndDateIso(current.startDate || getTraditionalStartDateIso(), 40),
+          lastAccessedDay: dayNum,
+          completedDays: nextCompleted,
+          currentStreak: nextCompleted.length,
+          chosenPenance: current.penance,
+          reminderTime: current.reminderTime,
+        });
+      }
+
+      return {
+        ...current,
+        completedDays: nextCompleted,
+      };
+    });
+  };
+
   // Handle HTMLAudioElement lifecycle & events
   useEffect(() => {
     const audio = audioRef.current;
@@ -287,6 +315,7 @@ export default function SaintMichaelLent() {
         setIsPlaying(false);
         setCurrentSegmentIndex(0);
         setCurrentTime(0);
+        markDayComplete(selectedDayNum);
       }
     };
     const onError = (e: any) => {
@@ -305,7 +334,7 @@ export default function SaintMichaelLent() {
       audio.removeEventListener("ended", onEnded);
       audio.removeEventListener("error", onError);
     };
-  }, [currentSegmentIndex, audioSegments.length]);
+  }, [currentSegmentIndex, audioSegments.length, selectedDayNum]);
 
   // Keep Awake & Lockscreen MediaSession controls
   useAudioKeepAwake({
