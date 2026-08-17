@@ -16,6 +16,7 @@ type ExploreCard = {
 };
 
 const exploreCards: ExploreCard[] = [
+  { href: "/santoral", label: "Santoral & Festas", desc: "Santos do dia, relíquias e festas de guarda", image: "/assets/dashboard/oracoes.webp", overlay: "oklch(0.35 0.12 75 / 0.60)", category: "Estudo" },
   { href: "/rosario", label: "Rosário", desc: "Reze o Terço completo", image: "/assets/dashboard/rosario.webp", overlay: "oklch(0.22 0.08 260 / 0.60)", category: "Devocional" },
   { href: "/oracoes", label: "Orações", desc: "Orações da tradição", image: "/assets/dashboard/oracoes.webp", overlay: "oklch(0.28 0.08 145 / 0.60)", category: "Devocional" },
   { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", image: "/assets/dashboard/lectio.webp", overlay: "oklch(0.32 0.11 240 / 0.60)", category: "Estudo" },

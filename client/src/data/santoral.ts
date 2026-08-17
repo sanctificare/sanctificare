@@ -1,0 +1,710 @@
+export type LiturgicalRank = "Solenidade" | "Festa" | "Memória" | "Memória Facultativa";
+export type LiturgicalColor = "branco" | "vermelho" | "verde" | "roxo" | "rosa" | "dourado";
+
+export interface Saint {
+  slug: string;
+  name: string;
+  title: string;
+  day: number;
+  month: number; // 1 a 12
+  rank: LiturgicalRank;
+  isHolyDayOfObligation?: boolean; // Festa de Guarda / Preceito
+  liturgicalColor: LiturgicalColor;
+  summary: string;
+  quote?: string;
+  biography: string;
+  martyrdomOrPassing: string;
+  relicsAndTradition: string;
+  patronage: string[];
+  prayer: string;
+  image: string;
+  linkedNovenaSlug?: string;
+  linkedPrayerId?: string;
+}
+
+export const SAINTS_DATABASE: Saint[] = [
+  // JANEIRO
+  {
+    slug: "santa-maria-mae-de-deus",
+    name: "Santa Maria, Mãe de Deus",
+    title: "Theotókos • Rainha do Céu e da Terra",
+    day: 1,
+    month: 1,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "Celebração da Maternidade Divina da Santíssima Virgem, dogma proclamado no Concílio de Éfeso (431 d.C.).",
+    quote: "Minha alma engrandece o Senhor e meu espírito se alegra em Deus, meu Salvador.",
+    biography: "No primeiro dia do ano civil, a Igreja coloca sob o manto da Santíssima Virgem todos os seus filhos. A maternidade divina de Maria é a fonte de todas as suas graças e privilégios. Sendo Mãe de Jesus Cristo, verdadeiro Deus e verdadeiro Homem, Maria é com toda a verdade a 'Theotókos' (Mãe de Deus), conforme solenemente definido pelo III Concílio Ecumênico de Éfeso em 431 contra a heresia nestoriana.",
+    martyrdomOrPassing: "Ao final de sua vida terrena, a Virgem Maria foi assunta em corpo e alma à glória dos céus, onde reina como Rainha dos Anjos e dos Santos ao lado de seu Filho Divino.",
+    relicsAndTradition: "A Santa Casa de Loreto (Itália) e o Santo Manto da Virgem preservado em Chartres (França) são alguns dos mais venerados memoriais de sua presença entre os homens.",
+    patronage: ["Mães de família", "Toda a Cristandade", "A Paz no Mundo"],
+    prayer: "Ó Deus, que pela virgindade fecunda de Maria destes à humanidade a salvação eterna, concedei-nos sentir a sua intercessão, por quem merecemos receber o Autor da vida, Jesus Cristo, vosso Filho. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "nossa-senhora-das-gracas"
+  },
+  {
+    slug: "santo-antao-abade",
+    name: "Santo Antão, Abade",
+    title: "Pai dos Monges do Deserto",
+    day: 17,
+    month: 1,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O grande eremita do deserto egípcio que venceu combates espirituais e inspirou o monaquismo cristão.",
+    quote: "Aquele que permanece no deserto e no recolhimento está livre de três combates: o do ouvir, o do falar e o do ver; resta-lhe apenas um: o do coração.",
+    biography: "Nascido no Egito por volta do ano 251, Santo Antão ouviu na igreja a passagem evangélica: 'Se queres ser perfeito, vai, vende tudo o que tens e dá aos pobres'. Distribuiu imediatamente sua herança e retirou-se para a solidão do deserto da Tebaida. Ali travou lutas heróicas contra as tentações demoníacas através de jejuns, vigílias e oração ininterrupta. Sua vida, escrita por Santo Atanásio de Alexandria, converteu incontáveis almas no mundo antigo.",
+    martyrdomOrPassing: "Faleceu santamente em idade avançadíssima, aos 105 anos, cercado por seus discípulos e ordenando que seu túmulo permanecesse oculto para evitar homenagens humanas.",
+    relicsAndTradition: "Seu corpo foi posteriormente trasladado para Alexandria, depois Constantinopla, e no século XI levado para Saint-Antoine-l'Abbaye, na França, onde operou milagres contra o chamado 'fogo de Santo Antão'.",
+    patronage: ["Monges", "Eremitas", "Agricultores", "Animais domésticos"],
+    prayer: "Ó Deus, que concedestes a Santo Antão servir-vos no deserto com uma vida admirável, fazei que, por sua intercessão, saibamos renunciar a nós mesmos e amar-vos sempre sobre todas as coisas. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/lectio.webp"
+  },
+  {
+    slug: "sao-sebastiao-martir",
+    name: "São Sebastião, Mártir",
+    title: "Defensor da Fé e Protetor contra Pestes",
+    day: 20,
+    month: 1,
+    rank: "Memória",
+    liturgicalColor: "vermelho",
+    summary: "Oficial da guarda pretoriana de Roma que sustentou os mártires e derramou o próprio sangue por Cristo.",
+    quote: "Não temais os sofrimentos do corpo passageiro; olhai para a coroa eterna que vos está reservada no Céu.",
+    biography: "São Sebastião foi um distinto capitão da guarda imperial romana no reinado de Diocleciano. Usava secretamente de sua posição de prestígio para encorajar os cristãos presos que vacilavam diante das torturas. Descoberto como cristão, recusou-se a adorar os deuses pagãos. Diocleciano ordenou que fosse amarrado a um tronco e trespassado por flechas. Dado como morto, foi recolhido e curado pela piedosa Santa Irene. Recuperado, voltou a apresentar-se ao imperador repreendendo sua crueldade contra os inocentes.",
+    martyrdomOrPassing: "Diante de sua nova e corajosa confissão de fé, o imperador ordenou que fosse espancado com varas até a morte no Hipódromo do Palatino, alcançando assim a palma do duplo martírio em 288 d.C.",
+    relicsAndTradition: "Seu corpo repousa na Basílica de São Sebastião Extramuros, em Roma, sobre uma das mais célebres catacumbas do cristianismo primitivo.",
+    patronage: ["Soldados", "Atletas", "Protetor contra a peste, a fome e a guerra", "Co-padroeiro da cidade do Rio de Janeiro"],
+    prayer: "Concedei-nos, Senhor, o espírito de fortaleza, para que, sustentados pelo admirável exemplo do vosso mártir São Sebastião, aprendamos a obedecer antes a Vós do que aos homens. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/via-sacra.webp"
+  },
+  {
+    slug: "sao-tomas-de-aquino",
+    name: "São Tomás de Aquino",
+    title: "Doutor Angélico • Patrono dos Estudantes",
+    day: 28,
+    month: 1,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O maior teólogo e filósofo da Igreja Católica, autor da Suma Teológica e dos hinos eucarísticos.",
+    quote: "Não quero outra recompensa senão a Vós, meu Senhor!",
+    biography: "Nascido no castelo de Roccasecca na Itália (1225), Tomás entrou para a novel Ordem dos Pregadores (Dominicanos) contrariando a família nobre. Discípulo de Santo Alberto Magno, sintetizou de forma sublime a filosofia aristotélica e a teologia cristã, demonstrando que a Fé e a Razão são asas harmônicas do conhecimento da verdade. Compôs a magistral 'Suma Teológica' e os solenes hinos da festa de Corpus Christi (como o Pange Lingua e o Tantum Ergo).",
+    martyrdomOrPassing: "Em 1274, a caminho do Concílio de Lyon, adoeceu na Abadia cisterciense de Fossanova. Ao receber o Santo Viático, professou seu amor infinito à Eucaristia e entregou sua alma pura a Deus.",
+    relicsAndTradition: "Suas insignes relíquias repousam sob o altar da Igreja dos Jacobinos, em Toulouse (França).",
+    patronage: ["Estudantes", "Universidades católicas", "Teólogos", "Acadêmicos"],
+    prayer: "Ó Deus, que tornastes São Tomás de Aquino célebre pelo amor à santidade e pela dedicação à ciência sagrada, concedei-nos compreender seus ensinamentos e imitar seus exemplos. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/biblia.webp"
+  },
+
+  // MARÇO
+  {
+    slug: "sao-jose-esposo-de-maria",
+    name: "São José, Esposo da Virgem Maria",
+    title: "Patrono Universal da Igreja • Terror dos Demônios",
+    day: 19,
+    month: 3,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "O Justo e Castíssimo patriarca escolhido por Deus para guardar a Sagrada Família de Nazaré.",
+    quote: "Eis o servo fiel e prudente a quem o Senhor confiou a sua casa.",
+    biography: "Descendente da linhagem real do Rei Davi, São José foi o homem justo a quem o Pai Eterno confiou a custódia virginal de Nossa Senhora e a criação paternal do Verbo Encarnado. Silencioso, forte, obediente aos desígnios divinos nos sonhos angélicos, protegeu o Menino Jesus da fúria de Herodes na fuga para o Egito e sustentou a casa de Nazaré com o suor de seu trabalho de carpinteiro.",
+    martyrdomOrPassing: "Teve a morte mais sublime da história humana, expirando docemente nos braços amorosos de Jesus e de Maria, razão pela qual é o supremo patrono da boa morte.",
+    relicsAndTradition: "Seu santo cinto e manto são preservados em santuários como Roma e Aachen; inúmeros Papas atestaram o poder invencível de sua intercessão.",
+    patronage: ["Igreja Universal", "Famílias", "Trabalhadores", "Pai de família", "Moribundos", "Proteção contra as ciladas do demônio"],
+    prayer: "A vós, São José, recorremos em nossa tribulação. Pelo laço sagrado de caridade que vos uniu à Virgem Imaculada Mãe de Deus, e pelo amor paternal que tivestes ao Menino Jesus, protegei a herança adquirida por Cristo e defendei a nós vossos devotos. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "sao-jose"
+  },
+  {
+    slug: "anunciacao-do-senhor",
+    name: "Anunciação do Senhor",
+    title: "O Mistério da Encarnação do Verbo Divino",
+    day: 25,
+    month: 3,
+    rank: "Solenidade",
+    liturgicalColor: "branco",
+    summary: "O momento sagrado em que o Arcanjo Gabriel anunciou à Virgem Maria que dela nasceria o Salvador do mundo.",
+    quote: "Eis aqui a serva do Senhor; faça-se em mim segundo a tua palavra.",
+    biography: "Nove meses antes do Santo Natal, celebramos o momento culminante da história da salvação: o Arcanjo São Gabriel é enviado à modesta casa de Nazaré. Diante do 'Fiat' humilde e incondicional de Maria Santíssima, o Espírito Santo desceu sobre ela e a Segunda Pessoa da Santíssima Trindade assumiu nossa carne humana no seio puríssimo da Virgem.",
+    martyrdomOrPassing: "Celebração do mistério da Encarnação, princípio de nossa redenção.",
+    relicsAndTradition: "A Gruta da Anunciação em Nazaré e a Santa Casa transportada milagrosamente pelos anjos para Loreto (Itália).",
+    patronage: ["Mulheres grávidas", "Nascituros", "Vocacionados", "A vida humana desde a concepção"],
+    prayer: "Ó Deus, que pela anunciação do Anjo quisestes que vosso Verbo assumisse a nossa carne no seio da Virgem Maria, concedei aos vossos servos, que a proclamam verdadeira Mãe de Deus, serem ajudados por sua intercessão junto de Vós. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/novenas.webp"
+  },
+
+  // MAIO
+  {
+    slug: "nossa-senhora-de-fatima",
+    name: "Nossa Senhora de Fátima",
+    title: "Rainha do Santo Rosário",
+    day: 13,
+    month: 5,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "As aparições da Virgem Mãe aos três pastorinhos na Cova da Iria com o apelo à oração do Rosário e penitência.",
+    quote: "Rezem o Terço todos os dias para alcançar a paz para o mundo e o fim da guerra.",
+    biography: "Em 1917, no vilarejo de Fátima (Portugal), a Virgem Maria apareceu seis vezes aos pastorinhos Lúcia, Francisco e Jacinta. Mostrou-lhes a realidade do Céu, do Purgatório e do Inferno, pedindo a consagração da Rússia ao seu Imaculado Coração, a comunhão reparadora nos Primeiros Sábados e a oração diária do Santo Rosário pela conversão dos pecadores. O milagre do Sol no dia 13 de outubro confirmou diante de 70 mil pessoas a autenticidade divina da mensagem.",
+    martyrdomOrPassing: "Os videntes São Francisco e Santa Jacinta Marto viveram vidas de heroica expiação e faleceram santamente na infância, sendo canonizados pelo Papa Francisco.",
+    relicsAndTradition: "O Santuário de Fátima na Cova da Iria atrai milhões de peregrinos anualmente. A coroa da imagem guarda a bala que atingiu São João Paulo II no atentado de 1981.",
+    patronage: ["A Paz mundial", "Portugal", "Devotos do Santo Rosário", "Conversão dos pecadores"],
+    prayer: "Santíssima Virgem de Fátima, que repetistes com insistência o pedido de rezar o Terço todos os dias, dai-nos perseverança e amor ardente na oração, para obtermos a salvação de nossas almas e a paz no mundo. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/rosario.webp",
+    linkedNovenaSlug: "nossa-senhora-de-fatima"
+  },
+  {
+    slug: "santa-rita-de-cassia",
+    name: "Santa Rita de Cássia",
+    title: "Advogada das Causas Impossíveis e Desesperadas",
+    day: 22,
+    month: 5,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Esposa, mãe, viúva e monja agostiniana que recebeu o estigma do espinho da Paixão de Cristo na fronte.",
+    quote: "Nada é impossível para quem ama a Cruz de Jesus Cristo com todo o coração.",
+    biography: "Santa Rita nasceu em Roccaporena, Itália, em 1381. Suportou com doçura heróica e paciência um marido violento, convertendo-o antes de sua morte. Após a perda trágica dos filhos, superou ódios entre famílias para reconciliar a cidade e ingressou milagrosamente no mosteiro agostiniano de Santa Maria Madalena em Cássia. Por 15 anos levou na testa a chaga viva e dolorosa de um dos espinhos da coroa do Senhor.",
+    martyrdomOrPassing: "Faleceu em 22 de maio de 1457; no momento de sua morte, os sinos de Cássia tocaram milagrosamente sozinhos pelos anjos e a cela encheu-se de suave perfume de rosas.",
+    relicsAndTradition: "Seu corpo incorrupto repousa na Basílica de Santa Rita em Cássia (Itália), emanando prodigiosamente fragrâncias celestes até os dias de hoje.",
+    patronage: ["Causas desesperadas e impossíveis", "Mulheres mal casadas", "Mães angustiadas", "Vítimas de abusos"],
+    prayer: "Ó gloriosa Santa Rita de Cássia, advogada dos casos desesperados, olhai com compaixão para as minhas aflições. Vós que tão intimamente participastes das dores de Jesus, alcançai-me de Deus a graça que ardentemente vos suplico. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "santa-rita-de-cassia"
+  },
+  {
+    slug: "santa-joana-d-arc",
+    name: "Santa Joana d'Arc, Virgem e Mártir",
+    title: "A Donzela de Orléans • Padroeira da França",
+    day: 30,
+    month: 5,
+    rank: "Memória",
+    liturgicalColor: "vermelho",
+    summary: "Jovem camponesa de 17 anos que, guiada por São Miguel Arcanjo, libertou a França e morreu na fogueira invocando Jesus.",
+    quote: "Eu não tenho medo; Deus está comigo, foi para isso que eu nasci!",
+    biography: "Nascida em Domrémy em 1412 durante a Guerra dos Cem Anos, Joana era uma donzela piedosa e iletrada. Aos treze anos, começou a ouvir as vozes celestes de São Miguel Arcanjo, Santa Catarina de Alexandria e Santa Margarida de Antioquia, que a instruíram a coroar o Delfim Carlos VII e expulsar os invasores. Com coragem sobrenatural e pureza imaculada, comandou o exército francês sob o estandarte de Jesus e Maria, rompendo o cerco de Orléans.",
+    martyrdomOrPassing: "Traída e vendida aos inimigos ingleses, foi submetida a um julgamento eclesiástico fraudulento. Condenada injustamente como herege, foi queimada viva na praça de Rouen aos 19 anos em 30 de maio de 1431, fitando uma cruz e gritando o Santo Nome de 'Jesus' até seu último suspiro.",
+    relicsAndTradition: "Seu coração permaneceu intacto e incólume no meio das cinzas ardentes, sendo atirado ao rio Sena pelos carrascos atônitos. A Santa Sé reabilitou totalmente sua honra em 1456 e a canonizou em 1920.",
+    patronage: ["Soldados", "França", "Jovens patriotas", "Vítimas de injustiças e calúnias", "Cativos"],
+    prayer: "Ó Deus, que suscitastes admiravelmente Santa Joana d'Arc para defender a fé e a pátria com pureza e fortaleza indômita, concedei-nos, por sua intercessão, vencer as batalhas espirituais e permanecer fiéis a Cristo até a morte. Amém.",
+    image: "/assets/dashboard/quaresma-sao-miguel.webp"
+  },
+
+  // JUNHO
+  {
+    slug: "santo-antonio-de-padua",
+    name: "Santo Antônio de Pádua e Lisboa",
+    title: "Doutor Evangélico • O Santo de Todo o Mundo",
+    day: 13,
+    month: 6,
+    rank: "Festa",
+    liturgicalColor: "branco",
+    summary: "Frade franciscano de eloqüência incomparável, mestre das Sagradas Escrituras e amigo dos pobres.",
+    quote: "A linguagem viva é o exemplo. Calem-se as palavras e falem as obras.",
+    biography: "Fernando de Bulhões nasceu em Lisboa (1195). Cônego agostiniano, comoveu-se com o martírio dos primeiros franciscanos em Marrocos e abraçou a Regra de São Francisco, tomando o nome de Antônio. Destacou-se por sua pregação inflamada que convertia multidões de hereges na Itália e na França, merecendo o título de 'Martelo dos Hereges'. Teve a visão mística do Menino Jesus em seus braços.",
+    martyrdomOrPassing: "Faleceu santamente nos arredores de Pádua em 13 de junho de 1231, com apenas 36 anos, exclamando: 'Vejo o meu Senhor Jesus!'. Foi canonizado menos de um ano após sua morte.",
+    relicsAndTradition: "Sua santa língua e cordas vocais permanecem milagrosamente incorruptas na Basílica del Santo em Pádua (Itália).",
+    patronage: ["Pobres", "Objetos perdidos", "Lisboa e Pádua", "Casamentos santos", "Padeiros e agricultores"],
+    prayer: "Ó Deus, que destes a Santo Antônio o dom de comover corações pela pregação do Evangelho e pelo socorro aos necessitados, fazei que, pelo seu auxílio, sejamos firmes na caridade cristã. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "santo-antonio"
+  },
+  {
+    slug: "sao-joao-batista",
+    name: "Natividade de São João Batista",
+    title: "O Precursor do Messias • A Voz que Clama no Deserto",
+    day: 24,
+    month: 6,
+    rank: "Solenidade",
+    liturgicalColor: "branco",
+    summary: "O maior entre os nascidos de mulher, santificado ainda no seio materno ao ouvir a saudação de Maria.",
+    quote: "É necessário que Ele cresça e que eu diminua.",
+    biography: "Filho de Zacarias e Santa Isabel, João Batista foi santificado pela graça divina no ventre de sua mãe no momento da Visitação de Nossa Senhora. Viveu na austeridade do deserto, pregando o batismo de penitência e apontando o Cordeiro de Deus que tira o pecado do mundo. A Igreja celebra excepcionalmente sua natividade carnal e seu martírio.",
+    martyrdomOrPassing: "Foi decapitado na fortaleza de Maqueronte por ordem do rei Herodes Ântipas, após repreender corajosamente o adultério e escândalo do soberano.",
+    relicsAndTradition: "A cabeça venerada de São João Batista é preservada na Basílica de San Silvestro in Capite em Roma e na Catedral de Amiens na França.",
+    patronage: ["Profetas", "Conversão de corações", "Costureiros", "Monarquias cristãs"],
+    prayer: "Ó Deus, que suscitastes São João Batista para preparar para Cristo, o Senhor, um povo perfeito, concedei à vossa Igreja as alegrias espirituais e guiai os passos dos fiéis no caminho da salvação e da paz. Amém.",
+    image: "/assets/dashboard/liturgia.webp"
+  },
+  {
+    slug: "sao-pedro-e-sao-paulo",
+    name: "São Pedro e São Paulo, Apóstolos",
+    title: "As Colunas da Igreja de Roma e Príncipes dos Apóstolos",
+    day: 29,
+    month: 6,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "vermelho",
+    summary: "O primeiro Papa e Vigário de Cristo junto ao Apóstolo dos Gentios, que consagraram Roma com o sangue do martírio.",
+    quote: "Tu és o Cristo, o Filho do Deus vivo! / Combati o bom combate, terminei a corrida, guardei a fé.",
+    biography: "Pedro, o pescador da Galiléia, recebeu de Cristo as Chaves do Reino dos Céus como rocha visível da Igreja ('Tu és Pedro, e sobre esta pedra edificarei a minha Igreja'). Paulo, de perseguidor feroz dos cristãos a Doutor das Nações, levou o Evangelho aos confins do Império Romano através de suas viagens e epístolas inspiradas pelo Espírito Santo.",
+    martyrdomOrPassing: "Ambos sofreram o martírio sob a perseguição de Nero em Roma por volta de 67 d.C.: São Pedro crucificado de cabeça para baixo na Colina Vaticana por considerar-se indigno de morrer como o Mestre; São Paulo decapitado nas Três Fontes por ser cidadão romano.",
+    relicsAndTradition: "Os túmulos sagrados dos Apóstolos estão sob os altares papais da Basílica de São Pedro no Vaticano e da Basílica de São Paulo Extramuros em Roma.",
+    patronage: ["O Santo Padre o Papa", "A Santa Sé Apostólica", "Pescadores", "Missionários", "Teólogos e juristas"],
+    prayer: "Ó Deus, que nos dais a santa alegria de celebrar a solenidade dos Apóstolos Pedro e Paulo, concedei à vossa Igreja seguir em tudo a doutrina daqueles por quem começou a receber a fé. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/biblia.webp"
+  },
+
+  // JULHO
+  {
+    slug: "sao-bento-de-nursia",
+    name: "São Bento de Núrsia, Abade",
+    title: "Patriarca dos Monges do Ocidente • Padroeiro da Europa",
+    day: 11,
+    month: 7,
+    rank: "Festa",
+    liturgicalColor: "branco",
+    summary: "Pai da civilização cristã medieval, autor da Santa Regra e propagador da oração e trabalho (Ora et Labora).",
+    quote: "Nada preferir ao amor de Cristo.",
+    biography: "Nascido em Núrsia por volta de 480, abandonou os estudos em Roma para buscar somente a Deus na solidão de Subiaco. Fundou a célebre Abadia de Monte Cassino e redigiu a Santa Regra Beneditina, alicerce da espiritualidade e da cultura monástica que reconstruiu a Europa após a queda do Império Romano. Operou inúmeros milagres contra venenos e armadilhas do demônio com o sinal da Santa Cruz.",
+    martyrdomOrPassing: "Faleceu em 547 de pé diante do altar de Monte Cassino, sustentado pelos braços de seus irmãos monges, em atitude de oração com as mãos elevadas aos céus após receber o Corpo do Senhor.",
+    relicsAndTradition: "A famosa Medalha-Cruz de São Bento contém exorcismos seculares ('Vade Retro Satana') com poder imenso contra as forças das trevas. Seus restos descansam sob o altar de Monte Cassino.",
+    patronage: ["Europa", "Monges", "Agricultores", "Engenheiros", "Proteção contra feitiçarias e tentações diabólicas"],
+    prayer: "A Cruz Sagrada seja a minha luz, não seja o dragão meu guia. Retira-te, satanás! Nunca me aconselhes coisas vãs. É mau o que me ofereces, bebe tu mesmo o teu veneno. Rogai por nós, glorioso Patriarca São Bento, para que sejamos dignos das promessas de Cristo. Amém.",
+    image: "/assets/dashboard/lectio.webp",
+    linkedPrayerId: "oracao-sao-bento"
+  },
+
+  // AGOSTO
+  {
+    slug: "santo-afonso-de-ligorio",
+    name: "Santo Afonso Maria de Ligório",
+    title: "Doutor Zelosíssimo da Igreja • Fundador dos Redentoristas",
+    day: 1,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Mestre da teologia moral, apóstolo do povo simples e grande cantor das glórias de Maria Santíssima.",
+    quote: "Quem reza se salva; quem não reza se condena.",
+    biography: "Advogado de sucesso estrondoso em Nápoles, Afonso abandonou os tribunais após um erro em processo para dedicar-se inteiramente a Cristo ('Mundo, eu te conheci, adeus!'). Ordenado sacerdote, fundou a Congregação do Santíssimo Redentor para evangelizar os camponeses e pastores mais abandonados. Escreveu clássicos espirituais inestimáveis como 'As Glórias de Maria', 'A Prática do Amor a Jesus Cristo' e o 'Tratado de Teologia Moral'.",
+    martyrdomOrPassing: "Suportou com admirável resignação terríveis dores de artrite cervical deformante e morreu santamente com a imagem de Maria nas mãos em 1787, aos 90 anos.",
+    relicsAndTradition: "Seu corpo incorrupto é venerado na Basílica de Santo Afonso em Pagani, perto de Nápoles.",
+    patronage: ["Confessores", "Moralistas", "Advogados", "Pregadores de missões populares"],
+    prayer: "Ó Deus, que na vossa Igreja suscitastes Santo Afonso Maria como modelo de zelo pelas almas, concedei-nos, inflamados pelo mesmo amor, trabalhar pela salvação dos irmãos e alcançar com ele a glória do Céu. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "sao-lourenco-diacono",
+    name: "São Lourenço, Diácono e Mártir",
+    title: "Guardião dos Tesouros da Igreja de Roma",
+    day: 10,
+    month: 8,
+    rank: "Festa",
+    liturgicalColor: "vermelho",
+    summary: "O heróico diácono que apresentou os pobres como os verdadeiros tesouros de Cristo e foi martirizado sobre a grelha.",
+    quote: "Eis aqui os tesouros da Igreja: os pobres, os enfermos e os desvalidos!",
+    biography: "Primeiro dos sete diáconos da Igreja de Roma sob o Papa São Sisto II. Quando o prefeito romano exigiu a entrega de todas as riquezas e cálices de ouro da Igreja, Lourenço pediu três dias de prazo; reuniu então todos os cegos, coxos, viúvas e órfãos sustentados pela caridade cristã e os apresentou ao tirano pagão dizendo: 'Estes são os tesouros perpétuos da Igreja!'.",
+    martyrdomOrPassing: "Foi amarrado a uma grelha de ferro sobre brasas incandescentes em 258 d.C. Em meio aos tormentos, manteve serenidade inabalável e disse com santa ironia ao carrasco: 'Este lado já está assado; virai e comei'. Converteu senadores romanos que testemunharam seu triunfo.",
+    relicsAndTradition: "A Basílica de São Lourenço Fora dos Muros em Roma abriga seu sepulcro e a pedra onde seu corpo martirizado repousou.",
+    patronage: ["Diáconos", "Cozinheiros e padeiros", "Bibliotecários", "Bombeiros", "Pobres de Roma"],
+    prayer: "Ó Deus, cujo amor ardente concedeu a São Lourenço a graça de ser fiel no serviço da Igreja e glorioso no martírio, fazei que amemos o que ele amou e pratiquemos o que ele ensinou. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/via-sacra.webp"
+  },
+  {
+    slug: "sao-maximiliano-kolbe",
+    name: "São Maximiliano Maria Kolbe, Mártir",
+    title: "O Apóstolo da Imaculada • Mártir da Caridade em Auschwitz",
+    day: 14,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "vermelho",
+    summary: "Frade franciscano conventual que fundou a Milícia da Imaculada e deu voluntariamente a vida para salvar um pai de família.",
+    quote: "O ódio não é força criadora; só o amor é construtivo.",
+    biography: "Frade franciscano polonês que ardia de amor por Maria Santíssima. Fundou a 'Milícia da Imaculada' e construiu a 'Cidade da Imaculada' (Niepokalanów), usando as mais modernas prensas de impressão e rádio para evangelizar. Preso pelos nazistas na Segunda Guerra Mundial, foi enviado ao campo de concentração de Auschwitz, onde secretamente confessava os prisioneiros e distribuía sua parca ração de pão.",
+    martyrdomOrPassing: "Em julho de 1941, quando um prisioneiro fugiu e os guardas selecionaram 10 homens para morrer de fome no 'Bunker da Morte', Kolbe deu um passo à frente e ofereceu-se para morrer no lugar do sargento Franciszek Gajowniczek. No bunker, transformou o local de horrores em capela de hinos a Nossa Senhora até ser executado com uma injeção de ácido fênico em 14 de agosto de 1941.",
+    relicsAndTradition: "Proclamado por São João Paulo II como 'o Padroeiro do nosso século difícil' e Mártir da Caridade.",
+    patronage: ["Jornalistas e comunicadores", "Famílias", "Prisioneiros", "Vítimas de perseguições e totalitarismos"],
+    prayer: "Ó Deus, que inflamastes São Maximiliano Maria Kolbe de amor ardente pela Virgem Imaculada e de caridade heróica pelo próximo, concedei-nos, por sua intercessão, trabalhar sem descanso pela vossa glória até a doação da própria vida. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "assuncao-de-nossa-senhora",
+    name: "Assunção da Bem-Aventurada Virgem Maria",
+    title: "A Rainha Assunta ao Céu em Corpo e Alma",
+    day: 15,
+    month: 8,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "O triunfo da Mãe de Deus levada pelos anjos à glória eterna, primícia da ressurreição de todos os justos.",
+    quote: "Apareceu no céu um grande sinal: uma Mulher vestida de sol, com a lua debaixo dos pés e uma coroa de doze estrelas.",
+    biography: "Dogma solenemente proclamado pelo Papa Pio XII na Constituição Apostólica Munificentissimus Deus (1950): a Imaculada Mãe de Deus, a sempre Virgem Maria, terminado o curso de sua vida terrestre, foi elevada em corpo e alma à glória celestial. Por não ter contraído a mancha do pecado original, seu corpo puríssimo não conheceu a corrupção da sepultura, antecipando a glorificação de todos os remidos.",
+    martyrdomOrPassing: "Na pia tradição da 'Dormição de Maria' (Dormitio Virginis), os Apóstolos reuniram-se em Jerusalém para o seu trânsito e encontraram o túmulo vazio repleto de lírios e perfumes celestes.",
+    relicsAndTradition: "A Basílica da Dormição e a Tumba de Maria no Getsêmani em Jerusalém são centros antiquíssimos de peregrinação.",
+    patronage: ["Toda a Igreja Católica", "Padroeira de diversas dioceses e nações", "Esperança dos fiéis na ressurreição"],
+    prayer: "Ó Deus eterno e todo-poderoso, que elevastes em corpo e alma à glória celeste a Imaculada Virgem Maria, Mãe do vosso Filho, concedei-nos que, sempre atentos às coisas do alto, mereçamos participar da sua glória. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/novenas.webp"
+  },
+  {
+    slug: "santa-monica",
+    name: "Santa Mônica",
+    title: "Modelo de Mãe Cristã • Mãe de Santo Agostinho",
+    day: 27,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "A mãe cujas lágrimas, orações e jejuns perseverantes durante décadas obtiveram a conversão do grande Santo Agostinho.",
+    quote: "Uma coisa me fazia desejar viver mais um pouco: ver-te cristão católico antes de morrer. Deus concedeu-me isso com fartura!",
+    biography: "Nascida em Tagaste no norte da África (331 d.C.), suportou com paciência heróica um marido pagão irascível até convertê-lo. Seu filho mais velho, Agostinho, dotado de inteligência brilhante, perdeu-se na vida dissoluta e nas heresias maniqueístas. Mônica seguiu o filho até Milão, chorando e rezando incessantemente diante do Sacrário, merecendo a célebre consolação de Santo Ambrósio: 'É impossível que se perca o filho de tantas lágrimas!'.",
+    martyrdomOrPassing: "Após testemunhar o batismo de Agostinho em Milão, faleceu santamente no porto de Óstia Tiberina aos 56 anos, em sublime colóquio místico com o filho sobre as alegrias da vida eterna.",
+    relicsAndTradition: "Seu corpo venerável repousa na Basílica de Sant'Agostino em Roma.",
+    patronage: ["Mães de família", "Esposas em dificuldades", "Conversão de filhos rebeldes", "Vítimas de abusos verbais"],
+    prayer: "Senhor Deus, consolador dos que choram, que acolhestes com misericórdia as lágrimas de Santa Mônica pela conversão do seu filho Agostinho, concedei-nos, por intercessão de ambos, chorar nossos pecados e encontrar o vosso perdão. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "santo-agostinho-bispo",
+    name: "Santo Agostinho de Hipona",
+    title: "Doutor da Graça • Bispo e Pai da Igreja",
+    day: 28,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Uma das mentes mais brilhantes da humanidade, autor das 'Confissões' e da 'Cidade de Deus'.",
+    quote: "Tarde te amei, ó Beleza tão antiga e tão nova, tarde te amei! Criaste-nos para Vós, Senhor, e o nosso coração vive inquieto enquanto não repousar em Vós.",
+    biography: "Nascido em Tagaste (354), após uma juventude pecaminosa e seduzida por falsas filosofias, converteu-se em Milão ao ouvir Santo Ambrósio e ser tocado pela graça divina. Batizado, retornou à África onde foi consagrado Bispo de Hipona. Pastoreou incansavelmente seu rebanho, refutou as grandes heresias de sua época (donatismo, pelagianismo) e legou à posteridade tratados de teologia insuperáveis.",
+    martyrdomOrPassing: "Faleceu em 430 durante o cerco de Hipona pelos bárbaros vândalos, rezando os Salmos penitenciais afixados nas paredes de seu quarto.",
+    relicsAndTradition: "Seus restos mortais descansam na Basílica de San Pietro in Ciel d'Oro em Pavia (Itália).",
+    patronage: ["Teólogos", "Filósofos", "Tipógrafos", "Buscadores da verdade"],
+    prayer: "Renovai, Senhor, na vossa Igreja o espírito com que cumulastes o bispo Santo Agostinho, para que, repousando unicamente em Vós, busquemos sem cessar a fonte da verdadeira sabedoria. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/biblia.webp"
+  },
+
+  // SETEMBRO
+  {
+    slug: "sao-padre-pio-de-pietrelcina",
+    name: "São Pio de Pietrelcina (Padre Pio)",
+    title: "O Estigmatizado do Gargano • Mártir do Confessionário",
+    day: 23,
+    month: 9,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Frade capuchinho que carregou as cinco chagas de Cristo por 50 anos e passava até 16 horas diárias no confessionário.",
+    quote: "Reze, tenha fé e não se preocupe. A oração é a melhor arma que temos; é a chave que abre o coração de Deus.",
+    biography: "Francesco Forgione nasceu em Pietrelcina (Itália) em 1887. Entrou para a Ordem dos Frades Menores Capuchinhos. Em 1918, rezando diante do crucifixo no convento de San Giovanni Rotondo, recebeu as dolorosas chagas visíveis de Jesus nas mãos, nos pés e no peito. Deus cumulou-o de dons extraordinários: discernimento das consciências, bilocação, profecia e o perfume místico de santidade. Construiu a monumental 'Casa Alívio do Sofrimento'.",
+    martyrdomOrPassing: "Faleceu santamente em 23 de setembro de 1968, murmurando com o terço nas mãos os doces nomes: 'Jesus, Maria'. No instante de sua morte, as feridas dos estigmas cicatrizaram-se milagrosamente sem deixar rastro.",
+    relicsAndTradition: "Seu corpo repousa em San Giovanni Rotondo, visitado anualmente por milhões de peregrinos do mundo inteiro.",
+    patronage: ["Confessores", "Doentes e agentes de saúde", "Jovens em discernimento", "Voluntários de caridade"],
+    prayer: "Deus eterno e todo-poderoso, que concedestes a São Pio de Pietrelcina a graça singular de participar da Cruz do vosso Filho e renovar as vossas maravilhas pelo ministério da misericórdia, dai-nos, por sua intercessão, suportar nossos sofrimentos e acolher vosso perdão. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "padre-pio"
+  },
+  {
+    slug: "sao-miguel-gabriel-e-rafael",
+    name: "Santos Arcanjos Miguel, Gabriel e Rafael",
+    title: "Os Príncipes da Milícia Celeste",
+    day: 29,
+    month: 9,
+    rank: "Festa",
+    liturgicalColor: "branco",
+    summary: "Os santos arcanjos que assistem diante do trono de Deus e combatem em defesa da Igreja e dos fiéis.",
+    quote: "Quem como Deus? (Quis ut Deus!)",
+    biography: "A Sagrada Escritura revela os três arcanjos celestes: São Miguel ('Quem como Deus?'), o invencível chefe dos exércitos celestes que precipitou Lúcifer no abismo e guarda o povo de Deus; São Gabriel ('Força de Deus'), o mensageiro da Encarnação à Virgem Maria e a Zacarias; e São Rafael ('Medicina de Deus'), o guia providencial e curador de Tobias.",
+    martyrdomOrPassing: "Puro espíritos criados por Deus para a sua glória e para a salvação dos homens.",
+    relicsAndTradition: "A lendária espada e Santuário do Monte Gargano (Itália), consagrado pelo próprio São Miguel, o Mont-Saint-Michel (França) e a Linha Sagrada dos Arcanjos.",
+    patronage: ["Polícia e forças de segurança (S. Miguel)", "Comunicação e correios (S. Gabriel)", "Médicos, viajantes e noivos (S. Rafael)"],
+    prayer: "São Miguel Arcanjo, defendei-nos no combate; sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe Deus, instantemente o pedimos, e vós, príncipe da milícia celeste, pela virtude divina, precipitai no inferno a satanás e a todos os espíritos malignos que andam pelo mundo para perder as almas. Amém.",
+    image: "/assets/dashboard/quaresma-sao-miguel.webp",
+    linkedNovenaSlug: "sao-miguel-arcanjo"
+  },
+  {
+    slug: "sao-jeronimo-presbitero",
+    name: "São Jerônimo, Presbítero e Doutor",
+    title: "O Tradutor da Vulgata • Doutor das Sagradas Escrituras",
+    day: 30,
+    month: 9,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O sábio eremita de Belém que traduziu a Bíblia dos originais hebraico e grego para o latim.",
+    quote: "Desconhecer as Escrituras é desconhecer o próprio Cristo.",
+    biography: "Nascido na Dalmácia em 347, dotado de erudição monumental em latim, grego e hebraico, foi secretário do Papa São Dâmaso I, que lhe encomendou a tradução oficial da Bíblia para o latim vulgar (a Vulgata). Retirou-se para uma cela rupestre ao lado da Gruta da Natividade em Belém, onde passou décadas em severa penitência, jejuns e estudos incessantes.",
+    martyrdomOrPassing: "Faleceu octogenário em Belém no ano de 420, cercado por seus monges e discípulos da Sagrada Escritura.",
+    relicsAndTradition: "Suas relíquias sagradas foram posteriormente trasladadas para a Basílica de Santa Maria Maior em Roma.",
+    patronage: ["Biblistas", "Tradutores", "Estudiosos da Bíblia", "Bibliotecários"],
+    prayer: "Ó Deus, que destes a São Jerônimo um afeto vivo e suave pela Sagrada Escritura, fazei que o vosso povo se alimente com mais abundância da vossa Palavra e encontre nela a fonte da verdadeira vida. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/biblia.webp"
+  },
+
+  // OUTUBRO
+  {
+    slug: "santa-teresinha-do-menino-jesus",
+    name: "Santa Teresinha do Menino Jesus",
+    title: "Doutora da Igreja • Padroeira das Missões",
+    day: 1,
+    month: 10,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "A jovem carmelita de Lisieux que ensinou a 'Pequena Via' da infância espiritual e do amor incondicional a Deus.",
+    quote: "No coração da Igreja, minha Mãe, eu serei o Amor!",
+    biography: "Marie-Françoise-Thérèse Martin nasceu em Alençon (1873). Entrou com apenas 15 anos para o Carmelo de Lisieux com autorização especial do Papa Leão XIII. Sem jamais sair do claustro, compreendeu que o segredo da santidade não reside em grandes façanhas exteriores, mas na entrega total, filial e simples ao Amor Misericordioso de Deus em cada detalhe do dia a dia. Seu manuscrito autobiográfico 'História de uma Alma' incendiou o mundo de fervor.",
+    martyrdomOrPassing: "Morreu aos 24 anos consumida pela tuberculose em 30 de setembro de 1897, prometendo: 'Passarei o meu Céu fazendo o bem sobre a terra. Farei cair uma chuva de rosas'.",
+    relicsAndTradition: "A Basílica de Santa Teresa em Lisieux é um dos maiores centros de peregrinação da França.",
+    patronage: ["Missões católicas universais", "Floristas", "Enfermos de tuberculose", "A 'Pequena Via'"],
+    prayer: "Ó Deus, que abris as portas do vosso Reino aos pequeninos e humildes, concedei-nos seguir com confiança o caminho de Santa Teresinha do Menino Jesus, para que, por sua intercessão, nos seja revelada a vossa glória eterna. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/oracoes.webp",
+    linkedNovenaSlug: "santa-teresinha"
+  },
+  {
+    slug: "sao-francisco-de-assis",
+    name: "São Francisco de Assis",
+    title: "O Pobrezinho de Assis • Fundador dos Franciscanos",
+    day: 4,
+    month: 10,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Renunciou a todas as riquezas para casar-se com a 'Senhora Pobreza' e recebeu no Monte Alverne os estigmas de Cristo.",
+    quote: "Senhor, fazei-me instrumento de vossa paz. Onde houver ódio, que eu leve o amor.",
+    biography: "Filho de um rico comerciante de tecidos em Assis (1181), abandonou suas roupas e vaidades na presença do bispo após ouvir a voz do crucifixo de São Damião: 'Francisco, vai e reconstrói a minha Igreja que está em ruínas!'. Reuniu companheiros na mais radical pobreza evangélica, fundando a Ordem dos Frades Menores, as Clarissas (com Santa Clara) e a Ordem Terceira. Dois anos antes de sua morte, no Monte Alverne, recebeu a sublime impressão dos estigmas de Nosso Senhor.",
+    martyrdomOrPassing: "Em 3 de outubro de 1226, acolheu a 'Irmã Morte' deitado nu sobre o solo na Porciúncula, louvando o Senhor pelo dom da criação.",
+    relicsAndTradition: "A magnífica Basílica de São Francisco em Assis abriga sua tumba em rocha sólida, patrimônio espiritual da humanidade.",
+    patronage: ["Ecologia e meio ambiente", "Animais", "Itália", "A paz e o diálogo", "Comerciantes e alfaiates"],
+    prayer: "Ó Deus, que fizestes São Francisco assemelhar-se ao Cristo pela pobreza e pela humildade, concedei-nos, trilhando os seus passos, seguir o vosso Filho e unir-nos a Vós na jubilosa caridade. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/lectio.webp"
+  },
+  {
+    slug: "nossa-senhora-aparecida",
+    name: "Nossa Senhora da Conceição Aparecida",
+    title: "Rainha e Padroeira Principal do Brasil",
+    day: 12,
+    month: 10,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "A imagem milagrosa da Imaculada Conceição pescada nas águas do Rio Paraíba do Sul que uniu o povo brasileiro na fé.",
+    quote: "A vós, ó Mãe Aparecida, consagramos a nossa pátria, as nossas famílias e os nossos corações.",
+    biography: "Em outubro de 1717, três pescadores humildes (Domingos Garcia, Felipe Pedroso e João Alves) foram encarregados de conseguir peixes para a comitiva do Conde de Assumar no Rio Paraíba do Sul. Após horas sem pescar nada, puxaram na rede primeiro o corpo e depois a cabeça de uma imagem de terracota da Imaculada Conceição enegrecida pelas águas. Logo em seguida, suas redes encheram-se de peixes tão abundantes que o barco quase soçobrou. O milagre das velas acesas, a cura do cego e a libertação do escravo Zacarias atestaram o carinho maternal da Virgem pela terra brasileira.",
+    martyrdomOrPassing: "Padroeira solene do Brasil proclamada pelo Papa Pio XI em 1930.",
+    relicsAndTradition: "O Santuário Nacional de Aparecida em São Paulo é a segunda maior basílica mariana do mundo católico.",
+    patronage: ["Brasil", "Pescadores", "Povo brasileiro", "Famílias e gestantes"],
+    prayer: "Ó incomparável Senhora da Conceição Aparecida, Mãe de Deus e nossa Mãe, volvei vosso olhar misericordioso sobre o Brasil. Protegei as nossas famílias, amparai os necessitados e concedei-nos a graça de vivermos sempre fiéis a vosso Filho Jesus Cristo. Amém.",
+    image: "/assets/dashboard/novenas.webp",
+    linkedNovenaSlug: "nossa-senhora-aparecida"
+  },
+  {
+    slug: "santa-teresa-de-jesus",
+    name: "Santa Teresa de Jesus (de Ávila)",
+    title: "Primeira Doutora da Igreja • Reformadora do Carmelo",
+    day: 15,
+    month: 10,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Mística insigne, reformadora dos Carmelitas Descalços com São João da Cruz e mestra da oração contemplativa.",
+    quote: "Nada te turbe, nada te espante; tudo passa, Deus não muda. A paciência tudo alcança. Quem a Deus tem, nada lhe falta: só Deus basta!",
+    biography: "Nascida em Ávila (Espanha) em 1515, ingressou no Mosteiro da Encarnação. Experimentou profunda conversão diante de uma imagem de Cristo chagado. Sob inspiração do Espírito Santo e enfrentando incompreensões titânicas, fundou dezenas de conventos reformados baseados na estrita clausura, oração contínua e pobreza evangélica. Escreveu tratados místicos imortais como 'Castelo Interior (Moradas)' e 'Caminho de Perfeição'.",
+    martyrdomOrPassing: "Faleceu em Alba de Tormes em 1582, exclamando jubilosa: 'Enfim, Senhor, sou filha da Igreja!'.",
+    relicsAndTradition: "Seu coração transverberado pelo dardo do serafim e seu braço incorrupto repousam em Alba de Tormes.",
+    patronage: ["Escritores católicos", "Místicos", "Pessoas em enfermidades corporais", "Professores de oração"],
+    prayer: "Ó Deus, que pelo vosso Espírito suscitastes Santa Teresa de Jesus para mostrar à vossa Igreja o caminho da perfeição, fazei que nos alimentemos sempre da sua celestial doutrina e nos acendamos no desejo da verdadeira santidade. Amém.",
+    image: "/assets/dashboard/lectio.webp"
+  },
+  {
+    slug: "sao-joao-paulo-ii",
+    name: "São João Paulo II, Papa",
+    title: "O Peregrino da Paz • O Papa da Família e da Misericórdia",
+    day: 22,
+    month: 10,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O Papa polonês que demoliu o comunismo, instituiu a Divina Misericórdia e conclamou o mundo a não ter medo de Cristo.",
+    quote: "Não tenhais medo! Abri, melhor, escancarai as portas a Cristo!",
+    biography: "Karol Wojtyła nasceu em Wadowice (Polônia) em 1920. Sobreviveu à ocupação nazista e ao jugo comunista, sendo eleito bispo de Roma em 1978 — o primeiro Papa não-italiano em 455 anos. Viajou por 129 países, fundou a Jornada Mundial da Juventude, proclamou o Catecismo da Igreja Católica e consagrou o mundo à Divina Misericórdia de Santa Faustina. Perdoou pessoalmente na prisão o homem que tentou assassiná-lo na Praça de São Pedro.",
+    martyrdomOrPassing: "Faleceu santamente na véspera do Domingo da Misericórdia em 2 de abril de 2005, diante de uma multidão em vigília ininterrupta de oração em Roma.",
+    relicsAndTradition: "Seu túmulo repousa na Capela de São Sebastião dentro da Basílica de São Pedro no Vaticano.",
+    patronage: ["Jovens", "Famílias", "Polônia", "Jornadas Mundiais da Juventude"],
+    prayer: "Ó Deus, rico de misericórdia, que chamastes São João Paulo II para governar a vossa Igreja inteira, concedei que, instruídos por seus ensinamentos, abramos com confiança os nossos corações à graça salvadora de Cristo. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+
+  // NOVEMBRO
+  {
+    slug: "todos-os-santos",
+    name: "Solenidade de Todos os Santos",
+    title: "A Multidão dos Eleitos no Céu",
+    day: 1,
+    month: 11,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "Celebração de todos os santos conhecidos e desconhecidos que triunfaram na fé e contemplam a face de Deus.",
+    quote: "Vi uma grande multidão que ninguém podia contar, de todas as nações, tribos, povos e línguas, diante do Trono e do Cordeiro.",
+    biography: "Neste dia bendito, a Igreja militante da terra une seu louvor à Igreja triunfante do Céu. Celebramos não apenas os santos canonizados nos altares, mas a multidão imensa de pais, mães, mártires anônimos, jovens e anciãos que lavaram suas vestes no Sangue do Cordeiro e agora intercedem perpetuamente por nós na bem-aventurança eterna.",
+    martyrdomOrPassing: "A comunhão e vitória eterna de todos os amigos de Deus.",
+    relicsAndTradition: "Instituída pelo Papa Gregório IV no século IX para celebrar a vocação universal de todos os cristãos à santidade.",
+    patronage: ["Toda a humanidade chamada à santidade", "A vocação cristã"],
+    prayer: "Deus eterno e todo-poderoso, que nos dais celebrar numa só festa os méritos de todos os vossos Santos, concedei-nos, pela sua infinita intercessão, a plenitude da vossa misericórdia. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/liturgia.webp"
+  },
+
+  // DEZEMBRO
+  {
+    slug: "imaculada-conceicao",
+    name: "Imaculada Conceição da Bem-Aventurada Virgem Maria",
+    title: "A Toda Pura • Preservada de Toda Mancha de Pecado",
+    day: 8,
+    month: 12,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "branco",
+    summary: "O dogma da Virgem Maria concebida sem a mancha do pecado original desde o primeiro instante de sua existência.",
+    quote: "Ave Maria, cheia de graça, o Senhor é convosco!",
+    biography: "Proclamado solenemente pelo Beato Papa Pio IX na Bula Ineffabilis Deus em 8 de dezembro de 1854: em previsão dos méritos infinitos de Jesus Cristo Salvador, a Virgem Maria foi preservada imune de toda mancha da culpa original desde o primeiro instante de sua conceição no seio de Santa Ana. Quatro anos depois, em Lourdes, a própria Mãe de Deus confirmou a Santa Bernadette: 'Eu sou a Imaculada Conceição'.",
+    martyrdomOrPassing: "Aurora bendita que precede o nascimento do Sol da Justiça.",
+    relicsAndTradition: "A Coluna da Imaculada na Piazza di Spagna em Roma, onde o Papa deposita flores todo dia 8 de dezembro.",
+    patronage: ["Igreja Católica", "Brasil (co-padroeira e rainha)", "Estados Unidos", "Portugal", "Pureza e castidade"],
+    prayer: "Ó Deus, que pela Imaculada Conceição da Virgem preparastes para o vosso Filho morada digna dele, preservando-a de toda mancha em previsão da morte do vosso Filho, concedei-nos chegar puros até Vós por sua materna intercessão. Amém.",
+    image: "/assets/dashboard/novenas.webp",
+    linkedNovenaSlug: "imaculada-conceicao"
+  },
+  {
+    slug: "natal-de-nosso-senhor-jesus-cristo",
+    name: "Natal de Nosso Senhor Jesus Cristo",
+    title: "A Natividade do Verbo Encarnado",
+    day: 25,
+    month: 12,
+    rank: "Solenidade",
+    isHolyDayOfObligation: true,
+    liturgicalColor: "dourado",
+    summary: "O Verbo Eterno se fez carne e habitou entre nós na santa noite de Belém.",
+    quote: "Glória a Deus no mais alto dos céus e paz na terra aos homens por Ele amados!",
+    biography: "O cumprimento das profecias milenares: no silêncio sagrado da noite em Belém da Judéia, na pobreza de uma gruta de animais, a Santíssima Virgem deu à luz o Salvador do Mundo, envolvendo-o em panos e reclinando-o numa manjedoura. Os anjos cantaram no céu e os pastores adoraram o Rei da Glória feito frágil Menino por nosso amor.",
+    martyrdomOrPassing: "O início visível de nossa Redenção divina.",
+    relicsAndTradition: "A Gruta da Natividade em Belém e as tábuas sagradas da Santa Manjedoura preservadas na Basílica de Santa Maria Maior em Roma.",
+    patronage: ["Toda a humanidade", "Crianças", "A família cristã", "A paz universal"],
+    prayer: "Ó Deus, que admiravelmente criastes a dignidade da natureza humana e mais admiravelmente a restaurastes, concedei-nos participar da divindade daquele que se dignou assumir a nossa humanidade, vosso Filho Jesus Cristo. Amém.",
+    image: "/assets/dashboard/liturgia.webp"
+  }
+];
+
+export const MONTH_NAMES_PT = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
+
+/**
+ * Retorna o santo/celebração de uma data específica.
+ */
+export function getSaintForDate(month: number, day: number): Saint | undefined {
+  return SAINTS_DATABASE.find(s => s.month === month && s.day === day);
+}
+
+/**
+ * Retorna o santo do dia atual (ou o mais próximo no mês se a data exata não constar no catálogo estático).
+ */
+export function getTodaySaint(date: Date = new Date()): Saint {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const exact = getSaintForDate(month, day);
+  if (exact) return exact;
+
+  // Busca o mais próximo no mês atual
+  const monthSaints = getSaintsForMonth(month);
+  if (monthSaints.length > 0) {
+    const sorted = [...monthSaints].sort((a, b) => Math.abs(a.day - day) - Math.abs(b.day - day));
+    return sorted[0];
+  }
+
+  // Fallback padrão seguro (São Bento ou Nossa Senhora)
+  return SAINTS_DATABASE[0];
+}
+
+/**
+ * Retorna todos os santos de determinado mês (1 a 12).
+ */
+export function getSaintsForMonth(month: number): Saint[] {
+  return SAINTS_DATABASE.filter(s => s.month === month).sort((a, b) => a.day - b.day);
+}
+
+/**
+ * Retorna um santo pelo seu slug.
+ */
+export function getSaintBySlug(slug: string): Saint | undefined {
+  return SAINTS_DATABASE.find(s => s.slug === slug);
+}
+
+/**
+ * Retorna todas as Festas de Guarda / Dias de Preceito.
+ */
+export function getHolyDaysOfObligation(): Saint[] {
+  return SAINTS_DATABASE.filter(s => s.isHolyDayOfObligation);
+}
+
+/**
+ * Retorna as cores e estilos litúrgicos formatados em classes Tailwind.
+ */
+export function getSaintLiturgicalStyle(color?: LiturgicalColor | string | null) {
+  const c = color?.toLowerCase() || "branco";
+  if (c.includes("vermelho")) {
+    return {
+      bg: "bg-rose-500/10 dark:bg-rose-950/20",
+      border: "border-rose-500/30",
+      text: "text-rose-600 dark:text-rose-400",
+      badge: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30",
+      dot: "bg-rose-500",
+      label: "Vermelho (Mártires / Apóstolos)"
+    };
+  }
+  if (c.includes("verde")) {
+    return {
+      bg: "bg-emerald-500/10 dark:bg-emerald-950/20",
+      border: "border-emerald-500/30",
+      text: "text-emerald-600 dark:text-emerald-400",
+      badge: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+      dot: "bg-emerald-500",
+      label: "Verde (Tempo Comum)"
+    };
+  }
+  if (c.includes("roxo") || c.includes("violeta")) {
+    return {
+      bg: "bg-purple-500/10 dark:bg-purple-950/20",
+      border: "border-purple-500/30",
+      text: "text-purple-600 dark:text-purple-400",
+      badge: "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
+      dot: "bg-purple-500",
+      label: "Roxo (Penitência / Espera)"
+    };
+  }
+  if (c.includes("dourado")) {
+    return {
+      bg: "bg-amber-500/15 dark:bg-amber-950/30",
+      border: "border-amber-500/50",
+      text: "text-amber-600 dark:text-amber-300",
+      badge: "bg-amber-500/25 text-amber-800 dark:text-amber-200 border-amber-500/50 shadow-sm",
+      dot: "bg-amber-400",
+      label: "Dourado (Grandes Solenidades)"
+    };
+  }
+  // Branco padrão
+  return {
+    bg: "bg-amber-100/10 dark:bg-amber-950/10",
+    border: "border-amber-300/30 dark:border-amber-500/20",
+    text: "text-amber-700 dark:text-amber-300",
+    badge: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-400/30",
+    dot: "bg-amber-200",
+    label: "Branco (Santos / Virgens / Doutores)"
+  };
+}
+
+/**
+ * Busca flexível de santos por termo.
+ */
+export function searchSaints(query: string, categoryFilter?: string | null): Saint[] {
+  const q = query.trim().toLowerCase();
+  return SAINTS_DATABASE.filter(saint => {
+    const matchesQuery =
+      q.length === 0 ||
+      saint.name.toLowerCase().includes(q) ||
+      saint.title.toLowerCase().includes(q) ||
+      saint.summary.toLowerCase().includes(q) ||
+      saint.biography.toLowerCase().includes(q) ||
+      saint.patronage.some(p => p.toLowerCase().includes(q));
+
+    if (!matchesQuery) return false;
+
+    if (!categoryFilter || categoryFilter === "todos") return true;
+    if (categoryFilter === "guarda") return !!saint.isHolyDayOfObligation;
+    if (categoryFilter === "solenidades") return saint.rank === "Solenidade";
+    if (categoryFilter === "martires") return saint.liturgicalColor === "vermelho" || saint.title.toLowerCase().includes("mártir");
+    if (categoryFilter === "doutores") return saint.title.toLowerCase().includes("doutor") || saint.title.toLowerCase().includes("doutora");
+    if (categoryFilter === "marianos") return saint.slug.includes("nossa-senhora") || saint.slug.includes("maria") || saint.slug.includes("imaculada") || saint.slug.includes("assuncao");
+
+    return true;
+  });
+}

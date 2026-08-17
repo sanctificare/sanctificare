@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { BookOpen, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2, ShieldCheck } from "lucide-react";
+import { BookOpen, ChevronRight, Flame, Users, Check, Play, BookMarked, Volume2, ArrowRight, Share2, ShieldCheck, Crown } from "lucide-react";
 import { RosaryIcon } from "@/components/RosaryIcon";
 import { Cross } from "@/components/CrossIcon";
 import { Heart } from "@/components/HeartIcon";
@@ -16,12 +16,14 @@ import { toast } from "sonner";
 import { shareText } from "@/lib/share";
 import { DashboardActiveNovena, NOVENA_PROGRESS_STORAGE_KEY, buildDashboardActiveNovena, parseNovenaProgress } from "@/lib/novenaProgress";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
+import { getTodaySaint, getSaintLiturgicalStyle, MONTH_NAMES_PT } from "@/data/santoral";
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
 const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
 const SANCTIFICARE_SHARE_TEXT = `Conheça o Sanctificare: um app para rezar, acompanhar a liturgia e fortalecer sua vida espiritual. ${SANCTIFICARE_SHARE_URL}`;
 
 const secondaryLinks = [
+  { href: "/santoral", label: "Santoral & Festas", desc: "Santos e festas de guarda", icon: Crown, color: "text-amber-600 bg-amber-500/10 border-amber-500/30" },
   { href: "/quaresma-sao-miguel", label: "Quaresma de São Miguel", desc: "40 dias de oração", icon: ShieldCheck, color: "text-amber-600 bg-amber-500/10 border-amber-500/30" },
   { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
   { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
@@ -391,6 +393,7 @@ export default function Dashboard() {
 
 
   const firstName = user?.name?.split(" ")[0] || "Fiel";
+  const todaySaint = getTodaySaint();
 
   return (
     <div className="min-h-screen bg-cream dark:bg-[oklch(0.14_0.03_260)] relative overflow-hidden">
@@ -500,6 +503,64 @@ export default function Dashboard() {
               </div>
             </div>
           </Link>
+        </div>
+
+        {/* Card Nobre: Santo do Dia & Santoral */}
+        <div className="section-block animate-fade-in my-6">
+          <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-br from-white via-white to-amber-50/20 dark:from-[oklch(0.16_0.04_260)] dark:via-[oklch(0.14_0.03_260)] dark:to-[oklch(0.12_0.03_260)] p-5 sm:p-6 shadow-md">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
+                  <img
+                    src={todaySaint.image}
+                    alt={todaySaint.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30">
+                      Santo do Dia • {new Date().getDate()} de {MONTH_NAMES_PT[new Date().getMonth()]}
+                    </span>
+                    {todaySaint.isHolyDayOfObligation && (
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/40 flex items-center gap-1">
+                        <Crown size={12} /> Festa de Guarda
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                    {todaySaint.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
+                    {todaySaint.title}
+                  </p>
+                  {todaySaint.quote && (
+                    <p className="text-xs italic text-amber-700/90 dark:text-amber-300/90 mt-1 font-serif">
+                      "{todaySaint.quote}"
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 w-full md:w-auto">
+                <Link href={`/santoral/${todaySaint.slug}`} className="flex-1 md:flex-initial">
+                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm">
+                    <span>Hagiografia & Relíquias</span>
+                    <ArrowRight size={14} className="ml-1.5" />
+                  </Button>
+                </Link>
+                <Link href="/santoral">
+                  <Button variant="outline" className="border-amber-500/30 text-amber-700 dark:text-amber-300 hover:bg-amber-500/10 text-xs sm:text-sm">
+                    <Crown size={14} className="mr-1.5" />
+                    <span>Santoral</span>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Destaques Principais - Layout Editorial Assimétrico */}

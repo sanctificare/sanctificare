@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl, resolveR2Redirect, isMobileApp, getPublicUrl } from "@/const";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX, Music, Share2, Sparkles, Star, Headphones, BookOpen, ShieldCheck, ArrowRight, CheckCircle2, UserCheck } from "lucide-react";
+import { Eye, EyeOff, Minus, Plus, CornerUpLeft, ChevronLeft, ChevronRight, Calendar, Type, Play, Pause, RotateCcw, Volume2, VolumeX, Music, Share2, Sparkles, Star, Headphones, BookOpen, ShieldCheck, ArrowRight, CheckCircle2, UserCheck, Crown } from "lucide-react";
 import { Heart } from "@/components/HeartIcon";
 import { trpc } from "@/lib/trpc";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
@@ -15,6 +15,7 @@ import { getDailyContent } from "@/data/daily";
 import { shareText } from "@/lib/share";
 import ShareModal from "@/components/ShareModal";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
+import { getSaintForDate, getTodaySaint, MONTH_NAMES_PT } from "@/data/santoral";
 
 
 const LOGO_IMG = "/assets/sanctificare-logo-v2.webp";
@@ -987,6 +988,63 @@ export default function Liturgy() {
                       theme={theme}
                     />
                   </div>
+
+                  {/* Seção Santoral / Memória do Santo da Liturgia */}
+                  {!isZenMode && (() => {
+                    const liturgySaint = getSaintForDate(selectedDate.getMonth() + 1, selectedDate.getDate()) || getTodaySaint(selectedDate);
+                    if (!liturgySaint) return null;
+
+                    return (
+                      <div className="mt-8 pt-6 border-t border-border/40">
+                        <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/5 dark:bg-amber-950/20 border border-amber-500/30 text-foreground">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Crown className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+                              Santoral • Memória Litúrgica
+                            </span>
+                            {liturgySaint.isHolyDayOfObligation && (
+                              <span className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-500/30">
+                                🏆 Preceito
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row items-start gap-4">
+                            <div className="w-14 h-14 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0">
+                              <img
+                                src={liturgySaint.image}
+                                alt={liturgySaint.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = "none";
+                                }}
+                              />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-display text-base font-bold text-foreground">
+                                {liturgySaint.name}
+                              </h4>
+                              <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                                {liturgySaint.title}
+                              </p>
+                              <p className="text-xs text-foreground/80 line-clamp-2 mb-3 leading-relaxed">
+                                {liturgySaint.summary}
+                              </p>
+
+                              <a
+                                href={`/santoral/${liturgySaint.slug}`}
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 hover:underline"
+                              >
+                                <span>Ver Hagiografia & Relíquias</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
             </div>

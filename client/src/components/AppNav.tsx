@@ -30,6 +30,7 @@ const mainLinks = [
 ];
 
 const moreLinks = [
+  { href: "/santoral", label: "Santoral & Festas", icon: Crown },
   { href: "/degraus-de-perfeicao", label: "Degraus de Perfeição", icon: BookMarked },
   { href: "/lectio", label: "Lectio Divina", icon: ScrollText },
   { href: "/via-sacra", label: "Via-Sacra", icon: Cross },
