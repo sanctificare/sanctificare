@@ -107,4 +107,21 @@ describe("Santoral Data Module", () => {
     expect(bernardo?.birthInfo).toContain("Dijon");
     expect(bernardo?.majorWorks).toContain("Oração Lembrai-vos (Memorare)");
   });
+
+  it("deve gerar texto de compartilhamento formatado e URL para WhatsApp", async () => {
+    const { getSaintFormattedShareText, getSaintWhatsAppShareUrl } = await import("../client/src/lib/saintDevotion");
+    const saint = getSaintBySlug("sao-bernardo-de-claraval");
+    expect(saint).toBeDefined();
+
+    if (saint) {
+      const shareText = getSaintFormattedShareText(saint);
+      expect(shareText).toContain("São Bernardo de Claraval");
+      expect(shareText).toContain("20 de Agosto");
+      expect(shareText).toContain("https://sanctificare.app/santoral/sao-bernardo-de-claraval");
+
+      const waUrl = getSaintWhatsAppShareUrl(saint);
+      expect(waUrl).toContain("https://api.whatsapp.com/send?text=");
+      expect(waUrl).toContain("Claraval");
+    }
+  });
 });

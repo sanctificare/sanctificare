@@ -18,7 +18,8 @@ import {
   Eye,
   EyeOff,
   SlidersHorizontal,
-  X
+  X,
+  BellRing
 } from "lucide-react";
 import {
   getSaintBySlug,
@@ -29,6 +30,12 @@ import {
 import { toast } from "sonner";
 import { shareText } from "@/lib/share";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
+import {
+  isSaintFavorite,
+  toggleFavoriteSaint,
+  downloadSaintCalendarEvent
+} from "@/lib/saintDevotion";
+import SaintShareCardModal from "@/components/SaintShareCardModal";
 
 type FontSize = "sm" | "base" | "lg" | "xl" | "2xl";
 type FontFamily = "serif" | "sans";
@@ -47,6 +54,7 @@ export default function SaintDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [, setLocation] = useLocation();
   const [copiedPrayer, setCopiedPrayer] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // Estados de Leitura & Modo Contemplativo
   const [fontSize, setFontSize] = useState<FontSize>(() => {
@@ -59,6 +67,42 @@ export default function SaintDetail() {
   const [showReaderSettings, setShowReaderSettings] = useState<boolean>(false);
 
   const saint = getSaintBySlug(slug || "");
+
+  // Estado de Santo Protetor / Favorito
+  const [isFavorite, setIsFavorite] = useState<boolean>(() => {
+    return saint ? isSaintFavorite(saint.slug) : false;
+  });
+
+  useEffect(() => {
+    if (!saint) return;
+    setIsFavorite(isSaintFavorite(saint.slug));
+
+    const handleFavChange = () => {
+      setIsFavorite(isSaintFavorite(saint.slug));
+    };
+
+    window.addEventListener("sanctificare_favorites_changed", handleFavChange);
+    return () => {
+      window.removeEventListener("sanctificare_favorites_changed", handleFavChange);
+    };
+  }, [saint?.slug]);
+
+  const handleToggleFavorite = () => {
+    if (!saint) return;
+    const nowFav = toggleFavoriteSaint(saint.slug);
+    setIsFavorite(nowFav);
+    if (nowFav) {
+      toast.success(`${saint.name} adicionado aos seus Santos Protetores! 🙏`);
+    } else {
+      toast.info(`${saint.name} removido dos seus Santos Protetores.`);
+    }
+  };
+
+  const handleDownloadCalendar = () => {
+    if (!saint) return;
+    downloadSaintCalendarEvent(saint, true);
+    toast.success("Lembrete da Festa e da Novena gerado para seu calendário (.ics)!");
+  };
 
   const handleFontSizeChange = (delta: number) => {
     const currentIndex = FONT_SIZES_LIST.indexOf(fontSize);
@@ -101,12 +145,8 @@ export default function SaintDetail() {
     setTimeout(() => setCopiedPrayer(false), 2500);
   };
 
-  const handleShare = async () => {
-    const text = `Conheça a história e oração de ${saint.name} (${saint.day} de ${MONTH_NAMES_PT[saint.month - 1]}) no Santoral do Sanctificare: https://sanctificare.app/santoral/${saint.slug}`;
-    await shareText({
-      title: `${saint.name} - Santoral Sanctificare`,
-      text: text,
-    });
+  const handleShare = () => {
+    setIsShareModalOpen(true);
   };
 
   // Primeira letra para capitular medieval
@@ -127,6 +167,13 @@ export default function SaintDetail() {
       {/* Padrão de fundo suave */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] dark:opacity-[0.04] pointer-events-none" />
 
+      {/* MODAL DE COMPARTILHAMENTO DE CARD SACRO */}
+      <SaintShareCardModal
+        saint={saint}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
+
       {/* BARRA FIXA DO MODO CONTEMPLATIVO */}
       {isZenMode && (
         <aside aria-label="Controles do modo contemplativo" className="sticky top-0 z-50 bg-[#FAF7F0]/90 dark:bg-[#12110E]/90 backdrop-blur-md border-b border-amber-500/20 px-4 py-3 shadow-xs">
@@ -141,6 +188,18 @@ export default function SaintDetail() {
 
             {/* Controles rápidos de leitura */}
             <div className="flex items-center gap-2">
+              <button
+                onClick={handleToggleFavorite}
+                className={`p-1.5 rounded-lg border transition-colors ${
+                  isFavorite
+                    ? "bg-rose-500 text-white border-rose-500"
+                    : "bg-amber-500/10 border-amber-500/20 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20"
+                }`}
+                title={isFavorite ? "Remover dos Santos Protetores" : "Adicionar aos Santos Protetores"}
+              >
+                <Heart className={`w-4 h-4 ${isFavorite ? "fill-current" : ""}`} />
+              </button>
+
               <div className="flex items-center rounded-lg bg-amber-500/10 border border-amber-500/20 p-0.5">
                 <button
                   onClick={() => handleFontSizeChange(-1)}
@@ -215,6 +274,22 @@ export default function SaintDetail() {
             </Link>
 
             <div className="flex items-center gap-2">
+              {/* Botão de Santo Protetor / Favorito */}
+              <button
+                onClick={handleToggleFavorite}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-all text-xs font-semibold shadow-sm ${
+                  isFavorite
+                    ? "bg-rose-500/15 border-rose-500/40 text-rose-700 dark:text-rose-300 hover:bg-rose-500/25"
+                    : "bg-white dark:bg-neutral-800/70 border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+                title={isFavorite ? "Remover dos Meus Santos Protetores" : "Favoritar como Santo Protetor"}
+              >
+                <Heart className={`w-4 h-4 ${isFavorite ? "fill-rose-500 text-rose-500" : ""}`} />
+                <span className="hidden sm:inline">
+                  {isFavorite ? "Meu Protetor" : "Protetor"}
+                </span>
+              </button>
+
               {/* Botão de Ajustes de Leitura */}
               <button
                 onClick={() => setShowReaderSettings(!showReaderSettings)}
@@ -240,16 +315,17 @@ export default function SaintDetail() {
                 title="Ativar Modo Contemplativo"
               >
                 <Eye className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span className="hidden sm:inline">Modo Contemplativo</span>
+                <span className="hidden sm:inline">Contemplar</span>
               </button>
 
-              {/* Botão de Compartilhar */}
+              {/* Botão de Compartilhar Card Sacro */}
               <button
                 onClick={handleShare}
-                className="p-2.5 rounded-xl bg-white dark:bg-neutral-800/70 border border-border/50 text-muted-foreground hover:text-foreground transition-colors shadow-sm"
-                aria-label="Compartilhar"
+                className="p-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 transition-colors shadow-sm"
+                aria-label="Compartilhar Card Sacro"
+                title="Compartilhar Card Sacro"
               >
-                <Share2 className="w-4 h-4" />
+                <Share2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               </button>
             </div>
           </div>
@@ -400,6 +476,29 @@ export default function SaintDetail() {
                       {p}
                     </span>
                   ))}
+                </div>
+              )}
+
+              {/* Botões de Ação de Devoção */}
+              {!isZenMode && (
+                <div className="pt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <button
+                    onClick={handleDownloadCalendar}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors shadow-xs"
+                    title="Adicionar Lembrete da Festa e da Novena ao Google Agenda / Apple / Outlook"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>Lembrar Festa & Novena (.ics)</span>
+                  </button>
+
+                  <button
+                    onClick={handleShare}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-800/80 hover:bg-muted border border-border/50 text-foreground text-xs font-semibold transition-colors shadow-xs"
+                    title="Gerar Card Sacro para WhatsApp e Redes"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Gerar Card Sacro</span>
+                  </button>
                 </div>
               )}
             </div>

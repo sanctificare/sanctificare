@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import {
   Calendar as CalendarIcon,
@@ -12,7 +12,8 @@ import {
   ArrowRight,
   Flame,
   Award,
-  Filter
+  Filter,
+  Heart
 } from "lucide-react";
 import {
   SAINTS_DATABASE,
@@ -26,8 +27,9 @@ import {
   getTodaySaint
 } from "@/data/santoral";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
+import { getFavoriteSaintSlugs, toggleFavoriteSaint } from "@/lib/saintDevotion";
 
-type ViewMode = "calendario" | "todos" | "guarda";
+type ViewMode = "calendario" | "todos" | "guarda" | "favoritos";
 
 export default function Santoral() {
   const today = new Date();
@@ -37,6 +39,21 @@ export default function Santoral() {
   const [viewMode, setViewMode] = useState<ViewMode>("calendario");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("todos");
+  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>(() => getFavoriteSaintSlugs());
+
+  useEffect(() => {
+    const handleFavChange = () => {
+      setFavoriteSlugs(getFavoriteSaintSlugs());
+    };
+    window.addEventListener("sanctificare_favorites_changed", handleFavChange);
+    return () => {
+      window.removeEventListener("sanctificare_favorites_changed", handleFavChange);
+    };
+  }, []);
+
+  const favoriteSaintsList = useMemo(() => {
+    return SAINTS_DATABASE.filter(s => favoriteSlugs.includes(s.slug));
+  }, [favoriteSlugs]);
 
   // Dias do mês atual
   const daysInMonth = useMemo(() => {
@@ -239,6 +256,18 @@ export default function Santoral() {
           >
             <Crown className="w-4 h-4 text-amber-400" />
             <span>Festas de Guarda ({holyDaysList.length})</span>
+          </button>
+
+          <button
+            onClick={() => setViewMode("favoritos")}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all flex items-center gap-2 ${
+              viewMode === "favoritos"
+                ? "bg-rose-600 text-white dark:bg-rose-950/40 dark:text-rose-300 dark:border dark:border-rose-500/50 shadow-sm"
+                : "bg-white/70 dark:bg-neutral-800/60 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10"
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${favoriteSaintsList.length > 0 ? "fill-current" : ""}`} />
+            <span>Meus Protetores ({favoriteSaintsList.length})</span>
           </button>
         </div>
 
@@ -598,6 +627,118 @@ export default function Santoral() {
                 </Link>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* 4. MODO: MEUS SANTOS PROTETORES (FAVORITOS) */}
+        {viewMode === "favoritos" && (
+          <div className="space-y-6">
+            <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-950 dark:text-rose-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Heart className="w-5 h-5 text-rose-600 dark:text-rose-400 fill-current" />
+                <h3 className="font-display text-base sm:text-lg font-bold">
+                  Meus Santos Protetores & Devoção Pessoal
+                </h3>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed">
+                Aqui estão reunidos os santos de sua devoção pessoal. Você pode favoritar santos em suas páginas clicando no coração para tê-los sempre à mão para orações e intercessão.
+              </p>
+            </div>
+
+            {favoriteSaintsList.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {favoriteSaintsList.map((saint) => {
+                  const style = getSaintLiturgicalStyle(saint.liturgicalColor);
+                  return (
+                    <div
+                      key={saint.slug}
+                      className="p-5 rounded-2xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border-2 border-rose-500/30 hover:border-rose-500 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
+                    >
+                      <div className="flex items-start gap-4">
+                        <Link href={`/santoral/${saint.slug}`} className="shrink-0">
+                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
+                            <img
+                              src={saint.image}
+                              alt={saint.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            />
+                          </div>
+                        </Link>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1 mb-1">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/40">
+                              📅 {saint.day} de {MONTH_NAMES_PT[saint.month - 1]}
+                            </span>
+
+                            <button
+                              onClick={() => toggleFavoriteSaint(saint.slug)}
+                              className="p-1 text-rose-600 hover:text-rose-700 transition-colors"
+                              title="Remover dos Meus Santos Protetores"
+                            >
+                              <Heart className="w-4 h-4 fill-rose-500 text-rose-500" />
+                            </button>
+                          </div>
+
+                          <Link href={`/santoral/${saint.slug}`}>
+                            <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors cursor-pointer truncate">
+                              {saint.name}
+                            </h3>
+                          </Link>
+
+                          <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                            {saint.title}
+                          </p>
+
+                          {saint.quote && (
+                            <p className="text-xs italic text-amber-800 dark:text-amber-300 line-clamp-2 mt-1.5 font-serif">
+                              "{saint.quote}"
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-3 mt-3 border-t border-border/40 text-xs">
+                        <Link href={`/santoral/${saint.slug}`}>
+                          <span className="font-semibold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1">
+                            Ver Vida & Oração <ArrowRight className="w-3.5 h-3.5" />
+                          </span>
+                        </Link>
+
+                        {saint.linkedNovenaSlug && (
+                          <Link href={`/novenas/${saint.linkedNovenaSlug}`}>
+                            <span className="text-muted-foreground hover:text-foreground font-medium">
+                              Rezar Novena →
+                            </span>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-16 px-4 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.5)] border border-border/60 shadow-xs space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center mx-auto shadow-xs">
+                  <Heart className="w-7 h-7" />
+                </div>
+                <div className="max-w-md mx-auto space-y-2">
+                  <h4 className="font-display text-lg font-bold text-foreground">
+                    Você ainda não adicionou nenhum Santo Protetor
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Navegue pelo Almanaque de Santos ou pelo Calendário Litúrgico e clique no botão <strong>"Protetor"</strong> para guardar os seus santos de devoção nesta página.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setViewMode("todos")}
+                  className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs sm:text-sm shadow-md transition-colors inline-flex items-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Explorar Almanaque de Santos</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </main>
