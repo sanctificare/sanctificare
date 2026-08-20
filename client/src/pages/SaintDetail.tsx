@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "wouter";
 import {
   ChevronLeft,
@@ -13,7 +13,12 @@ import {
   Check,
   Award,
   Heart,
-  ArrowRight
+  ArrowRight,
+  Type,
+  Eye,
+  EyeOff,
+  SlidersHorizontal,
+  X
 } from "lucide-react";
 import {
   getSaintBySlug,
@@ -25,12 +30,50 @@ import { toast } from "sonner";
 import { shareText } from "@/lib/share";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
 
+type FontSize = "sm" | "base" | "lg" | "xl" | "2xl";
+type FontFamily = "serif" | "sans";
+
+const FONT_SIZE_MAP: Record<FontSize, { body: string; quote: string; label: string }> = {
+  sm: { body: "text-sm leading-relaxed", quote: "text-sm sm:text-base", label: "P" },
+  base: { body: "text-base leading-relaxed", quote: "text-base sm:text-lg", label: "M" },
+  lg: { body: "text-lg leading-loose", quote: "text-lg sm:text-xl", label: "G" },
+  xl: { body: "text-xl leading-loose", quote: "text-xl sm:text-2xl", label: "GG" },
+  "2xl": { body: "text-2xl leading-loose", quote: "text-2xl sm:text-3xl", label: "MAX" },
+};
+
+const FONT_SIZES_LIST: FontSize[] = ["sm", "base", "lg", "xl", "2xl"];
+
 export default function SaintDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [, setLocation] = useLocation();
   const [copiedPrayer, setCopiedPrayer] = useState(false);
 
+  // Estados de Leitura & Modo Contemplativo
+  const [fontSize, setFontSize] = useState<FontSize>(() => {
+    return (localStorage.getItem("sanctificare_saint_font_size") as FontSize) || "base";
+  });
+  const [fontFamily, setFontFamily] = useState<FontFamily>(() => {
+    return (localStorage.getItem("sanctificare_saint_font_family") as FontFamily) || "serif";
+  });
+  const [isZenMode, setIsZenMode] = useState<boolean>(false);
+  const [showReaderSettings, setShowReaderSettings] = useState<boolean>(false);
+
   const saint = getSaintBySlug(slug || "");
+
+  const handleFontSizeChange = (delta: number) => {
+    const currentIndex = FONT_SIZES_LIST.indexOf(fontSize);
+    const newIndex = currentIndex + delta;
+    if (newIndex >= 0 && newIndex < FONT_SIZES_LIST.length) {
+      const nextSize = FONT_SIZES_LIST[newIndex];
+      setFontSize(nextSize);
+      localStorage.setItem("sanctificare_saint_font_size", nextSize);
+    }
+  };
+
+  const handleFontFamilyToggle = (family: FontFamily) => {
+    setFontFamily(family);
+    localStorage.setItem("sanctificare_saint_font_family", family);
+  };
 
   if (!saint) {
     return (
@@ -70,38 +113,238 @@ export default function SaintDetail() {
   const firstLetter = saint.biography.charAt(0);
   const remainingBiography = saint.biography.slice(1);
 
+  const currentFontClass = fontFamily === "serif" ? "font-serif" : "font-sans";
+  const currentSizeClass = FONT_SIZE_MAP[fontSize];
+
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-[oklch(0.12_0.03_260)] text-foreground relative overflow-hidden pb-20">
-      {/* Padrão de fundo */}
+    <div
+      className={`min-h-screen transition-colors duration-500 text-foreground relative overflow-hidden pb-20 ${
+        isZenMode
+          ? "bg-[#FAF7F0] dark:bg-[#12110E]"
+          : "bg-[oklch(0.97_0.01_85)] dark:bg-[oklch(0.12_0.03_260)]"
+      }`}
+    >
+      {/* Padrão de fundo suave */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] dark:opacity-[0.04] pointer-events-none" />
 
-      <main className="container max-w-4xl py-6 sm:py-8 relative z-10 px-4 sm:px-6">
-        {/* Banner Google Play (apenas desktop web) */}
-        <div className="mb-6">
-          <GooglePlayBanner variant="card" showDismiss={true} />
-        </div>
-
-        {/* Barra superior de navegação */}
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <Link href="/santoral">
-            <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-neutral-800/70 border border-border/50 text-xs sm:text-sm font-medium hover:bg-muted transition-colors shadow-sm">
-              <ChevronLeft className="w-4 h-4" />
-              <span>Santoral & Calendário</span>
+      {/* BARRA FIXA DO MODO CONTEMPLATIVO */}
+      {isZenMode && (
+        <aside aria-label="Controles do modo contemplativo" className="sticky top-0 z-50 bg-[#FAF7F0]/90 dark:bg-[#12110E]/90 backdrop-blur-md border-b border-amber-500/20 px-4 py-3 shadow-xs">
+          <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+            <button
+              onClick={() => setIsZenMode(false)}
+              className="flex items-center gap-2 text-xs font-semibold text-amber-900 dark:text-amber-300 hover:text-amber-700 transition-colors"
+            >
+              <EyeOff className="w-4 h-4" />
+              <span>Sair do Modo Contemplativo</span>
             </button>
-          </Link>
 
-          <button
-            onClick={handleShare}
-            className="p-2.5 rounded-xl bg-white dark:bg-neutral-800/70 border border-border/50 text-muted-foreground hover:text-foreground transition-colors shadow-sm"
-            aria-label="Compartilhar"
-          >
-            <Share2 className="w-4 h-4" />
-          </button>
-        </div>
+            {/* Controles rápidos de leitura */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center rounded-lg bg-amber-500/10 border border-amber-500/20 p-0.5">
+                <button
+                  onClick={() => handleFontSizeChange(-1)}
+                  disabled={fontSize === "sm"}
+                  className="px-2 py-1 text-xs font-bold disabled:opacity-30 text-amber-900 dark:text-amber-200 hover:bg-amber-500/20 rounded"
+                  title="Diminuir fonte"
+                >
+                  A-
+                </button>
+                <span className="px-1.5 text-[11px] font-bold text-amber-800 dark:text-amber-300">
+                  {currentSizeClass.label}
+                </span>
+                <button
+                  onClick={() => handleFontSizeChange(1)}
+                  disabled={fontSize === "2xl"}
+                  className="px-2 py-1 text-xs font-bold disabled:opacity-30 text-amber-900 dark:text-amber-200 hover:bg-amber-500/20 rounded"
+                  title="Aumentar fonte"
+                >
+                  A+
+                </button>
+              </div>
+
+              <div className="flex items-center rounded-lg bg-amber-500/10 border border-amber-500/20 p-0.5">
+                <button
+                  onClick={() => handleFontFamilyToggle("serif")}
+                  className={`px-2 py-1 text-xs font-serif font-bold rounded transition-colors ${
+                    fontFamily === "serif"
+                      ? "bg-amber-600 text-white shadow-xs"
+                      : "text-amber-900 dark:text-amber-200 hover:bg-amber-500/20"
+                  }`}
+                  title="Fonte Serifada (Clássica)"
+                >
+                  Serifa
+                </button>
+                <button
+                  onClick={() => handleFontFamilyToggle("sans")}
+                  className={`px-2 py-1 text-xs font-sans font-bold rounded transition-colors ${
+                    fontFamily === "sans"
+                      ? "bg-amber-600 text-white shadow-xs"
+                      : "text-amber-900 dark:text-amber-200 hover:bg-amber-500/20"
+                  }`}
+                  title="Fonte Sem Serifa (Moderna)"
+                >
+                  Sans
+                </button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      )}
+
+      <main
+        className={`mx-auto py-6 sm:py-8 relative z-10 px-4 sm:px-6 transition-all duration-500 ${
+          isZenMode ? "max-w-2xl" : "max-w-4xl"
+        }`}
+      >
+        {/* Banner Google Play (apenas modo normal) */}
+        {!isZenMode && (
+          <div className="mb-6">
+            <GooglePlayBanner variant="card" showDismiss={true} />
+          </div>
+        )}
+
+        {/* Barra superior de navegação (apenas modo normal) */}
+        {!isZenMode && (
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <Link href="/santoral">
+              <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-neutral-800/70 border border-border/50 text-xs sm:text-sm font-medium hover:bg-muted transition-colors shadow-sm">
+                <ChevronLeft className="w-4 h-4" />
+                <span>Santoral & Calendário</span>
+              </button>
+            </Link>
+
+            <div className="flex items-center gap-2">
+              {/* Botão de Ajustes de Leitura */}
+              <button
+                onClick={() => setShowReaderSettings(!showReaderSettings)}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border transition-all text-xs font-medium shadow-sm ${
+                  showReaderSettings
+                    ? "bg-amber-500 text-white border-amber-600 shadow-md"
+                    : "bg-white dark:bg-neutral-800/70 border-border/50 text-foreground hover:bg-muted"
+                }`}
+                title="Ajuste de Leitura e Tipografia"
+              >
+                <Type className="w-4 h-4" />
+                <span className="hidden sm:inline">Ajuste de Leitura</span>
+              </button>
+
+              {/* Botão de Modo Contemplativo */}
+              <button
+                onClick={() => {
+                  setIsZenMode(true);
+                  setShowReaderSettings(false);
+                  toast.info("Modo Contemplativo ativado. Uma leitura em paz e oração.");
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors shadow-sm"
+                title="Ativar Modo Contemplativo"
+              >
+                <Eye className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span className="hidden sm:inline">Modo Contemplativo</span>
+              </button>
+
+              {/* Botão de Compartilhar */}
+              <button
+                onClick={handleShare}
+                className="p-2.5 rounded-xl bg-white dark:bg-neutral-800/70 border border-border/50 text-muted-foreground hover:text-foreground transition-colors shadow-sm"
+                aria-label="Compartilhar"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* PAINEL FLUTUANTE / EXPANSÍVEL DE AJUSTE DE LEITURA */}
+        {showReaderSettings && !isZenMode && (
+          <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-amber-500/40 shadow-lg space-y-4 animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center justify-between pb-2 border-b border-border/40">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <h3 className="font-bold text-sm text-foreground">
+                  Ajustes de Tipografia & Leitura Confortável
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowReaderSettings(false)}
+                className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Controle de Tamanho */}
+              <div className="space-y-1.5">
+                <span className="text-xs font-semibold text-muted-foreground block">
+                  Tamanho do Texto:
+                </span>
+                <div className="flex items-center justify-between gap-2 p-1.5 rounded-xl bg-muted/50 border border-border/40">
+                  <button
+                    onClick={() => handleFontSizeChange(-1)}
+                    disabled={fontSize === "sm"}
+                    className="px-3 py-1 rounded-lg bg-white dark:bg-neutral-800 border border-border/40 text-xs font-bold disabled:opacity-40 hover:bg-amber-500/10 transition-colors"
+                  >
+                    A- (Diminuir)
+                  </button>
+                  <span className="text-xs font-bold text-amber-800 dark:text-amber-300">
+                    Tamanho: {currentSizeClass.label}
+                  </span>
+                  <button
+                    onClick={() => handleFontSizeChange(1)}
+                    disabled={fontSize === "2xl"}
+                    className="px-3 py-1 rounded-lg bg-white dark:bg-neutral-800 border border-border/40 text-xs font-bold disabled:opacity-40 hover:bg-amber-500/10 transition-colors"
+                  >
+                    A+ (Aumentar)
+                  </button>
+                </div>
+              </div>
+
+              {/* Família Tipográfica */}
+              <div className="space-y-1.5">
+                <span className="text-xs font-semibold text-muted-foreground block">
+                  Estilo da Fonte:
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => handleFontFamilyToggle("serif")}
+                    className={`p-2 rounded-xl border text-xs font-serif font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      fontFamily === "serif"
+                        ? "bg-amber-600 text-white border-amber-600 shadow-xs"
+                        : "bg-muted/50 border-border/40 text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>Serifa Sacra</span>
+                  </button>
+                  <button
+                    onClick={() => handleFontFamilyToggle("sans")}
+                    className={`p-2 rounded-xl border text-xs font-sans font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      fontFamily === "sans"
+                        ? "bg-amber-600 text-white border-amber-600 shadow-xs"
+                        : "bg-muted/50 border-border/40 text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>Sem Serifa (Limpa)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Hero Card do Santo */}
-        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-white via-white to-amber-50/20 dark:from-[oklch(0.16_0.04_260)] dark:via-[oklch(0.14_0.03_260)] dark:to-[oklch(0.12_0.03_260)] border border-amber-500/30 shadow-md">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-left">
+        <div
+          className={`mb-8 rounded-3xl border transition-all ${
+            isZenMode
+              ? "p-6 sm:p-7 bg-white/70 dark:bg-neutral-900/70 border-amber-500/20 text-center"
+              : "p-6 sm:p-8 bg-gradient-to-b from-white via-white to-amber-50/20 dark:from-[oklch(0.16_0.04_260)] dark:via-[oklch(0.14_0.03_260)] dark:to-[oklch(0.12_0.03_260)] border-amber-500/30 shadow-md"
+          }`}
+        >
+          <div
+            className={`flex flex-col ${
+              isZenMode ? "items-center text-center" : "sm:flex-row items-center sm:items-start text-center sm:text-left"
+            } gap-6`}
+          >
             {/* Ícone Sacro com Auréola */}
             <div className="relative shrink-0">
               <div className="absolute -inset-2 rounded-2xl bg-gradient-to-tr from-amber-500/30 to-yellow-300/30 blur-sm -z-10" />
@@ -116,7 +359,11 @@ export default function SaintDetail() {
 
             {/* Informações Principais */}
             <div className="flex-1 space-y-2">
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+              <div
+                className={`flex flex-wrap items-center gap-2 ${
+                  isZenMode ? "justify-center" : "justify-center sm:justify-start"
+                }`}
+              >
                 <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
                   {saint.day} de {MONTH_NAMES_PT[saint.month - 1]}
@@ -142,7 +389,7 @@ export default function SaintDetail() {
               </p>
 
               {/* Chips de Patronatos */}
-              {saint.patronage.length > 0 && (
+              {saint.patronage.length > 0 && !isZenMode && (
                 <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
                   <span className="text-xs font-semibold text-muted-foreground mr-1">Patrono de:</span>
                   {saint.patronage.map((p, idx) => (
@@ -161,7 +408,7 @@ export default function SaintDetail() {
           {/* Citação em Destaque */}
           {saint.quote && (
             <div className="mt-6 pt-6 border-t border-border/40 text-center sm:text-left">
-              <blockquote className="font-serif italic text-base sm:text-lg text-amber-800 dark:text-amber-300">
+              <blockquote className={`${currentFontClass} italic ${currentSizeClass.quote} text-amber-800 dark:text-amber-300 leading-snug`}>
                 "{saint.quote}"
               </blockquote>
             </div>
@@ -231,8 +478,8 @@ export default function SaintDetail() {
             </h2>
           </div>
 
-          <div className="prose prose-neutral dark:prose-invert max-w-none text-foreground/90 leading-relaxed text-sm sm:text-base">
-            <p className="font-serif">
+          <div className={`prose prose-neutral dark:prose-invert max-w-none text-foreground/90 ${currentFontClass} ${currentSizeClass.body}`}>
+            <p>
               {/* Capitular Medieval */}
               <span className="float-left text-4xl sm:text-5xl font-display font-bold text-amber-600 dark:text-amber-400 leading-none pr-3 pt-1">
                 {firstLetter}
@@ -261,7 +508,7 @@ export default function SaintDetail() {
               {saint.iconography.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-xl bg-amber-500/5 dark:bg-amber-950/20 border border-amber-500/20 flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90"
+                  className={`p-3 rounded-xl bg-amber-500/5 dark:bg-amber-950/20 border border-amber-500/20 flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90 ${currentFontClass}`}
                 >
                   <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
                   <span>{item}</span>
@@ -280,7 +527,7 @@ export default function SaintDetail() {
             </h2>
           </div>
 
-          <p className="text-sm sm:text-base text-foreground/90 leading-relaxed font-serif">
+          <p className={`${currentFontClass} ${currentSizeClass.body} text-foreground/90 leading-relaxed`}>
             {saint.martyrdomOrPassing}
           </p>
         </section>
@@ -304,9 +551,9 @@ export default function SaintDetail() {
               {saint.majorWorks.map((work, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-xl bg-muted/40 border border-border/40 flex items-center gap-3 text-xs sm:text-sm font-medium text-foreground"
+                  className={`p-3.5 rounded-xl bg-muted/40 border border-border/40 flex items-center gap-3 text-xs sm:text-sm font-medium text-foreground ${currentFontClass}`}
                 >
-                  <span className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center text-xs font-bold shrink-0">
+                  <span className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center text-xs font-bold shrink-0 font-sans">
                     {idx + 1}
                   </span>
                   <span>{work}</span>
@@ -325,7 +572,7 @@ export default function SaintDetail() {
             </h2>
           </div>
 
-          <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
+          <p className={`${currentFontClass} ${currentSizeClass.body} text-foreground/90 leading-relaxed`}>
             {saint.relicsAndTradition}
           </p>
         </section>
@@ -359,79 +606,81 @@ export default function SaintDetail() {
           </div>
 
           <div className="p-4 sm:p-5 rounded-2xl bg-white/80 dark:bg-neutral-900/60 border border-amber-500/20">
-            <p className="font-serif italic text-sm sm:text-base text-foreground leading-relaxed">
+            <p className={`${currentFontClass} italic ${currentSizeClass.quote} text-foreground leading-relaxed`}>
               "{saint.prayer}"
             </p>
           </div>
         </section>
 
-        {/* AÇÕES INTEGRADAS NO APP */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
-          {/* Acender Vela */}
-          <Link href="/vela-virtual">
-            <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-amber-500/30 hover:border-amber-500 hover:shadow-md transition-all flex items-center justify-between group text-left">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center">
-                  <Flame className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-xs sm:text-sm text-foreground">Vela Virtual</h4>
-                  <p className="text-[11px] text-muted-foreground">Pedir intercessão do Santo</p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-
-          {/* Novena vinculada */}
-          {saint.linkedNovenaSlug ? (
-            <Link href={`/novenas/${saint.linkedNovenaSlug}`}>
+        {/* AÇÕES INTEGRADAS NO APP (ocultas no modo contemplativo) */}
+        {!isZenMode && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+            {/* Acender Vela */}
+            <Link href="/vela-virtual">
               <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-amber-500/30 hover:border-amber-500 hover:shadow-md transition-all flex items-center justify-between group text-left">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center">
-                    <Crown className="w-5 h-5" />
+                    <Flame className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-foreground">Rezar Novena</h4>
-                    <p className="text-[11px] text-muted-foreground">Jornada de 9 dias</p>
+                    <h4 className="font-bold text-xs sm:text-sm text-foreground">Vela Virtual</h4>
+                    <p className="text-[11px] text-muted-foreground">Pedir intercessão do Santo</p>
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
-          ) : (
-            <Link href="/novenas">
-              <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500/40 hover:shadow-md transition-all flex items-center justify-between group text-left">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center">
-                    <Crown className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-foreground">Novenas</h4>
-                    <p className="text-[11px] text-muted-foreground">Ver todas as novenas</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-              </button>
-            </Link>
-          )}
 
-          {/* Liturgia Diária */}
-          <Link href="/liturgia">
-            <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500/40 hover:shadow-md transition-all flex items-center justify-between group text-left sm:col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center">
-                  <BookOpen className="w-5 h-5" />
+            {/* Novena vinculada */}
+            {saint.linkedNovenaSlug ? (
+              <Link href={`/novenas/${saint.linkedNovenaSlug}`}>
+                <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-amber-500/30 hover:border-amber-500 hover:shadow-md transition-all flex items-center justify-between group text-left">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center">
+                      <Crown className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-xs sm:text-sm text-foreground">Rezar Novena</h4>
+                      <p className="text-[11px] text-muted-foreground">Jornada de 9 dias</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            ) : (
+              <Link href="/novenas">
+                <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500/40 hover:shadow-md transition-all flex items-center justify-between group text-left">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-muted text-muted-foreground flex items-center justify-center">
+                      <Crown className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-xs sm:text-sm text-foreground">Novenas</h4>
+                      <p className="text-[11px] text-muted-foreground">Ver todas as novenas</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
+            )}
+
+            {/* Liturgia Diária */}
+            <Link href="/liturgia">
+              <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500/40 hover:shadow-md transition-all flex items-center justify-between group text-left sm:col-span-2 lg:col-span-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xs sm:text-sm text-foreground">Liturgia da Missa</h4>
+                    <p className="text-[11px] text-muted-foreground">Leituras e Salmo</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold text-xs sm:text-sm text-foreground">Liturgia da Missa</h4>
-                  <p className="text-[11px] text-muted-foreground">Leituras e Salmo</p>
-                </div>
-              </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-        </div>
+                <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   );
