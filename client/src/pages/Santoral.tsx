@@ -151,7 +151,7 @@ export default function Santoral() {
                     alt={todaySaint.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLElement).style.display = "none";
+                      (e.target as HTMLImageElement).src = "/assets/dashboard/oracoes.webp";
                     }}
                   />
                 </div>
@@ -525,6 +525,9 @@ export default function Santoral() {
                           src={saint.image}
                           alt={saint.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/assets/dashboard/oracoes.webp";
+                          }}
                         />
                       </div>
 
@@ -600,6 +603,9 @@ export default function Santoral() {
                         src={feast.image}
                         alt={feast.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/assets/dashboard/oracoes.webp";
+                        }}
                       />
                     </div>
 
@@ -661,6 +667,9 @@ export default function Santoral() {
                               src={saint.image}
                               alt={saint.name}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = "/assets/dashboard/oracoes.webp";
+                              }}
                             />
                           </div>
                         </Link>

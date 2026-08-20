@@ -60,6 +60,7 @@ export default function SaintDetail() {
   const [, setLocation] = useLocation();
   const [copiedPrayer, setCopiedPrayer] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
 
   // Estados de Leitura & Modo Contemplativo
   const [fontSize, setFontSize] = useState<FontSize>(() => {
@@ -175,6 +176,49 @@ export default function SaintDetail() {
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
       />
+
+      {/* MODAL LIGHTBOX: ARTE SACRA AMPLIADA */}
+      {isImageExpanded && (
+        <div
+          onClick={() => setIsImageExpanded(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 cursor-zoom-out"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-2xl w-full bg-neutral-950 rounded-3xl border-2 border-amber-500/40 shadow-2xl overflow-hidden text-center cursor-default"
+          >
+            <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-900 border-b border-neutral-800">
+              <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+                <Crown className="w-4 h-4 text-amber-500" />
+                <span>Arte Sacra & Tradição Católica • {saint.name}</span>
+              </div>
+              <button
+                onClick={() => setIsImageExpanded(false)}
+                className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+                title="Fechar"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4 sm:p-6 bg-radial from-neutral-900 to-neutral-950 flex flex-col items-center">
+              <div className="relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-2xl max-h-[65vh]">
+                <img
+                  src={saint.image}
+                  alt={saint.name}
+                  className="w-full h-full object-contain max-h-[60vh]"
+                />
+              </div>
+              <p className="font-display font-bold text-lg text-white mt-4">
+                {saint.name}
+              </p>
+              <p className="text-xs text-neutral-400 mt-0.5">
+                {saint.title} • Festa em {saint.day} de {MONTH_NAMES_PT[saint.month - 1]}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* BARRA FIXA DO MODO CONTEMPLATIVO */}
       {isZenMode && (
@@ -423,16 +467,27 @@ export default function SaintDetail() {
               isZenMode ? "items-center text-center" : "sm:flex-row items-center sm:items-start text-center sm:text-left"
             } gap-6`}
           >
-            {/* Ícone Sacro com Auréola */}
-            <div className="relative shrink-0">
-              <div className="absolute -inset-2 rounded-2xl bg-gradient-to-tr from-amber-500/30 to-yellow-300/30 blur-sm -z-10" />
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border-2 border-amber-500/50 shadow-md">
+            {/* Imagem / Ícone Sacro com Auréola Dourada e Zoom */}
+            <div className="relative shrink-0 group">
+              <div className="absolute -inset-2.5 rounded-3xl bg-gradient-to-tr from-amber-500/40 via-amber-400/20 to-yellow-300/40 blur-md -z-10 group-hover:opacity-100 transition-opacity" />
+              <button
+                onClick={() => setIsImageExpanded(true)}
+                className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-3xl overflow-hidden bg-amber-100 dark:bg-amber-950/50 border-2 border-amber-500/60 shadow-lg relative cursor-zoom-in block text-left focus:outline-none focus:ring-2 focus:ring-amber-500"
+                title="Clique para contemplar a imagem sacra em tamanho expandido"
+              >
                 <img
                   src={saint.image}
                   alt={saint.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/assets/dashboard/oracoes.webp";
+                  }}
                 />
-              </div>
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold gap-1 backdrop-blur-[2px]">
+                  <Eye className="w-4 h-4" />
+                  <span>Ampliar</span>
+                </div>
+              </button>
             </div>
 
             {/* Informações Principais */}
