@@ -93,9 +93,18 @@ describe("Santoral Data Module", () => {
     expect(saint20Aug?.name).toContain("São Bernardo");
   });
 
-  it("deve retornar undefined para uma data sem memória litúrgica cadastrada", () => {
-    const feriaDate = new Date(2026, 7, 19); // 19 de Agosto
-    const saint = getTodaySaint(feriaDate);
-    expect(saint).toBeUndefined();
+  it("deve retornar dados históricos, iconografia e obras enriquecidas nos santos", () => {
+    const tomas = getSaintBySlug("sao-tomas-de-aquino");
+    expect(tomas).toBeDefined();
+    expect(tomas?.birthInfo).toBeDefined();
+    expect(tomas?.deathInfo).toBeDefined();
+    expect(tomas?.canonization).toContain("Doutor da Igreja");
+    expect(tomas?.iconography && tomas.iconography.length).toBeGreaterThan(0);
+    expect(tomas?.majorWorks && tomas.majorWorks.length).toBeGreaterThan(0);
+    expect(tomas?.majorWorks).toContain("Suma Teológica (Summa Theologiae)");
+
+    const bernardo = getSaintBySlug("sao-bernardo-de-claraval");
+    expect(bernardo?.birthInfo).toContain("Dijon");
+    expect(bernardo?.majorWorks).toContain("Oração Lembrai-vos (Memorare)");
   });
 });

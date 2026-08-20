@@ -168,6 +168,60 @@ export default function SaintDetail() {
           )}
         </div>
 
+        {/* FICHA CANÔNICA & HISTÓRICA */}
+        {(saint.birthInfo || saint.deathInfo || saint.canonization) && (
+          <section className="mb-8 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-500/5 via-white to-white dark:from-[oklch(0.16_0.04_260/0.9)] dark:via-[oklch(0.14_0.03_260/0.8)] dark:to-[oklch(0.13_0.03_260/0.8)] border border-amber-500/30 shadow-sm">
+            <div className="flex items-center gap-2.5 pb-3.5 border-b border-border/40 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center">
+                <Shield className="w-4 h-4" />
+              </div>
+              <div>
+                <h2 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                  Ficha Histórica & Canônica
+                </h2>
+                <p className="text-[11px] text-muted-foreground">
+                  Registros cronológicos e canônicos da Tradição da Santa Sé
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+              {saint.birthInfo && (
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-white/80 dark:bg-neutral-900/60 border border-border/40 space-y-1 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-amber-700 dark:text-amber-400 block">
+                    Nascimento / Origem
+                  </span>
+                  <p className="text-xs sm:text-sm font-medium text-foreground leading-snug">
+                    {saint.birthInfo}
+                  </p>
+                </div>
+              )}
+
+              {saint.deathInfo && (
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-white/80 dark:bg-neutral-900/60 border border-border/40 space-y-1 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-rose-600 dark:text-rose-400 block">
+                    Páscoa / Trânsito / Martírio
+                  </span>
+                  <p className="text-xs sm:text-sm font-medium text-foreground leading-snug">
+                    {saint.deathInfo}
+                  </p>
+                </div>
+              )}
+
+              {saint.canonization && (
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-white/80 dark:bg-neutral-900/60 border border-border/40 space-y-1 shadow-xs">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-amber-700 dark:text-amber-400 block">
+                    Canonização / Doutoramento
+                  </span>
+                  <p className="text-xs sm:text-sm font-medium text-foreground leading-snug">
+                    {saint.canonization}
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* 1. SEÇÃO: VIDA & LENDA DOURADA (HAGIOGRAFIA) */}
         <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
           <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
@@ -188,6 +242,35 @@ export default function SaintDetail() {
           </div>
         </section>
 
+        {/* SEÇÃO: ICONOGRAFIA SAGRADA & ATRIBUTOS */}
+        {saint.iconography && saint.iconography.length > 0 && (
+          <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
+              <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <h2 className="font-display text-xl font-bold text-foreground">
+                  Iconografia Sagrada & Atributos
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Símbolos tradicionais com que o Santo é representado na Arte Sacra Católica
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              {saint.iconography.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 rounded-xl bg-amber-500/5 dark:bg-amber-950/20 border border-amber-500/20 flex items-start gap-2.5 text-xs sm:text-sm text-foreground/90"
+                >
+                  <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* 2. SEÇÃO: MARTÍRIO OU TRÂNSITO CELESTIAL */}
         <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
           <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
@@ -201,6 +284,37 @@ export default function SaintDetail() {
             {saint.martyrdomOrPassing}
           </p>
         </section>
+
+        {/* SEÇÃO: PRINCIPAIS OBRAS & ESCRITOS */}
+        {saint.majorWorks && saint.majorWorks.length > 0 && (
+          <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
+              <BookOpen className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <h2 className="font-display text-xl font-bold text-foreground">
+                  Tratados, Obras & Escritos Notáveis
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Patrimônio doutrinal e espiritual legado à Santa Igreja
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              {saint.majorWorks.map((work, idx) => (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-xl bg-muted/40 border border-border/40 flex items-center gap-3 text-xs sm:text-sm font-medium text-foreground"
+                >
+                  <span className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center text-xs font-bold shrink-0">
+                    {idx + 1}
+                  </span>
+                  <span>{work}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 3. SEÇÃO: RELÍQUIAS & TRADIÇÃO SAGRADA */}
         <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">

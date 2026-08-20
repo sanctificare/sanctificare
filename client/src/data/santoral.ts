@@ -20,6 +20,12 @@ export interface Saint {
   image: string;
   linkedNovenaSlug?: string;
   linkedPrayerId?: string;
+  // Campos Canônicos & Históricos Enriquecidos
+  birthInfo?: string;
+  deathInfo?: string;
+  canonization?: string;
+  iconography?: string[];
+  majorWorks?: string[];
 }
 
 export const SAINTS_DATABASE: Saint[] = [
@@ -41,7 +47,19 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Mães de família", "Toda a Cristandade", "A Paz no Mundo"],
     prayer: "Ó Deus, que pela virgindade fecunda de Maria destes à humanidade a salvação eterna, concedei-nos sentir a sua intercessão, por quem merecemos receber o Autor da vida, Jesus Cristo, vosso Filho. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "nossa-senhora-das-gracas"
+    linkedNovenaSlug: "nossa-senhora-das-gracas",
+    birthInfo: "c. 20 a.C. em Jerusalém ou Nazaré, Judeia",
+    deathInfo: "Dormição e Assunção aos Céus em Jerusalém / Éfeso",
+    canonization: "Maternidade Divina (Theotókos) proclamada pelo Concílio de Éfeso (431 d.C.)",
+    iconography: [
+      "Manto azul e túnica vermelha",
+      "Coroa de doze estrelas",
+      "Lua sob os pés",
+      "Menino Jesus nos braços"
+    ],
+    majorWorks: [
+      "Cântico do Magnificat (Lc 1, 46-55)"
+    ]
   },
   {
     slug: "santo-antao-abade",
@@ -58,7 +76,20 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo foi posteriormente trasladado para Alexandria, depois Constantinopla, e no século XI levado para Saint-Antoine-l'Abbaye, na França, onde operou milagres contra o chamado 'fogo de Santo Antão'.",
     patronage: ["Monges", "Eremitas", "Agricultores", "Animais domésticos"],
     prayer: "Ó Deus, que concedestes a Santo Antão servir-vos no deserto com uma vida admirável, fazei que, por sua intercessão, saibamos renunciar a nós mesmos e amar-vos sempre sobre todas as coisas. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/lectio.webp"
+    image: "/assets/dashboard/lectio.webp",
+    birthInfo: "c. 251 d.C. em Coma (Heracleópolis Magna), Alto Egito",
+    deathInfo: "356 d.C. (105 anos) no Monte Colzim, Deserto Oriental do Egito",
+    canonization: "Culto imemorial confirmado pelos Santos Padres da Igreja",
+    iconography: [
+      "Cruz em forma de T (Tau)",
+      "Sino e cajado de eremita",
+      "Livro das Sagradas Escrituras",
+      "Porco aos pés (domínio sobre as paixões)"
+    ],
+    majorWorks: [
+      "Cartas de Santo Antão aos Monges",
+      "Sentenças do Deserto (Apophthegmata Patrum)"
+    ]
   },
   {
     slug: "sao-sebastiao-martir",
@@ -75,7 +106,15 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo repousa na Basílica de São Sebastião Extramuros, em Roma, sobre uma das mais célebres catacumbas do cristianismo primitivo.",
     patronage: ["Soldados", "Atletas", "Protetor contra a peste, a fome e a guerra", "Co-padroeiro da cidade do Rio de Janeiro"],
     prayer: "Concedei-nos, Senhor, o espírito de fortaleza, para que, sustentados pelo admirável exemplo do vosso mártir São Sebastião, aprendamos a obedecer antes a Vós do que aos homens. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/via-sacra.webp"
+    image: "/assets/dashboard/via-sacra.webp",
+    birthInfo: "c. 256 d.C. em Narbona (Gália) ou Milão (Itália)",
+    deathInfo: "20 de janeiro de 288 d.C. (32 anos) em Roma",
+    canonization: "Culto imemorial martirial desde a Igreja Primitiva",
+    iconography: [
+      "Amarrado a um tronco e trespassado por flechas",
+      "Armadura de capitão romano",
+      "Palma gloriosa do martírio"
+    ]
   },
   {
     slug: "sao-tomas-de-aquino",
@@ -92,7 +131,23 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Suas insignes relíquias repousam sob o altar da Igreja dos Jacobinos, em Toulouse (França).",
     patronage: ["Estudantes", "Universidades católicas", "Teólogos", "Acadêmicos"],
     prayer: "Ó Deus, que tornastes São Tomás de Aquino célebre pelo amor à santidade e pela dedicação à ciência sagrada, concedei-nos compreender seus ensinamentos e imitar seus exemplos. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/biblia.webp"
+    image: "/assets/dashboard/biblia.webp",
+    birthInfo: "1225 no Castelo de Roccasecca, Reino da Sicília (Itália)",
+    deathInfo: "7 de março de 1274 (49 anos) na Abadia de Fossanova, Itália",
+    canonization: "18 de julho de 1323 pelo Papa João XXII • Proclamado Doutor da Igreja em 1567 por São Pio V",
+    iconography: [
+      "Sol resplandecente no peito",
+      "Pomba do Espírito Santo no ouvido",
+      "Hábito dominicano",
+      "Suma Teológica e pena de escrever",
+      "Cálice e Ostensório"
+    ],
+    majorWorks: [
+      "Suma Teológica (Summa Theologiae)",
+      "Suma contra os Gentios",
+      "Hinos Eucarísticos (Pange Lingua, Tantum Ergo, Adoro Te Devote, Panis Angelicus)",
+      "Catena Aurea (Cadeia de Ouro)"
+    ]
   },
 
   // MARÇO
@@ -113,7 +168,16 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Igreja Universal", "Famílias", "Trabalhadores", "Pai de família", "Moribundos", "Proteção contra as ciladas do demônio"],
     prayer: "A vós, São José, recorremos em nossa tribulação. Pelo laço sagrado de caridade que vos uniu à Virgem Imaculada Mãe de Deus, e pelo amor paternal que tivestes ao Menino Jesus, protegei a herança adquirida por Cristo e defendei a nós vossos devotos. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "sao-jose"
+    linkedNovenaSlug: "sao-jose",
+    birthInfo: "Século I a.C. em Belém / Nazaré, linhagem real do Rei Davi",
+    deathInfo: "c. 30 d.C. em Nazaré, repousando nos braços de Jesus e Maria",
+    canonization: "Proclamado Patrono Universal da Igreja em 1870 pelo Beato Papa Pio IX",
+    iconography: [
+      "Lírio florido (símbolo de sua castidade perfeitíssima)",
+      "Menino Jesus no colo",
+      "Ferramentas de carpinteiro (esquadro e serrote)",
+      "Cajado florido"
+    ]
   },
   {
     slug: "anunciacao-do-senhor",
@@ -129,8 +193,16 @@ export const SAINTS_DATABASE: Saint[] = [
     martyrdomOrPassing: "Celebração do mistério da Encarnação, princípio de nossa redenção.",
     relicsAndTradition: "A Gruta da Anunciação em Nazaré e a Santa Casa transportada milagrosamente pelos anjos para Loreto (Itália).",
     patronage: ["Mulheres grávidas", "Nascituros", "Vocacionados", "A vida humana desde a concepção"],
-    prayer: "Ó Deus, que pela anunciação do Anjo quisestes que vosso Verbo assumisse a nossa carne no seio da Virgem Maria, concedei aos vossos servos, que a proclamam verdadeira Mãe de Deus, serem ajudados por sua intercessão junto de Vós. Por nosso Senhor Jesus Cristo. Amém.",
-    image: "/assets/dashboard/novenas.webp"
+    prayer: "Ó Deus, que pela anunciacão do Anjo quisestes que vosso Verbo assumisse a nossa carne no seio da Virgem Maria, concedei aos vossos servos, que a proclamam verdadeira Mãe de Deus, serem ajudados por sua intercessão junto de Vós. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/novenas.webp",
+    birthInfo: "Nazaré da Galileia (c. 5 a.C.)",
+    deathInfo: "Princípio e aurora da Redenção do gênero humano",
+    canonization: "Solenidade Maior do Senhor no Calendário Litúrgico Romano",
+    iconography: [
+      "Arcanjo Gabriel com o lírio da pureza",
+      "Espírito Santo em forma de Pomba luminosa",
+      "Virgem Maria em oração acolhendo o Anjo"
+    ]
   },
 
   // MAIO
@@ -150,7 +222,19 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["A Paz mundial", "Portugal", "Devotos do Santo Rosário", "Conversão dos pecadores"],
     prayer: "Santíssima Virgem de Fátima, que repetistes com insistência o pedido de rezar o Terço todos os dias, dai-nos perseverança e amor ardente na oração, para obtermos a salvação de nossas almas e a paz no mundo. Por Cristo, nosso Senhor. Amém.",
     image: "/assets/dashboard/rosario.webp",
-    linkedNovenaSlug: "nossa-senhora-de-fatima"
+    linkedNovenaSlug: "nossa-senhora-de-fatima",
+    birthInfo: "Primeira aparição em 13 de maio de 1917 na Cova da Iria, Fátima (Portugal)",
+    deathInfo: "Milagre do Sol presenciado por 70 mil pessoas em 13 de outubro de 1917",
+    canonization: "Aparições aprovadas pelo Bispo de Leiria em 1930 com confirmação da Santa Sé",
+    iconography: [
+      "Vestes brancas puríssimas com bordados dourados",
+      "Santo Terço de contas brancas nas mãos",
+      "Coração Imaculado cercado de espinhos",
+      "Azinheira sagrada"
+    ],
+    majorWorks: [
+      "Mensagem de Fátima (Segredos de Fátima e Devoção Reparadora dos Primeiros Sábados)"
+    ]
   },
   {
     slug: "santa-rita-de-cassia",
@@ -168,7 +252,16 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Causas desesperadas e impossíveis", "Mulheres mal casadas", "Mães angustiadas", "Vítimas de abusos"],
     prayer: "Ó gloriosa Santa Rita de Cássia, advogada dos casos desesperados, olhai com compaixão para as minhas aflições. Vós que tão intimamente participastes das dores de Jesus, alcançai-me de Deus a graça que ardentemente vos suplico. Por Cristo, nosso Senhor. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "santa-rita-de-cassia"
+    linkedNovenaSlug: "santa-rita-de-cassia",
+    birthInfo: "1381 em Roccaporena, Úmbria (Itália)",
+    deathInfo: "22 de maio de 1457 (76 anos) em Cássia, Itália",
+    canonization: "24 de maio de 1900 pelo Papa Leão XIII",
+    iconography: [
+      "Espinho vivo sangrando na fronte",
+      "Rosas e figos milagrosos",
+      "Crucifixo contemplado em êxtase",
+      "Hábito monástico agostiniano"
+    ]
   },
   {
     slug: "santa-joana-d-arc",
@@ -185,7 +278,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu coração permaneceu intacto e incólume no meio das cinzas ardentes, sendo atirado ao rio Sena pelos carrascos atônitos. A Santa Sé reabilitou totalmente sua honra em 1456 e a canonizou em 1920.",
     patronage: ["Soldados", "França", "Jovens patriotas", "Vítimas de injustiças e calúnias", "Cativos"],
     prayer: "Ó Deus, que suscitastes admiravelmente Santa Joana d'Arc para defender a fé e a pátria com pureza e fortaleza indômita, concedei-nos, por sua intercessão, vencer as batalhas espirituais e permanecer fiéis a Cristo até a morte. Amém.",
-    image: "/assets/dashboard/quaresma-sao-miguel.webp"
+    image: "/assets/dashboard/quaresma-sao-miguel.webp",
+    birthInfo: "6 de janeiro de 1412 em Domrémy, Ducado de Bar (França)",
+    deathInfo: "30 de maio de 1431 (19 anos) em Rouen, Normandia (França)",
+    canonization: "16 de maio de 1920 pelo Papa Bento XV",
+    iconography: [
+      "Armadura de cavaleiro com estandarte de Jesus e Maria",
+      "Espada consagrada de Fierbois",
+      "Palma do martírio e lírio da França",
+      "Crucifixo fitado na fogueira"
+    ]
   },
 
   // JUNHO
@@ -205,7 +307,21 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Pobres", "Objetos perdidos", "Lisboa e Pádua", "Casamentos santos", "Padeiros e agricultores"],
     prayer: "Ó Deus, que destes a Santo Antônio o dom de comover corações pela pregação do Evangelho e pelo socorro aos necessitados, fazei que, pelo seu auxílio, sejamos firmes na caridade cristã. Por Cristo, nosso Senhor. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "santo-antonio"
+    linkedNovenaSlug: "santo-antonio",
+    birthInfo: "15 de agosto de 1195 em Lisboa, Reino de Portugal",
+    deathInfo: "13 de junho de 1231 (35 anos) no Convento de Arcella, Pádua (Itália)",
+    canonization: "30 de maio de 1232 pelo Papa Gregório IX • Proclamado Doutor da Igreja em 1946 por Pio XII",
+    iconography: [
+      "Menino Jesus nos braços",
+      "Lírio da pureza virginal",
+      "Livro dos Santos Evangelhos",
+      "Pão dos Pobres",
+      "Hábito franciscano com cordão de três nós"
+    ],
+    majorWorks: [
+      "Sermões Dominicais e Festivos (Sermones)",
+      "Comentários aos Salmos"
+    ]
   },
   {
     slug: "sao-joao-batista",
@@ -222,7 +338,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A cabeça venerada de São João Batista é preservada na Basílica de San Silvestro in Capite em Roma e na Catedral de Amiens na França.",
     patronage: ["Profetas", "Conversão de corações", "Costureiros", "Monarquias cristãs"],
     prayer: "Ó Deus, que suscitastes São João Batista para preparar para Cristo, o Senhor, um povo perfeito, concedei à vossa Igreja as alegrias espirituais e guiai os passos dos fiéis no caminho da salvação e da paz. Amém.",
-    image: "/assets/dashboard/liturgia.webp"
+    image: "/assets/dashboard/liturgia.webp",
+    birthInfo: "c. 6 a.C. em Aim Karim, Montanhas da Judeia",
+    deathInfo: "c. 31 d.C. na Fortaleza de Maqueronte, Decápolis",
+    canonization: "O maior dos profetas, santificado no seio materno",
+    iconography: [
+      "Vestes de pele de camelo com cinto de couro",
+      "Cordeiro com a flâmula 'Ecce Agnus Dei'",
+      "Concha do Batismo no Rio Jordão",
+      "Cajado em forma de cruz"
+    ]
   },
   {
     slug: "sao-pedro-e-sao-paulo",
@@ -240,7 +365,19 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Os túmulos sagrados dos Apóstolos estão sob os altares papais da Basílica de São Pedro no Vaticano e da Basílica de São Paulo Extramuros em Roma.",
     patronage: ["O Santo Padre o Papa", "A Santa Sé Apostólica", "Pescadores", "Missionários", "Teólogos e juristas"],
     prayer: "Ó Deus, que nos dais a santa alegria de celebrar a solenidade dos Apóstolos Pedro e Paulo, concedei à vossa Igreja seguir em tudo a doutrina daqueles por quem começou a receber a fé. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/biblia.webp"
+    image: "/assets/dashboard/biblia.webp",
+    birthInfo: "São Pedro em Betsaida da Galileia (c. 1 a.C.) • São Paulo em Tarso da Cilícia (c. 5 d.C.)",
+    deathInfo: "c. 64-67 d.C. em Roma sob a perseguição de Nero",
+    canonization: "Príncipes dos Apóstolos e Fundadores da Sé Romana",
+    iconography: [
+      "São Pedro com as Chaves de Ouro e Prata e o Galo",
+      "São Paulo com a Espada e o Livro das Epístolas",
+      "Mantos apostólicos clássicos"
+    ],
+    majorWorks: [
+      "Primeira e Segunda Epístola de São Pedro",
+      "14 Epístolas Paulinas (Romanos, Coríntios, Gálatas, Efésios, Filipenses, etc.)"
+    ]
   },
 
   // JULHO
@@ -260,7 +397,20 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Europa", "Monges", "Agricultores", "Engenheiros", "Proteção contra feitiçarias e tentações diabólicas"],
     prayer: "A Cruz Sagrada seja a minha luz, não seja o dragão meu guia. Retira-te, satanás! Nunca me aconselhes coisas vãs. É mau o que me ofereces, bebe tu mesmo o teu veneno. Rogai por nós, glorioso Patriarca São Bento, para que sejamos dignos das promessas de Cristo. Amém.",
     image: "/assets/dashboard/lectio.webp",
-    linkedPrayerId: "oracao-sao-bento"
+    linkedPrayerId: "oracao-sao-bento",
+    birthInfo: "c. 480 d.C. em Núrsia, Úmbria (Itália)",
+    deathInfo: "21 de março de 547 d.C. (67 anos) na Abadia de Monte Cassino, Itália",
+    canonization: "1220 pelo Papa Honório III • Proclamado Padroeiro Principal da Europa em 1964 por São Paulo VI",
+    iconography: [
+      "Hábito beneditino negro com capuz",
+      "Livro da Santa Regra (Regula Benedicti)",
+      "Cálice quebrado com serpente saindo",
+      "Corvo com pedaço de pão",
+      "Báculo abacial e a Medalha-Cruz"
+    ],
+    majorWorks: [
+      "A Santa Regra de São Bento (Regula Benedicti)"
+    ]
   },
 
   // AGOSTO
@@ -279,7 +429,23 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo incorrupto é venerado na Basílica de Santo Afonso em Pagani, perto de Nápoles.",
     patronage: ["Confessores", "Moralistas", "Advogados", "Pregadores de missões populares"],
     prayer: "Ó Deus, que na vossa Igreja suscitastes Santo Afonso Maria como modelo de zelo pelas almas, concedei-nos, inflamados pelo mesmo amor, trabalhar pela salvação dos irmãos e alcançar com ele a glória do Céu. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "27 de setembro de 1696 em Marianella, Nápoles (Itália)",
+    deathInfo: "1 de agosto de 1787 (90 anos) em Pagani, Nápoles (Itália)",
+    canonization: "26 de maio de 1839 pelo Papa Gregório XVI • Proclamado Doutor da Igreja em 1871 pelo Beato Pio IX",
+    iconography: [
+      "Hábito e crucifixo redentorista",
+      "Estola episcopal e mitra de bispo",
+      "Ícone de Nossa Senhora do Perpétuo Socorro",
+      "Pena de escrever e tratados morais"
+    ],
+    majorWorks: [
+      "As Glórias de Maria (Le Glorie di Maria)",
+      "A Prática do Amor a Jesus Cristo",
+      "Tratado de Teologia Moral",
+      "A Oração: Grande Meio de Salvação",
+      "Visitas ao Santíssimo Sacramento e a Maria Santíssima"
+    ]
   },
   {
     slug: "sao-joao-maria-vianney",
@@ -296,7 +462,19 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo incorrupto repousa na Basílica de Ars (França), e seu coração intacto é venerado como relíquia insigne.",
     patronage: ["Párocos", "Sacerdotes", "Confessores"],
     prayer: "Deus de bondade e misericórdia, que fizestes de São João Maria Vianney um sacerdote admirável pelo zelo pastoral e amor à oração e à penitência, dai-nos, por seu exemplo e intercessão, ganhar para Cristo os nossos irmãos e alcançar com eles a glória eterna. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "8 de maio de 1786 em Dardilly, Reino da França",
+    deathInfo: "4 de agosto de 1859 (73 anos) em Ars-sur-Formans, França",
+    canonization: "31 de maio de 1925 pelo Papa Pio XI • Proclamado Padroeiro Universal dos Párocos em 1929",
+    iconography: [
+      "Sobrepeliz e estola roxa de confessor",
+      "Cálice sacerdotal",
+      "Crucifixo nas mãos e imagem da Virgem Maria"
+    ],
+    majorWorks: [
+      "Sermões e Homilias do Santo Cura d'Ars",
+      "Catequeses sobre o Sacerdócio e a Sagrada Eucaristia"
+    ]
   },
   {
     slug: "transfiguracao-do-senhor",
@@ -313,7 +491,15 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A Basílica da Transfiguração no cume do Monte Tabor na Galileia.",
     patronage: ["Toda a Igreja", "Contemplativos", "Buscadores da luz de Deus"],
     prayer: "Ó Deus, que na gloriosa Transfiguração de vosso Filho unigênito confirmastes os mistérios da fé pelo testemunho da Lei e dos Profetas e manifestastes a nossa admirável adoção de filhos, concedei-nos ouvir a voz do vosso Filho amado para nos tornarmos seus co-herdeiros. Amém.",
-    image: "/assets/dashboard/liturgia.webp"
+    image: "/assets/dashboard/liturgia.webp",
+    birthInfo: "Monte Tabor, Galileia (c. 30 d.C.)",
+    deathInfo: "Manifestação celeste da divindade do Salvador",
+    canonization: "Festa Litúrgica Universal instituída em 1457 pelo Papa Calisto III",
+    iconography: [
+      "Cristo resplandecente no cume do Monte",
+      "Moisés com as Tábuas da Lei e Elias profeta",
+      "Pedro, Tiago e João deslumbrados e prostrados"
+    ]
   },
   {
     slug: "sao-domingos-de-gusmao",
@@ -330,7 +516,20 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo repousa na magnífica Arca de São Domingos na Basílica Patriarcal de São Domingos em Bolonha.",
     patronage: ["Pregadores", "Astrônomos", "Cientistas", "República Dominicana"],
     prayer: "Venha em auxílio da vossa Igreja, Senhor, a intercessão de São Domingos, para que ela seja sempre enriquecida pelos seus ensinamentos e protegida pelas suas orações. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/rosario.webp"
+    image: "/assets/dashboard/rosario.webp",
+    birthInfo: "c. 1170 em Caleruega, Reino de Castela (Espanha)",
+    deathInfo: "6 de agosto de 1221 (51 anos) em Bolonha, Itália",
+    canonization: "13 de julho de 1234 pelo Papa Gregório IX",
+    iconography: [
+      "Hábito dominicano preto e branco",
+      "Estrela brilhante na fronte",
+      "Cão com a tocha acesa na boca (Domini Canes)",
+      "Santo Rosário e Lírio da castidade"
+    ],
+    majorWorks: [
+      "Regra e Constituições da Ordem dos Pregadores",
+      "Instituição e propagação do Santo Rosário da Virgem Maria"
+    ]
   },
   {
     slug: "sao-lourenco-diacono",
@@ -347,7 +546,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A Basílica de São Lourenço Fora dos Muros em Roma abriga seu sepulcro e a pedra onde seu corpo martirizado repousou.",
     patronage: ["Diáconos", "Cozinheiros e padeiros", "Bibliotecários", "Bombeiros", "Pobres de Roma"],
     prayer: "Ó Deus, cujo amor ardente concedeu a São Lourenço a graça de ser fiel no serviço da Igreja e glorioso no martírio, fazei que amemos o que ele amou e pratiquemos o que ele ensinou. Por nosso Senhor Jesus Cristo. Amém.",
-    image: "/assets/dashboard/via-sacra.webp"
+    image: "/assets/dashboard/via-sacra.webp",
+    birthInfo: "31 de dezembro de 225 em Huesca (Hispânia) ou Valência",
+    deathInfo: "10 de agosto de 258 (32 anos) em Roma",
+    canonization: "Culto imemorial martirial da Igreja de Roma",
+    iconography: [
+      "Dalmática diaconal vermelha",
+      "Grelha de ferro do martírio",
+      "Palma da vitória",
+      "Bolsa com moedas distribuídas aos pobres"
+    ]
   },
   {
     slug: "santa-clara-de-assis",
@@ -364,7 +572,21 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo incorrupto repousa na Basílica de Santa Clara em Assis.",
     patronage: ["Televisão e telecomunicações (proclamada por Pio XII)", "Clarissas", "Bordadeiras", "Olhos e visão"],
     prayer: "Ó Deus, que por vossa misericórdia conduzistes Santa Clara ao amor da pobreza evangélica, concedei-nos, por sua intercessão, seguir a Cristo com coração desprendido e contemplar-vos na glória do vosso Reino. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "16 de julho de 1194 em Assis, Ducado de Espoleto (Itália)",
+    deathInfo: "11 de agosto de 1253 (59 anos) em Assis, Itália",
+    canonization: "26 de setembro de 1255 pelo Papa Alexandre IV",
+    iconography: [
+      "Ostensório com o Santíssimo Sacramento",
+      "Hábito marrom franciscano e véu",
+      "Lírio da virgindade pura",
+      "Livro da Regra de Santa Clara"
+    ],
+    majorWorks: [
+      "Regra de Santa Clara (Forma Vitae)",
+      "Testamento e Bênção de Santa Clara",
+      "Cartas a Santa Inês de Praga"
+    ]
   },
   {
     slug: "sao-maximiliano-kolbe",
@@ -381,7 +603,20 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Proclamado por São João Paulo II como 'o Padroeiro do nosso século difícil' e Mártir da Caridade.",
     patronage: ["Jornalistas e comunicadores", "Famílias", "Prisioneiros", "Vítimas de perseguições e totalitarismos"],
     prayer: "Ó Deus, que inflamastes São Maximiliano Maria Kolbe de amor ardente pela Virgem Imaculada e de caridade heróica pelo próximo, concedei-nos, por sua intercessão, trabalhar sem descanso pela vossa glória até a doação da própria vida. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "8 de janeiro de 1894 em Zduńska Wola, Polônia",
+    deathInfo: "14 de agosto de 1941 (47 anos) em Auschwitz, Polônia",
+    canonization: "10 de outubro de 1982 por São João Paulo II como Mártir da Caridade",
+    iconography: [
+      "Hábito franciscano conventual com capuz",
+      "Uniforme de prisioneiro com o número 16670",
+      "Duas coroas celestes (branca e vermelha)",
+      "Medalha Milagrosa"
+    ],
+    majorWorks: [
+      "Escritos sobre a Consagração à Imaculada (Rycerz Niepokalanej)",
+      "Estatutos da Milícia da Imaculada"
+    ]
   },
   {
     slug: "assuncao-de-nossa-senhora",
@@ -399,7 +634,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A Basílica da Dormição e a Tumba de Maria no Getsêmani em Jerusalém são centros antiquíssimos de peregrinação.",
     patronage: ["Toda a Igreja Católica", "Padroeira de diversas dioceses e nações", "Esperança dos fiéis na ressurreição"],
     prayer: "Ó Deus eterno e todo-poderoso, que elevastes em corpo e alma à glória celeste a Imaculada Virgem Maria, Mãe do vosso Filho, concedei-nos que, sempre atentos às coisas do alto, mereçamos participar da sua glória. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/novenas.webp"
+    image: "/assets/dashboard/novenas.webp",
+    birthInfo: "Solenidade Litúrgica e Dogma de Fé Católica",
+    deathInfo: "Dormitio Virginis e Assunção corporal aos Céus",
+    canonization: "Dogma proclamado em 1950 pelo Papa Pio XII (Munificentissimus Deus)",
+    iconography: [
+      "Virgem Maria elevada aos céus cercada de coros de anjos",
+      "Túmulo aberto com lírios e rosas",
+      "Manto dourado sobre túnica pura",
+      "Coroa celestial"
+    ]
   },
   {
     slug: "sao-bernardo-de-claraval",
@@ -416,7 +660,24 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Suas relíquias foram preservadas na Catedral de Troyes; o Papa Pio XII dedicou-lhe a encíclica comemorativa 'Doctor Mellifluus' em 1953.",
     patronage: ["Apicultores", "Fabricantes de velas", "Gibraltar", "Pregadores", "Ordem Cisterciense"],
     prayer: "Ó Deus, que fizestes do abade São Bernardo um homem inflamado de zelo pela vossa casa e uma luz radiante na vossa Igreja, concedei-nos, por sua intercessão, o mesmo fervor de espírito para que andemos sempre como filhos da luz. Por nosso Senhor Jesus Cristo. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "c. 1090 em Fontaine-lès-Dijon, Borgonha (França)",
+    deathInfo: "20 de agosto de 1153 (63 anos) na Abadia de Claraval, França",
+    canonization: "18 de janeiro de 1174 pelo Papa Alexandre III • Proclamado Doutor da Igreja em 1830 por Pio VIII",
+    iconography: [
+      "Hábito cisterciense branco",
+      "Báculo pastoral de abade",
+      "Colmeia (símbolo do Doutor Melífluo)",
+      "Instrumentos da Paixão de Cristo",
+      "Livro aberto de sermões marianos"
+    ],
+    majorWorks: [
+      "Tratado do Amor de Deus (De Diligendo Deo)",
+      "Sermões sobre o Cântico dos Cânticos",
+      "Os Graus da Humildade e da Soberba",
+      "Oração Lembrai-vos (Memorare)",
+      "Homilias sobre a Virgem Mãe (In Laudibus Virginis Matris)"
+    ]
   },
   {
     slug: "sao-pio-x",
@@ -433,7 +694,21 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo incorrupto repousa sob o altar na Basílica de São Pedro no Vaticano.",
     patronage: ["Catequistas", "Primeira Comunhão", "Peregrinos", "Arquidioceses e paróquias pelo mundo"],
     prayer: "Ó Deus, que para defender a fé católica e restaurar todas as coisas em Cristo cumulastes o Papa São Pio X de sabedoria celeste e fortaleza apostólica, concedei-nos, dóceis às suas instruções e exemplos, alcançar o prêmio eterno. Amém.",
-    image: "/assets/dashboard/biblia.webp"
+    image: "/assets/dashboard/biblia.webp",
+    birthInfo: "2 de junho de 1835 em Riese, Reino Lombardo-Vêneto (Itália)",
+    deathInfo: "20 de agosto de 1914 (79 anos) no Palácio Apostólico Vaticano, Roma",
+    canonization: "29 de maio de 1954 pelo Papa Pio XII",
+    iconography: [
+      "Trajes pontifícios brancos com pálio e solidéu",
+      "Ostensório e Cálice da Sagrada Eucaristia",
+      "Catecismo Maior nas mãos"
+    ],
+    majorWorks: [
+      "Catecismo Maior de São Pio X",
+      "Encíclica Pascendi Dominici Gregis (contra os erros do modernismo)",
+      "Decreto Quam Singulari (sobre a comunhão das crianças)",
+      "Motu Proprio Tra le Sollecitudini (sobre a música sacra)"
+    ]
   },
   {
     slug: "nossa-senhora-rainha",
@@ -450,7 +725,15 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Venerada sob este título em incontáveis santuários e catedrais de todo o orbe católico.",
     patronage: ["Toda a criação", "A Igreja militante", "A Paz entre os povos"],
     prayer: "Ó Deus, que nos destes por Mãe e Rainha a Mãe do vosso próprio Filho, concedei-nos que, sustentados pelo seu auxílio maternal, alcancemos no reino do Céu a glória prometida aos vossos filhos. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/novenas.webp"
+    image: "/assets/dashboard/novenas.webp",
+    birthInfo: "Memória Mariana e Oitava da Solenidade da Assunção",
+    deathInfo: "Instituída pelo Papa Pio XII na Encíclica Ad Caeli Reginam (1954)",
+    canonization: "Festa do Calendário Romano Universal ligada à realeza de Maria",
+    iconography: [
+      "Virgem Maria coroada pela Santíssima Trindade",
+      "Cetro real de ouro e manto régio",
+      "Globo terrestre sob os pés"
+    ]
   },
   {
     slug: "santa-rosa-de-lima",
@@ -467,7 +750,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Foi a primeira santa canonizada de todo o continente americano (pelo Papa Clemente X em 1671). Suas relíquias são veneradas na Basílica de Nossa Senhora do Rosário em Lima.",
     patronage: ["América Latina", "Peru", "Filipinas", "Floristas e jardineiros"],
     prayer: "Ó Deus, que fizestes florescer na América o lírio da pureza e da penitência na vida de Santa Rosa de Lima, concedei-nos, por sua intercessão, seguir seus passos na terra para fruirmos eternamente a vossa beleza no Céu. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "20 de abril de 1586 em Lima, Vice-Reino do Peru",
+    deathInfo: "24 de agosto de 1617 (31 anos) em Lima, Peru",
+    canonization: "12 de abril de 1671 pelo Papa Clemente X (Primeira Santa do Continente Americano)",
+    iconography: [
+      "Coroa de rosas com pontas de espinhos na fronte",
+      "Menino Jesus nos braços",
+      "Hábito dominicano da Ordem Terceira",
+      "Âncora de fé"
+    ]
   },
   {
     slug: "sao-bartolomeu-apostolo",
@@ -484,7 +776,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Suas relíquias são preservadas com grande veneração na Basílica de São Bartolomeu na Ilha Tiberina em Roma.",
     patronage: ["Curtidores de couro", "Sapateiros", "Gesseiros", "Armênia"],
     prayer: "Fortalecei em nós, Senhor, a fé com que o apóstolo São Bartolomeu se uniu com sinceridade de coração a vosso Filho, e fazei que, pelas suas preces, a vossa Igreja seja para todos os povos sinal de salvação. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/via-sacra.webp"
+    image: "/assets/dashboard/via-sacra.webp",
+    birthInfo: "Século I d.C. em Caná da Galileia (identificado como Natanael)",
+    deathInfo: "c. 71 d.C. em Albanópolis, Grande Armênia",
+    canonization: "Um dos Doze Apóstolos do Colégio Apostólico de Cristo",
+    iconography: [
+      "Faca de esfolador nas mãos",
+      "Pele do próprio corpo sobre o braço",
+      "Livro dos Santos Evangelhos",
+      "Palma do martírio"
+    ]
   },
   {
     slug: "santa-monica",
@@ -501,7 +802,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu corpo venerável repousa na Basílica de Sant'Agostino em Roma.",
     patronage: ["Mães de família", "Esposas em dificuldades", "Conversão de filhos rebeldes", "Vítimas de abusos verbais"],
     prayer: "Senhor Deus, consolador dos que choram, que acolhestes com misericórdia as lágrimas de Santa Mônica pela conversão do seu filho Agostinho, concedei-nos, por intercessão de ambos, chorar nossos pecados e encontrar o vosso perdão. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "c. 331 d.C. em Tagaste, Numídia (atual Argélia)",
+    deathInfo: "387 d.C. (56 anos) em Óstia Tiberina, perto de Roma (Itália)",
+    canonization: "Culto imemorial reconhecido pela Igreja Católica",
+    iconography: [
+      "Véu de matrona cristã e hábito sóbrio",
+      "Livro de orações e crucifixo",
+      "Lágrimas de intercessão materna",
+      "Santo Agostinho ao lado"
+    ]
   },
   {
     slug: "santo-agostinho-bispo",
@@ -518,7 +828,23 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seus restos mortais descansam na Basílica de San Pietro in Ciel d'Oro em Pavia (Itália).",
     patronage: ["Teólogos", "Filósofos", "Tipógrafos", "Buscadores da verdade"],
     prayer: "Renovai, Senhor, na vossa Igreja o espírito com que cumulastes o bispo Santo Agostinho, para que, repousando unicamente em Vós, busquemos sem cessar a fonte da verdadeira sabedoria. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/biblia.webp"
+    image: "/assets/dashboard/biblia.webp",
+    birthInfo: "13 de novembro de 354 em Tagaste, Numídia (atual Argélia)",
+    deathInfo: "28 de agosto de 430 (75 anos) em Hipona, Numídia",
+    canonization: "Proclamado Doutor da Igreja pelo Papa Bonifácio VIII em 1298",
+    iconography: [
+      "Coração em chamas transpassado por flecha divina",
+      "Mitra e báculo de bispo",
+      "Pena de doutor e tinteiro",
+      "Livros das Confissões e Cidade de Deus"
+    ],
+    majorWorks: [
+      "Confissões (Confessiones)",
+      "A Cidade de Deus (De Civitate Dei)",
+      "Da Trindade (De Trinitate)",
+      "A Doutrina Cristã (De Doctrina Christiana)",
+      "Regra de Santo Agostinho"
+    ]
   },
   {
     slug: "martirio-de-sao-joao-batista",
@@ -535,7 +861,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Sua cabeça venerável é guardada na Basílica de San Silvestro in Capite em Roma; a Igreja celebra tanto seu nascimento (24 de junho) quanto seu glorioso martírio.",
     patronage: ["Profetas", "Defensores da moral matrimonial", "Cativos e prisioneiros de consciência"],
     prayer: "Ó Deus, que escolhestes São João Batista como precursor do nascimento e da morte de vosso Filho, concedei que, assim como ele deu a vida pelo testemunho da verdade e da justiça, nós também combatamos com coragem pela fé em vosso Evangelho. Por nosso Senhor Jesus Cristo. Amém.",
-    image: "/assets/dashboard/via-sacra.webp"
+    image: "/assets/dashboard/via-sacra.webp",
+    birthInfo: "c. 6 a.C. em Aim Karim, Judeia",
+    deathInfo: "c. 31-32 d.C. na Fortaleza de Maqueronte",
+    canonization: "Memória universal do Precursor do Messias",
+    iconography: [
+      "Cabeça de São João Batista sobre bandeja de prata",
+      "Espada do carrasco",
+      "Vestes de pele de camelo",
+      "Cruz de cana"
+    ]
   },
 
   // SETEMBRO
@@ -555,7 +890,20 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Confessores", "Doentes e agentes de saúde", "Jovens em discernimento", "Voluntários de caridade"],
     prayer: "Deus eterno e todo-poderoso, que concedestes a São Pio de Pietrelcina a graça singular de participar da Cruz do vosso Filho e renovar as vossas maravilhas pelo ministério da misericórdia, dai-nos, por sua intercessão, suportar nossos sofrimentos e acolher vosso perdão. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "padre-pio"
+    linkedNovenaSlug: "padre-pio",
+    birthInfo: "25 de maio de 1887 em Pietrelcina, Benevento (Itália)",
+    deathInfo: "23 de setembro de 1968 (81 anos) em San Giovanni Rotondo, Foggia (Itália)",
+    canonization: "16 de junho de 2002 por São João Paulo II",
+    iconography: [
+      "Mãos com mitenes (meias-luvas) cobrindo os estigmas",
+      "Hábito marrom capuchinho com capuz",
+      "Santo Rosário nas mãos",
+      "Cálice da Santa Missa"
+    ],
+    majorWorks: [
+      "Epistolário de São Pio de Pietrelcina (4 volumes de direção espiritual)",
+      "Máximas Espirituais sobre a Oração e a Confissão"
+    ]
   },
   {
     slug: "sao-miguel-gabriel-e-rafael",
@@ -573,7 +921,15 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Polícia e forças de segurança (S. Miguel)", "Comunicação e correios (S. Gabriel)", "Médicos, viajantes e noivos (S. Rafael)"],
     prayer: "São Miguel Arcanjo, defendei-nos no combate; sede o nosso refúgio contra as maldades e ciladas do demônio. Ordene-lhe Deus, instantemente o pedimos, e vós, príncipe da milícia celeste, pela virtude divina, precipitai no inferno a satanás e a todos os espíritos malignos que andam pelo mundo para perder as almas. Amém.",
     image: "/assets/dashboard/quaresma-sao-miguel.webp",
-    linkedNovenaSlug: "sao-miguel-arcanjo"
+    linkedNovenaSlug: "sao-miguel-arcanjo",
+    birthInfo: "Puros espíritos celestes criados por Deus antes da fundação do cosmos",
+    deathInfo: "Imortais, assistem perpetuamente diante do Trono do Altíssimo",
+    canonization: "Festa Litúrgica Bíblica dos Três Santos Arcanjos",
+    iconography: [
+      "São Miguel com espada reluzente, balança da justiça e dragão abatido",
+      "São Gabriel com o lírio branco da Anunciação",
+      "São Rafael com o peixe medicinal e bordão de peregrino"
+    ]
   },
   {
     slug: "sao-jeronimo-presbitero",
@@ -590,7 +946,23 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Suas relíquias sagradas foram posteriormente trasladadas para a Basílica de Santa Maria Maior em Roma.",
     patronage: ["Biblistas", "Tradutores", "Estudiosos da Bíblia", "Bibliotecários"],
     prayer: "Ó Deus, que destes a São Jerônimo um afeto vivo e suave pela Sagrada Escritura, fazei que o vosso povo se alimente com mais abundância da vossa Palavra e encontre nela a fonte da verdadeira vida. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/biblia.webp"
+    image: "/assets/dashboard/biblia.webp",
+    birthInfo: "c. 347 d.C. em Estridão, Dalmácia (atual Croácia/Eslovênia)",
+    deathInfo: "30 de setembro de 420 (73 anos) em Belém, Judeia",
+    canonization: "Proclamado Doutor da Igreja pelo Papa Bonifácio VIII em 1298",
+    iconography: [
+      "Leão manso ao lado",
+      "Chapéu cardinalício vermelho e hábito de eremita",
+      "Pedra na mão para penitência peitoral",
+      "Crânio e relógio de areia",
+      "Livros sagrados da Bíblia Vulgata"
+    ],
+    majorWorks: [
+      "A Bíblia Vulgata Latina (tradução dos textos originais)",
+      "Comentários aos Profetas e Evangelhos",
+      "De Viris Illustribus (Sobre os Homens Ilustres)",
+      "Epistolário de São Jerônimo"
+    ]
   },
 
   // OUTUBRO
@@ -610,7 +982,20 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Missões católicas universais", "Floristas", "Enfermos de tuberculose", "A 'Pequena Via'"],
     prayer: "Ó Deus, que abris as portas do vosso Reino aos pequeninos e humildes, concedei-nos seguir com confiança o caminho de Santa Teresinha do Menino Jesus, para que, por sua intercessão, nos seja revelada a vossa glória eterna. Por nosso Senhor Jesus Cristo. Amém.",
     image: "/assets/dashboard/oracoes.webp",
-    linkedNovenaSlug: "santa-teresinha"
+    linkedNovenaSlug: "santa-teresinha",
+    birthInfo: "2 de janeiro de 1873 em Alençon, Normandia (França)",
+    deathInfo: "30 de setembro de 1897 (24 anos) no Carmelo de Lisieux, França",
+    canonization: "17 de maio de 1925 pelo Papa Pio XI • Proclamada Doutora da Igreja em 1997 por São João Paulo II",
+    iconography: [
+      "Crucifixo coberto de rosas nos braços",
+      "Hábito carmelita marrom com manto branco e véu preto",
+      "Chuva mística de pétalas de rosas"
+    ],
+    majorWorks: [
+      "História de uma Alma (L'Histoire d'une Âme)",
+      "Poesias e Orações Espirituais",
+      "Últimos Colóquios (Novissima Verba)"
+    ]
   },
   {
     slug: "sao-francisco-de-assis",
@@ -627,7 +1012,22 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A magnífica Basílica de São Francisco em Assis abriga sua tumba em rocha sólida, patrimônio espiritual da humanidade.",
     patronage: ["Ecologia e meio ambiente", "Animais", "Itália", "A paz e o diálogo", "Comerciantes e alfaiates"],
     prayer: "Ó Deus, que fizestes São Francisco assemelhar-se ao Cristo pela pobreza e pela humildade, concedei-nos, trilhando os seus passos, seguir o vosso Filho e unir-nos a Vós na jubilosa caridade. Por Cristo, nosso Senhor. Amém.",
-    image: "/assets/dashboard/lectio.webp"
+    image: "/assets/dashboard/lectio.webp",
+    birthInfo: "1181/1182 em Assis, Úmbria (Itália)",
+    deathInfo: "3 de outubro de 1226 (44 anos) na Porciúncula de Santa Maria dos Anjos, Assis",
+    canonization: "16 de julho de 1228 pelo Papa Gregório IX (apenas dois anos após o trânsito)",
+    iconography: [
+      "Cinco Chagas/Estigmas de Cristo visíveis",
+      "Hábito de sarja marrom com cordão franciscano de três nós",
+      "Lobo de Gúbio e pássaros dóceis",
+      "Crucifixo de São Damião"
+    ],
+    majorWorks: [
+      "Cântico das Criaturas (Cântico do Irmão Sol)",
+      "Regra Bulada dos Frades Menores",
+      "Testamento de São Francisco",
+      "Admoestações e Cartas"
+    ]
   },
   {
     slug: "nossa-senhora-aparecida",
@@ -646,7 +1046,16 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Brasil", "Pescadores", "Povo brasileiro", "Famílias e gestantes"],
     prayer: "Ó incomparável Senhora da Conceição Aparecida, Mãe de Deus e nossa Mãe, volvei vosso olhar misericordioso sobre o Brasil. Protegei as nossas famílias, amparai os necessitados e concedei-nos a graça de vivermos sempre fiéis a vosso Filho Jesus Cristo. Amém.",
     image: "/assets/dashboard/novenas.webp",
-    linkedNovenaSlug: "nossa-senhora-aparecida"
+    linkedNovenaSlug: "nossa-senhora-aparecida",
+    birthInfo: "Encontro milagroso da imagem em outubro de 1717 no Rio Paraíba do Sul (SP)",
+    deathInfo: "Coroação solene em 1904 e consagração da Basílica Nacional em 1980 por São João Paulo II",
+    canonization: "Proclamada Padroeira Principal do Brasil pelo Papa Pio XI em 16 de julho de 1930",
+    iconography: [
+      "Imagem de terracota escura da Imaculada Conceição",
+      "Manto azul-anil bordado com as bandeiras do Brasil e do Vaticano",
+      "Coroa imperial de ouro",
+      "Mãos postas em prece maternal"
+    ]
   },
   {
     slug: "santa-teresa-de-jesus",
@@ -663,7 +1072,23 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu coração transverberado pelo dardo do serafim e seu braço incorrupto repousam em Alba de Tormes.",
     patronage: ["Escritores católicos", "Místicos", "Pessoas em enfermidades corporais", "Professores de oração"],
     prayer: "Ó Deus, que pelo vosso Espírito suscitastes Santa Teresa de Jesus para mostrar à vossa Igreja o caminho da perfeição, fazei que nos alimentemos sempre da sua celestial doutrina e nos acendamos no desejo da verdadeira santidade. Amém.",
-    image: "/assets/dashboard/lectio.webp"
+    image: "/assets/dashboard/lectio.webp",
+    birthInfo: "28 de março de 1515 em Ávila, Reino de Castela (Espanha)",
+    deathInfo: "4 de outubro de 1582 (67 anos) em Alba de Tormes, Salamanca (Espanha)",
+    canonization: "12 de março de 1622 pelo Papa Gregório XV • Proclamada Primeira Mulher Doutora da Igreja em 1970 por São Paulo VI",
+    iconography: [
+      "Dardo de fogo do Serafim transpassando o coração (Transverberação)",
+      "Pomba do Espírito Santo no ombro",
+      "Pena e livro de mística cristã",
+      "Hábito carmelita descalço"
+    ],
+    majorWorks: [
+      "Castelo Interior ou Livro das Moradas (El Castillo Interior)",
+      "Caminho de Perfeição (Camino de Perfección)",
+      "Livro da Vida (Autobiografia)",
+      "Livro das Fundações",
+      "Conceitos do Amor de Deus"
+    ]
   },
   {
     slug: "sao-joao-paulo-ii",
@@ -680,7 +1105,21 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Seu túmulo repousa na Capela de São Sebastião dentro da Basílica de São Pedro no Vaticano.",
     patronage: ["Jovens", "Famílias", "Polônia", "Jornadas Mundiais da Juventude"],
     prayer: "Ó Deus, rico de misericórdia, que chamastes São João Paulo II para governar a vossa Igreja inteira, concedei que, instruídos por seus ensinamentos, abramos com confiança os nossos corações à graça salvadora de Cristo. Amém.",
-    image: "/assets/dashboard/oracoes.webp"
+    image: "/assets/dashboard/oracoes.webp",
+    birthInfo: "18 de maio de 1920 em Wadowice, Polônia",
+    deathInfo: "2 de abril de 2005 (84 anos) no Palácio Apostólico Vaticano, Roma",
+    canonization: "27 de abril de 2014 pelo Papa Francisco (Beatificado em 2011 por Bento XVI)",
+    iconography: [
+      "Férula papal (báculo com o crucifixo curvado)",
+      "Pálio arquiepiscopal e vestes brancas",
+      "Brasão pontifício com o monograma mariano 'M' e o lema 'Totus Tuus'"
+    ],
+    majorWorks: [
+      "Catecismo da Igreja Católica (1992)",
+      "Encíclicas Fides et Ratio, Evangelium Vitae, Veritatis Splendor, Redemptor Hominis e Dives in Misericordia",
+      "Teologia do Corpo (Catequeses sobre o Amor Humano)",
+      "Livro 'Cruzando o Limiar da Esperança'"
+    ]
   },
 
   // NOVEMBRO
@@ -700,7 +1139,15 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "Instituída pelo Papa Gregório IV no século IX para celebrar a vocação universal de todos os cristãos à santidade.",
     patronage: ["Toda a humanidade chamada à santidade", "A vocação cristã"],
     prayer: "Deus eterno e todo-poderoso, que nos dais celebrar numa só festa os méritos de todos os vossos Santos, concedei-nos, pela sua infinita intercessão, a plenitude da vossa misericórdia. Por nosso Senhor Jesus Cristo. Amém.",
-    image: "/assets/dashboard/liturgia.webp"
+    image: "/assets/dashboard/liturgia.webp",
+    birthInfo: "Celebração Universal da Igreja Triunfante no Céu",
+    deathInfo: "Instituída pelo Papa Gregório IV em 835 d.C.",
+    canonization: "Solenidade Maior de Preceito e Comunhão dos Eleitos",
+    iconography: [
+      "Multidão dos Santos diante do Trono do Cordeiro",
+      "Vestes brancas purificadas no Sangue de Cristo",
+      "Palmas da vitória e coroas de glória"
+    ]
   },
 
   // DEZEMBRO
@@ -721,7 +1168,16 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Igreja Católica", "Brasil (co-padroeira e rainha)", "Estados Unidos", "Portugal", "Pureza e castidade"],
     prayer: "Ó Deus, que pela Imaculada Conceição da Virgem preparastes para o vosso Filho morada digna dele, preservando-a de toda mancha em previsão da morte do vosso Filho, concedei-nos chegar puros até Vós por sua materna intercessão. Amém.",
     image: "/assets/dashboard/novenas.webp",
-    linkedNovenaSlug: "imaculada-conceicao"
+    linkedNovenaSlug: "imaculada-conceicao",
+    birthInfo: "Dogma proclamado em 8 de dezembro de 1854 pelo Beato Pio IX (Bula Ineffabilis Deus)",
+    deathInfo: "Preservada de toda mancha da culpa original desde a conceição",
+    canonization: "Padroeira Principal de Portugal e das Américas sob este título",
+    iconography: [
+      "Virgem Maria esmagando a cabeça da serpente infernal",
+      "Túnica branca e manto azul-celeste",
+      "Doze estrelas em auréola luminosa",
+      "Mãos unidas em oração e recolhimento"
+    ]
   },
   {
     slug: "natal-de-nosso-senhor-jesus-cristo",
@@ -739,7 +1195,16 @@ export const SAINTS_DATABASE: Saint[] = [
     relicsAndTradition: "A Gruta da Natividade em Belém e as tábuas sagradas da Santa Manjedoura preservadas na Basílica de Santa Maria Maior em Roma.",
     patronage: ["Toda a humanidade", "Crianças", "A família cristã", "A paz universal"],
     prayer: "Ó Deus, que admiravelmente criastes a dignidade da natureza humana e mais admiravelmente a restaurastes, concedei-nos participar da divindade daquele que se dignou assumir a nossa humanidade, vosso Filho Jesus Cristo. Amém.",
-    image: "/assets/dashboard/liturgia.webp"
+    image: "/assets/dashboard/liturgia.webp",
+    birthInfo: "Natividade histórica do Verbo de Deus Encarnado em Belém da Judeia",
+    deathInfo: "Cumprimento de todas as promessas messiânicas do Antigo Testamento",
+    canonization: "Solenidade Suprema da Encarnação do Salvador",
+    iconography: [
+      "Menino Jesus na manjedoura envolto em panos",
+      "Santíssima Virgem Maria e São José em adoração",
+      "Anjos cantando 'Gloria in Excelsis Deo'",
+      "Estrela de Belém e pastores com cordeiros"
+    ]
   }
 ];
 
@@ -873,7 +1338,12 @@ export function searchSaints(query: string, categoryFilter?: string | null): Sai
       saint.title.toLowerCase().includes(q) ||
       saint.summary.toLowerCase().includes(q) ||
       saint.biography.toLowerCase().includes(q) ||
-      saint.patronage.some(p => p.toLowerCase().includes(q));
+      saint.patronage.some(p => p.toLowerCase().includes(q)) ||
+      (saint.birthInfo && saint.birthInfo.toLowerCase().includes(q)) ||
+      (saint.deathInfo && saint.deathInfo.toLowerCase().includes(q)) ||
+      (saint.canonization && saint.canonization.toLowerCase().includes(q)) ||
+      (saint.iconography && saint.iconography.some(i => i.toLowerCase().includes(q))) ||
+      (saint.majorWorks && saint.majorWorks.some(w => w.toLowerCase().includes(q)));
 
     if (!matchesQuery) return false;
 
