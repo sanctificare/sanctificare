@@ -13,7 +13,8 @@ import {
   Flame,
   Award,
   Filter,
-  Heart
+  Heart,
+  Share2
 } from "lucide-react";
 import {
   SAINTS_DATABASE,
@@ -28,6 +29,7 @@ import {
 } from "@/data/santoral";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
 import { getFavoriteSaintSlugs, toggleFavoriteSaint } from "@/lib/saintDevotion";
+import SaintShareCardModal from "@/components/SaintShareCardModal";
 
 type ViewMode = "calendario" | "todos" | "guarda" | "favoritos";
 
@@ -40,6 +42,7 @@ export default function Santoral() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("todos");
   const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>(() => getFavoriteSaintSlugs());
+  const [sharingSaint, setSharingSaint] = useState<Saint | null>(null);
 
   useEffect(() => {
     const handleFavChange = () => {
@@ -114,6 +117,15 @@ export default function Santoral() {
       {/* Background decorativo */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] dark:opacity-[0.04] pointer-events-none" />
 
+      {/* MODAL DE COMPARTILHAMENTO DE CARD SACRO */}
+      {sharingSaint && (
+        <SaintShareCardModal
+          saint={sharingSaint}
+          isOpen={!!sharingSaint}
+          onClose={() => setSharingSaint(null)}
+        />
+      )}
+
       <main className="container max-w-5xl py-6 sm:py-8 relative z-10 px-4 sm:px-6">
         {/* Banner Google Play (apenas desktop web) */}
         <div className="mb-6">
@@ -180,12 +192,23 @@ export default function Santoral() {
                 </div>
               </div>
 
-              <Link href={`/santoral/${todaySaint.slug}`} className="w-full md:w-auto">
-                <button className="w-full md:w-auto px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                  <span>Ver Vida & Relíquias</span>
-                  <ArrowRight className="w-4 h-4" />
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <button
+                  onClick={() => setSharingSaint(todaySaint)}
+                  className="px-3.5 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-xs"
+                  title="Compartilhar Card Sacro de Hoje com Imagem e Frase"
+                >
+                  <Share2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                  <span>Card Sacro</span>
                 </button>
-              </Link>
+
+                <Link href={`/santoral/${todaySaint.slug}`} className="flex-1 md:flex-initial">
+                  <button className="w-full px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span>Ver Vida & Relíquias</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         ) : (
@@ -441,6 +464,15 @@ export default function Santoral() {
                     )}
 
                     <div className="pt-3 flex flex-wrap gap-2.5">
+                      <button
+                        onClick={() => setSharingSaint(selectedSaint)}
+                        className="px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 shadow-xs"
+                        title="Compartilhar Card Sacro com Imagem e Frase"
+                      >
+                        <Share2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                        <span>Card Sacro</span>
+                      </button>
+
                       <Link href={`/santoral/${selectedSaint.slug}`}>
                         <button className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-all flex items-center gap-2">
                           <span>Ler Hagiografia & Relíquias</span>
