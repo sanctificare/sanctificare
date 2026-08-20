@@ -124,52 +124,84 @@ export default function Santoral() {
         </div>
 
         {/* Card Destaque: Santo de Hoje */}
-        <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
-                <img
-                  src={todaySaint.image}
-                  alt={todaySaint.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = "none";
-                  }}
-                />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
-                    ⭐ Santo de Hoje • {today.getDate()} de {MONTH_NAMES_PT[today.getMonth()]}
-                  </span>
-                  {todaySaint.isHolyDayOfObligation && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/40">
-                      🏆 Festa de Guarda
+        {todaySaint ? (
+          <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 shadow-sm">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
+                  <img
+                    src={todaySaint.image}
+                    alt={todaySaint.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                      ⭐ Santo de Hoje • {today.getDate()} de {MONTH_NAMES_PT[today.getMonth()]}
                     </span>
+                    {todaySaint.isHolyDayOfObligation && (
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/40">
+                        🏆 Festa de Guarda
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                    {todaySaint.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
+                    {todaySaint.title}
+                  </p>
+                  {todaySaint.quote && (
+                    <p className="text-xs italic text-amber-700/90 dark:text-amber-300/90 mt-1 font-serif">
+                      "{todaySaint.quote}"
+                    </p>
                   )}
                 </div>
-                <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
-                  {todaySaint.name}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
-                  {todaySaint.title}
-                </p>
-                {todaySaint.quote && (
-                  <p className="text-xs italic text-amber-700/90 dark:text-amber-300/90 mt-1 font-serif">
-                    "{todaySaint.quote}"
-                  </p>
-                )}
               </div>
-            </div>
 
-            <Link href={`/santoral/${todaySaint.slug}`} className="w-full md:w-auto">
-              <button className="w-full md:w-auto px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                <span>Ver Vida & Relíquias</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </Link>
+              <Link href={`/santoral/${todaySaint.slug}`} className="w-full md:w-auto">
+                <button className="w-full md:w-auto px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                  <span>Ver Vida & Relíquias</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 shadow-sm">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center text-amber-600 dark:text-amber-400">
+                  <Sparkles className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                      Liturgia de Hoje • {today.getDate()} de {MONTH_NAMES_PT[today.getMonth()]}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                    Féria do Tempo Litúrgico
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    A Santa Igreja celebra o Tempo Comum e a comunhão de todos os santos. Acompanhe as leituras e orações diárias.
+                  </p>
+                </div>
+              </div>
+
+              <Link href="/liturgia" className="w-full md:w-auto">
+                <button className="w-full md:w-auto px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  <span>Ver Liturgia da Missa</span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Seletor de Modo de Visualização */}
         <div className="flex flex-wrap items-center gap-2 mb-6 border-b border-border/40 pb-3">

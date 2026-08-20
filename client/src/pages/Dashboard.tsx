@@ -508,58 +508,90 @@ export default function Dashboard() {
         {/* Card Nobre: Santo do Dia & Santoral */}
         <div className="section-block animate-fade-in my-6">
           <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-br from-white via-white to-amber-50/20 dark:from-[oklch(0.16_0.04_260)] dark:via-[oklch(0.14_0.03_260)] dark:to-[oklch(0.12_0.03_260)] p-5 sm:p-6 shadow-md">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
-                  <img
-                    src={todaySaint.image}
-                    alt={todaySaint.name}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = "none";
-                    }}
-                  />
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30">
-                      Santo do Dia • {new Date().getDate()} de {MONTH_NAMES_PT[new Date().getMonth()]}
-                    </span>
-                    {todaySaint.isHolyDayOfObligation && (
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/40 flex items-center gap-1">
-                        <Crown size={12} /> Festa de Guarda
+            {todaySaint ? (
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center">
+                    <img
+                      src={todaySaint.image}
+                      alt={todaySaint.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30">
+                        Santo do Dia • {new Date().getDate()} de {MONTH_NAMES_PT[new Date().getMonth()]}
                       </span>
+                      {todaySaint.isHolyDayOfObligation && (
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/40 flex items-center gap-1">
+                          <Crown size={12} /> Festa de Guarda
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                      {todaySaint.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
+                      {todaySaint.title}
+                    </p>
+                    {todaySaint.quote && (
+                      <p className="text-xs italic text-amber-700/90 dark:text-amber-300/90 mt-1 font-serif">
+                        "{todaySaint.quote}"
+                      </p>
                     )}
                   </div>
-                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
-                    {todaySaint.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
-                    {todaySaint.title}
-                  </p>
-                  {todaySaint.quote && (
-                    <p className="text-xs italic text-amber-700/90 dark:text-amber-300/90 mt-1 font-serif">
-                      "{todaySaint.quote}"
-                    </p>
-                  )}
+                </div>
+
+                <div className="flex items-center gap-2.5 w-full md:w-auto">
+                  <Link href={`/santoral/${todaySaint.slug}`} className="flex-1 md:flex-initial">
+                    <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm">
+                      <span>Hagiografia & Relíquias</span>
+                      <ArrowRight size={14} className="ml-1.5" />
+                    </Button>
+                  </Link>
+                  <Link href="/santoral">
+                    <Button variant="outline" className="border-amber-500/30 text-amber-700 dark:text-amber-300 hover:bg-amber-500/10 text-xs sm:text-sm">
+                      <Crown size={14} className="mr-1.5" />
+                      <span>Santoral</span>
+                    </Button>
+                  </Link>
                 </div>
               </div>
+            ) : (
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 shadow-sm flex items-center justify-center text-amber-600 dark:text-amber-400">
+                    <Crown size={24} />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-900 dark:text-amber-300 border border-amber-500/30">
+                        Santoral & Calendário • {new Date().getDate()} de {MONTH_NAMES_PT[new Date().getMonth()]}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                      Santoral & Hagiografia Católica
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
+                      Conheça as vidas dos santos, histórias de fé, relíquias sagradas e dias de preceito da Igreja.
+                    </p>
+                  </div>
+                </div>
 
-              <div className="flex items-center gap-2.5 w-full md:w-auto">
-                <Link href={`/santoral/${todaySaint.slug}`} className="flex-1 md:flex-initial">
-                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm">
-                    <span>Hagiografia & Relíquias</span>
-                    <ArrowRight size={14} className="ml-1.5" />
-                  </Button>
-                </Link>
-                <Link href="/santoral">
-                  <Button variant="outline" className="border-amber-500/30 text-amber-700 dark:text-amber-300 hover:bg-amber-500/10 text-xs sm:text-sm">
-                    <Crown size={14} className="mr-1.5" />
-                    <span>Santoral</span>
-                  </Button>
-                </Link>
+                <div className="flex items-center gap-2.5 w-full md:w-auto">
+                  <Link href="/santoral" className="w-full md:w-auto">
+                    <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm">
+                      <Crown size={14} className="mr-1.5" />
+                      <span>Explorar Santoral</span>
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

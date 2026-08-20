@@ -991,7 +991,7 @@ export default function Liturgy() {
 
                   {/* Seção Santoral / Memória do Santo da Liturgia */}
                   {!isZenMode && (() => {
-                    const liturgySaint = getSaintForDate(selectedDate.getMonth() + 1, selectedDate.getDate()) || getTodaySaint(selectedDate);
+                    const liturgySaint = getSaintForDate(selectedDate.getMonth() + 1, selectedDate.getDate());
                     if (!liturgySaint) return null;
 
                     return (

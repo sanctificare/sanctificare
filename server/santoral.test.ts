@@ -80,9 +80,22 @@ describe("Santoral Data Module", () => {
     expect(whiteStyle.badge).toContain("amber");
   });
 
-  it("deve retornar o santo de hoje sem falhas", () => {
-    const todaySaint = getTodaySaint(new Date());
-    expect(todaySaint).toBeDefined();
-    expect(todaySaint.name).toBeDefined();
+  it("deve retornar o santo de 20 de Agosto corretamente como São Bernardo de Claraval", () => {
+    const bernardo = getSaintForDate(8, 20);
+    expect(bernardo).toBeDefined();
+    expect(bernardo?.name).toContain("São Bernardo de Claraval");
+    expect(bernardo?.rank).toBe("Memória");
+
+    // Testar com Date de 20 de Agosto (mês 7 em JS Date é Agosto)
+    const today20Aug = new Date(2026, 7, 20);
+    const saint20Aug = getTodaySaint(today20Aug);
+    expect(saint20Aug).toBeDefined();
+    expect(saint20Aug?.name).toContain("São Bernardo");
+  });
+
+  it("deve retornar undefined para uma data sem memória litúrgica cadastrada", () => {
+    const feriaDate = new Date(2026, 7, 19); // 19 de Agosto
+    const saint = getTodaySaint(feriaDate);
+    expect(saint).toBeUndefined();
   });
 });

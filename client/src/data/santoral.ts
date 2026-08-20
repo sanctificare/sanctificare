@@ -282,6 +282,57 @@ export const SAINTS_DATABASE: Saint[] = [
     image: "/assets/dashboard/oracoes.webp"
   },
   {
+    slug: "sao-joao-maria-vianney",
+    name: "São João Maria Vianney (Cura d'Ars)",
+    title: "Padroeiro de Todos os Párocos e Sacerdotes",
+    day: 4,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O humilde pároco da aldeia de Ars que passava até 18 horas no confessionário e reconverteu a França.",
+    quote: "O Sacerdócio é o amor do Coração de Jesus. Se compreendêssemos bem o que é um padre na terra, morreríamos, não de pavor, mas de amor.",
+    biography: "Nascido em Dardilly perto de Lyon (1786), enfrentou imensas dificuldades nos estudos sacerdotais devido à sua simplicidade, mas foi ordenado por seu fervor e virtude singular. Enviado à pequena e espiritualmente fria paróquia de Ars, converteu toda a população com jejuns rigorosos, adoração noturna diante do Sacrário e caridade inesgotável. Milhares de peregrinos de toda a Europa viajavam até Ars para confessar-se com ele.",
+    martyrdomOrPassing: "Faleceu extenuado pelo zelo pastoral em 4 de agosto de 1859, aos 73 anos.",
+    relicsAndTradition: "Seu corpo incorrupto repousa na Basílica de Ars (França), e seu coração intacto é venerado como relíquia insigne.",
+    patronage: ["Párocos", "Sacerdotes", "Confessores"],
+    prayer: "Deus de bondade e misericórdia, que fizestes de São João Maria Vianney um sacerdote admirável pelo zelo pastoral e amor à oração e à penitência, dai-nos, por seu exemplo e intercessão, ganhar para Cristo os nossos irmãos e alcançar com eles a glória eterna. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "transfiguracao-do-senhor",
+    name: "Transfiguração do Senhor",
+    title: "A Revelação da Glória Divina de Cristo no Monte Tabor",
+    day: 6,
+    month: 8,
+    rank: "Festa",
+    liturgicalColor: "branco",
+    summary: "Cristo manifesta o esplendor de sua divindade aos apóstolos Pedro, Tiago e João na presença de Moisés e Elias.",
+    quote: "Este é o meu Filho muito amado, no qual pus todo o meu enlevo: ouvi-o!",
+    biography: "Pouco antes de sua Paixão em Jerusalém, Jesus subiu com Pedro, Tiago e João a um alto monte (tradicionalmente o Monte Tabor). Ali transfigurou-se diante deles: seu rosto resplandeceu como o sol e suas vestes tornaram-se brancas como a luz. Apareceram Moisés (a Lei) e Elias (os Profetas) conversando com Ele sobre sua Páscoa. Uma nuvem luminosa cobriu-os e a voz do Pai proclamou a filiação divina de Jesus.",
+    martyrdomOrPassing: "Festa da manifestação gloriosa da divindade de Jesus para fortalecer os discípulos no escândalo da Cruz.",
+    relicsAndTradition: "A Basílica da Transfiguração no cume do Monte Tabor na Galileia.",
+    patronage: ["Toda a Igreja", "Contemplativos", "Buscadores da luz de Deus"],
+    prayer: "Ó Deus, que na gloriosa Transfiguração de vosso Filho unigênito confirmastes os mistérios da fé pelo testemunho da Lei e dos Profetas e manifestastes a nossa admirável adoção de filhos, concedei-nos ouvir a voz do vosso Filho amado para nos tornarmos seus co-herdeiros. Amém.",
+    image: "/assets/dashboard/liturgia.webp"
+  },
+  {
+    slug: "sao-domingos-de-gusmao",
+    name: "São Domingos de Gusmão",
+    title: "Fundador da Ordem dos Pregadores (Dominicanos) • Apóstolo do Santo Rosário",
+    day: 8,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O grande pregador da verdade evangélica que combateu as heresias com a caridade e a oração do Rosário.",
+    quote: "Um homem que governa suas paixões é senhor do mundo. Nós devemos dominá-las ou ser dominados por elas.",
+    biography: "Nascido em Caleruega (Espanha) por volta de 1170, Domingos dedicou-se à oração e ao estudo das Sagradas Escrituras. Diante da heresia albigense no sul da França, compreendeu que o combate espiritual exigia homens que pregassem a verdade com profunda pobreza evangélica, santidade de vida e sólida doutrina. Fundou a Ordem dos Frades Pregadores (Dominicanos). Segundo piedosa tradição, recebeu de Nossa Senhora o Santo Rosário como arma invencível de conversão.",
+    martyrdomOrPassing: "Faleceu santamente em Bolonha em 1221, exortando seus irmãos frades: 'Não choreis; ser-vos-ei mais útil do Céu do que fui na terra'.",
+    relicsAndTradition: "Seu corpo repousa na magnífica Arca de São Domingos na Basílica Patriarcal de São Domingos em Bolonha.",
+    patronage: ["Pregadores", "Astrônomos", "Cientistas", "República Dominicana"],
+    prayer: "Venha em auxílio da vossa Igreja, Senhor, a intercessão de São Domingos, para que ela seja sempre enriquecida pelos seus ensinamentos e protegida pelas suas orações. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/rosario.webp"
+  },
+  {
     slug: "sao-lourenco-diacono",
     name: "São Lourenço, Diácono e Mártir",
     title: "Guardião dos Tesouros da Igreja de Roma",
@@ -297,6 +348,23 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Diáconos", "Cozinheiros e padeiros", "Bibliotecários", "Bombeiros", "Pobres de Roma"],
     prayer: "Ó Deus, cujo amor ardente concedeu a São Lourenço a graça de ser fiel no serviço da Igreja e glorioso no martírio, fazei que amemos o que ele amou e pratiquemos o que ele ensinou. Por nosso Senhor Jesus Cristo. Amém.",
     image: "/assets/dashboard/via-sacra.webp"
+  },
+  {
+    slug: "santa-clara-de-assis",
+    name: "Santa Clara de Assis",
+    title: "Esposa de Cristo e Fundadora das Clarissas",
+    day: 11,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "A nobre donzela que seguiu o ideal franciscano de altíssima pobreza e expulsou invasores sustentando o Ostensório.",
+    quote: "Amai totalmente Aquele que totalmente se entregou por vosso amor.",
+    biography: "Nascida em nobre família de Assis em 1194, aos 18 anos fugiu de casa no Domingo de Ramos para consagrar-se a Deus sob a direção de São Francisco na igrejinha da Porciúncula. Fundou a Ordem das Damas Pobres (Clarissas) no Convento de São Damião. Quando a cidade e o mosteiro foram cercados por soldados sarracenos mercenários, Clara, enferma, prostrou-se com o Santíssimo Sacramento na janela; uma voz do Sacrário prometeu proteção e os invasores fugiram tomados de pavor.",
+    martyrdomOrPassing: "Faleceu em 11 de agosto de 1253, consolada pela bênção papal de Inocêncio IV que lhe aprovou a Regra do Privilégio da Pobreza.",
+    relicsAndTradition: "Seu corpo incorrupto repousa na Basílica de Santa Clara em Assis.",
+    patronage: ["Televisão e telecomunicações (proclamada por Pio XII)", "Clarissas", "Bordadeiras", "Olhos e visão"],
+    prayer: "Ó Deus, que por vossa misericórdia conduzistes Santa Clara ao amor da pobreza evangélica, concedei-nos, por sua intercessão, seguir a Cristo com coração desprendido e contemplar-vos na glória do vosso Reino. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
   },
   {
     slug: "sao-maximiliano-kolbe",
@@ -334,6 +402,91 @@ export const SAINTS_DATABASE: Saint[] = [
     image: "/assets/dashboard/novenas.webp"
   },
   {
+    slug: "sao-bernardo-de-claraval",
+    name: "São Bernardo de Claraval",
+    title: "Doutor Melífluo da Igreja • Abade e Cantor da Virgem Maria",
+    day: 20,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "O grande abade cisterciense cuja ardente eloquência, sabedoria mística e filial devoção a Maria inflamaram toda a Cristandade.",
+    quote: "Olha para a estrela, invoca Maria! Nos perigos, nas angústias, nas dúvidas, pensa em Maria, invoca Maria.",
+    biography: "Nascido em Fontaine-lès-Dijon (França) em 1090 em berço nobre, Bernardo ingressou no nascente e rigoroso mosteiro de Cister levando consigo quatro irmãos e dezenas de nobres companheiros. Pouco depois fundou a célebre Abadia de Claraval (Clairvaux), tornando-se um dos maiores líderes espirituais da Idade Média. Pacificou disputas na Igreja, aconselhou Papas e soberanos, defendeu com firmeza a reta fé contra erros doutrinários e compôs admiráveis sermões e tratados de mística cristã. Ardoroso amante da Mãe de Deus, a Tradição atribui-lhe a invocação final da Salve Rainha ('Ó clemente, ó piedosa, ó doce sempre Virgem Maria') e a oração do 'Lembrai-vos' (Memorare). Foi proclamado Doutor da Igreja pelo Papa Pio VIII.",
+    martyrdomOrPassing: "Faleceu santamente na Abadia de Claraval em 20 de agosto de 1153, aos 63 anos, cercado pelas orações de centenas de seus filhos espirituais.",
+    relicsAndTradition: "Suas relíquias foram preservadas na Catedral de Troyes; o Papa Pio XII dedicou-lhe a encíclica comemorativa 'Doctor Mellifluus' em 1953.",
+    patronage: ["Apicultores", "Fabricantes de velas", "Gibraltar", "Pregadores", "Ordem Cisterciense"],
+    prayer: "Ó Deus, que fizestes do abade São Bernardo um homem inflamado de zelo pela vossa casa e uma luz radiante na vossa Igreja, concedei-nos, por sua intercessão, o mesmo fervor de espírito para que andemos sempre como filhos da luz. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "sao-pio-x",
+    name: "São Pio X, Papa",
+    title: "O Papa da Eucaristia • Restaurador de Todas as Coisas em Cristo",
+    day: 21,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Papa humilde de origem camponesa que incentivou a comunhão diária, a comunhão para crianças e combateu os erros do modernismo.",
+    quote: "Instaurare omnia in Christo — Restaurar todas as coisas em Cristo!",
+    biography: "Giuseppe Sarto nasceu em Riese (Itália) em 1835 em família paupérrima. Percorreu todos os graus da hierarquia eclesiástica com simplicidade seráfica. Eleito Sumo Pontífice em 1903 sob o lema 'Instaurar todas as coisas em Cristo', promoveu a catequese universal, promulgou a comunhão frequente e a primeira eucaristia desde a idade da razão, reformou o canto litúrgico gregoriano e codificou o Direito Canônico.",
+    martyrdomOrPassing: "Com o coração despedaçado pelo início da Primeira Guerra Mundial em 1914, faleceu em santidade proclamando: 'Nasci pobre, vivi pobre e quero morrer pobre'.",
+    relicsAndTradition: "Seu corpo incorrupto repousa sob o altar na Basílica de São Pedro no Vaticano.",
+    patronage: ["Catequistas", "Primeira Comunhão", "Peregrinos", "Arquidioceses e paróquias pelo mundo"],
+    prayer: "Ó Deus, que para defender a fé católica e restaurar todas as coisas em Cristo cumulastes o Papa São Pio X de sabedoria celeste e fortaleza apostólica, concedei-nos, dóceis às suas instruções e exemplos, alcançar o prêmio eterno. Amém.",
+    image: "/assets/dashboard/biblia.webp"
+  },
+  {
+    slug: "nossa-senhora-rainha",
+    name: "Nossa Senhora Rainha",
+    title: "Rainha do Universo e Mãe de Misericórdia",
+    day: 22,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "Celebração da realeza celestial da Virgem Maria coroada à direita de seu Filho Jesus Cristo.",
+    quote: "A Rainha está à vossa direita, ornada com ouro de Ofir.",
+    biography: "Oitava da solenidade da Assunção, esta festa foi instituída pelo Papa Pio XII na encíclica 'Ad Caeli Reginam' (1954). Maria é Rainha pela sua maternidade divina em relação a Cristo Rei do Universo, pela sua íntima associação à obra redentora do Calvário e pelo seu poder incomparável de intercessão materna por toda a humanidade.",
+    martyrdomOrPassing: "Memória mariana ligada ao 5º Mistério Glorioso do Santo Rosário: a Coroação de Maria Santíssima no Céu.",
+    relicsAndTradition: "Venerada sob este título em incontáveis santuários e catedrais de todo o orbe católico.",
+    patronage: ["Toda a criação", "A Igreja militante", "A Paz entre os povos"],
+    prayer: "Ó Deus, que nos destes por Mãe e Rainha a Mãe do vosso próprio Filho, concedei-nos que, sustentados pelo seu auxílio maternal, alcancemos no reino do Céu a glória prometida aos vossos filhos. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/novenas.webp"
+  },
+  {
+    slug: "santa-rosa-de-lima",
+    name: "Santa Rosa de Lima",
+    title: "Primeira Flor de Santidade da América • Padroeira do Continente",
+    day: 23,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "branco",
+    summary: "A jovem leiga da Ordem Terceira Dominicana que viveu na oração contínua e na penitência ardente em Lima (Peru).",
+    quote: "Fora da Cruz não há outra escada pela qual possamos subir ao Céu.",
+    biography: "Isabel Flores de Oliva nasceu em Lima em 1586. Chamada de 'Rosa' pela sua radiante formosura, consagrou a virgindade a Cristo desde pequena. Ingressou na Ordem Terceira de São Domingos, construiu um modesto eremitério no jardim de sua casa e dedicou-se a orações, rigorosas mortificações e ao cuidado amoroso dos doentes, escravos e indígenas abandonados de Lima.",
+    martyrdomOrPassing: "Faleceu santamente em 24 de agosto de 1617 aos 31 anos; seu velório comoveu toda a capital do Vice-Reino do Peru.",
+    relicsAndTradition: "Foi a primeira santa canonizada de todo o continente americano (pelo Papa Clemente X em 1671). Suas relíquias são veneradas na Basílica de Nossa Senhora do Rosário em Lima.",
+    patronage: ["América Latina", "Peru", "Filipinas", "Floristas e jardineiros"],
+    prayer: "Ó Deus, que fizestes florescer na América o lírio da pureza e da penitência na vida de Santa Rosa de Lima, concedei-nos, por sua intercessão, seguir seus passos na terra para fruirmos eternamente a vossa beleza no Céu. Amém.",
+    image: "/assets/dashboard/oracoes.webp"
+  },
+  {
+    slug: "sao-bartolomeu-apostolo",
+    name: "São Bartolomeu, Apóstolo e Mártir",
+    title: "O Apóstolo Íntegro • Natanael sob a Figueira",
+    day: 24,
+    month: 8,
+    rank: "Festa",
+    liturgicalColor: "vermelho",
+    summary: "O apóstolo elogiado por Cristo como 'um verdadeiro israelita em quem não há fingimento', que levou o Evangelho ao Oriente.",
+    quote: "Mestre, Tu és o Filho de Deus, Tu és o Rei de Israel!",
+    biography: "Identificado como o Natanael dos Evangelhos, natural de Caná da Galileia. Conduzido a Jesus pelo apóstolo Filipe, ouviu de Cristo o supremo elogio de sua sinceridade e pureza de intenção. Após o Pentecostes, pregou o Evangelho na Índia, na Mesopotâmia e na Grande Armênia, convertendo multidões com milagres e ensinamentos.",
+    martyrdomOrPassing: "Na Armênia, por ter convertido o rei Polímio e recusado prestar culto aos ídolos, foi esfolado vivo e decapitado por ordem do príncipe Astíages por amor a Jesus Cristo.",
+    relicsAndTradition: "Suas relíquias são preservadas com grande veneração na Basílica de São Bartolomeu na Ilha Tiberina em Roma.",
+    patronage: ["Curtidores de couro", "Sapateiros", "Gesseiros", "Armênia"],
+    prayer: "Fortalecei em nós, Senhor, a fé com que o apóstolo São Bartolomeu se uniu com sinceridade de coração a vosso Filho, e fazei que, pelas suas preces, a vossa Igreja seja para todos os povos sinal de salvação. Por Cristo, nosso Senhor. Amém.",
+    image: "/assets/dashboard/via-sacra.webp"
+  },
+  {
     slug: "santa-monica",
     name: "Santa Mônica",
     title: "Modelo de Mãe Cristã • Mãe de Santo Agostinho",
@@ -366,6 +519,23 @@ export const SAINTS_DATABASE: Saint[] = [
     patronage: ["Teólogos", "Filósofos", "Tipógrafos", "Buscadores da verdade"],
     prayer: "Renovai, Senhor, na vossa Igreja o espírito com que cumulastes o bispo Santo Agostinho, para que, repousando unicamente em Vós, busquemos sem cessar a fonte da verdadeira sabedoria. Por Cristo, nosso Senhor. Amém.",
     image: "/assets/dashboard/biblia.webp"
+  },
+  {
+    slug: "martirio-de-sao-joao-batista",
+    name: "Martírio de São João Batista",
+    title: "O Precursor do Senhor • Mártir da Verdade e da Castidade",
+    day: 29,
+    month: 8,
+    rank: "Memória",
+    liturgicalColor: "vermelho",
+    summary: "O maior entre os nascidos de mulher que selou seu testemunho profético derramando o sangue pela fidelidade à Lei de Deus.",
+    quote: "Importa que Ele cresça e que eu diminua.",
+    biography: "João Batista, o precursor do Messias e a voz que clamava no deserto, teve a coragem evangélica de repreender o tetrarca Herodes Antipas por viver em adultério público com Herodíades, mulher de seu irmão Filipe. Lançado no cárcere da fortaleza de Maqueronte, manteve-se inquebrantável na defesa da santidade do matrimônio.",
+    martyrdomOrPassing: "Durante o banquete de aniversário de Herodes, Salomé dançou e obteve a promessa de qualquer pedido sob juramento. Instigada pela mãe vingativa, pediu a cabeça de São João Batista num prato. O profeta foi decapitado na prisão em fidelidade à verdade.",
+    relicsAndTradition: "Sua cabeça venerável é guardada na Basílica de San Silvestro in Capite em Roma; a Igreja celebra tanto seu nascimento (24 de junho) quanto seu glorioso martírio.",
+    patronage: ["Profetas", "Defensores da moral matrimonial", "Cativos e prisioneiros de consciência"],
+    prayer: "Ó Deus, que escolhestes São João Batista como precursor do nascimento e da morte de vosso Filho, concedei que, assim como ele deu a vida pelo testemunho da verdade e da justiça, nós também combatamos com coragem pela fé em vosso Evangelho. Por nosso Senhor Jesus Cristo. Amém.",
+    image: "/assets/dashboard/via-sacra.webp"
   },
 
   // SETEMBRO
@@ -586,22 +756,31 @@ export function getSaintForDate(month: number, day: number): Saint | undefined {
 }
 
 /**
- * Retorna o santo do dia atual (ou o mais próximo no mês se a data exata não constar no catálogo estático).
+ * Retorna o santo/celebração do dia atual (se houver celebração específica cadastrada para a data).
  */
-export function getTodaySaint(date: Date = new Date()): Saint {
+export function getTodaySaint(date: Date = new Date()): Saint | undefined {
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const exact = getSaintForDate(month, day);
+  return getSaintForDate(month, day);
+}
+
+/**
+ * Retorna um santo em destaque para o mês ou data (exato se houver, ou a celebração mais próxima do mês).
+ */
+export function getFeaturedSaint(date: Date = new Date()): Saint {
+  const exact = getTodaySaint(date);
   if (exact) return exact;
 
-  // Busca o mais próximo no mês atual
+  // Busca a celebração mais próxima no mês atual para sugestão
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
   const monthSaints = getSaintsForMonth(month);
   if (monthSaints.length > 0) {
     const sorted = [...monthSaints].sort((a, b) => Math.abs(a.day - day) - Math.abs(b.day - day));
     return sorted[0];
   }
 
-  // Fallback padrão seguro (São Bento ou Nossa Senhora)
+  // Fallback padrão seguro
   return SAINTS_DATABASE[0];
 }
 
