@@ -32,8 +32,7 @@ import { shareText } from "@/lib/share";
 import GooglePlayBanner from "@/components/GooglePlayBanner";
 import {
   isSaintFavorite,
-  toggleFavoriteSaint,
-  downloadSaintCalendarEvent
+  toggleFavoriteSaint
 } from "@/lib/saintDevotion";
 import SaintShareCardModal from "@/components/SaintShareCardModal";
 
@@ -96,12 +95,6 @@ export default function SaintDetail() {
     } else {
       toast.info(`${saint.name} removido dos seus Santos Protetores.`);
     }
-  };
-
-  const handleDownloadCalendar = () => {
-    if (!saint) return;
-    downloadSaintCalendarEvent(saint, true);
-    toast.success("Lembrete da Festa e da Novena gerado para seu calendário (.ics)!");
   };
 
   const handleFontSizeChange = (delta: number) => {
@@ -482,15 +475,6 @@ export default function SaintDetail() {
               {/* Botões de Ação de Devoção */}
               {!isZenMode && (
                 <div className="pt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                  <button
-                    onClick={handleDownloadCalendar}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors shadow-xs"
-                    title="Adicionar Lembrete da Festa e da Novena ao Google Agenda / Apple / Outlook"
-                  >
-                    <Calendar className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                    <span>Lembrar Festa & Novena (.ics)</span>
-                  </button>
-
                   <button
                     onClick={handleShare}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-800/80 hover:bg-muted border border-border/50 text-foreground text-xs font-semibold transition-colors shadow-xs"
