@@ -40,6 +40,10 @@ import {
   isSaintFavorite,
   toggleFavoriteSaint
 } from "@/lib/saintDevotion";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import SaintShareCardModal from "@/components/SaintShareCardModal";
 
 type FontSize = "sm" | "base" | "lg" | "xl" | "2xl";
@@ -178,47 +182,42 @@ export default function SaintDetail() {
       />
 
       {/* MODAL LIGHTBOX: ARTE SACRA AMPLIADA */}
-      {isImageExpanded && (
-        <div
-          onClick={() => setIsImageExpanded(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 cursor-zoom-out"
+      <Dialog open={isImageExpanded} onOpenChange={(open) => !open && setIsImageExpanded(false)}>
+        <DialogContent
+          showCloseButton={false}
+          className="max-w-2xl w-full bg-neutral-950 p-0 gap-0 rounded-3xl border-2 border-amber-500/40 shadow-2xl overflow-hidden text-center"
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-w-2xl w-full bg-neutral-950 rounded-3xl border-2 border-amber-500/40 shadow-2xl overflow-hidden text-center cursor-default"
-          >
-            <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-900 border-b border-neutral-800">
-              <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold">
-                <Crown className="w-4 h-4 text-amber-500" />
-                <span>Arte Sacra & Tradição Católica • {saint.name}</span>
-              </div>
-              <button
-                onClick={() => setIsImageExpanded(false)}
-                className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
-                title="Fechar"
-              >
-                <X className="w-5 h-5" />
-              </button>
+          <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-900 border-b border-neutral-800">
+            <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+              <Crown className="w-4 h-4 text-amber-500" />
+              <span>Arte Sacra & Tradição Católica • {saint.name}</span>
             </div>
-
-            <div className="p-4 sm:p-6 bg-radial from-neutral-900 to-neutral-950 flex flex-col items-center">
-              <div className="relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-2xl max-h-[65vh]">
-                <img
-                  src={saint.image}
-                  alt={saint.name}
-                  className="w-full h-full object-contain max-h-[60vh]"
-                />
-              </div>
-              <p className="font-display font-bold text-lg text-white mt-4">
-                {saint.name}
-              </p>
-              <p className="text-xs text-neutral-400 mt-0.5">
-                {saint.title} • Festa em {saint.day} de {MONTH_NAMES_PT[saint.month - 1]}
-              </p>
-            </div>
+            <button
+              onClick={() => setIsImageExpanded(false)}
+              className="p-1 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+              title="Fechar"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-        </div>
-      )}
+
+          <div className="p-4 sm:p-6 bg-radial from-neutral-900 to-neutral-950 flex flex-col items-center">
+            <div className="relative rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-2xl max-h-[65vh]">
+              <img
+                src={saint.image}
+                alt={saint.name}
+                className="w-full h-full object-contain max-h-[60vh]"
+              />
+            </div>
+            <p className="font-display font-bold text-lg text-white mt-4">
+              {saint.name}
+            </p>
+            <p className="text-xs text-neutral-400 mt-0.5">
+              {saint.title} • Festa em {saint.day} de {MONTH_NAMES_PT[saint.month - 1]}
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* BARRA FIXA DO MODO CONTEMPLATIVO */}
       {isZenMode && (
