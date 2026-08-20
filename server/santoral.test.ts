@@ -124,4 +124,33 @@ describe("Santoral Data Module", () => {
       expect(waUrl).toContain("Claraval");
     }
   });
+
+  it("deve navegar cronologicamente de forma circular entre santos adjacentes", async () => {
+    const { getChronologicalAdjacentSaints } = await import("../client/src/data/santoral");
+    const adjBernardo = getChronologicalAdjacentSaints("sao-bernardo-de-claraval"); // 20 de Agosto
+    expect(adjBernardo.prev).toBeDefined();
+    expect(adjBernardo.next).toBeDefined();
+    expect(adjBernardo.prev.slug).not.toBe("sao-bernardo-de-claraval");
+    expect(adjBernardo.next.slug).not.toBe("sao-bernardo-de-claraval");
+
+    // Primeiro santo do ano (1 de Jan)
+    const adjJan = getChronologicalAdjacentSaints("santa-maria-mae-de-deus");
+    expect(adjJan.prev.month).toBe(12); // Loop circular para Dezembro
+    expect(adjJan.next.month).toBe(1);
+  });
+
+  it("deve retornar santos relacionados pela mesma família espiritual ou título", async () => {
+    const { getRelatedSaints, getSaintBySlug } = await import("../client/src/data/santoral");
+    const francisco = getSaintBySlug("sao-francisco-de-assis");
+    expect(francisco).toBeDefined();
+
+    if (francisco) {
+      const related = getRelatedSaints(francisco, 3);
+      expect(related.length).toBeGreaterThan(0);
+      expect(related.length).toBeLessThanOrEqual(3);
+      // Deve encontrar outros santos franciscanos (Santa Clara, São Maximiliano Kolbe, Santo Antônio)
+      const slugs = related.map(r => r.slug);
+      expect(slugs.some(s => s.includes("clara") || s.includes("kolbe") || s.includes("antonio"))).toBe(true);
+    }
+  });
 });

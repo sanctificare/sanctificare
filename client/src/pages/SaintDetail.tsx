@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "wouter";
 import {
   ChevronLeft,
+  ChevronRight,
   Share2,
   Crown,
   Flame,
@@ -19,13 +20,18 @@ import {
   EyeOff,
   SlidersHorizontal,
   X,
-  BellRing
+  BellRing,
+  MapPin,
+  Compass,
+  ExternalLink
 } from "lucide-react";
 import {
   getSaintBySlug,
   MONTH_NAMES_PT,
   getSaintLiturgicalStyle,
-  SAINTS_DATABASE
+  SAINTS_DATABASE,
+  getChronologicalAdjacentSaints,
+  getRelatedSaints
 } from "@/data/santoral";
 import { toast } from "sonner";
 import { shareText } from "@/lib/share";
@@ -66,6 +72,9 @@ export default function SaintDetail() {
   const [showReaderSettings, setShowReaderSettings] = useState<boolean>(false);
 
   const saint = getSaintBySlug(slug || "");
+
+  const adjacentSaints = saint ? getChronologicalAdjacentSaints(saint.slug) : null;
+  const relatedSaints = saint ? getRelatedSaints(saint, 3) : [];
 
   // Estado de Santo Protetor / Favorito
   const [isFavorite, setIsFavorite] = useState<boolean>(() => {
@@ -648,11 +657,27 @@ export default function SaintDetail() {
 
         {/* 3. SEÇÃO: RELÍQUIAS & TRADIÇÃO SAGRADA */}
         <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
-          <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
-            <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            <h2 className="font-display text-xl font-bold text-foreground">
-              Relíquias Sagradas & Tradição da Igreja
-            </h2>
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/40">
+            <div className="flex items-center gap-2.5">
+              <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <h2 className="font-display text-xl font-bold text-foreground">
+                Relíquias Sagradas & Tradição da Igreja
+              </h2>
+            </div>
+
+            {!isZenMode && (
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(saint.relicsAndTradition)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 border border-amber-500/25 text-xs font-semibold transition-colors"
+                title="Pesquisar localização do Santuário / Relíquias no Mapa"
+              >
+                <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Ver no Mapa</span>
+                <ExternalLink className="w-3 h-3 opacity-60" />
+              </a>
+            )}
           </div>
 
           <p className={`${currentFontClass} ${currentSizeClass.body} text-foreground/90 leading-relaxed`}>
@@ -694,6 +719,109 @@ export default function SaintDetail() {
             </p>
           </div>
         </section>
+
+        {/* SANTOS RELACIONADOS & FAMÍLIA ESPIRITUAL (ocultos no modo contemplativo) */}
+        {!isZenMode && relatedSaints.length > 0 && (
+          <section className="mb-8 p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-amber-500/5 via-white to-white dark:from-[oklch(0.16_0.04_260/0.9)] dark:via-[oklch(0.14_0.03_260/0.8)] dark:to-[oklch(0.13_0.03_260/0.8)] border border-amber-500/25 shadow-sm space-y-4">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
+              <Compass className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <div>
+                <h2 className="font-display text-lg sm:text-xl font-bold text-foreground">
+                  Santos Relacionados & Afinidade Espiritual
+                </h2>
+                <p className="text-[11px] text-muted-foreground">
+                  Santos da mesma família, carisma, título ou devoção conectada
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              {relatedSaints.map((rel) => (
+                <Link key={rel.slug} href={`/santoral/${rel.slug}`}>
+                  <div className="p-4 rounded-2xl bg-white dark:bg-neutral-900/70 border border-border/50 hover:border-amber-500 hover:shadow-md transition-all group flex flex-col justify-between h-full cursor-pointer">
+                    <div className="flex items-start gap-3 mb-2">
+                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0">
+                        <img
+                          src={rel.image}
+                          alt={rel.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 block">
+                          {rel.day} de {MONTH_NAMES_PT[rel.month - 1]}
+                        </span>
+                        <h3 className="font-display text-sm font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
+                          {rel.name}
+                        </h3>
+                        <p className="text-[11px] text-muted-foreground line-clamp-1">
+                          {rel.title}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-border/30 flex items-center justify-between text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                      <span>Ver Hagiografia</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* NAVEGAÇÃO CRONOLÓGICA ENTRE SANTOS (ANTERIOR / PRÓXIMO) */}
+        {adjacentSaints && !isZenMode && (
+          <nav aria-label="Navegação entre santos do calendário" className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Santo Anterior */}
+            <Link href={`/santoral/${adjacentSaints.prev.slug}`}>
+              <div className="p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500 hover:shadow-md transition-all group flex items-center gap-3 text-left cursor-pointer">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 group-hover:-translate-x-0.5 transition-transform">
+                  <ChevronLeft className="w-5 h-5" />
+                </div>
+                <div className="w-10 h-10 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 hidden sm:block">
+                  <img
+                    src={adjacentSaints.prev.image}
+                    alt={adjacentSaints.prev.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    ← Santo Anterior • {adjacentSaints.prev.day} de {MONTH_NAMES_PT[adjacentSaints.prev.month - 1]}
+                  </span>
+                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                    {adjacentSaints.prev.name}
+                  </h3>
+                </div>
+              </div>
+            </Link>
+
+            {/* Próximo Santo */}
+            <Link href={`/santoral/${adjacentSaints.next.slug}`}>
+              <div className="p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500 hover:shadow-md transition-all group flex items-center justify-between gap-3 text-right cursor-pointer">
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
+                    Próximo Santo • {adjacentSaints.next.day} de {MONTH_NAMES_PT[adjacentSaints.next.month - 1]} →
+                  </span>
+                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                    {adjacentSaints.next.name}
+                  </h3>
+                </div>
+                <div className="w-10 h-10 rounded-xl overflow-hidden bg-amber-100 dark:bg-amber-950/40 border border-amber-400/40 shrink-0 hidden sm:block">
+                  <img
+                    src={adjacentSaints.next.image}
+                    alt={adjacentSaints.next.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 group-hover:translate-x-0.5 transition-transform">
+                  <ChevronRight className="w-5 h-5" />
+                </div>
+              </div>
+            </Link>
+          </nav>
+        )}
 
         {/* AÇÕES INTEGRADAS NO APP (ocultas no modo contemplativo) */}
         {!isZenMode && (

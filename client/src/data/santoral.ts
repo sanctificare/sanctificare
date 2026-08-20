@@ -1357,3 +1357,91 @@ export function searchSaints(query: string, categoryFilter?: string | null): Sai
     return true;
   });
 }
+
+/**
+ * Retorna os santos imediatamente anterior e posterior na ordem cronológica anual.
+ */
+export function getChronologicalAdjacentSaints(currentSlug: string): { prev: Saint; next: Saint } {
+  // Ordena todos os santos por data no ano (mês e dia)
+  const sorted = [...SAINTS_DATABASE].sort((a, b) => (a.month * 100 + a.day) - (b.month * 100 + b.day));
+  const currentIndex = sorted.findIndex(s => s.slug === currentSlug);
+
+  if (currentIndex === -1) {
+    return { prev: sorted[0], next: sorted[sorted.length - 1] };
+  }
+
+  const prevIndex = (currentIndex - 1 + sorted.length) % sorted.length;
+  const nextIndex = (currentIndex + 1) % sorted.length;
+
+  return {
+    prev: sorted[prevIndex],
+    next: sorted[nextIndex]
+  };
+}
+
+/**
+ * Retorna santos relacionados por afinidade espiritual, ordem, título ou carisma.
+ */
+export function getRelatedSaints(saint: Saint, limit: number = 3): Saint[] {
+  const isMarian = (s: Saint) =>
+    s.slug.includes("nossa-senhora") || s.slug.includes("maria") || s.slug.includes("imaculada") || s.slug.includes("assuncao");
+
+  const isDoctor = (s: Saint) =>
+    s.title.toLowerCase().includes("doutor") || s.title.toLowerCase().includes("doutora");
+
+  const isFranciscan = (s: Saint) =>
+    s.title.toLowerCase().includes("francisc") || s.biography.toLowerCase().includes("franciscan") ||
+    s.biography.toLowerCase().includes("clarissas") || s.slug.includes("francisco") || s.slug.includes("clara") || s.slug.includes("kolbe") || s.slug.includes("antonio");
+
+  const isDominican = (s: Saint) =>
+    s.title.toLowerCase().includes("pregadores") || s.biography.toLowerCase().includes("dominican") ||
+    s.slug.includes("domingos") || s.slug.includes("tomas-de-aquino") || s.slug.includes("rosa-de-lima");
+
+  const isMartyr = (s: Saint) =>
+    s.liturgicalColor === "vermelho" || s.title.toLowerCase().includes("mártir");
+
+  const isApostle = (s: Saint) =>
+    s.title.toLowerCase().includes("apóstolo");
+
+  const isPope = (s: Saint) =>
+    s.title.toLowerCase().includes("papa");
+
+  const isMonastic = (s: Saint) =>
+    s.title.toLowerCase().includes("abade") || s.title.toLowerCase().includes("monge") || s.slug.includes("bento") || s.slug.includes("antao") || s.slug.includes("bernardo");
+
+  const currentIsMarian = isMarian(saint);
+  const currentIsDoctor = isDoctor(saint);
+  const currentIsFranciscan = isFranciscan(saint);
+  const currentIsDominican = isDominican(saint);
+  const currentIsMartyr = isMartyr(saint);
+  const currentIsApostle = isApostle(saint);
+  const currentIsPope = isPope(saint);
+  const currentIsMonastic = isMonastic(saint);
+
+  const scored = SAINTS_DATABASE
+    .filter(s => s.slug !== saint.slug)
+    .map(candidate => {
+      let score = 0;
+
+      if (currentIsMarian && isMarian(candidate)) score += 8;
+      if (currentIsDoctor && isDoctor(candidate)) score += 7;
+      if (currentIsFranciscan && isFranciscan(candidate)) score += 8;
+      if (currentIsDominican && isDominican(candidate)) score += 8;
+      if (currentIsMonastic && isMonastic(candidate)) score += 7;
+      if (currentIsApostle && isApostle(candidate)) score += 8;
+      if (currentIsPope && isPope(candidate)) score += 8;
+      if (currentIsMartyr && isMartyr(candidate)) score += 5;
+
+      // Mesma cor litúrgica
+      if (candidate.liturgicalColor === saint.liturgicalColor) score += 2;
+
+      // Proximidade no mês
+      if (candidate.month === saint.month) score += 3;
+
+      return { saint: candidate, score };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, limit).map(item => item.saint);
+}
+
