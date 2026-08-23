@@ -59,6 +59,15 @@ async function fetchMe() {
   }
   const res = await fetch(`${base}/api/auth/me`, { headers, credentials: "include" });
   if (!res.ok) {
+    if (res.status === 401) {
+      clearStoredAuthTokens();
+      try {
+        localStorage.removeItem("app-runtime-user-info");
+      } catch {
+        // Ignore storage errors
+      }
+      return null;
+    }
     throw new Error("Failed to fetch user");
   }
   return res.json();
@@ -117,15 +126,17 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, queryClient, setLocation]);
 
   const state = useMemo(() => {
+    const user = meQuery.isError ? null : (meQuery.data ?? null);
     return {
-      user: meQuery.data ?? null,
+      user,
       loading: meQuery.isLoading || logoutMutation.isPending,
       error: meQuery.error ?? logoutMutation.error ?? null,
-      isAuthenticated: Boolean(meQuery.data),
+      isAuthenticated: Boolean(user),
     };
   }, [
     meQuery.data,
     meQuery.error,
+    meQuery.isError,
     meQuery.isLoading,
     logoutMutation.error,
     logoutMutation.isPending,
@@ -134,12 +145,23 @@ export function useAuth(options?: UseAuthOptions) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    try {
-      localStorage.setItem("app-runtime-user-info", JSON.stringify(meQuery.data));
-    } catch {
-      // Ignore storage failures (private mode/quota) to avoid auth UI crashes.
+    if (meQuery.isError || meQuery.data === null) {
+      try {
+        localStorage.removeItem("app-runtime-user-info");
+      } catch {
+        // Ignore storage failures
+      }
+      return;
     }
-  }, [meQuery.data]);
+
+    if (meQuery.data) {
+      try {
+        localStorage.setItem("app-runtime-user-info", JSON.stringify(meQuery.data));
+      } catch {
+        // Ignore storage failures (private mode/quota) to avoid auth UI crashes.
+      }
+    }
+  }, [meQuery.data, meQuery.isError]);
 
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;

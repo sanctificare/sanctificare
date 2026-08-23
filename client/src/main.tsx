@@ -168,6 +168,22 @@ const readCookie = (name: string) => {
   return null;
 };
 
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/intencoes",
+  "/perfil",
+  "/profile",
+  "/perfil/zona-de-perigo",
+  "/plano-diario",
+  "/admin",
+];
+
+const isProtectedRoutePath = (pathname: string) => {
+  return PROTECTED_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+};
+
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;
@@ -177,13 +193,19 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
     error.data?.code === "UNAUTHORIZED" ||
     error.data?.httpStatus === 401;
 
+  if (!isUnauthorized) return;
+
   const pathname = window.location.pathname;
   if (pathname === "/login" || pathname === "/redefinir-senha") {
     authRedirectInFlight = false;
     return;
   }
 
-  if (!isUnauthorized) return;
+  // Rotas públicas (como santoral, biblia, oracoes, liturgia) não devem ser redirecionadas em caso de 401 em queries opcionais
+  if (!isProtectedRoutePath(pathname)) {
+    return;
+  }
+
   if (authRedirectInFlight) return;
 
   authRedirectInFlight = true;

@@ -192,15 +192,27 @@ function ProtectedAdminRoute(props: any) {
 }
 
 
+function HomeRoute() {
+  const { isAuthenticated, loading } = useAuth();
+  if (isMobileApp()) {
+    if (loading) {
+      return <SuspenseLoader />;
+    }
+    if (!isAuthenticated) {
+      return <Login />;
+    }
+  }
+  return <Home />;
+}
+
 function Router() {
   // Carregar e aplicar tema do usuário
   useUserTemplate();
-  const { isAuthenticated, loading } = useAuth();
 
   return (
     <Suspense fallback={<SuspenseLoader />}>
       <Switch>
-        <Route path="/" component={isMobileApp() && !loading && !isAuthenticated ? Login : Home} />
+        <Route path="/" component={HomeRoute} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={ProtectedDashboardRoute} />
         <Route path="/explore" component={Explore} />
@@ -273,7 +285,7 @@ function AppShell() {
       )}
       {!isLandingPage && <MobileTopMenu />}
       <div className="theme-contemplative-a mobile-app-viewport min-h-[100dvh]">
-        <div className="animate-fade-in">
+        <div>
           <Router />
         </div>
         {!isLandingPage && <MobileBottomNav />}
@@ -285,14 +297,12 @@ function AppShell() {
   );
 }
 
-function App() {
-  useOfflineSync();
-  const { isAuthenticated, user } = useAuth();
-  const registerDeviceMutation = trpc.push.registerDevice.useMutation();
+function StateSyncManager() {
+  const { isAuthenticated } = useAuth();
   const stateSyncQuery = trpc.stateSync.getAll.useQuery(undefined, {
     enabled: isAuthenticated,
     refetchInterval: 30000,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
   const upsertStateMutation = trpc.stateSync.upsertMany.useMutation();
   const deleteStateMutation = trpc.stateSync.deleteMany.useMutation();
@@ -365,17 +375,25 @@ function App() {
       }
     };
 
-    // Executa logo após login e depois em intervalos curtos para propagar entre devices.
+    // Executa logo após login e depois em intervalos periódicos para propagar entre devices.
     void syncOnce();
     const interval = window.setInterval(() => {
       void syncOnce();
-    }, 8000);
+    }, 15000);
 
     return () => {
       cancelled = true;
       window.clearInterval(interval);
     };
   }, [isAuthenticated, upsertStateMutation, deleteStateMutation]);
+
+  return null;
+}
+
+function App() {
+  useOfflineSync();
+  const { isAuthenticated, user } = useAuth();
+  const registerDeviceMutation = trpc.push.registerDevice.useMutation();
 
   useEffect(() => {
     document.body.classList.add("theme-contemplative-a");
@@ -540,6 +558,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
+          <StateSyncManager />
           <AppShell />
         </TooltipProvider>
       </ThemeProvider>
