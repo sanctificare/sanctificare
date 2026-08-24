@@ -161,7 +161,8 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    background-color: oklch(0.12 0.03 260);
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   body,
@@ -173,7 +174,8 @@
     max-width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: oklch(0.12 0.03 260);
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   a,
@@ -376,7 +378,7 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    background-color: oklch(0.12 0.03 260);
+    background-color: var(--background);
   }
 
   .mobile-bottom-nav-spacer {

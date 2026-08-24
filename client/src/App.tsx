@@ -185,22 +185,21 @@ function ProtectedAdminRoute(props: any) {
   return <ProtectedRoute component={AdminDashboard} {...props} />;
 }
 
-
 function HomeRoute() {
   const { isAuthenticated, loading } = useAuth();
+  if (loading) {
+    return null;
+  }
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" replace />;
+  }
   if (isMobileApp()) {
-    if (loading) {
-      return <SuspenseLoader />;
-    }
-    if (!isAuthenticated) {
-      return <Login />;
-    }
+    return <Login />;
   }
   return <Home />;
 }
 
 function Router() {
-  // Carregar e aplicar tema do usuário
   useUserTemplate();
 
   return (
