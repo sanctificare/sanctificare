@@ -177,6 +177,12 @@
     color: var(--foreground);
   }
 
+  html.auth-page,
+  body.auth-page,
+  body.auth-page #root {
+    background-color: oklch(0.12 0.03 260);
+  }
+
   a,
   button,
   input,

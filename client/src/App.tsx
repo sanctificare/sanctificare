@@ -263,15 +263,30 @@ function AppShell() {
     prevLocationRef.current = location;
   }, [location]);
 
+  const isAuthPage =
+    location === "/login" ||
+    location.startsWith("/login") ||
+    location === "/redefinir-senha" ||
+    location.startsWith("/redefinir-senha");
+
   const isLandingPage =
+    isAuthPage ||
     location === "/" ||
     location === "/quaresma-de-sao-miguel" ||
-    location === "/login" ||
-    location === "/redefinir-senha" ||
     location === "/privacidade" ||
     location === "/premium" ||
     location === "/premium/sucesso" ||
     location === "/admin";
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("auth-page", isAuthPage);
+    document.body.classList.toggle("auth-page", isAuthPage);
+
+    return () => {
+      document.documentElement.classList.remove("auth-page");
+      document.body.classList.remove("auth-page");
+    };
+  }, [isAuthPage]);
 
   return (
     <>
@@ -282,8 +297,8 @@ function AppShell() {
         </div>
       )}
       {!isLandingPage && <MobileTopMenu />}
-      <div className="theme-contemplative-a mobile-app-viewport min-h-[100dvh]">
-        <div>
+      <div className={`theme-contemplative-a mobile-app-viewport min-h-[100dvh] flex flex-col ${isAuthPage ? "!bg-[oklch(0.12_0.03_260)]" : ""}`}>
+        <div className="flex-1 flex flex-col">
           <Router />
         </div>
         {!isLandingPage && <MobileBottomNav />}
