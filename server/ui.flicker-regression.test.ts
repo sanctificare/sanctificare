@@ -5,11 +5,14 @@ const readSource = (relativePath: string) =>
   readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
 
 describe("flicker regression guards", () => {
-  it("never activates an OTA bundle by reloading the active WebView", () => {
+  it("only activates an OTA bundle before React renders", () => {
     const source = readSource("client/src/main.tsx");
+    const activationIndex = source.indexOf("CapacitorUpdater.set(");
+    const renderIndex = source.indexOf("createRoot(");
 
-    expect(source).not.toMatch(/CapacitorUpdater\.set\s*\(/);
-    expect(source).toMatch(/CapacitorUpdater\.next\s*\(/);
+    expect(activationIndex).toBeGreaterThan(-1);
+    expect(activationIndex).toBeLessThan(renderIndex);
+    expect(source).not.toMatch(/CapacitorUpdater\.next\s*\(/);
   });
 
   it("shares one import promise between route preload and React.lazy", () => {

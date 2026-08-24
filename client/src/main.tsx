@@ -301,17 +301,43 @@ if (typeof window !== "undefined") {
   void initAnalytics();
 }
 
-createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
+// Activate a previously downloaded update before React replaces the static
+// splash. Capgo's next() also activates on background, which flashes on resume.
+async function activatePendingOtaBeforeRender(): Promise<boolean> {
+  if (typeof window === "undefined" || !isMobileApp()) return false;
+  const pendingVersion = localStorage.getItem("sanctificare_ota_pending_version");
+  if (!pendingVersion) return false;
+
+    try {
+      const current = await CapacitorUpdater.current().catch(() => null);
+      const isPendingAlreadyActive =
+        current?.bundle?.version === pendingVersion || current?.bundle?.id === pendingVersion;
+
+      if (isPendingAlreadyActive) {
+        localStorage.setItem("sanctificare_ota_installed_version", pendingVersion);
+        localStorage.removeItem("sanctificare_ota_pending_version");
+      } else {
+        const list = await CapacitorUpdater.list().catch(() => null);
+        const pendingBundle = list?.bundles?.find(
+          (bundle) => bundle.version === pendingVersion || bundle.id === pendingVersion
+        );
+        if (pendingBundle?.id) {
+          await CapacitorUpdater.set({ id: pendingBundle.id });
+          return true;
+        } else {
+          localStorage.removeItem("sanctificare_ota_pending_version");
+        }
+      }
+    } catch (error) {
+      console.warn("[OTA] Could not activate pending bundle during cold start:", error);
+    }
+
+  return false;
+}
 
 // Live Updates (OTA) configuration for Capacitor native environment.
-if (typeof window !== "undefined" && isMobileApp()) {
-  void (async () => {
+async function checkForOtaUpdate() {
+  if (typeof window === "undefined" || !isMobileApp()) return;
     // 1. Immediately notify native layer that the app is ready so it commits the active bundle
     // and doesn't trigger an automatic rollback timeout.
     try {
@@ -390,20 +416,32 @@ if (typeof window !== "undefined" && isMobileApp()) {
         return;
       }
 
-      // Stage the bundle for the next cold start. Never call set() here: set()
-      // reloads the active WebView and was the source of visible flashes/loops.
-      await CapacitorUpdater.next({ id: bundle.id });
+      // Keep it dormant. next() would activate when Android backgrounds the app
+      // and recreate the WebView when the user returns.
       localStorage.setItem(OTA_PENDING_KEY, updateData.version);
       console.log(
         pendingOtaVersion === updateData.version
-          ? `[OTA] Update ${updateData.version} remains scheduled for the next cold start.`
-          : `[OTA] Update ${updateData.version} downloaded and scheduled for the next cold start.`
+          ? `[OTA] Update ${updateData.version} remains ready for the next cold start.`
+          : `[OTA] Update ${updateData.version} downloaded and ready for the next cold start.`
       );
     } catch (err) {
       console.error("[OTA] Live update error:", err);
     }
-  })();
 }
+
+void activatePendingOtaBeforeRender().then((activationRequested) => {
+  if (activationRequested) return;
+
+  createRoot(document.getElementById("root")!).render(
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
+  );
+
+  void checkForOtaUpdate();
+});
 
 // Deep linking handler for Google OAuth in Capacitor mobile app
 if (typeof window !== "undefined" && isMobileApp()) {
