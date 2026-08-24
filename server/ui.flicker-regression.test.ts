@@ -50,4 +50,43 @@ describe("flicker regression guards", () => {
     const source = readSource("client/src/components/MobileBottomNav.tsx");
     expect(source).not.toMatch(/if\s*\(!isAuthenticated\)\s*return\s*null/);
   });
+
+  it("unifies Android native WebView background color with light theme cream", () => {
+    const mainActivity = readSource("android/app/src/main/java/com/sanctificare/app/MainActivity.java");
+    expect(mainActivity).toContain('Color.parseColor("#faf7f2")');
+    expect(mainActivity).not.toContain('Color.parseColor("#050B1E")');
+
+    const capConfigTs = readSource("capacitor.config.ts");
+    expect(capConfigTs).toContain("backgroundColor: '#faf7f2'");
+
+    const capConfigJson = readSource("android/app/src/main/assets/capacitor.config.json");
+    expect(capConfigJson).toContain('"backgroundColor": "#faf7f2"');
+
+    const stylesXml = readSource("android/app/src/main/res/values/styles.xml");
+    expect(stylesXml).toContain('<item name="android:background">#faf7f2</item>');
+    expect(stylesXml).toContain('<item name="android:windowBackground">#faf7f2</item>');
+  });
+
+  it("ensures HTML boot splash and CSS viewports use consistent background variables", () => {
+    const indexHtml = readSource("client/index.html");
+    expect(indexHtml).toContain("background-color: #faf7f2");
+    expect(indexHtml).not.toContain(".is-native, .is-native body");
+
+    const indexCss = readSource("client/src/index.css");
+    expect(indexCss).toContain("background-color: var(--background)");
+    expect(indexCss).not.toContain(".mobile-app-viewport {\n    min-height: 100%;\n    min-height: 100svh;\n    min-height: 100dvh;\n    width: 100%;\n    max-width: 100%;\n    overflow-x: hidden;\n    background-color: oklch(0.12 0.03 260);");
+  });
+
+  it("defines and uses ALL_ROUTES consistently for idle preloading", () => {
+    const source = readSource("client/src/App.tsx");
+    expect(source).toContain("const ALL_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [");
+    expect(source).toContain("preloadRoutes(ALL_ROUTES)");
+    expect(source).not.toContain("preloadRoutes(CRITICAL_PRELOAD_ROUTES)");
+  });
+
+  it("ensures SuspenseLoader and HomeRoute transitions are instant and non-collapsing", () => {
+    const source = readSource("client/src/App.tsx");
+    expect(source).toMatch(/function SuspenseLoader\(\)\s*\{\s*return null;\s*\}/);
+    expect(source).toContain('<Redirect to="/dashboard" replace />');
+  });
 });
