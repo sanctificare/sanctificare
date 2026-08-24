@@ -53,7 +53,6 @@
       #__boot_splash img {
         width: 96px; height: 96px; object-fit: contain;
         filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.2));
-        animation: boot-pulse 2s ease-in-out infinite;
       }
       #__boot_splash .boot-title {
         margin-top: 24px; font-size: 1.75rem; font-weight: 700;
@@ -64,9 +63,7 @@
       #__boot_splash .boot-hint {
         margin-top: 20px; font-family: "Cormorant Garamond", serif;
         font-size: 0.9rem; letter-spacing: 0.15em; color: rgba(253, 230, 138, 0.6);
-        animation: boot-pulse 2s ease-in-out infinite;
       }
-      @keyframes boot-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
   </head>
   <body>

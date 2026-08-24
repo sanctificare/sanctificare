@@ -50,8 +50,13 @@ type PreloadableComponent<T extends React.ComponentType<any>> =
 function lazyWithPreload<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>,
 ): PreloadableComponent<T> {
-  const Component = lazy(factory) as PreloadableComponent<T>;
-  Component.preload = factory;
+  let modulePromise: Promise<{ default: T }> | undefined;
+  const load = () => {
+    modulePromise ??= factory();
+    return modulePromise;
+  };
+  const Component = lazy(load) as PreloadableComponent<T>;
+  Component.preload = load;
   return Component;
 }
 
@@ -112,9 +117,13 @@ function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[])
 
 function SuspenseLoader() {
   return (
-    <div className="w-full min-h-[60vh] flex flex-col items-center justify-center gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin" />
-      <span className="text-xs text-muted-foreground font-sans animate-pulse">Carregando...</span>
+    <div
+      className="w-full min-h-[60vh] bg-background flex flex-col items-center justify-center gap-3"
+      role="status"
+      aria-live="polite"
+    >
+      <div className="w-8 h-8 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin motion-reduce:animate-none" />
+      <span className="text-xs text-muted-foreground font-sans">Carregando...</span>
     </div>
   );
 }

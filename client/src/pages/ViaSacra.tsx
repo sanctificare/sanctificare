@@ -164,7 +164,7 @@ export default function ViaSacra() {
         <img
           src={LOGO_IMG}
           alt="Sanctificare"
-          className="w-16 h-16 rounded-full animate-pulse"
+          className="w-16 h-16 rounded-full"
         />
       </div>
     );

@@ -346,8 +346,9 @@ if (typeof window !== "undefined" && isMobileApp()) {
       const nativeVersion = current?.native || "0.0.0";
 
       const OTA_INSTALLED_KEY = "sanctificare_ota_installed_version";
-      const OTA_SESSION_RELOAD_KEY = `sanctificare_ota_reloaded_${updateData.version}`;
+      const OTA_PENDING_KEY = "sanctificare_ota_pending_version";
       const installedOtaVersion = localStorage.getItem(OTA_INSTALLED_KEY);
+      const pendingOtaVersion = localStorage.getItem(OTA_PENDING_KEY);
 
       console.log(`[OTA] Bundle version: '${currentBundleVersion}' (id: '${currentBundleId}') | Local record: '${installedOtaVersion}' | Server: '${updateData.version}' | Native: '${nativeVersion}'`);
 
@@ -359,26 +360,16 @@ if (typeof window !== "undefined" && isMobileApp()) {
         return;
       }
 
-      // Check if already running or applied this exact OTA version
+      // Only the native updater is authoritative about the bundle currently in use.
+      // A local marker must never suppress recovery from an update that was merely downloaded.
       const isAlreadyOnVersion =
         currentBundleVersion === updateData.version ||
-        currentBundleId === updateData.version ||
-        installedOtaVersion === updateData.version;
+        currentBundleId === updateData.version;
 
       if (isAlreadyOnVersion) {
+        localStorage.setItem(OTA_INSTALLED_KEY, updateData.version);
+        localStorage.removeItem(OTA_PENDING_KEY);
         console.log(`[OTA] Already running target version ${updateData.version}. No update needed.`);
-        return;
-      }
-
-      // Prevent infinite reload loops in the same session
-      if (sessionStorage.getItem(OTA_SESSION_RELOAD_KEY)) {
-        console.warn(`[OTA] Already reloaded for version ${updateData.version} in this session. Skipping to prevent loop.`);
-        return;
-      }
-
-      const reloadAttempts = Number(sessionStorage.getItem("sanctificare_ota_reload_attempts") || "0");
-      if (reloadAttempts >= 2) {
-        console.warn("[OTA] Exceeded max OTA reload attempts for this session. Aborting to prevent flicker loop.");
         return;
       }
 
@@ -399,17 +390,15 @@ if (typeof window !== "undefined" && isMobileApp()) {
         return;
       }
 
-      // Mark session and localStorage so we never enter an endless reload loop
-      sessionStorage.setItem(OTA_SESSION_RELOAD_KEY, "true");
-      sessionStorage.setItem("sanctificare_ota_reload_attempts", String(reloadAttempts + 1));
-      localStorage.setItem(OTA_INSTALLED_KEY, updateData.version);
-
-      // Stage bundle for persistent restart
-      await CapacitorUpdater.next({ id: bundle.id }).catch(() => {});
-
-      // Activate the new bundle using set(). This applies it and reloads the WebView cleanly once.
-      console.log(`[OTA] Activating new update version ${updateData.version}...`);
-      await CapacitorUpdater.set({ id: bundle.id });
+      // Stage the bundle for the next cold start. Never call set() here: set()
+      // reloads the active WebView and was the source of visible flashes/loops.
+      await CapacitorUpdater.next({ id: bundle.id });
+      localStorage.setItem(OTA_PENDING_KEY, updateData.version);
+      console.log(
+        pendingOtaVersion === updateData.version
+          ? `[OTA] Update ${updateData.version} remains scheduled for the next cold start.`
+          : `[OTA] Update ${updateData.version} downloaded and scheduled for the next cold start.`
+      );
     } catch (err) {
       console.error("[OTA] Live update error:", err);
     }

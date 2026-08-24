@@ -595,7 +595,7 @@ mas livrai-nos do Mal. Amém!`,
         <img
           src={LOGO_IMG}
           alt="Sanctificare"
-          className="w-16 h-16 rounded-full animate-pulse"
+          className="w-16 h-16 rounded-full"
         />
       </div>
     );

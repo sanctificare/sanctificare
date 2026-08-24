@@ -255,7 +255,7 @@ export default function Login() {
   const isPending = loginMutation.isPending || registerMutation.isPending;
 
   if (loading) {
-    return null;
+    return <div className="min-h-screen bg-[#050B1E]" role="status" aria-label="Carregando" />;
   }
 
   return (
