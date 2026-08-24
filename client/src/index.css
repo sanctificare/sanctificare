@@ -208,11 +208,14 @@
     font-family: "Cinzel", serif;
   }
 
-  /* Preset A aplicado globalmente no app */
+  body,
   .theme-contemplative-a {
     font-family: "Crimson Pro", serif;
   }
 
+  h1, h2, h3, h4, h5, h6,
+  .font-display,
+  .meditation-title,
   .theme-contemplative-a h1,
   .theme-contemplative-a h2,
   .theme-contemplative-a h3,
@@ -224,12 +227,20 @@
     font-family: "Cormorant Garamond", serif;
   }
 
+  .font-serif,
+  .meditation-text,
+  .prose-prayer,
   .theme-contemplative-a .font-serif,
   .theme-contemplative-a .meditation-text,
   .theme-contemplative-a .prose-prayer {
     font-family: "Crimson Pro", serif;
   }
 
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"],
   .theme-contemplative-a button,
   .theme-contemplative-a input,
   .theme-contemplative-a textarea,
@@ -419,34 +430,13 @@
     transform: translateY(-2px);
   }
 
-  /* Animação de fade-in suave e discreta */
+  /* Animação de fade-in e scale-in estáveis sem flash de opacidade */
   .animate-fade-in {
-    animation: fadeIn 0.2s ease-out forwards;
+    opacity: 1;
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0.85;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Animação de scale-in */
   .animate-scale-in {
-    animation: scaleIn 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+    opacity: 1;
   }
 
   /* Hover suave para botões */

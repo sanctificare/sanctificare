@@ -41,14 +41,18 @@
          avoid a white flash between the native splash screen and React. Matches
          the native windowSplashScreenBackground (#050B1E) for a seamless boot. -->
     <style>
-      html, body { margin: 0; background-color: #050B1E; }
-      #root { min-height: 100dvh; background-color: #050B1E; }
+      html, body { margin: 0; background-color: #faf7f2; color: #1a2744; }
+      #root { min-height: 100dvh; background-color: #faf7f2; }
+      .is-native, .is-native body, .is-native #root { background-color: #050B1E !important; color: #fff !important; }
       #__boot_splash {
         position: fixed; inset: 0; z-index: 99999;
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
-        background-color: #050B1E; color: #fff;
+        background-color: #faf7f2; color: #1a2744;
         font-family: "Cinzel", serif;
+      }
+      .is-native #__boot_splash {
+        background-color: #050B1E; color: #fff;
       }
       #__boot_splash img {
         width: 96px; height: 96px; object-fit: contain;
@@ -57,14 +61,27 @@
       #__boot_splash .boot-title {
         margin-top: 24px; font-size: 1.75rem; font-weight: 700;
         letter-spacing: 0.2em; text-transform: uppercase;
+        color: #1a2744;
+      }
+      .is-native #__boot_splash .boot-title {
         background: linear-gradient(to bottom, #fde68a, #fcd34d, #f59e0b);
         -webkit-background-clip: text; background-clip: text; color: transparent;
       }
       #__boot_splash .boot-hint {
         margin-top: 20px; font-family: "Cormorant Garamond", serif;
-        font-size: 0.9rem; letter-spacing: 0.15em; color: rgba(253, 230, 138, 0.6);
+        font-size: 0.9rem; letter-spacing: 0.15em; color: #64748b;
+      }
+      .is-native #__boot_splash .boot-hint {
+        color: rgba(253, 230, 138, 0.6);
       }
     </style>
+    <script>
+      try {
+        if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+          document.documentElement.classList.add('is-native');
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root">

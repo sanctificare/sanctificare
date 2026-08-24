@@ -112,16 +112,7 @@ function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[])
 }
 
 function SuspenseLoader() {
-  return (
-    <div
-      className="w-full min-h-[40vh] flex flex-col items-center justify-center gap-3"
-      role="status"
-      aria-live="polite"
-    >
-      <div className="w-7 h-7 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin motion-reduce:animate-none" />
-      <span className="text-xs text-muted-foreground font-sans">Carregando...</span>
-    </div>
-  );
+  return null;
 }
 
 function ProtectedDashboardRoute(props: any) {
@@ -397,15 +388,8 @@ function App() {
   const { isAuthenticated, user } = useAuth();
   const utils = trpc.useUtils();
 
-  useEffect(() => {
-    document.body.classList.add("theme-contemplative-a");
-
-    return () => {
-      document.body.classList.remove("theme-contemplative-a");
-    };
-  }, []);
-
-  // Pré-carrega os chunks de navegação mais prováveis quando o app fica ocioso.
+  // Pré-carrega todos os chunks de rotas quando o app/navegador fica ocioso.
+  // Isso garante transições 100% instantâneas sem nenhum flash em qualquer navegador (Chrome, Edge, Firefox).
   useEffect(() => {
     const ric = (window as typeof window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -413,13 +397,13 @@ function App() {
     }).requestIdleCallback;
 
     if (typeof ric === "function") {
-      const id = ric(() => preloadRoutes(CRITICAL_PRELOAD_ROUTES), { timeout: 2000 });
+      const id = ric(() => preloadRoutes(ALL_ROUTES), { timeout: 1500 });
       return () => {
         (window as typeof window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
       };
     }
 
-    const timer = window.setTimeout(() => preloadRoutes(CRITICAL_PRELOAD_ROUTES), 1000);
+    const timer = window.setTimeout(() => preloadRoutes(ALL_ROUTES), 500);
     return () => window.clearTimeout(timer);
   }, []);
 
