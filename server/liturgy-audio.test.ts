@@ -28,7 +28,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 23/08/26", () => {
+  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 24/08/26", () => {
     const dates = [
       "2026-08-01",
       "2026-08-02",
@@ -53,6 +53,7 @@ describe("liturgy-audio", () => {
       "2026-08-21",
       "2026-08-22",
       "2026-08-23",
+      "2026-08-24",
     ];
 
     for (const dateIso of dates) {
@@ -66,8 +67,10 @@ describe("liturgy-audio", () => {
       expect(audios.gospel).toBe(
         `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`
       );
+      
+      const psalmPrefix = dateIso === "2026-08-24" ? "salmo" : "salmos";
       expect(audios.singedPsalm).toBe(
-        `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
+        `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
       );
 
       if (dateIso === "2026-08-02" || dateIso === "2026-08-09" || dateIso === "2026-08-16" || dateIso === "2026-08-23") {

@@ -71,14 +71,15 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         return audio;
       }
     } else if (monthStr === "08") {
-      // Temos áudios individuais na pasta de agosto26 de 01 a 23 de agosto
-      if (dayNum >= 1 && dayNum <= 23) {
+      // Temos áudios individuais na pasta de agosto26 de 01 a 24 de agosto
+      if (dayNum >= 1 && dayNum <= 24) {
         const formattedDate = `${dayStr}${monthStr}26`; // ex: 010826
+        const psalmPrefix = dayNum === 24 ? "salmo" : "salmos";
 
         const audio: LiturgyReadingsAudio = {
           firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/1leitura${formattedDate}.mp3`,
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`,
-          singedPsalm: `/r2-storage/salmos-cantados/agosto26/salmos${formattedDate}.mp3`
+          singedPsalm: `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
         };
 
         // Domingos (02/08, 09/08, 16/08 e 23/08) têm segunda leitura
