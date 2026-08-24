@@ -310,22 +310,22 @@ createRoot(document.getElementById("root")!).render(
 );
 
 // Live Updates (OTA) configuration for Capacitor native environment.
-// The OTA download is disabled by default so the Android build always uses the
-// synchronized bundle unless explicitly enabled at build time.
 if (typeof window !== "undefined" && isMobileApp()) {
   void (async () => {
+    // 1. Immediately notify native layer that the app is ready so it commits the active bundle
+    // and doesn't trigger an automatic rollback timeout.
     try {
-      // Wait for multiple paint frames to confirm the UI actually rendered.
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(resolve, 200)));
-      });
       await CapacitorUpdater.notifyAppReady();
+    } catch (e) {
+      console.warn("[OTA] notifyAppReady warning:", e);
+    }
 
-      if (!isOtaEnabled) {
-        console.log("[OTA] Disabled by build flag. Using the synced Android bundle.");
-        return;
-      }
+    if (!isOtaEnabled) {
+      console.log("[OTA] Disabled by build flag. Using the synced Android bundle.");
+      return;
+    }
 
+    try {
       const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
         headers: { "Cache-Control": "no-cache" },
       });
@@ -340,15 +340,18 @@ if (typeof window !== "undefined" && isMobileApp()) {
         return;
       }
 
-      const current = await CapacitorUpdater.current();
-      // IMPORTANT: compare against bundle.version (the version string passed to
-      // download()), NOT bundle.id — the id is an internal UUID (or "builtin")
-      // and never matches the server version, which previously caused an
-      // infinite download → set() → reload loop (app "piscando").
-      const currentVersion = current?.bundle?.version || current?.bundle?.id;
-      const nativeVersion = current?.native ?? currentVersion;
-      console.log(`[OTA] Local web bundle version: ${currentVersion} | Native version: ${nativeVersion} | Server version: ${updateData.version}`);
+      const current = await CapacitorUpdater.current().catch(() => null);
+      const currentBundleVersion = current?.bundle?.version || "";
+      const currentBundleId = current?.bundle?.id || "";
+      const nativeVersion = current?.native || "0.0.0";
 
+      const OTA_INSTALLED_KEY = "sanctificare_ota_installed_version";
+      const OTA_SESSION_RELOAD_KEY = `sanctificare_ota_reloaded_${updateData.version}`;
+      const installedOtaVersion = localStorage.getItem(OTA_INSTALLED_KEY);
+
+      console.log(`[OTA] Bundle version: '${currentBundleVersion}' (id: '${currentBundleId}') | Local record: '${installedOtaVersion}' | Server: '${updateData.version}' | Native: '${nativeVersion}'`);
+
+      // Don't downgrade below native APK/AAB baseline
       if (compareVersionCore(updateData.version, nativeVersion) < 0) {
         console.warn(
           `[OTA] Skipping downgrade. Server bundle ${updateData.version} is older than native ${nativeVersion}.`
@@ -356,28 +359,58 @@ if (typeof window !== "undefined" && isMobileApp()) {
         return;
       }
 
-      if (updateData.version !== currentVersion) {
-        // Reuse an already-downloaded bundle for this version, if any.
-        const list = await CapacitorUpdater.list().catch(() => null);
-        let bundle = list?.bundles?.find((b) => b.version === updateData.version);
+      // Check if already running or applied this exact OTA version
+      const isAlreadyOnVersion =
+        currentBundleVersion === updateData.version ||
+        currentBundleId === updateData.version ||
+        installedOtaVersion === updateData.version;
 
-        if (!bundle) {
-          console.log(`[OTA] Downloading new update version ${updateData.version}...`);
-          bundle = await CapacitorUpdater.download({
-            url: updateData.url,
-            version: updateData.version,
-          });
-        }
-
-        // Activate the new bundle using set(). This sets the active bundle in native storage
-        // and reloads the WebView with the updated JS/CSS bundle, ensuring the update persists
-        // permanently across app restarts.
-        console.log(`[OTA] Activating new update version ${updateData.version}...`);
-        await CapacitorUpdater.set({ id: bundle.id });
+      if (isAlreadyOnVersion) {
+        console.log(`[OTA] Already running target version ${updateData.version}. No update needed.`);
+        return;
       }
+
+      // Prevent infinite reload loops in the same session
+      if (sessionStorage.getItem(OTA_SESSION_RELOAD_KEY)) {
+        console.warn(`[OTA] Already reloaded for version ${updateData.version} in this session. Skipping to prevent loop.`);
+        return;
+      }
+
+      const reloadAttempts = Number(sessionStorage.getItem("sanctificare_ota_reload_attempts") || "0");
+      if (reloadAttempts >= 2) {
+        console.warn("[OTA] Exceeded max OTA reload attempts for this session. Aborting to prevent flicker loop.");
+        return;
+      }
+
+      // Reuse an already-downloaded bundle for this version, if any.
+      const list = await CapacitorUpdater.list().catch(() => null);
+      let bundle = list?.bundles?.find((b) => b.version === updateData.version || b.id === updateData.version);
+
+      if (!bundle) {
+        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
+        bundle = await CapacitorUpdater.download({
+          url: updateData.url,
+          version: updateData.version,
+        });
+      }
+
+      if (!bundle?.id) {
+        console.warn("[OTA] Download completed but bundle ID is missing.");
+        return;
+      }
+
+      // Mark session and localStorage so we never enter an endless reload loop
+      sessionStorage.setItem(OTA_SESSION_RELOAD_KEY, "true");
+      sessionStorage.setItem("sanctificare_ota_reload_attempts", String(reloadAttempts + 1));
+      localStorage.setItem(OTA_INSTALLED_KEY, updateData.version);
+
+      // Stage bundle for persistent restart
+      await CapacitorUpdater.next({ id: bundle.id }).catch(() => {});
+
+      // Activate the new bundle using set(). This applies it and reloads the WebView cleanly once.
+      console.log(`[OTA] Activating new update version ${updateData.version}...`);
+      await CapacitorUpdater.set({ id: bundle.id });
     } catch (err) {
-      // Do NOT call CapacitorUpdater.reset() here: reset() reloads the WebView
-      // immediately and a transient error (e.g. offline) would cause a reload loop.
       console.error("[OTA] Live update error:", err);
     }
   })();
