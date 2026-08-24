@@ -15,8 +15,6 @@ export function useOfflineSync() {
   const [isOnline, setIsOnline] = useState<boolean>(
     typeof navigator !== "undefined" ? navigator.onLine : true
   );
-
-  const logMutation = trpc.prayers.logPrayer.useMutation();
   const utils = trpc.useUtils();
 
   useEffect(() => {
@@ -80,7 +78,7 @@ export function useOfflineSync() {
 
     for (const log of logs) {
       try {
-        await logMutation.mutateAsync({
+        await utils.client.prayers.logPrayer.mutate({
           prayerType: log.prayerType,
           prayerName: log.prayerName,
         });
@@ -99,12 +97,12 @@ export function useOfflineSync() {
       utils.prayers.getAllLogs.invalidate();
       utils.dailyPlan.getStatus.invalidate();
     }
-  }, [isOnline, logMutation, utils]);
+  }, [isOnline, utils]);
 
   // Sync on mount or when coming back online
   useEffect(() => {
     if (isOnline) {
-      syncOfflineLogs();
+      void syncOfflineLogs();
     }
   }, [isOnline, syncOfflineLogs]);
 

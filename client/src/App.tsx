@@ -240,6 +240,7 @@ function Router() {
         <Route path="/perfil/zona-de-perigo" component={ProtectedDangerZoneRoute} />
         <Route path="/plano-diario" component={ProtectedDailyPlanRoute} />
 
+
         <Route path="/videos" component={VideosBiblicos} />
         <Route path="/degraus-de-perfeicao" component={DegrausPerfeicao} />
         <Route path="/degraus-de-perfeicao/imitacao-de-cristo" component={ImitacaoCristoRetiro} />
@@ -302,13 +303,13 @@ function AppShell() {
 
 function StateSyncManager() {
   const { isAuthenticated } = useAuth();
+  const utils = trpc.useUtils();
   const stateSyncQuery = trpc.stateSync.getAll.useQuery(undefined, {
     enabled: isAuthenticated,
-    refetchInterval: 30000,
+    refetchInterval: false,
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
   });
-  const upsertStateMutation = trpc.stateSync.upsertMany.useMutation();
-  const deleteStateMutation = trpc.stateSync.deleteMany.useMutation();
   const lastLocalSnapshotRef = useRef<Record<string, string>>({});
   const localVersionByKeyRef = useRef<Map<string, number>>(new Map());
   const syncInFlightRef = useRef(false);
@@ -320,7 +321,6 @@ function StateSyncManager() {
       return;
     }
 
-    // Snapshot inicial para diffs periódicos sem custo alto de escrita.
     lastLocalSnapshotRef.current = collectSyncableLocalSnapshot();
   }, [isAuthenticated]);
 
@@ -350,7 +350,7 @@ function StateSyncManager() {
 
         for (const chunk of splitIntoChunks(upserts, 200)) {
           if (chunk.length === 0) continue;
-          const result = await upsertStateMutation.mutateAsync({ entries: chunk });
+          const result = await utils.client.stateSync.upsertMany.mutate({ entries: chunk });
           for (const row of result.saved) {
             localVersionByKeyRef.current.set(
               row.key,
@@ -361,7 +361,7 @@ function StateSyncManager() {
 
         for (const chunk of splitIntoChunks(deletions, 200)) {
           if (chunk.length === 0) continue;
-          const result = await deleteStateMutation.mutateAsync({ keys: chunk });
+          const result = await utils.client.stateSync.deleteMany.mutate({ keys: chunk });
           for (const row of result.deleted) {
             localVersionByKeyRef.current.set(
               row.key,
@@ -378,17 +378,16 @@ function StateSyncManager() {
       }
     };
 
-    // Executa logo após login e depois em intervalos periódicos para propagar entre devices.
     void syncOnce();
     const interval = window.setInterval(() => {
       void syncOnce();
-    }, 15000);
+    }, 30000);
 
     return () => {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [isAuthenticated, upsertStateMutation, deleteStateMutation]);
+  }, [isAuthenticated, utils]);
 
   return null;
 }
@@ -396,7 +395,7 @@ function StateSyncManager() {
 function App() {
   useOfflineSync();
   const { isAuthenticated, user } = useAuth();
-  const registerDeviceMutation = trpc.push.registerDevice.useMutation();
+  const utils = trpc.useUtils();
 
   useEffect(() => {
     document.body.classList.add("theme-contemplative-a");
@@ -407,7 +406,6 @@ function App() {
   }, []);
 
   // Pré-carrega os chunks de navegação mais prováveis quando o app fica ocioso.
-  // Isso melhora fluidez sem baixar todos os módulos logo no boot.
   useEffect(() => {
     const ric = (window as typeof window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -431,14 +429,14 @@ function App() {
 
     void initNativePushNotifications({
       onRegistered: async (token, meta) => {
-        await registerDeviceMutation.mutateAsync({
+        await utils.client.push.registerDevice.mutate({
           token,
           platform: meta.platform,
           deviceId: meta.deviceId ?? null,
         });
       },
     });
-  }, [isAuthenticated, registerDeviceMutation]);
+  }, [isAuthenticated, utils]);
 
   useEffect(() => {
     const userId = user?.id ? String(user.id) : null;
@@ -449,8 +447,6 @@ function App() {
   useEffect(() => {
     const checkReminders = () => {
       try {
-        // No app nativo os lembretes são agendados de forma nativa
-        // (LocalNotifications); o intervalo abaixo é apenas fallback web.
         if (isMobileApp()) return;
 
         const enabled = localStorage.getItem("sanctificare.reminders.enabled") === "true";
@@ -482,7 +478,6 @@ function App() {
       }
     };
 
-    // Executa uma vez imediatamente e só agenda o intervalo se estiver habilitado.
     checkReminders();
 
     const remindersEnabled =
