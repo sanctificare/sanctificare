@@ -396,7 +396,7 @@ export default function Dashboard() {
   const todaySaint = getTodaySaint();
 
   return (
-    <div className="min-h-screen bg-cream dark:bg-[oklch(0.14_0.03_260)] relative overflow-hidden">
+    <div className="min-h-screen bg-cream dark:bg-[oklch(0.14_0.03_260)] relative">
       {/* Golden pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
       

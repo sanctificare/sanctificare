@@ -89,4 +89,15 @@ describe("flicker regression guards", () => {
     expect(source).toMatch(/function SuspenseLoader\(\)\s*\{\s*return null;\s*\}/);
     expect(source).toContain('<Redirect to="/dashboard" replace />');
   });
+
+  it("ensures scroll stability and avoids resetting scroll during in-page interaction", () => {
+    const appSource = readSource("client/src/App.tsx");
+    expect(appSource).toContain("prevLocationRef.current !== null && prevLocationRef.current !== location");
+
+    const cssSource = readSource("client/src/index.css");
+    expect(cssSource).not.toMatch(/body,\s*#root\s*\{[^}]*overflow-y:\s*auto/);
+
+    const dashboardSource = readSource("client/src/pages/Dashboard.tsx");
+    expect(dashboardSource).not.toMatch(/<div className="min-h-screen[^"]*overflow-hidden/);
+  });
 });

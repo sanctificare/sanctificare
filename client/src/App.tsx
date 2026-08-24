@@ -251,12 +251,16 @@ function Router() {
 
 function AppShell() {
   const [location] = useLocation();
+  const prevLocationRef = useRef<string | null>(null);
 
   useEffect(() => {
     void trackPageView(location);
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    if (prevLocationRef.current !== null && prevLocationRef.current !== location) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+    prevLocationRef.current = location;
   }, [location]);
 
   const isLandingPage =
