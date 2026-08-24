@@ -82,7 +82,7 @@ const SaintMichaelLentLanding = lazyWithPreload(() => import("./pages/SaintMicha
 const Santoral = lazyWithPreload(() => import("./pages/Santoral"));
 const SaintDetail = lazyWithPreload(() => import("./pages/SaintDetail"));
 
-const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
+const ALL_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   GlobalSearch,
   LectioDivina,
   ViaSacra,
