@@ -589,18 +589,6 @@ mas livrai-nos do Mal. Amém!`,
     };
   }, [guidedTracks, currentAudioTrack, passage]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img
-          src={LOGO_IMG}
-          alt="Sanctificare"
-          className="w-16 h-16 rounded-full"
-        />
-      </div>
-    );
-  }
-
   const currentTrack = guidedTracks[currentAudioTrack];
   const currentStepKey = currentTrack?.stepKey;
   const stepsSeq = ["intro", "lectio", "meditatio", "oratio", "contemplatio", "actio", "conclusion"] as const;

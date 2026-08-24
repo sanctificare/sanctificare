@@ -20,9 +20,6 @@ function isActiveRoute(location: string, href: string) {
 
 export default function MobileBottomNav() {
   const [location] = useLocation();
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) return null;
 
   return (
     <>

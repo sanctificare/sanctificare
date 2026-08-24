@@ -1530,12 +1530,19 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
     .karaoke-word--active {
       animation: none;
     }
     .karaoke-word {
       transition: none;
+    }
+    .reveal,
+    .reveal-left,
+    .reveal-right {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 

@@ -82,9 +82,6 @@ const SaintMichaelLentLanding = lazyWithPreload(() => import("./pages/SaintMicha
 const Santoral = lazyWithPreload(() => import("./pages/Santoral"));
 const SaintDetail = lazyWithPreload(() => import("./pages/SaintDetail"));
 
-
-// Todas as rotas lazy são pré-carregadas em background para evitar o SuspenseLoader
-// ("Carregando...") na primeira navegação a cada página.
 const CRITICAL_PRELOAD_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
   GlobalSearch,
   LectioDivina,
@@ -114,15 +111,14 @@ function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[])
   }
 }
 
-
 function SuspenseLoader() {
   return (
     <div
-      className="w-full min-h-[60vh] bg-background flex flex-col items-center justify-center gap-3"
+      className="w-full min-h-[40vh] flex flex-col items-center justify-center gap-3"
       role="status"
       aria-live="polite"
     >
-      <div className="w-8 h-8 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin motion-reduce:animate-none" />
+      <div className="w-7 h-7 rounded-full border-2 border-amber-500/20 border-t-amber-500 animate-spin motion-reduce:animate-none" />
       <span className="text-xs text-muted-foreground font-sans">Carregando...</span>
     </div>
   );
@@ -147,8 +143,6 @@ function ProtectedDangerZoneRoute(props: any) {
 function ProtectedDailyPlanRoute(props: any) {
   return <ProtectedRoute component={DailyPlan} {...props} />;
 }
-
-
 
 function PremiumRoute(props: any) {
   return <Premium {...props} />;
@@ -450,39 +444,6 @@ function App() {
     const userId = user?.id ? String(user.id) : null;
     void setAnalyticsUserId(userId);
   }, [user?.id]);
-
-  useEffect(() => {
-    const handleDocumentClick = (event: MouseEvent) => {
-      if (event.defaultPrevented) return;
-      if (event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-
-      const anchor = target.closest("a[href]");
-      if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (anchor.target && anchor.target !== "_self") return;
-      if (anchor.hasAttribute("download")) return;
-
-      const rawHref = anchor.getAttribute("href");
-      if (!rawHref || rawHref.startsWith("#")) return;
-
-      const destination = new URL(anchor.href, window.location.href);
-      if (destination.origin !== window.location.origin) return;
-
-      const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      const next = `${destination.pathname}${destination.search}${destination.hash}`;
-      if (current === next) return;
-
-      event.preventDefault();
-      window.history.pushState({}, "", next);
-      window.dispatchEvent(new PopStateEvent("popstate"));
-    };
-
-    document.addEventListener("click", handleDocumentClick);
-    return () => document.removeEventListener("click", handleDocumentClick);
-  }, []);
 
   // Checador de Lembretes Diários
   useEffect(() => {

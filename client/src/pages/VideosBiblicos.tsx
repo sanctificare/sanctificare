@@ -615,14 +615,6 @@ export default function VideosBiblicos() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
       <main className="container py-8">

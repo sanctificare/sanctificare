@@ -28,4 +28,26 @@ describe("flicker regression guards", () => {
 
     expect(source).not.toContain("boot-pulse");
   });
+
+  it("does not intercept clicks globally with double popstate dispatch", () => {
+    const source = readSource("client/src/App.tsx");
+    expect(source).not.toContain("handleDocumentClick");
+    expect(source).not.toContain("new PopStateEvent(\"popstate\")");
+  });
+
+  it("excludes heavy offline cache keys from cloud state sync", () => {
+    const source = readSource("client/src/lib/userStateSync.ts");
+    expect(source).toContain("sanctificare_offline_");
+    expect(source).toContain("sanctificare_liturgy_cache_");
+  });
+
+  it("caches template locally to prevent runtime restyle flicker", () => {
+    const source = readSource("client/src/hooks/useUserTemplate.ts");
+    expect(source).toContain("sanctificare_user_template");
+  });
+
+  it("keeps MobileBottomNav stable without authentication pop-in", () => {
+    const source = readSource("client/src/components/MobileBottomNav.tsx");
+    expect(source).not.toMatch(/if\s*\(!isAuthenticated\)\s*return\s*null/);
+  });
 });

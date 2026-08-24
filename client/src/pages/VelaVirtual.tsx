@@ -281,14 +281,6 @@ export default function VelaVirtual() {
     setIsMuted((current) => !current);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain" />
-      </div>
-    );
-  }
-
   return (
     <div
       className={`min-h-screen text-white transition-colors duration-700 ${selectedAmbience.pageClass}`}

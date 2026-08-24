@@ -438,14 +438,6 @@ export default function NovenaDetails() {
     return <PublicNovenaDetails novena={selectedNovena} path={getNovenaPath(selectedNovena)} />;
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img src={LOGO_IMG} alt="Sanctificare" className="w-16 h-16 object-contain" />
-      </div>
-    );
-  }
-
   if (!selectedNovena) {
     return (
       <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">

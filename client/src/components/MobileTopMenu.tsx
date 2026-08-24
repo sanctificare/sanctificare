@@ -5,9 +5,6 @@ import { Link } from "wouter";
 
 export default function MobileTopMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) return null;
 
   const handleSearch = () => {
     window.dispatchEvent(new CustomEvent("open-global-search"));

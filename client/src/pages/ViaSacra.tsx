@@ -158,18 +158,6 @@ export default function ViaSacra() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <img
-          src={LOGO_IMG}
-          alt="Sanctificare"
-          className="w-16 h-16 rounded-full"
-        />
-      </div>
-    );
-  }
-
   if (!isAuthenticated) {
     return <PublicViaSacraDetails stations={VIA_SACRA_STATIONS} path="/via-sacra" />;
   }

@@ -16,7 +16,16 @@ const EXCLUDED_KEYS = new Set<string>([
   CSRF_STORAGE_KEY,
   "app-runtime-user-info",
   INTERNAL_SYNC_META_KEY,
+  "pending_prayer_logs",
+  "sanctificare_ota_installed_version",
+  "sanctificare_ota_pending_version",
 ]);
+
+const EXCLUDED_PREFIXES = [
+  "sanctificare_offline_",
+  "sanctificare_liturgy_cache_",
+  "sanctificare.reminders.last_sent",
+];
 
 function toEpoch(value: Date | string | null | undefined): number {
   if (!value) return 0;
@@ -28,6 +37,9 @@ function toEpoch(value: Date | string | null | undefined): number {
 function isSyncableKey(key: string): boolean {
   if (!key) return false;
   if (EXCLUDED_KEYS.has(key)) return false;
+  for (const prefix of EXCLUDED_PREFIXES) {
+    if (key.startsWith(prefix)) return false;
+  }
   return true;
 }
 
