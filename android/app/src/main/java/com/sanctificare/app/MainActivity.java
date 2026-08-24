@@ -12,8 +12,8 @@ public class MainActivity extends BridgeActivity {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         WebView.setWebContentsDebuggingEnabled(true);
-        // Pinta o WebView com a mesma cor do splash nativo (#050B1E) para
-        // eliminar o flash branco do WebView antes do carregamento do HTML/CSS.
-        getBridge().getWebView().setBackgroundColor(Color.parseColor("#050B1E"));
+        // Pinta o WebView com a mesma cor do tema claro (#faf7f2 creme) para
+        // eliminar o flash escuro→claro entre o splash nativo e o conteúdo React.
+        getBridge().getWebView().setBackgroundColor(Color.parseColor("#faf7f2"));
     }
 }

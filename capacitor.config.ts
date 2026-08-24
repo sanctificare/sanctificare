@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'com.sanctificare.app',
   appName: 'Sanctificare',
   webDir: 'dist/public',
-  backgroundColor: '#0c1327',
+  backgroundColor: '#faf7f2',
   server: {
     androidScheme: 'https',
   },
