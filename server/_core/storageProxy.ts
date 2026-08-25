@@ -64,6 +64,15 @@ export function registerStorageProxy(app: Express) {
           bucket = "salmos-cantados";
           cleanKey = key;
           foundInR2 = true;
+        } else {
+          const altKey = sKey.includes("/salmo") && !sKey.includes("/salmos")
+            ? sKey.replace("/salmo", "/salmos")
+            : sKey.replace("/salmos", "/salmo");
+          if (await storageExists(altKey, "salmos-cantados")) {
+            bucket = "salmos-cantados";
+            cleanKey = altKey;
+            foundInR2 = true;
+          }
         }
       } else if (key.startsWith("liturgia-diaria/")) {
         const lKey = key.replace(/^liturgia-diaria\//, "");
@@ -218,6 +227,15 @@ export function registerStorageProxy(app: Express) {
           bucket = "salmos-cantados";
           cleanKey = key;
           foundInR2 = true;
+        } else {
+          const altKey = sKey.includes("/salmo") && !sKey.includes("/salmos")
+            ? sKey.replace("/salmo", "/salmos")
+            : sKey.replace("/salmos", "/salmo");
+          if (await storageExists(altKey, "salmos-cantados")) {
+            bucket = "salmos-cantados";
+            cleanKey = altKey;
+            foundInR2 = true;
+          }
         }
       } else if (key.startsWith("liturgia-diaria/")) {
         const lKey = key.replace(/^liturgia-diaria\//, "");
