@@ -297,7 +297,7 @@ function AppShell() {
         </div>
       )}
       {!isLandingPage && <MobileTopMenu />}
-      <div className={`theme-contemplative-a mobile-app-viewport min-h-[100dvh] flex flex-col ${isAuthPage ? "!bg-[oklch(0.12_0.03_260)]" : ""}`}>
+      <div className={`theme-contemplative-a mobile-app-viewport min-h-screen min-h-full flex flex-col ${isAuthPage ? "!bg-[oklch(0.12_0.03_260)]" : ""}`}>
         <div className="flex-1 flex flex-col">
           <Router />
         </div>
