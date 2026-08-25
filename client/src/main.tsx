@@ -305,32 +305,59 @@ if (typeof window !== "undefined") {
 // splash. Capgo's next() also activates on background, which flashes on resume.
 async function activatePendingOtaBeforeRender(): Promise<boolean> {
   if (typeof window === "undefined" || !isMobileApp()) return false;
+
+  // 1. Immediately notify native layer that the app is ready so it commits the active bundle
+  try {
+    await CapacitorUpdater.notifyAppReady();
+  } catch (e) {
+    console.warn("[OTA] notifyAppReady warning:", e);
+  }
+
   const pendingVersion = localStorage.getItem("sanctificare_ota_pending_version");
   if (!pendingVersion) return false;
 
-    try {
-      const current = await CapacitorUpdater.current().catch(() => null);
-      const isPendingAlreadyActive =
-        current?.bundle?.version === pendingVersion || current?.bundle?.id === pendingVersion;
+  // Session guard: prevent infinite reload loops on devices where set() was already attempted
+  const SESSION_RELOAD_KEY = `sanctificare_ota_activating_${pendingVersion}`;
+  if (sessionStorage.getItem(SESSION_RELOAD_KEY)) {
+    console.warn(`[OTA] Activation for version ${pendingVersion} already attempted in this session. Clearing pending to prevent loop.`);
+    localStorage.removeItem("sanctificare_ota_pending_version");
+    return false;
+  }
 
-      if (isPendingAlreadyActive) {
-        localStorage.setItem("sanctificare_ota_installed_version", pendingVersion);
-        localStorage.removeItem("sanctificare_ota_pending_version");
-      } else {
-        const list = await CapacitorUpdater.list().catch(() => null);
-        const pendingBundle = list?.bundles?.find(
-          (bundle) => bundle.version === pendingVersion || bundle.id === pendingVersion
-        );
-        if (pendingBundle?.id) {
-          await CapacitorUpdater.set({ id: pendingBundle.id });
-          return true;
-        } else {
-          localStorage.removeItem("sanctificare_ota_pending_version");
-        }
-      }
-    } catch (error) {
-      console.warn("[OTA] Could not activate pending bundle during cold start:", error);
+  try {
+    const current = await CapacitorUpdater.current().catch(() => null);
+    const installedOtaVersion = localStorage.getItem("sanctificare_ota_installed_version");
+    const isPendingAlreadyActive =
+      current?.bundle?.version === pendingVersion ||
+      current?.bundle?.id === pendingVersion ||
+      installedOtaVersion === pendingVersion;
+
+    if (isPendingAlreadyActive) {
+      localStorage.setItem("sanctificare_ota_installed_version", pendingVersion);
+      localStorage.removeItem("sanctificare_ota_pending_version");
+      return false;
     }
+
+    const list = await CapacitorUpdater.list().catch(() => null);
+    const pendingBundle = list?.bundles?.find(
+      (bundle) => bundle.version === pendingVersion || bundle.id === pendingVersion
+    );
+
+    if (pendingBundle?.id) {
+      // Mark session and clear pending before invoking set() to guarantee no infinite reload loop
+      sessionStorage.setItem(SESSION_RELOAD_KEY, "1");
+      localStorage.removeItem("sanctificare_ota_pending_version");
+      localStorage.setItem("sanctificare_ota_installed_version", pendingVersion);
+      console.log(`[OTA] Activating pending update version ${pendingVersion}...`);
+      await CapacitorUpdater.set({ id: pendingBundle.id });
+      return true;
+    } else {
+      localStorage.removeItem("sanctificare_ota_pending_version");
+    }
+  } catch (error) {
+    console.warn("[OTA] Could not activate pending bundle during cold start:", error);
+    localStorage.removeItem("sanctificare_ota_pending_version");
+  }
 
   return false;
 }
@@ -338,95 +365,93 @@ async function activatePendingOtaBeforeRender(): Promise<boolean> {
 // Live Updates (OTA) configuration for Capacitor native environment.
 async function checkForOtaUpdate() {
   if (typeof window === "undefined" || !isMobileApp()) return;
-    // 1. Immediately notify native layer that the app is ready so it commits the active bundle
-    // and doesn't trigger an automatic rollback timeout.
-    try {
-      await CapacitorUpdater.notifyAppReady();
-    } catch (e) {
-      console.warn("[OTA] notifyAppReady warning:", e);
-    }
 
-    if (!isOtaEnabled) {
-      console.log("[OTA] Disabled by build flag. Using the synced Android bundle.");
+  try {
+    await CapacitorUpdater.notifyAppReady();
+  } catch (e) {
+    console.warn("[OTA] notifyAppReady warning:", e);
+  }
+
+  if (!isOtaEnabled) {
+    console.log("[OTA] Disabled by build flag. Using the synced Android bundle.");
+    return;
+  }
+
+  try {
+    const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
+      headers: { "Cache-Control": "no-cache" },
+    });
+    if (!res.ok) {
+      console.warn("[OTA] Failed to fetch update metadata from server.");
       return;
     }
 
-    try {
-      const res = await fetch("https://pub-dc71a0e15f28405db17b1df753564e3c.r2.dev/live-update.json", {
-        headers: { "Cache-Control": "no-cache" },
-      });
-      if (!res.ok) {
-        console.warn("[OTA] Failed to fetch update metadata from server.");
-        return;
-      }
-
-      const updateData = await res.json();
-      if (!updateData || !updateData.version || !updateData.url || typeof updateData.url !== "string") {
-        console.warn("[OTA] Invalid live-update.json format on server.");
-        return;
-      }
-
-      const current = await CapacitorUpdater.current().catch(() => null);
-      const currentBundleVersion = current?.bundle?.version || "";
-      const currentBundleId = current?.bundle?.id || "";
-      const nativeVersion = current?.native || "0.0.0";
-
-      const OTA_INSTALLED_KEY = "sanctificare_ota_installed_version";
-      const OTA_PENDING_KEY = "sanctificare_ota_pending_version";
-      const installedOtaVersion = localStorage.getItem(OTA_INSTALLED_KEY);
-      const pendingOtaVersion = localStorage.getItem(OTA_PENDING_KEY);
-
-      console.log(`[OTA] Bundle version: '${currentBundleVersion}' (id: '${currentBundleId}') | Local record: '${installedOtaVersion}' | Server: '${updateData.version}' | Native: '${nativeVersion}'`);
-
-      // Don't downgrade below native APK/AAB baseline
-      if (compareVersionCore(updateData.version, nativeVersion) < 0) {
-        console.warn(
-          `[OTA] Skipping downgrade. Server bundle ${updateData.version} is older than native ${nativeVersion}.`
-        );
-        return;
-      }
-
-      // Only the native updater is authoritative about the bundle currently in use.
-      // A local marker must never suppress recovery from an update that was merely downloaded.
-      const isAlreadyOnVersion =
-        currentBundleVersion === updateData.version ||
-        currentBundleId === updateData.version;
-
-      if (isAlreadyOnVersion) {
-        localStorage.setItem(OTA_INSTALLED_KEY, updateData.version);
-        localStorage.removeItem(OTA_PENDING_KEY);
-        console.log(`[OTA] Already running target version ${updateData.version}. No update needed.`);
-        return;
-      }
-
-      // Reuse an already-downloaded bundle for this version, if any.
-      const list = await CapacitorUpdater.list().catch(() => null);
-      let bundle = list?.bundles?.find((b) => b.version === updateData.version || b.id === updateData.version);
-
-      if (!bundle) {
-        console.log(`[OTA] Downloading new update version ${updateData.version}...`);
-        bundle = await CapacitorUpdater.download({
-          url: updateData.url,
-          version: updateData.version,
-        });
-      }
-
-      if (!bundle?.id) {
-        console.warn("[OTA] Download completed but bundle ID is missing.");
-        return;
-      }
-
-      // Keep it dormant. next() would activate when Android backgrounds the app
-      // and recreate the WebView when the user returns.
-      localStorage.setItem(OTA_PENDING_KEY, updateData.version);
-      console.log(
-        pendingOtaVersion === updateData.version
-          ? `[OTA] Update ${updateData.version} remains ready for the next cold start.`
-          : `[OTA] Update ${updateData.version} downloaded and ready for the next cold start.`
-      );
-    } catch (err) {
-      console.error("[OTA] Live update error:", err);
+    const updateData = await res.json();
+    if (!updateData || !updateData.version || !updateData.url || typeof updateData.url !== "string") {
+      console.warn("[OTA] Invalid live-update.json format on server.");
+      return;
     }
+
+    const current = await CapacitorUpdater.current().catch(() => null);
+    const currentBundleVersion = current?.bundle?.version || "";
+    const currentBundleId = current?.bundle?.id || "";
+    const nativeVersion = current?.native || "0.0.0";
+
+    const OTA_INSTALLED_KEY = "sanctificare_ota_installed_version";
+    const OTA_PENDING_KEY = "sanctificare_ota_pending_version";
+    const installedOtaVersion = localStorage.getItem(OTA_INSTALLED_KEY);
+    const pendingOtaVersion = localStorage.getItem(OTA_PENDING_KEY);
+
+    console.log(`[OTA] Bundle version: '${currentBundleVersion}' (id: '${currentBundleId}') | Local record: '${installedOtaVersion}' | Server: '${updateData.version}' | Native: '${nativeVersion}'`);
+
+    // Don't downgrade below native APK/AAB baseline
+    if (compareVersionCore(updateData.version, nativeVersion) < 0) {
+      console.warn(
+        `[OTA] Skipping downgrade. Server bundle ${updateData.version} is older than native ${nativeVersion}.`
+      );
+      return;
+    }
+
+    // Only the native updater is authoritative about the bundle currently in use.
+    const isAlreadyOnVersion =
+      currentBundleVersion === updateData.version ||
+      currentBundleId === updateData.version ||
+      installedOtaVersion === updateData.version;
+
+    if (isAlreadyOnVersion) {
+      localStorage.setItem(OTA_INSTALLED_KEY, updateData.version);
+      localStorage.removeItem(OTA_PENDING_KEY);
+      console.log(`[OTA] Already running target version ${updateData.version}. No update needed.`);
+      return;
+    }
+
+    // Reuse an already-downloaded bundle for this version, if any.
+    const list = await CapacitorUpdater.list().catch(() => null);
+    let bundle = list?.bundles?.find((b) => b.version === updateData.version || b.id === updateData.version);
+
+    if (!bundle) {
+      console.log(`[OTA] Downloading new update version ${updateData.version}...`);
+      bundle = await CapacitorUpdater.download({
+        url: updateData.url,
+        version: updateData.version,
+      });
+    }
+
+    if (!bundle?.id) {
+      console.warn("[OTA] Download completed but bundle ID is missing.");
+      return;
+    }
+
+    // Keep it dormant for next cold start
+    localStorage.setItem(OTA_PENDING_KEY, updateData.version);
+    console.log(
+      pendingOtaVersion === updateData.version
+        ? `[OTA] Update ${updateData.version} remains ready for the next cold start.`
+        : `[OTA] Update ${updateData.version} downloaded and ready for the next cold start.`
+    );
+  } catch (err) {
+    console.error("[OTA] Live update error:", err);
+  }
 }
 
 void activatePendingOtaBeforeRender().then((activationRequested) => {

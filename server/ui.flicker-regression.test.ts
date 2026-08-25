@@ -5,7 +5,7 @@ const readSource = (relativePath: string) =>
   readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
 
 describe("flicker regression guards", () => {
-  it("only activates an OTA bundle before React renders", () => {
+  it("only activates an OTA bundle before React renders with loop guards", () => {
     const source = readSource("client/src/main.tsx");
     const activationIndex = source.indexOf("CapacitorUpdater.set(");
     const renderIndex = source.indexOf("createRoot(");
@@ -13,6 +13,8 @@ describe("flicker regression guards", () => {
     expect(activationIndex).toBeGreaterThan(-1);
     expect(activationIndex).toBeLessThan(renderIndex);
     expect(source).not.toMatch(/CapacitorUpdater\.next\s*\(/);
+    expect(source).toContain("sanctificare_ota_activating_");
+    expect(source).toContain('localStorage.removeItem("sanctificare_ota_pending_version")');
   });
 
   it("shares one import promise between route preload and React.lazy", () => {
