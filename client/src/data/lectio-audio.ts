@@ -184,8 +184,14 @@ export function getGuidedLectioAudioTracks(passageId: string, dateIso: string): 
       }
     } else if (month === 8 && yearTwoDigits === "26") {
       const dayNum = day;
-      if (dayNum >= 1 && dayNum <= 24) {
+      if (dayNum >= 1 && dayNum <= 31) {
         audioUrl = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${dayStr}${monthStr}${yearTwoDigits}.mp3`;
+        duration = 180;
+      }
+    } else if (month === 9 && yearTwoDigits === "26") {
+      const dayNum = day;
+      if (dayNum === 1) {
+        audioUrl = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${dayStr}${monthStr}${yearTwoDigits}.mp3`;
         duration = 180;
       }
     }

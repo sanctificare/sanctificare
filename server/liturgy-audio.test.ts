@@ -28,7 +28,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 25/08/26", () => {
+  it("deve retornar os áudios da liturgia diária para o período de 01/08/26 a 31/08/26", () => {
     const dates = [
       "2026-08-01",
       "2026-08-02",
@@ -55,10 +55,17 @@ describe("liturgy-audio", () => {
       "2026-08-23",
       "2026-08-24",
       "2026-08-25",
+      "2026-08-26",
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-29",
+      "2026-08-30",
+      "2026-08-31",
     ];
 
     for (const dateIso of dates) {
       const [year, month, day] = dateIso.split("-");
+      const dayNum = parseInt(day, 10);
       const formattedDate = `${day}${month}26`;
       const audios = getLiturgyReadingsAudioByDate(dateIso);
 
@@ -69,12 +76,22 @@ describe("liturgy-audio", () => {
         `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`
       );
       
-      const psalmPrefix = (dateIso === "2026-08-24" || dateIso === "2026-08-25") ? "salmo" : "salmos";
-      expect(audios.singedPsalm).toBe(
-        `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
-      );
+      if (dayNum <= 25) {
+        const psalmPrefix = (dateIso === "2026-08-24" || dateIso === "2026-08-25") ? "salmo" : "salmos";
+        expect(audios.singedPsalm).toBe(
+          `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
+        );
+      } else {
+        expect(audios.singedPsalm).toBeUndefined();
+      }
 
-      if (dateIso === "2026-08-02" || dateIso === "2026-08-09" || dateIso === "2026-08-16" || dateIso === "2026-08-23") {
+      if (
+        dateIso === "2026-08-02" ||
+        dateIso === "2026-08-09" ||
+        dateIso === "2026-08-16" ||
+        dateIso === "2026-08-23" ||
+        dateIso === "2026-08-30"
+      ) {
         expect(audios.secondReading).toBe(
           `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/2leitura${formattedDate}.mp3`
         );
@@ -82,5 +99,17 @@ describe("liturgy-audio", () => {
         expect(audios.secondReading).toBeUndefined();
       }
     }
+  });
+
+  it("deve retornar os áudios da liturgia diária para 01/09/26", () => {
+    const audios = getLiturgyReadingsAudioByDate("2026-09-01");
+    expect(audios.firstReading).toBe(
+      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/1leitura010926.mp3"
+    );
+    expect(audios.gospel).toBe(
+      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho010926.mp3"
+    );
+    expect(audios.secondReading).toBeUndefined();
+    expect(audios.singedPsalm).toBeUndefined();
   });
 });
