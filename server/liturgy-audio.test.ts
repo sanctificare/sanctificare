@@ -1,3 +1,5 @@
+import "dotenv/config";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import { describe, expect, it } from "vitest";
 import { getLiturgyReadingsAudioByDate } from "../client/src/data/liturgy-audio";
 
@@ -76,14 +78,10 @@ describe("liturgy-audio", () => {
         `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`
       );
       
-      if (dayNum <= 25) {
-        const psalmPrefix = (dateIso === "2026-08-24" || dateIso === "2026-08-25") ? "salmo" : "salmos";
-        expect(audios.singedPsalm).toBe(
-          `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
-        );
-      } else {
-        expect(audios.singedPsalm).toBeUndefined();
-      }
+      const psalmPrefix = (dayNum === 24 || dayNum === 25) ? "salmo" : "salmos";
+      expect(audios.singedPsalm).toBe(
+        `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`
+      );
 
       if (
         dateIso === "2026-08-02" ||
@@ -101,7 +99,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para 01/09/26", () => {
+  it("deve retornar os áudios da liturgia diária para 01/09/26 incluindo salmo cantado", () => {
     const audios = getLiturgyReadingsAudioByDate("2026-09-01");
     expect(audios.firstReading).toBe(
       "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/1leitura010926.mp3"
@@ -110,6 +108,8 @@ describe("liturgy-audio", () => {
       "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho010926.mp3"
     );
     expect(audios.secondReading).toBeUndefined();
-    expect(audios.singedPsalm).toBeUndefined();
+    expect(audios.singedPsalm).toBe(
+      "/r2-storage/salmos-cantados/setembro26/salmos010926.mp3"
+    );
   });
 });

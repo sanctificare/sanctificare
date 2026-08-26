@@ -80,8 +80,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/agosto26/evangelho${formattedDate}.mp3`,
         };
 
-        // Salmos cantados disponíveis de 01 a 25 de agosto
-        if (dayNum <= 25) {
+        // Salmos cantados disponíveis de 01 a 31 de agosto
+        if (dayNum <= 31) {
           const psalmPrefix = (dayNum === 24 || dayNum === 25) ? "salmo" : "salmos";
           audio.singedPsalm = `/r2-storage/salmos-cantados/agosto26/${psalmPrefix}${formattedDate}.mp3`;
         }
@@ -101,6 +101,7 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         const audio: LiturgyReadingsAudio = {
           firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/1leitura${formattedDate}.mp3`,
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${formattedDate}.mp3`,
+          singedPsalm: `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`,
         };
 
         return audio;
