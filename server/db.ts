@@ -999,14 +999,14 @@ export async function getActiveSubscription(userId: number) {
   const db = await getDb();
   if (!db) return null;
 
-  // Conceder Premium automaticamente se o usuário for o administrador contato@sanctificare.app
+  // Conceder Premium automaticamente se o usuário for administrador ou contato@sanctificare.app
   const user = await db
-    .select({ email: users.email })
+    .select({ email: users.email, role: users.role })
     .from(users)
     .where(eq(users.id, userId))
     .limit(1);
 
-  if (user[0]?.email === "contato@sanctificare.app") {
+  if (user[0]?.email === "contato@sanctificare.app" || user[0]?.role === "admin") {
     const farFuture = new Date();
     farFuture.setFullYear(farFuture.getFullYear() + 50);
     return {
@@ -1535,6 +1535,7 @@ export async function getAdminPushTokens(segment: "all" | "premium"): Promise<st
       eq(pushDevices.enabled, true),
       or(
         eq(users.email, "contato@sanctificare.app"),
+        eq(users.role, "admin"),
         and(
           or(
             eq(subscriptions.status, "active"),
@@ -1872,6 +1873,8 @@ export async function getAdminStats() {
       .leftJoin(subscriptions, eq(subscriptions.userId, users.id))
       .leftJoin(adminPremiumGrants, eq(adminPremiumGrants.userId, users.id))
       .where(or(
+        eq(users.role, "admin"),
+        eq(users.email, "contato@sanctificare.app"),
         and(
           or(
             eq(subscriptions.status, "active"),

@@ -178,18 +178,25 @@ export default function Premium() {
                   })
                 : "—"}
             </p>
-            <Button
-              onClick={handleManage}
-              disabled={openingPortal}
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl h-10 text-sm cursor-pointer"
-            >
-              {openingPortal ? (
-                <Loader2 size={14} className="animate-spin mr-2" />
-              ) : (
-                <ExternalLink size={14} className="mr-2" />
-              )}
-              Gerenciar assinatura
-            </Button>
+            {subscription?.stripeCustomerId ? (
+              <Button
+                onClick={handleManage}
+                disabled={openingPortal}
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-xl h-10 text-sm cursor-pointer"
+              >
+                {openingPortal ? (
+                  <Loader2 size={14} className="animate-spin mr-2" />
+                ) : (
+                  <ExternalLink size={14} className="mr-2" />
+                )}
+                Gerenciar assinatura
+              </Button>
+            ) : (
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-500/30">
+                <Check size={14} />
+                Acesso Cortesia Ativo — Todos os Recursos Liberados
+              </div>
+            )}
           </div>
         )}
 
