@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --app-viewport-height: 100vh;
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-right: env(safe-area-inset-right, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
@@ -55,6 +56,12 @@
   --cream-dark: oklch(0.93 0.015 80);
   --burgundy: oklch(0.35 0.12 15);
   --parchment: oklch(0.95 0.02 80);
+}
+
+@supports (height: 100svh) {
+  :root {
+    --app-viewport-height: 100svh;
+  }
 }
 
 .dark {
@@ -166,7 +173,7 @@
   body,
   #root {
     min-height: 100%;
-    min-height: 100vh;
+    min-height: var(--app-viewport-height);
     width: 100%;
     max-width: 100%;
     background-color: var(--background);
@@ -374,7 +381,7 @@
 
   .mobile-app-viewport {
     min-height: 100%;
-    min-height: 100vh;
+    min-height: var(--app-viewport-height);
     width: 100%;
     max-width: 100%;
     background-color: var(--background);
@@ -391,11 +398,6 @@
     contain: layout style;
   }
 
-  .content-visibility-auto {
-    content-visibility: auto;
-    contain-intrinsic-size: 140px;
-  }
-
   .mobile-top-menu-trigger {
     top: calc(1rem + var(--safe-area-top));
     right: calc(1rem + var(--safe-area-right));
@@ -404,7 +406,7 @@
   .mobile-top-menu-panel {
     top: calc(3.5rem + var(--safe-area-top));
     right: calc(1rem + var(--safe-area-right));
-    max-height: calc(100dvh - (4.5rem + var(--safe-area-top)));
+    max-height: calc(var(--app-viewport-height) - (4.5rem + var(--safe-area-top)));
     overflow-y: auto;
   }
 
@@ -702,14 +704,13 @@
   /* Layout de tela cheia do Rosário Guiado */
   @media (max-width: 768px) {
     .rosary-fullscreen-layout {
-      height: calc(100vh - var(--mobile-bottom-nav-height) - var(--safe-area-bottom));
-      height: calc(100dvh - var(--mobile-bottom-nav-height) - var(--safe-area-bottom));
+      height: calc(var(--app-viewport-height) - var(--mobile-bottom-nav-height) - var(--safe-area-bottom));
       display: flex;
       flex-direction: column;
       overflow: hidden;
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
+      background-attachment: scroll;
     }
   }
 
@@ -719,7 +720,7 @@
       display: block;
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
+      background-attachment: scroll;
       padding-bottom: 2rem;
     }
   }

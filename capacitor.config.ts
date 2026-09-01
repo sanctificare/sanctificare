@@ -16,7 +16,8 @@ const config: CapacitorConfig = {
       presentationOptions: ["badge", "sound", "alert"],
     },
     CapacitorUpdater: {
-      autoUpdate: false,
+      autoUpdate: 'off',
+      resetWhenUpdate: true,
     },
   },
 };

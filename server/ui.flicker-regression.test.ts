@@ -5,24 +5,18 @@ const readSource = (relativePath: string) =>
   readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
 
 describe("flicker regression guards", () => {
-  it("only activates an OTA bundle before React renders with loop guards", () => {
+  it("does not invoke automatic OTA activation or download", () => {
     const source = readSource("client/src/main.tsx");
-    const activationIndex = source.indexOf("CapacitorUpdater.set(");
-    const renderIndex = source.indexOf("createRoot(");
-
-    expect(activationIndex).toBeGreaterThan(-1);
-    expect(activationIndex).toBeLessThan(renderIndex);
-    expect(source).not.toMatch(/CapacitorUpdater\.next\s*\(/);
-    expect(source).toContain("sanctificare_ota_activating_");
+    expect(source).not.toContain("void activatePendingOtaBeforeRender(");
+    expect(source).not.toContain("void checkForOtaUpdate(");
+    expect(source).toContain("const isOtaEnabled = false");
     expect(source).toContain('localStorage.removeItem("sanctificare_ota_pending_version")');
   });
 
-  it("shares one import promise between route preload and React.lazy", () => {
+  it("does not preload every route and stall low-memory WebViews", () => {
     const source = readSource("client/src/App.tsx");
-
-    expect(source).toContain("modulePromise ??= factory()");
-    expect(source).toContain("lazy(load)");
-    expect(source).toContain("Component.preload = load");
+    expect(source).not.toContain("ALL_ROUTES");
+    expect(source).not.toContain("preloadRoutes(");
   });
 
   it("does not animate the boot splash opacity", () => {
@@ -44,8 +38,11 @@ describe("flicker regression guards", () => {
   });
 
   it("caches template locally to prevent runtime restyle flicker", () => {
-    const source = readSource("client/src/hooks/useUserTemplate.ts");
-    expect(source).toContain("sanctificare_user_template");
+    const hookSource = readSource("client/src/hooks/useUserTemplate.ts");
+    const mainSource = readSource("client/src/main.tsx");
+    expect(hookSource).toContain("sanctificare_user_template");
+    expect(mainSource.indexOf("applyCachedUserTemplate()"))
+      .toBeLessThan(mainSource.indexOf("createRoot("));
   });
 
   it("keeps MobileBottomNav stable without authentication pop-in", () => {
@@ -67,6 +64,7 @@ describe("flicker regression guards", () => {
     const stylesXml = readSource("android/app/src/main/res/values/styles.xml");
     expect(stylesXml).toContain('<item name="android:background">#faf7f2</item>');
     expect(stylesXml).toContain('<item name="android:windowBackground">#faf7f2</item>');
+    expect(stylesXml).toContain('<item name="windowSplashScreenBackground">#faf7f2</item>');
   });
 
   it("ensures HTML boot splash and CSS viewports use consistent background variables", () => {
@@ -79,27 +77,33 @@ describe("flicker regression guards", () => {
     expect(indexCss).not.toContain(".mobile-app-viewport {\n    min-height: 100%;\n    min-height: 100svh;\n    min-height: 100dvh;\n    width: 100%;\n    max-width: 100%;\n    overflow-x: hidden;\n    background-color: oklch(0.12 0.03 260);");
   });
 
-  it("defines and uses ALL_ROUTES consistently for idle preloading", () => {
+  it("keeps lazy-route loading non-collapsing and on the same background", () => {
     const source = readSource("client/src/App.tsx");
-    expect(source).toContain("const ALL_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [");
-    expect(source).toContain("preloadRoutes(ALL_ROUTES)");
-    expect(source).not.toContain("preloadRoutes(CRITICAL_PRELOAD_ROUTES)");
-  });
-
-  it("ensures SuspenseLoader and HomeRoute transitions are instant and non-collapsing", () => {
-    const source = readSource("client/src/App.tsx");
-    expect(source).toMatch(/function SuspenseLoader\(\)\s*\{\s*return null;\s*\}/);
+    expect(source).toContain('className="min-h-[var(--app-viewport-height)] bg-background"');
     expect(source).toContain('<Redirect to="/dashboard" replace />');
   });
 
   it("ensures scroll stability and avoids resetting scroll during in-page interaction", () => {
     const appSource = readSource("client/src/App.tsx");
-    expect(appSource).toContain("prevLocationRef.current !== null && prevLocationRef.current !== location");
+    expect(appSource).not.toContain("window.scrollTo");
 
     const cssSource = readSource("client/src/index.css");
     expect(cssSource).not.toMatch(/body,\s*#root\s*\{[^}]*overflow-y:\s*auto/);
+    expect(cssSource).not.toContain("content-visibility: auto");
+    expect(cssSource).not.toContain("100dvh");
+    expect(cssSource).toContain("--app-viewport-height: 100svh");
 
     const dashboardSource = readSource("client/src/pages/Dashboard.tsx");
     expect(dashboardSource).not.toMatch(/<div className="min-h-screen[^"]*overflow-hidden/);
+  });
+
+  it("keeps production WebView diagnostics off and disables updater auto checks", () => {
+    const activity = readSource("android/app/src/main/java/com/sanctificare/app/MainActivity.java");
+    expect(activity).toContain("ApplicationInfo.FLAG_DEBUGGABLE");
+    expect(activity).toContain("WebView.setWebContentsDebuggingEnabled(isDebuggable)");
+
+    const config = readSource("capacitor.config.ts");
+    expect(config).toContain("autoUpdate: 'off'");
+    expect(config).toContain("resetWhenUpdate: true");
   });
 });

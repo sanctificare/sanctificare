@@ -7,8 +7,8 @@ android {
         applicationId "com.sanctificare.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
-        versionName "1.0.16"
+        versionCode 19
+        versionName "1.0.17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -64,7 +64,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-    implementation 'com.onesignal:OneSignal:[5.0.0, 5.99.99]'
+    // Exact version keeps CI/Play builds reproducible and avoids a metadata
+    // lookup on every build.
+    implementation 'com.onesignal:OneSignal:5.9.9'
 }
 
 def pruneHeavyWebAssets = tasks.register('pruneHeavyWebAssets', Delete) {

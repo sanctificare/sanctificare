@@ -311,7 +311,7 @@ export default function VelaVirtual() {
                   onClick={() => {
                     if (cleanMode) setShowControls(!showControls);
                   }}
-                  className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100dvh] sm:h-[92vh] cursor-pointer" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}
+                  className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100svh] sm:h-[92vh] cursor-pointer" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}
                 >
                   {BUNNY_LIBRARY_ID ? (
                     isPlaying ? (

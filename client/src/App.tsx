@@ -41,78 +41,38 @@ import DailyPlan from "./pages/DailyPlan";
 import AppNav from "@/components/AppNav";
 import { useOfflineSync } from "./hooks/useOfflineSync";
 
-type PreloadableComponent<T extends React.ComponentType<any>> =
-  React.LazyExoticComponent<T> & { preload: () => Promise<unknown> };
-
-// lazy() com capacidade de pré-carregar o chunk sob demanda. Assim conseguimos
-// buscar e avaliar todos os módulos de rota enquanto o app está ocioso, evitando
-// a tela "Carregando..." (fallback do Suspense) a cada navegação.
-function lazyWithPreload<T extends React.ComponentType<any>>(
-  factory: () => Promise<{ default: T }>,
-): PreloadableComponent<T> {
-  let modulePromise: Promise<{ default: T }> | undefined;
-  const load = () => {
-    modulePromise ??= factory();
-    return modulePromise;
-  };
-  const Component = lazy(load) as PreloadableComponent<T>;
-  Component.preload = load;
-  return Component;
-}
-
-const GlobalSearch = lazyWithPreload(() => import("@/components/GlobalSearch"));
-const LectioDivina = lazyWithPreload(() => import("./pages/LectioDivina"));
-const ViaSacra = lazyWithPreload(() => import("./pages/ViaSacra"));
-const VelaVirtual = lazyWithPreload(() => import("./pages/VelaVirtual"));
-const MusicaSacra = lazyWithPreload(() => import("./pages/MusicaSacra"));
-const Novenas = lazyWithPreload(() => import("./pages/Novenas"));
-const NovenaDetails = lazyWithPreload(() => import("./pages/NovenaDetails"));
-const Intentions = lazyWithPreload(() => import("./pages/Intentions"));
-const Profile = lazyWithPreload(() => import("./pages/Profile"));
-const DangerZone = lazyWithPreload(() => import("./pages/DangerZone"));
-const VideosBiblicos = lazyWithPreload(() => import("./pages/VideosBiblicos"));
-const DegrausPerfeicao = lazyWithPreload(() => import("./pages/DegrausPerfeicao"));
-const ImitacaoCristoRetiro = lazyWithPreload(() => import("./pages/ImitacaoCristoRetiro"));
-const FiloteiaRetiro = lazyWithPreload(() => import("./pages/FiloteiaRetiro"));
-const Premium = lazyWithPreload(() => import("./pages/Premium"));
-const PremiumSucesso = lazyWithPreload(() => import("./pages/PremiumSucesso"));
-const ApoieMissao = lazyWithPreload(() => import("./pages/ApoieMissao"));
-const SaintMichaelLent = lazyWithPreload(() => import("./pages/SaintMichaelLent"));
-const SaintMichaelLentLanding = lazyWithPreload(() => import("./pages/SaintMichaelLentLanding"));
-const Santoral = lazyWithPreload(() => import("./pages/Santoral"));
-const SaintDetail = lazyWithPreload(() => import("./pages/SaintDetail"));
-
-const ALL_ROUTES: PreloadableComponent<React.ComponentType<any>>[] = [
-  GlobalSearch,
-  LectioDivina,
-  ViaSacra,
-  VelaVirtual,
-  MusicaSacra,
-  Novenas,
-  NovenaDetails,
-  Intentions,
-  Profile,
-  DangerZone,
-  VideosBiblicos,
-  DegrausPerfeicao,
-  ImitacaoCristoRetiro,
-  FiloteiaRetiro,
-  Premium,
-  PremiumSucesso,
-  SaintMichaelLent,
-  SaintMichaelLentLanding,
-  Santoral,
-  SaintDetail,
-];
-
-function preloadRoutes(routes: PreloadableComponent<React.ComponentType<any>>[]) {
-  for (const route of routes) {
-    void route.preload();
-  }
-}
+// Rotas secundárias são carregadas apenas quando necessárias para não saturar a
+// thread principal de WebViews Android com a avaliação de todo o aplicativo.
+const GlobalSearch = lazy(() => import("@/components/GlobalSearch"));
+const LectioDivina = lazy(() => import("./pages/LectioDivina"));
+const ViaSacra = lazy(() => import("./pages/ViaSacra"));
+const VelaVirtual = lazy(() => import("./pages/VelaVirtual"));
+const MusicaSacra = lazy(() => import("./pages/MusicaSacra"));
+const Novenas = lazy(() => import("./pages/Novenas"));
+const NovenaDetails = lazy(() => import("./pages/NovenaDetails"));
+const Intentions = lazy(() => import("./pages/Intentions"));
+const Profile = lazy(() => import("./pages/Profile"));
+const DangerZone = lazy(() => import("./pages/DangerZone"));
+const VideosBiblicos = lazy(() => import("./pages/VideosBiblicos"));
+const DegrausPerfeicao = lazy(() => import("./pages/DegrausPerfeicao"));
+const ImitacaoCristoRetiro = lazy(() => import("./pages/ImitacaoCristoRetiro"));
+const FiloteiaRetiro = lazy(() => import("./pages/FiloteiaRetiro"));
+const Premium = lazy(() => import("./pages/Premium"));
+const PremiumSucesso = lazy(() => import("./pages/PremiumSucesso"));
+const ApoieMissao = lazy(() => import("./pages/ApoieMissao"));
+const SaintMichaelLent = lazy(() => import("./pages/SaintMichaelLent"));
+const SaintMichaelLentLanding = lazy(() => import("./pages/SaintMichaelLentLanding"));
+const Santoral = lazy(() => import("./pages/Santoral"));
+const SaintDetail = lazy(() => import("./pages/SaintDetail"));
 
 function SuspenseLoader() {
-  return null;
+  return (
+    <div
+      className="min-h-[var(--app-viewport-height)] bg-background"
+      aria-busy="true"
+      aria-label="Carregando tela"
+    />
+  );
 }
 
 function ProtectedDashboardRoute(props: any) {
@@ -251,16 +211,9 @@ function Router() {
 
 function AppShell() {
   const [location] = useLocation();
-  const prevLocationRef = useRef<string | null>(null);
 
   useEffect(() => {
     void trackPageView(location);
-    if (prevLocationRef.current !== null && prevLocationRef.current !== location) {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }
-    prevLocationRef.current = location;
   }, [location]);
 
   const isAuthPage =
@@ -405,25 +358,6 @@ function App() {
   useOfflineSync();
   const { isAuthenticated, user } = useAuth();
   const utils = trpc.useUtils();
-
-  // Pré-carrega todos os chunks de rotas quando o app/navegador fica ocioso.
-  // Isso garante transições 100% instantâneas sem nenhum flash em qualquer navegador (Chrome, Edge, Firefox).
-  useEffect(() => {
-    const ric = (window as typeof window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-      cancelIdleCallback?: (id: number) => void;
-    }).requestIdleCallback;
-
-    if (typeof ric === "function") {
-      const id = ric(() => preloadRoutes(ALL_ROUTES), { timeout: 1500 });
-      return () => {
-        (window as typeof window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
-      };
-    }
-
-    const timer = window.setTimeout(() => preloadRoutes(ALL_ROUTES), 500);
-    return () => window.clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!isMobileApp()) return;

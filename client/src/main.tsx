@@ -10,9 +10,11 @@ import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
 import { initAnalytics } from "./lib/analytics";
+import { applyCachedUserTemplate } from "./hooks/useUserTemplate";
 
 // Cache buster for deployment: 2026-07-15 17:45
-const isOtaEnabled = import.meta.env.VITE_ENABLE_OTA === "true";
+// Executable updates are intentionally locked to the Play Store bundle.
+const isOtaEnabled = false;
 
 const parseVersionCore = (version: string | null | undefined) => {
   if (!version) return [0, 0, 0];
@@ -24,12 +26,10 @@ const parseVersionCore = (version: string | null | undefined) => {
 const compareVersionCore = (left: string | null | undefined, right: string | null | undefined) => {
   const leftParts = parseVersionCore(left);
   const rightParts = parseVersionCore(right);
-
   for (let index = 0; index < 3; index += 1) {
     if (leftParts[index] > rightParts[index]) return 1;
     if (leftParts[index] < rightParts[index]) return -1;
   }
-
   return 0;
 };
 
@@ -306,6 +306,12 @@ if (typeof window !== "undefined") {
 async function activatePendingOtaBeforeRender(): Promise<boolean> {
   if (typeof window === "undefined" || !isMobileApp()) return false;
 
+  if (!isOtaEnabled) {
+    localStorage.removeItem("sanctificare_ota_pending_version");
+    localStorage.removeItem("sanctificare_ota_installed_version");
+    return false;
+  }
+
   // 1. Immediately notify native layer that the app is ready so it commits the active bundle
   try {
     await CapacitorUpdater.notifyAppReady();
@@ -454,19 +460,23 @@ async function checkForOtaUpdate() {
   }
 }
 
-void activatePendingOtaBeforeRender().then((activationRequested) => {
-  if (activationRequested) return;
+applyCachedUserTemplate();
 
-  createRoot(document.getElementById("root")!).render(
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </trpc.Provider>
-  );
+createRoot(document.getElementById("root")!).render(
+  <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </trpc.Provider>
+);
 
-  void checkForOtaUpdate();
-});
+if (isMobileApp()) {
+  localStorage.removeItem("sanctificare_ota_pending_version");
+  localStorage.removeItem("sanctificare_ota_installed_version");
+  void CapacitorUpdater.notifyAppReady().catch((error) => {
+    console.warn("[Updater] notifyAppReady warning:", error);
+  });
+}
 
 // Deep linking handler for Google OAuth in Capacitor mobile app
 if (typeof window !== "undefined" && isMobileApp()) {
@@ -496,13 +506,16 @@ if (typeof window !== "undefined" && isMobileApp()) {
           if (isMobileApp()) {
             sessionStorage.setItem('__cap_app_started', '1');
           }
-          window.location.replace(destination);
+          queryClient.clear();
+          window.history.replaceState({}, "", destination);
+          window.dispatchEvent(new PopStateEvent("popstate"));
           return;
         }
 
         // Support route-only deep links (without OAuth token), e.g.
         // sanctificare://callback/degraus-de-perfeicao.
-        window.location.replace(destination);
+        window.history.replaceState({}, "", destination);
+        window.dispatchEvent(new PopStateEvent("popstate"));
       }
     } catch (e) {
       console.error("[DeepLink] Error handling URL:", e);

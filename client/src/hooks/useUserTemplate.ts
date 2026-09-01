@@ -5,6 +5,15 @@ import { applyTemplateTheme, type TemplateType } from "@/data/templates";
 
 const LOCAL_TEMPLATE_KEY = "sanctificare_user_template";
 
+export function applyCachedUserTemplate() {
+  try {
+    const cached = localStorage.getItem(LOCAL_TEMPLATE_KEY);
+    if (cached) applyTemplateTheme(cached as TemplateType);
+  } catch {
+    // Storage can be unavailable in private or hardened browser contexts.
+  }
+}
+
 /**
  * Hook que carrega e aplica o tema preferido do usuário
  * Executa automaticamente quando o usuário faz login
@@ -13,17 +22,6 @@ export function useUserTemplate() {
   const { isAuthenticated } = useAuth();
   
   // Aplica tema salvo em cache imediatamente no primeiro render
-  useEffect(() => {
-    try {
-      const cached = localStorage.getItem(LOCAL_TEMPLATE_KEY);
-      if (cached) {
-        applyTemplateTheme(cached as TemplateType);
-      }
-    } catch {
-      // Ignorar erros de storage
-    }
-  }, []);
-
   const { data: templatePreference } = trpc.templates.getPreference.useQuery(
     undefined,
     {
