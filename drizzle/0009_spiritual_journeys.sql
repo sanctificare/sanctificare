@@ -1,4 +1,4 @@
-CREATE TABLE "spiritual_journeys" (
+CREATE TABLE IF NOT EXISTS "spiritual_journeys" (
   "id" varchar(80) PRIMARY KEY NOT NULL,
   "title" varchar(180) NOT NULL,
   "description" text NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE "spiritual_journeys" (
   "updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "spiritual_journey_days" (
+CREATE TABLE IF NOT EXISTS "spiritual_journey_days" (
   "id" serial PRIMARY KEY NOT NULL,
   "journeyId" varchar(80) NOT NULL REFERENCES "spiritual_journeys"("id") ON DELETE cascade,
   "dayNumber" integer NOT NULL,
@@ -36,9 +36,9 @@ CREATE TABLE "spiritual_journey_days" (
   "premiumContent" jsonb
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX "spiritual_journey_day_uq" ON "spiritual_journey_days" USING btree ("journeyId", "dayNumber");
+CREATE UNIQUE INDEX IF NOT EXISTS "spiritual_journey_day_uq" ON "spiritual_journey_days" USING btree ("journeyId", "dayNumber");
 --> statement-breakpoint
-CREATE TABLE "spiritual_journey_progress" (
+CREATE TABLE IF NOT EXISTS "spiritual_journey_progress" (
   "id" serial PRIMARY KEY NOT NULL,
   "userId" integer NOT NULL REFERENCES "users"("id") ON DELETE cascade,
   "journeyId" varchar(80) NOT NULL REFERENCES "spiritual_journeys"("id") ON DELETE cascade,
@@ -53,9 +53,9 @@ CREATE TABLE "spiritual_journey_progress" (
   "updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX "spiritual_journey_progress_user_uq" ON "spiritual_journey_progress" USING btree ("userId", "journeyId");
+CREATE UNIQUE INDEX IF NOT EXISTS "spiritual_journey_progress_user_uq" ON "spiritual_journey_progress" USING btree ("userId", "journeyId");
 --> statement-breakpoint
-CREATE TABLE "spiritual_journey_journals" (
+CREATE TABLE IF NOT EXISTS "spiritual_journey_journals" (
   "id" serial PRIMARY KEY NOT NULL,
   "userId" integer NOT NULL REFERENCES "users"("id") ON DELETE cascade,
   "journeyId" varchar(80) NOT NULL REFERENCES "spiritual_journeys"("id") ON DELETE cascade,
@@ -67,4 +67,4 @@ CREATE TABLE "spiritual_journey_journals" (
   "updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX "spiritual_journey_journal_user_day_uq" ON "spiritual_journey_journals" USING btree ("userId", "journeyId", "dayNumber");
+CREATE UNIQUE INDEX IF NOT EXISTS "spiritual_journey_journal_user_day_uq" ON "spiritual_journey_journals" USING btree ("userId", "journeyId", "dayNumber");

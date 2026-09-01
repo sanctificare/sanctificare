@@ -14,6 +14,13 @@ build/
 .env.test.local
 .env.production.local
 
+# Mobile signing credentials and service-account files
+**/*.jks
+**/*.keystore
+**/*.p12
+android/app/google-services.json
+ios/App/App/GoogleService-Info.plist
+
 # IDE and editor files
 .vscode/
 .idea/
@@ -113,4 +120,3 @@ temp/
 
 # Scratch files
 scratch/
-

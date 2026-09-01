@@ -64,6 +64,20 @@
       "when": 1785469999000,
       "tag": "0008_admin_audit_logs",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1785569999000,
+      "tag": "0009_spiritual_journeys",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1788264000000,
+      "tag": "0010_security_and_schema_consistency",
+      "breakpoints": true
     }
   ]
 }

@@ -126,7 +126,7 @@ export function registerOAuthRoutes(app: Express) {
       const appPath = sanitizeAppPath(getQueryParam(req, "path"));
       const cookieOptions = getSessionCookieOptions(req);
       const csrfCookieOptions = getCsrfCookieOptions(req);
-      res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
+      res.clearCookie("dev_logged_out", cookieOptions);
       res.cookie(COOKIE_NAME, "dev-dummy-session-token", { ...cookieOptions, maxAge: ENV.sessionTtlMs });
       res.cookie(CSRF_COOKIE_NAME, generateCsrfToken(), {
         ...csrfCookieOptions,
@@ -150,7 +150,7 @@ export function registerOAuthRoutes(app: Express) {
       const expectedNonce = cookies[OAUTH_STATE_COOKIE_NAME];
 
       const cookieOptions = getSessionCookieOptions(req);
-      res.clearCookie(OAUTH_STATE_COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      res.clearCookie(OAUTH_STATE_COOKIE_NAME, cookieOptions);
 
       if (!decodedState || !expectedNonce || decodedState.nonce !== expectedNonce) {
         res.status(400).json({ error: "invalid oauth state" });

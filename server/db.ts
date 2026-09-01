@@ -81,6 +81,7 @@ async function bootstrapDb(sql: any) {
         role role DEFAULT 'user' NOT NULL,
         "templatePreference" "templatePreference" DEFAULT 'classico' NOT NULL,
         "passwordHash" text,
+        "passwordChangedAt" timestamp with time zone,
         "createdAt" timestamp DEFAULT now() NOT NULL,
         "updatedAt" timestamp DEFAULT now() NOT NULL,
         "lastSignedIn" timestamp DEFAULT now() NOT NULL
@@ -580,7 +581,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     if (user.role !== undefined) {
       values.role = user.role;
       updateSet.role = user.role;
-    } else if (user.openId === ENV.ownerOpenId || user.email === "contato@sanctificare.app") {
+    } else if (Boolean(ENV.ownerOpenId) && user.openId === ENV.ownerOpenId) {
       values.role = 'admin';
       updateSet.role = 'admin';
     }
@@ -650,6 +651,7 @@ export async function getUserByOpenId(openId: string) {
       ...result[0],
       templatePreference: "classico" as const,
       passwordHash: null,
+      passwordChangedAt: null,
     };
   }
 }
@@ -700,6 +702,7 @@ export async function getUserByEmail(email: string) {
       return {
         ...result[0],
         templatePreference: "classico" as const,
+        passwordChangedAt: null,
       };
     } catch (fallbackError) {
       const missingPasswordHash =
@@ -733,6 +736,7 @@ export async function getUserByEmail(email: string) {
         ...result[0],
         templatePreference: "classico" as const,
         passwordHash: null,
+        passwordChangedAt: null,
       };
     }
   }
@@ -1429,35 +1433,35 @@ export async function consumePasswordResetToken(
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
 
-  const userId = await validatePasswordResetToken(token);
-  if (!userId) return false;
-
   const tokenHash = hashResetToken(token);
+  return db.transaction(async (tx) => {
+    const now = new Date();
+    const consumed = await tx
+      .update(passwordResetTokens)
+      .set({ usedAt: now })
+      .where(and(
+        eq(passwordResetTokens.token, tokenHash),
+        isNull(passwordResetTokens.usedAt),
+        gt(passwordResetTokens.expiresAt, now)
+      ))
+      .returning({ userId: passwordResetTokens.userId });
 
-  // Marca o token enviado como usado
-  await db
-    .update(passwordResetTokens)
-    .set({ usedAt: new Date() })
-    .where(eq(passwordResetTokens.token, tokenHash));
+    const userId = consumed[0]?.userId;
+    if (!userId) return false;
 
-  // Atualiza a senha
-  await db
-    .update(users)
-    .set({ passwordHash: newPasswordHash, updatedAt: new Date() })
-    .where(eq(users.id, userId));
+    await tx
+      .update(users)
+      .set({ passwordHash: newPasswordHash, passwordChangedAt: now, updatedAt: now })
+      .where(eq(users.id, userId));
 
-  // Após redefinir a senha, invalida quaisquer outros tokens pendentes do usuário.
-  await db
-    .update(passwordResetTokens)
-    .set({ usedAt: new Date() })
-    .where(
-      and(
-        eq(passwordResetTokens.userId, userId),
-        isNull(passwordResetTokens.usedAt)
-      )
-    );
+    // Após redefinir a senha, invalida quaisquer outros tokens pendentes do usuário.
+    await tx
+      .update(passwordResetTokens)
+      .set({ usedAt: now })
+      .where(and(eq(passwordResetTokens.userId, userId), isNull(passwordResetTokens.usedAt)));
 
-  return true;
+    return true;
+  });
 }
 
 // ─── Push Devices ─────────────────────────────────────────────────────────────
@@ -2206,4 +2210,3 @@ export async function deleteSpiritualJourneyJournal(userId: number, journeyId: s
     );
   return true;
 }
-

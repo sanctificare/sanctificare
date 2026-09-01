@@ -244,13 +244,14 @@ class SDKServer {
       name: payload.name,
     })
       .setProtectedHeader({ alg: "HS256", typ: "JWT" })
+      .setIssuedAt(Math.floor(issuedAt / 1000))
       .setExpirationTime(expirationSeconds)
       .sign(secretKey);
   }
 
   async verifySession(
     cookieValue: string | undefined | null
-  ): Promise<{ openId: string; appId: string; name: string } | null> {
+  ): Promise<{ openId: string; appId: string; name: string; issuedAt: number | null } | null> {
     if (!cookieValue) {
       console.warn("[Auth] Missing session cookie");
       return null;
@@ -261,7 +262,7 @@ class SDKServer {
       const { payload } = await jwtVerify(cookieValue, secretKey, {
         algorithms: ["HS256"],
       });
-      const { openId, appId, name } = payload as Record<string, unknown>;
+      const { openId, appId, name, iat } = payload as Record<string, unknown>;
 
       if (!isNonEmptyString(openId)) {
         console.warn("[Auth] Session payload missing openId");
@@ -272,6 +273,7 @@ class SDKServer {
         openId,
         appId: typeof appId === "string" ? appId : "",
         name: typeof name === "string" ? name : "",
+        issuedAt: typeof iat === "number" ? iat : null,
       };
     } catch (error) {
       console.warn("[Auth] Session verification failed", String(error));
@@ -409,6 +411,13 @@ class SDKServer {
 
     if (!user) {
       throw ForbiddenError("User not found");
+    }
+
+    if (user.passwordChangedAt) {
+      const issuedAtMs = session.issuedAt === null ? 0 : session.issuedAt * 1000;
+      if (issuedAtMs < user.passwordChangedAt.getTime()) {
+        throw ForbiddenError("Session was issued before the last password change");
+      }
     }
 
     const shouldUpdateLastSignedIn =

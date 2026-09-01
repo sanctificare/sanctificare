@@ -90,6 +90,7 @@ describe("auth.credentials REST API", () => {
     expect(res.body.success).toBe(true);
     expect(res.body.user.email).toBe(randomEmail);
     expect(res.body.user.name).toBe(name);
+    expect(mockUsers.find((user) => user.email === randomEmail)?.role).toBe("user");
 
     const cookies = res.headers["set-cookie"] || [];
     const hasSession = cookies.some((c: string) => c.includes(COOKIE_NAME));

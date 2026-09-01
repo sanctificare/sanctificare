@@ -316,7 +316,7 @@ export default function AudioLibraryPage({
       </main>
 
       {/* Player flutuante fixado na parte inferior da tela */}
-      {effectiveSelectedTrack && trackReady && (!effectiveSelectedTrack.premium || isPremium || !isAuthenticated) && (
+      {effectiveSelectedTrack && trackReady && (!effectiveSelectedTrack.premium || isPremium) && (
         <div className="fixed bottom-4 left-4 right-4 md:left-8 md:right-8 z-50 flex justify-center pointer-events-none animate-fade-in">
           <div className="w-full max-w-4xl pointer-events-auto">
             <AudioPlayer

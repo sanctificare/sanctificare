@@ -20,6 +20,8 @@ jobs:
             cd ${{ secrets.APP_DIR }}
             git pull origin main
             pnpm install --frozen-lockfile
+            pnpm check
+            pnpm test
             pnpm build
             pm2 restart sanctificare-backend --update-env
             echo "Deploy concluido: $(date)"

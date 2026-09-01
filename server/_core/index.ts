@@ -147,21 +147,48 @@ async function startServer() {
         await migrate(db, { migrationsFolder });
         console.log("[Database] Programmatic migrations completed successfully.");
       } else {
-        console.warn("[Database] DATABASE_URL not configured. Skipping startup migrations.");
+        throw new Error("DATABASE_URL is required in production");
       }
     } catch (error) {
-      console.warn("[Database] Programmatic migration warning/error at startup:", error);
+      console.error("[Database] Startup migration failed:", error);
+      throw error;
     }
   }
 
   const app = express();
-  app.set("trust proxy", true);
+  // Only the local reverse proxy is trusted. This prevents clients from
+  // spoofing X-Forwarded-For to bypass IP-based abuse controls.
+  app.set("trust proxy", "loopback");
 
   const server = createServer(app);
   const allowedOrigins = getAllowedOrigins();
 
-  // Keep a conservative default request body limit to reduce DoS surface.
-  app.use(express.json({ limit: "1mb" }));
+  app.disable("x-powered-by");
+  app.use((_req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(self)");
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; media-src 'self' blob: https:; frame-src https://iframe.mediadelivery.net; connect-src 'self' https: wss:; form-action 'self' https://accounts.google.com"
+    );
+    if (process.env.NODE_ENV === "production") {
+      res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+    }
+    next();
+  });
+
+  // Preserve Stripe's exact bytes while retaining the global JSON parser.
+  // Signature verification must never use a re-serialized JSON object.
+  app.use(express.json({
+    limit: "1mb",
+    verify: (req: any, _res, buffer) => {
+      if (req.originalUrl === "/api/stripe/webhook") {
+        req.rawBody = Buffer.from(buffer);
+      }
+    },
+  }));
   app.use(express.urlencoded({ limit: "1mb", extended: true }));
 
   app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -276,15 +303,19 @@ async function startServer() {
       const webhookSecret = ENV.stripeWebhookSecret;
 
       if (!ENV.stripeSecretKey || !webhookSecret) {
-        console.warn("[Stripe Webhook] Stripe não configurado, ignorando evento.");
-        return res.sendStatus(200);
+        console.error("[Stripe Webhook] Configuração Stripe ausente; evento não processado.");
+        return res.status(503).send("Stripe webhook unavailable");
       }
 
       let event: any;
       try {
         const Stripe = (await import("stripe")).default;
         const stripe = new Stripe(ENV.stripeSecretKey);
-        event = stripe.webhooks.constructEvent(req.body as Buffer, sig ?? "", webhookSecret);
+        const rawBody = (req as express.Request & { rawBody?: Buffer }).rawBody;
+        if (!rawBody) {
+          return res.status(400).send("Webhook Error: raw body unavailable");
+        }
+        event = stripe.webhooks.constructEvent(rawBody, sig ?? "", webhookSecret);
       } catch (err: any) {
         console.error("[Stripe Webhook] Assinatura inválida:", err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);

@@ -29,6 +29,7 @@ export const users = pgTable(
     role: roleEnum("role").default("user").notNull(),
     templatePreference: templatePreferenceEnum("templatePreference").default("classico").notNull(),
     passwordHash: text("passwordHash"),
+    passwordChangedAt: timestamp("passwordChangedAt", { withTimezone: true }),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().notNull(),
     lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),

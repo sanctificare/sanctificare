@@ -16,17 +16,27 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    def releaseStoreFile = providers.gradleProperty("SANCTIFICARE_STORE_FILE").orElse(providers.environmentVariable("SANCTIFICARE_STORE_FILE"))
+    def releaseStorePassword = providers.gradleProperty("SANCTIFICARE_STORE_PASSWORD").orElse(providers.environmentVariable("SANCTIFICARE_STORE_PASSWORD"))
+    def releaseKeyAlias = providers.gradleProperty("SANCTIFICARE_KEY_ALIAS").orElse(providers.environmentVariable("SANCTIFICARE_KEY_ALIAS"))
+    def releaseKeyPassword = providers.gradleProperty("SANCTIFICARE_KEY_PASSWORD").orElse(providers.environmentVariable("SANCTIFICARE_KEY_PASSWORD"))
+    def hasReleaseSigning = releaseStoreFile.isPresent() && releaseStorePassword.isPresent() && releaseKeyAlias.isPresent() && releaseKeyPassword.isPresent()
+
     signingConfigs {
-        release {
-            storeFile file("sanctificare-release-key.jks")
-            storePassword "123456"
-            keyAlias "sanctificare-alias"
-            keyPassword "123456"
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(releaseStoreFile.get())
+                storePassword releaseStorePassword.get()
+                keyAlias releaseKeyAlias.get()
+                keyPassword releaseKeyPassword.get()
+            }
         }
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             debuggable false

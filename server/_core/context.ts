@@ -19,6 +19,7 @@ const DEV_BYPASS_USER: User = {
   role: "admin",
   templatePreference: "classico",
   passwordHash: null,
+  passwordChangedAt: null,
   createdAt: new Date(),
   updatedAt: new Date(),
   lastSignedIn: new Date(),

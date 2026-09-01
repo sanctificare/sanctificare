@@ -34,7 +34,10 @@ describe("auth.logout REST API", () => {
     expect(res.body).toEqual({ success: true });
 
     const cookies = res.headers["set-cookie"] || [];
-    const clearedSession = cookies.some((c: string) => c.includes(COOKIE_NAME) && (c.includes("Max-Age=-1") || c.includes("Max-Age=0") || c.includes("expires=")));
+    const clearedSession = cookies.some((c: string) => {
+      const normalized = c.toLowerCase();
+      return normalized.includes(COOKIE_NAME) && normalized.includes("expires=");
+    });
     expect(clearedSession).toBe(true);
   });
 });

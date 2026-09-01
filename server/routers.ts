@@ -188,7 +188,7 @@ export const appRouter = router({
 
     getUsersList: adminProcedure
       .input(z.object({
-        search: z.string().optional(),
+        search: z.string().trim().max(120).optional(),
         limit: z.number().int().min(1).max(100).default(20),
         offset: z.number().int().min(0).default(0),
       }))
@@ -335,7 +335,7 @@ export const appRouter = router({
 
   journeys: router({
     getProgress: protectedProcedure
-      .input(z.object({ journeyId: z.string() }))
+      .input(z.object({ journeyId: z.string().min(1).max(80) }))
       .query(async ({ ctx, input }) => {
         return getSpiritualJourneyProgress(ctx.user.id, input.journeyId);
       }),
@@ -343,15 +343,15 @@ export const appRouter = router({
     saveProgress: protectedProcedure
       .input(
         z.object({
-          journeyId: z.string(),
-          startedAt: z.string(),
-          expectedEndAt: z.string(),
-          lastAccessedDay: z.number().int().optional(),
-          completedDays: z.array(z.number().int()).optional(),
-          currentStreak: z.number().int().optional(),
-          chosenPenance: z.string().optional(),
-          reminderTime: z.string().optional(),
-          status: z.string().optional(),
+          journeyId: z.string().min(1).max(80),
+          startedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          expectedEndAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          lastAccessedDay: z.number().int().min(1).max(400).optional(),
+          completedDays: z.array(z.number().int().min(1).max(400)).max(400).optional(),
+          currentStreak: z.number().int().min(0).max(400).optional(),
+          chosenPenance: z.string().max(2000).optional(),
+          reminderTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).optional(),
+          status: z.enum(["active", "completed", "paused"]).optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -368,7 +368,7 @@ export const appRouter = router({
       }),
 
     getJournal: protectedProcedure
-      .input(z.object({ journeyId: z.string(), dayNumber: z.number().int() }))
+      .input(z.object({ journeyId: z.string().min(1).max(80), dayNumber: z.number().int().min(1).max(400) }))
       .query(async ({ ctx, input }) => {
         return getSpiritualJourneyJournal(ctx.user.id, input.journeyId, input.dayNumber);
       }),
@@ -376,9 +376,9 @@ export const appRouter = router({
     saveJournal: protectedProcedure
       .input(
         z.object({
-          journeyId: z.string(),
-          dayNumber: z.number().int(),
-          content: z.string(),
+          journeyId: z.string().min(1).max(80),
+          dayNumber: z.number().int().min(1).max(400),
+          content: z.string().max(100_000),
           isFavorite: z.boolean().optional(),
         })
       )
@@ -393,7 +393,7 @@ export const appRouter = router({
       }),
 
     deleteJournal: protectedProcedure
-      .input(z.object({ journeyId: z.string(), dayNumber: z.number().int() }))
+      .input(z.object({ journeyId: z.string().min(1).max(80), dayNumber: z.number().int().min(1).max(400) }))
       .mutation(async ({ ctx, input }) => {
         return deleteSpiritualJourneyJournal(ctx.user.id, input.journeyId, input.dayNumber);
       }),
@@ -519,8 +519,8 @@ export const appRouter = router({
   prayers: router({
     logPrayer: protectedProcedure
       .input(z.object({
-        prayerType: z.string(),
-        prayerName: z.string(),
+        prayerType: z.string().min(1).max(64),
+        prayerName: z.string().min(1).max(128),
       }))
       .mutation(async ({ ctx, input }) => {
         try {
@@ -808,8 +808,8 @@ export const appRouter = router({
         journalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         passageId: z.string().min(1).max(80),
         passageReference: z.string().max(120).nullable().optional(),
-        anchoredPhrase: z.string().nullable().optional(),
-        personalNote: z.string().nullable().optional(),
+        anchoredPhrase: z.string().max(20_000).nullable().optional(),
+        personalNote: z.string().max(100_000).nullable().optional(),
         currentStep: z.string().max(20).nullable().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
@@ -896,7 +896,7 @@ export const appRouter = router({
   bible: router({
     getChapter: publicProcedure
       .input(z.object({
-        bookId: z.string(),
+        bookId: z.string().min(1).max(64),
         chapter: z.number().int().positive()
       }))
       .query(async ({ ctx, input }) => {
@@ -915,7 +915,7 @@ export const appRouter = router({
 
     search: publicProcedure
       .input(z.object({
-        query: z.string().min(3)
+        query: z.string().trim().min(3).max(200)
       }))
       .query(async ({ ctx, input }) => {
         const ip = getClientIp(ctx);

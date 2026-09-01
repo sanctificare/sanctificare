@@ -67,6 +67,7 @@ export async function injectUserMiddleware(req: any, res: any, next: any) {
       role: "admin",
       templatePreference: "classico" as const,
       passwordHash: null,
+      passwordChangedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
       lastSignedIn: new Date(),
@@ -135,7 +136,7 @@ router.post("/register", async (req, res) => {
       name,
       passwordHash,
       loginMethod: "credentials",
-      role: email === "contato@sanctificare.app" ? "admin" : "user",
+      role: "user",
     });
 
     // Sincroniza o novo usuário com o Resend de forma assíncrona
@@ -149,7 +150,7 @@ router.post("/register", async (req, res) => {
     const csrfToken = generateCsrfToken();
 
     if (isDevAuthBypassEnabled(req)) {
-      res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
+      res.clearCookie("dev_logged_out", cookieOptions);
     }
 
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
@@ -193,24 +194,13 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "E-mail ou senha incorretos." });
     }
 
-    if (user.email === "contato@sanctificare.app" && user.role !== "admin") {
-      const { getDb } = await import("../db");
-      const { users } = await import("../../drizzle/schema");
-      const { eq } = await import("drizzle-orm");
-      const db = await getDb();
-      if (db) {
-        await db.update(users).set({ role: "admin" }).where(eq(users.id, user.id));
-        user.role = "admin";
-      }
-    }
-
     const token = await sdk.createSessionToken(user.openId, { name: user.name || "" });
     const cookieOptions = getSessionCookieOptions(req);
     const csrfCookieOptions = getCsrfCookieOptions(req);
     const csrfToken = generateCsrfToken();
 
     if (isDevAuthBypassEnabled(req)) {
-      res.clearCookie("dev_logged_out", { ...cookieOptions, maxAge: -1 });
+      res.clearCookie("dev_logged_out", cookieOptions);
     }
 
     res.cookie(COOKIE_NAME, token, { ...cookieOptions, maxAge: ENV.sessionTtlMs });
@@ -241,8 +231,8 @@ router.post("/logout", (req, res) => {
   try {
     const cookieOptions = getSessionCookieOptions(req);
     const csrfCookieOptions = getCsrfCookieOptions(req);
-    res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-    res.clearCookie(CSRF_COOKIE_NAME, { ...csrfCookieOptions, maxAge: -1 });
+    res.clearCookie(COOKIE_NAME, cookieOptions);
+    res.clearCookie(CSRF_COOKIE_NAME, csrfCookieOptions);
     if (isDevAuthBypassEnabled(req)) {
       res.cookie("dev_logged_out", "1", { ...cookieOptions, maxAge: ONE_YEAR_MS });
     }
@@ -273,17 +263,7 @@ router.post("/forgot-password", async (req, res) => {
         await createPasswordResetToken(user.id, token);
         console.log(`[ForgotPassword] Token created for userId=${user.id}`);
 
-        let appUrl = ENV.appUrl;
-        const requestOrigin = req.header("origin") || req.header("referer");
-        if (requestOrigin) {
-          try {
-            const parsed = new URL(requestOrigin);
-            appUrl = parsed.origin;
-          } catch {
-            // Ignore invalid URL formats
-          }
-        }
-        const resetLink = `${appUrl}/redefinir-senha?token=${token}`;
+        const resetLink = `${ENV.appUrl.replace(/\/$/, "")}/redefinir-senha?token=${token}`;
 
         await sendPasswordResetEmail(
           user.email ?? email,
