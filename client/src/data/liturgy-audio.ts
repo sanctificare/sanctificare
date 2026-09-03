@@ -94,8 +94,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         return audio;
       }
     } else if (monthStr === "09") {
-      // Temos áudios individuais na pasta de setembro26 de 01 a 03 de setembro
-      if (dayNum >= 1 && dayNum <= 3) {
+      // Setembro 2026: suporte automático para todo o mês (01 a 30)
+      if (dayNum >= 1 && dayNum <= 30) {
         const formattedDate = `${dayStr}${monthStr}26`; // ex: 010926
 
         const audio: LiturgyReadingsAudio = {
@@ -103,7 +103,7 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${formattedDate}.mp3`,
         };
 
-        // Salmo cantado disponível apenas para 01 de setembro
+        // Salmo cantado disponível para 01 de setembro
         if (dayNum === 1) {
           audio.singedPsalm = `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`;
         }

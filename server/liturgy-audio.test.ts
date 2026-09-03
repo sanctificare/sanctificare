@@ -99,8 +99,8 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/09/26 a 03/09/26", () => {
-    const dates = ["2026-09-01", "2026-09-02", "2026-09-03"];
+  it("deve retornar os áudios da liturgia diária para o período de 01/09/26 a 30/09/26", () => {
+    const dates = ["2026-09-01", "2026-09-02", "2026-09-03", "2026-09-15", "2026-09-30"];
 
     for (const dateIso of dates) {
       const [year, month, day] = dateIso.split("-");
