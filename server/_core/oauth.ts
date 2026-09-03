@@ -228,9 +228,40 @@ export function registerOAuthRoutes(app: Express) {
           : redirectUrl.toString();
         res.redirect(302, finalRedirect);
       }
-    } catch (error) {
-      console.error("[OAuth] Callback failed", error);
-      res.status(500).json({ error: "OAuth callback failed" });
+    } catch (error: any) {
+      const errorDetails = error?.response?.data || error?.message || String(error);
+      console.error("[OAuth] Callback failed:", errorDetails, error?.stack);
+
+      const errorMessage =
+        error?.response?.data?.error_description ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "OAuth callback failed";
+
+      try {
+        if (state) {
+          const decodedState = decodeOAuthState(state);
+          if (decodedState?.appPath?.startsWith("sanctificare://")) {
+            const redirectUrl = new URL(
+              decodedState.appPath.replace("sanctificare://callback", "http://localhost")
+            );
+            redirectUrl.searchParams.set("error", "Falha no login com Google: " + errorMessage);
+            const finalRedirect = redirectUrl
+              .toString()
+              .replace("http://localhost", "sanctificare://callback");
+            res.redirect(302, finalRedirect);
+            return;
+          }
+        }
+      } catch (redirectErr) {
+        console.warn("[OAuth] Could not redirect back to mobile scheme:", redirectErr);
+      }
+
+      res.status(500).json({
+        error: "OAuth callback failed",
+        message: errorMessage,
+        details: error?.response?.data ?? undefined,
+      });
     }
   });
 }

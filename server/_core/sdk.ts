@@ -42,7 +42,20 @@ class OAuthService {
   }
 
   public decodeState(state: string): string {
-    const decoded = atob(state);
+    let decoded = "";
+    try {
+      decoded = Buffer.from(state, "base64url").toString("utf8");
+    } catch {
+      try {
+        decoded = Buffer.from(state, "base64").toString("utf8");
+      } catch {
+        try {
+          decoded = atob(state);
+        } catch {
+          return state;
+        }
+      }
+    }
 
     try {
       const parsed = JSON.parse(decoded) as { redirectUri?: string };
@@ -144,14 +157,22 @@ class SDKServer {
         redirect_uri: redirectUri,
         grant_type: "authorization_code",
       });
-      const { data } = await axios.post("https://oauth2.googleapis.com/token", params.toString(), {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      return {
-        accessToken: data.access_token,
-      } as ExchangeTokenResponse;
+      try {
+        const { data } = await axios.post("https://oauth2.googleapis.com/token", params.toString(), {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        });
+        return {
+          accessToken: data.access_token,
+        } as ExchangeTokenResponse;
+      } catch (error: any) {
+        console.error(
+          "[OAuth] Google token exchange error:",
+          error?.response?.data || error?.message
+        );
+        throw error;
+      }
     }
 
     return this.oauthService.getTokenByCode(code, state);
