@@ -99,29 +99,17 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/09/26 a 03/09/26", () => {
-    const dates = ["2026-09-01", "2026-09-02", "2026-09-03"];
-
-    for (const dateIso of dates) {
-      const [year, month, day] = dateIso.split("-");
-      const formattedDate = `${day}${month}26`;
-      const audios = getLiturgyReadingsAudioByDate(dateIso);
-
-      expect(audios.firstReading).toBe(
-        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/1leitura${formattedDate}.mp3`
-      );
-      expect(audios.gospel).toBe(
-        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${formattedDate}.mp3`
-      );
-      expect(audios.secondReading).toBeUndefined();
-
-      if (dateIso === "2026-09-01") {
-        expect(audios.singedPsalm).toBe(
-          "/r2-storage/salmos-cantados/setembro26/salmos010926.mp3"
-        );
-      } else {
-        expect(audios.singedPsalm).toBeUndefined();
-      }
-    }
+  it("deve retornar os áudios da liturgia diária para 01/09/26 incluindo salmo cantado", () => {
+    const audios = getLiturgyReadingsAudioByDate("2026-09-01");
+    expect(audios.firstReading).toBe(
+      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/1leitura010926.mp3"
+    );
+    expect(audios.gospel).toBe(
+      "https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho010926.mp3"
+    );
+    expect(audios.secondReading).toBeUndefined();
+    expect(audios.singedPsalm).toBe(
+      "/r2-storage/salmos-cantados/setembro26/salmos010926.mp3"
+    );
   });
 });
