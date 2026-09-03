@@ -34,7 +34,7 @@ let _db: PostgresJsDatabase | null = null;
 let _bootstrapPromise: Promise<void> | null = null;
 
 function shouldRunLazyBootstrap() {
-  return process.env.NODE_ENV !== "production";
+  return true;
 }
 
 async function bootstrapDb(sql: any) {
@@ -86,6 +86,32 @@ async function bootstrapDb(sql: any) {
         "updatedAt" timestamp DEFAULT now() NOT NULL,
         "lastSignedIn" timestamp DEFAULT now() NOT NULL
       );
+    `;
+
+    // Ensure all columns exist on users if table was created in an earlier migration
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "passwordHash" text;
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "passwordChangedAt" timestamp with time zone;
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "templatePreference" "templatePreference" DEFAULT 'classico' NOT NULL;
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "loginMethod" varchar(64);
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "email" varchar(320);
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "name" text;
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "role" role DEFAULT 'user' NOT NULL;
+    `;
+    await sql`
+      ALTER TABLE users ADD COLUMN IF NOT EXISTS "lastSignedIn" timestamp DEFAULT now() NOT NULL;
     `;
 
     await sql`
