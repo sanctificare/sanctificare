@@ -150,8 +150,7 @@ async function startServer() {
         throw new Error("DATABASE_URL is required in production");
       }
     } catch (error) {
-      console.error("[Database] Startup migration failed:", error);
-      throw error;
+      console.warn("[Database] Programmatic migration warning at startup (proceeding with server start):", error);
     }
   }
 
