@@ -11,3 +11,11 @@ allowBuilds:
   esbuild: true
 
 dangerouslyAllowAllBuilds: true
+
+supportedArchitectures:
+  os:
+    - current
+    - linux
+  cpu:
+    - current
+    - x64
