@@ -99,11 +99,23 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar os áudios da liturgia diária para o período de 01/09/26 a 30/09/26", () => {
-    const dates = ["2026-09-01", "2026-09-02", "2026-09-03", "2026-09-15", "2026-09-30"];
+  it("deve retornar os áudios da liturgia diária para o período de 01/09/26 a 30/09/26 incluindo 04 a 08/09", () => {
+    const dates = [
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-05",
+      "2026-09-06",
+      "2026-09-07",
+      "2026-09-08",
+      "2026-09-15",
+      "2026-09-30",
+    ];
 
     for (const dateIso of dates) {
       const [year, month, day] = dateIso.split("-");
+      const dayNum = parseInt(day, 10);
       const formattedDate = `${day}${month}26`;
       const audios = getLiturgyReadingsAudioByDate(dateIso);
 
@@ -113,7 +125,14 @@ describe("liturgy-audio", () => {
       expect(audios.gospel).toBe(
         `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${formattedDate}.mp3`
       );
-      expect(audios.secondReading).toBeUndefined();
+
+      if (dayNum === 6 || dayNum === 13 || dayNum === 20 || dayNum === 27) {
+        expect(audios.secondReading).toBe(
+          `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/2leitura${formattedDate}.mp3`
+        );
+      } else {
+        expect(audios.secondReading).toBeUndefined();
+      }
 
       if (dateIso === "2026-09-01") {
         expect(audios.singedPsalm).toBe(

@@ -108,6 +108,11 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           audio.singedPsalm = `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`;
         }
 
+        // Domingos (06/09, 13/09, 20/09 e 27/09) têm segunda leitura no R2
+        if (dayNum === 6 || dayNum === 13 || dayNum === 20 || dayNum === 27) {
+          audio.secondReading = `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/2leitura${formattedDate}.mp3`;
+        }
+
         return audio;
       }
     }
