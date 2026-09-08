@@ -1,7 +1,8 @@
 import "dotenv/config";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import { describe, expect, it } from "vitest";
-import { getLiturgyReadingsAudioByDate } from "../client/src/data/liturgy-audio";
+import { getLiturgyReadingsAudioByDate } from "../shared/liturgy-audio";
+import { appRouter } from "./routers";
 
 describe("liturgy-audio", () => {
   it("deve retornar os áudios da liturgia diária para o período de 27/07/26 a 31/07/26", () => {
@@ -143,4 +144,20 @@ describe("liturgy-audio", () => {
       }
     }
   });
+
+  it("deve retornar audios dinamicamente na rota liturgy.getByDate da API", async () => {
+    const caller = appRouter.createCaller({
+      user: null,
+      req: { protocol: "https", headers: {}, ip: "127.0.0.1", socket: { remoteAddress: "127.0.0.1" } } as any,
+      res: { clearCookie: () => {} } as any,
+    });
+
+    const res = await caller.liturgy.getByDate({ date: "2026-09-08" });
+    if (res) {
+      expect((res as any).audios).toBeDefined();
+      expect((res as any).audios.firstReading).toContain("080926");
+      expect((res as any).audios.gospel).toContain("080926");
+    }
+  });
 });
+

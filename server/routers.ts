@@ -1,4 +1,5 @@
 import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import { getLiturgyReadingsAudioByDate, getLiturgyAudioByDate } from "@shared/liturgy-audio";
 import { getCsrfCookieOptions, getSessionCookieOptions } from "./_core/cookies";
 import { CSRF_COOKIE_NAME, generateCsrfToken, isDevAuthBypassEnabled } from "./_core/security";
 import { ENV } from "./_core/env";
@@ -704,18 +705,31 @@ export const appRouter = router({
         const cached = getCachedValue(liturgyByDateCache, date);
         if (cached !== undefined) return cached;
 
+        const enrichWithAudios = (item: any) => {
+          if (!item) return item;
+          const audios = getLiturgyReadingsAudioByDate(date);
+          const unifiedAudio = getLiturgyAudioByDate(date);
+          return {
+            ...item,
+            audios,
+            unifiedAudio,
+          };
+        };
+
         const stored = await getDailyLiturgy(date);
         if (stored) {
-          setCachedValue(liturgyByDateCache, date, stored);
-          return stored;
+          const enriched = enrichWithAudios(stored);
+          setCachedValue(liturgyByDateCache, date, enriched);
+          return enriched;
         }
 
         try {
           const fetched = await fetchLiturgyForDate(date);
           await upsertDailyLiturgy(fetched);
           const persisted = await getDailyLiturgy(date);
-          setCachedValue(liturgyByDateCache, date, persisted);
-          return persisted;
+          const enriched = enrichWithAudios(persisted);
+          setCachedValue(liturgyByDateCache, date, enriched);
+          return enriched;
         } catch (error) {
           console.error("[Liturgy] Fallback fetch failed:", error);
           return null;

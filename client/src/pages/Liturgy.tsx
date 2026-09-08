@@ -201,7 +201,7 @@ export default function Liturgy() {
     }
 
     // 1. Verifica se existe o áudio diário unificado (narração geral)
-    const unifiedAudio = getLiturgyAudioByDate(liturgy.liturgyDate);
+    const unifiedAudio = (liturgy as any)?.unifiedAudio ?? getLiturgyAudioByDate(liturgy.liturgyDate);
     if (unifiedAudio) {
       setPlaylist([
         {
@@ -224,7 +224,7 @@ export default function Liturgy() {
     }
 
     // 2. Se não houver áudio unificado, verifica se há áudios individuais no R2 (Julho/26)
-    const individualAudios = getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
+    const individualAudios = (liturgy as any)?.audios ?? getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
     if (individualAudios.firstReading || individualAudios.gospel) {
       const tracks: AudioTrack[] = [];
 
@@ -354,7 +354,7 @@ export default function Liturgy() {
     }
   }, [playlist]);
 
-  const readingsAudio = getLiturgyReadingsAudioByDate(liturgy?.liturgyDate);
+  const readingsAudio = (liturgy as any)?.audios ?? getLiturgyReadingsAudioByDate(liturgy?.liturgyDate);
 
   const psalmAudioRef = useRef<HTMLAudioElement>(null);
   const [isPsalmPlaying, setIsPsalmPlaying] = useState(false);

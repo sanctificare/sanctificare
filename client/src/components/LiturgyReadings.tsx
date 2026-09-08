@@ -345,7 +345,7 @@ export default function LiturgyReadings({ liturgy, fontSize, isZenMode, theme }:
     );
   }
 
-  const audios = getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
+  const audios = (liturgy as any)?.audios ?? getLiturgyReadingsAudioByDate(liturgy.liturgyDate);
 
   const sections = [
     {
