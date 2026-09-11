@@ -27,20 +27,55 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("wouter")) {
-              return "vendor-react";
-            }
-            if (id.includes("@radix-ui") || id.includes("lucide-react")) {
-              return "vendor-ui";
-            }
-            if (id.includes("@trpc") || id.includes("@tanstack")) {
-              return "vendor-query";
-            }
-            if (id.includes("firebase")) {
-              return "vendor-firebase";
-            }
-            return "vendor-core";
+          const normalized = id.replace(/\\/g, "/");
+          if (!normalized.includes("/node_modules/")) return;
+
+          // 1. React core runtime
+          if (
+            normalized.includes("/node_modules/react/") ||
+            normalized.includes("/node_modules/react-dom/") ||
+            normalized.includes("/node_modules/scheduler/")
+          ) {
+            return "vendor-react-core";
+          }
+
+          // 2. Client-side routing
+          if (normalized.includes("/node_modules/wouter/")) {
+            return "vendor-wouter";
+          }
+
+          // 3. UI primitives and icons
+          if (
+            normalized.includes("/node_modules/@radix-ui/") ||
+            normalized.includes("/node_modules/lucide-react/")
+          ) {
+            return "vendor-ui";
+          }
+
+          // 4. API, caching and serialization (tRPC, React Query, SuperJSON)
+          if (
+            normalized.includes("/node_modules/@tanstack/") ||
+            normalized.includes("/node_modules/@trpc/") ||
+            normalized.includes("/node_modules/superjson/")
+          ) {
+            return "vendor-query";
+          }
+
+          // 5. Heavy optional bundles
+          if (
+            normalized.includes("/node_modules/recharts/") ||
+            normalized.includes("/node_modules/d3-")
+          ) {
+            return "vendor-charts";
+          }
+          if (
+            normalized.includes("/node_modules/firebase/") ||
+            normalized.includes("/node_modules/@firebase/")
+          ) {
+            return "vendor-firebase";
+          }
+          if (normalized.includes("/node_modules/date-fns/")) {
+            return "vendor-date";
           }
         },
       },

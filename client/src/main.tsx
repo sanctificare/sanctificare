@@ -34,35 +34,42 @@ const compareVersionCore = (left: string | null | undefined, right: string | nul
 };
 
 
-// Global error overlay para Capacitor — mostra erros JS na tela em vez de tela branca.
+// Global error overlay para Capacitor — restrito ao ambiente de desenvolvimento.
+// Em produção, erros são registrados no console sem sobrepor a interface do usuário.
 if (typeof window !== 'undefined' && isMobileApp()) {
-  const showFatalError = (msg: string) => {
-    const existing = document.getElementById('__cap_err_overlay');
-    if (existing) return;
-    const el = document.createElement('div');
-    el.id = '__cap_err_overlay';
-    el.style.cssText = [
-      'position:fixed', 'inset:0', 'z-index:99999',
-      'background:#1a0010', 'color:#fff',
-      'font-family:monospace', 'font-size:13px',
-      'padding:24px', 'overflow:auto',
-      'white-space:pre-wrap', 'word-break:break-all',
-    ].join(';');
-    el.textContent = '⚠️ Erro crítico:\n\n' + msg;
-    document.body?.appendChild(el);
-  };
+  if (import.meta.env.DEV) {
+    const showFatalError = (msg: string) => {
+      const existing = document.getElementById('__cap_err_overlay');
+      if (existing) return;
+      const el = document.createElement('div');
+      el.id = '__cap_err_overlay';
+      el.style.cssText = [
+        'position:fixed', 'inset:0', 'z-index:99999',
+        'background:#1a0010', 'color:#fff',
+        'font-family:monospace', 'font-size:13px',
+        'padding:24px', 'overflow:auto',
+        'white-space:pre-wrap', 'word-break:break-all',
+      ].join(';');
+      el.textContent = '⚠️ Erro crítico:\n\n' + msg;
+      document.body?.appendChild(el);
+    };
 
-  window.onerror = (_msg, src, line, col, err) => {
-    showFatalError(`${err?.message ?? _msg}\n\n${src}:${line}:${col}\n\n${err?.stack ?? ''}`);
-    return false;
-  };
+    window.onerror = (_msg, src, line, col, err) => {
+      showFatalError(`${err?.message ?? _msg}\n\n${src}:${line}:${col}\n\n${err?.stack ?? ''}`);
+      return false;
+    };
 
-  window.addEventListener('unhandledrejection', (e) => {
-    const reason = e.reason instanceof Error
-      ? `${e.reason.message}\n${e.reason.stack ?? ''}`
-      : String(e.reason);
-    showFatalError('UnhandledRejection:\n' + reason);
-  });
+    window.addEventListener('unhandledrejection', (e) => {
+      const reason = e.reason instanceof Error
+        ? `${e.reason.message}\n${e.reason.stack ?? ''}`
+        : String(e.reason);
+      showFatalError('UnhandledRejection:\n' + reason);
+    });
+  } else {
+    window.addEventListener('unhandledrejection', (e) => {
+      console.error('[UnhandledRejection]', e.reason);
+    });
+  }
 }
 
 const rewriteMobileApiUrl = (rawUrl: string) => {

@@ -21,10 +21,6 @@ import {
   splitIntoChunks,
 } from "./lib/userStateSync";
 import Login from "./pages/Login";
-import PrayerDetail from "./pages/PrayerDetail";
-import ResetPassword from "./pages/ResetPassword";
-import AdminDashboard from "./pages/AdminDashboard";
-import Privacy from "./pages/Privacy";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
@@ -34,6 +30,11 @@ import RosaryGuided from "./pages/RosaryGuided";
 import Liturgy from "./pages/Liturgy";
 import Bible from "./pages/Bible";
 import DailyPlan from "./pages/DailyPlan";
+
+const PrayerDetail = lazy(() => import("./pages/PrayerDetail"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 
 
 
@@ -310,6 +311,10 @@ function StateSyncManager() {
         const nextSnapshot = collectSyncableLocalSnapshot();
         const { upserts, deletions } = diffSnapshots(lastLocalSnapshotRef.current, nextSnapshot);
 
+        if (upserts.length === 0 && deletions.length === 0) {
+          return;
+        }
+
         for (const chunk of splitIntoChunks(upserts, 200)) {
           if (chunk.length === 0) continue;
           const result = await utils.client.stateSync.upsertMany.mutate({ entries: chunk });
@@ -341,12 +346,27 @@ function StateSyncManager() {
     };
 
     void syncOnce();
+
+    let debounceTimer: number | undefined;
+    const triggerDebouncedSync = () => {
+      if (debounceTimer) window.clearTimeout(debounceTimer);
+      debounceTimer = window.setTimeout(() => {
+        void syncOnce();
+      }, 1500);
+    };
+
+    window.addEventListener("storage", triggerDebouncedSync);
+    window.addEventListener("sanctificare:state-changed", triggerDebouncedSync);
+
     const interval = window.setInterval(() => {
       void syncOnce();
-    }, 30000);
+    }, 120000);
 
     return () => {
       cancelled = true;
+      if (debounceTimer) window.clearTimeout(debounceTimer);
+      window.removeEventListener("storage", triggerDebouncedSync);
+      window.removeEventListener("sanctificare:state-changed", triggerDebouncedSync);
       window.clearInterval(interval);
     };
   }, [isAuthenticated, utils]);
