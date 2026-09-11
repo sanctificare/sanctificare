@@ -323,11 +323,9 @@ async function startServer() {
   app.use("/api/auth", authRouter);
 
   // ── Stripe Webhook ──────────────────────────────────────────────────────────
-  // IMPORTANTE: precisa vir ANTES do express.json() para receber o raw body.
-  // O Stripe verifica a assinatura usando o corpo bruto da requisição.
+  // O Stripe verifica a assinatura usando o corpo bruto da requisição preservado em req.rawBody.
   app.post(
     "/api/stripe/webhook",
-    express.raw({ type: "application/json" }),
     async (req, res) => {
       const sig = req.headers["stripe-signature"] as string | undefined;
       const webhookSecret = ENV.stripeWebhookSecret;
@@ -341,7 +339,8 @@ async function startServer() {
       try {
         const Stripe = (await import("stripe")).default;
         const stripe = new Stripe(ENV.stripeSecretKey);
-        const rawBody = (req as express.Request & { rawBody?: Buffer }).rawBody;
+        const candidateRaw = (req as express.Request & { rawBody?: Buffer }).rawBody;
+        const rawBody = candidateRaw ?? (Buffer.isBuffer(req.body) ? req.body : null);
         if (!rawBody) {
           return res.status(400).send("Webhook Error: raw body unavailable");
         }

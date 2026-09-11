@@ -26,12 +26,13 @@ export function getSessionCookieOptions(
 ): Pick<CookieOptions, "domain" | "httpOnly" | "path" | "sameSite" | "secure"> {
   const hostname = req.hostname;
   const isLocal = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  const isProduction = process.env.NODE_ENV === "production";
 
   return {
     httpOnly: true,
     path: "/",
-    sameSite: isLocal ? "lax" : "none",
-    secure: isLocal ? false : isSecureRequest(req),
+    sameSite: "lax",
+    secure: isLocal ? false : (isProduction || isSecureRequest(req)),
   };
 }
 
