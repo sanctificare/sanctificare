@@ -31,7 +31,8 @@ import {
 } from "./security";
 import { serveStatic, setupVite } from "./vite";
 import { sdk } from "./sdk";
-import { upsertDailyLiturgy, getDb } from "../db";
+import { sql } from "drizzle-orm";
+import { upsertDailyLiturgy, getDb, closeDb } from "../db";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "../liturgia";
 import crypto from "crypto";
 
@@ -170,7 +171,7 @@ async function startServer() {
     res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(self)");
     res.setHeader(
       "Content-Security-Policy",
-      "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https:; media-src 'self' blob: https:; frame-src https://iframe.mediadelivery.net; connect-src 'self' https: wss:; form-action 'self' https://accounts.google.com"
+      "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https: https://fonts.gstatic.com; media-src 'self' blob: https:; frame-src https://iframe.mediadelivery.net; connect-src 'self' https: wss: https://www.clarity.ms https://*.clarity.ms https://c.bing.com; form-action 'self' https://accounts.google.com"
     );
     if (process.env.NODE_ENV === "production") {
       res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
@@ -197,6 +198,34 @@ async function startServer() {
     return next(err);
   });
 
+  // Health check endpoint para monitoramento, PM2 e balanceadores
+  app.get(["/health", "/api/health"], async (_req, res) => {
+    try {
+      const db = await getDb();
+      if (!db) {
+        return res.status(503).json({
+          status: "unhealthy",
+          database: "disconnected",
+          timestamp: new Date().toISOString(),
+        });
+      }
+      await db.execute(sql`SELECT 1`);
+      return res.status(200).json({
+        status: "ok",
+        database: "connected",
+        uptime: Math.floor(process.uptime()),
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error: any) {
+      return res.status(503).json({
+        status: "unhealthy",
+        database: "error",
+        error: process.env.NODE_ENV === "development" ? error.message : "Database check failed",
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+
   app.use((req, res, next) => {
     const host = req.get("host");
     const requestOrigin = host
@@ -216,6 +245,8 @@ async function startServer() {
 
     const isUnsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(req.method);
     const isCsrfExemptPath =
+      req.path === "/health" ||
+      req.path === "/api/health" ||
       req.path === "/api/scheduled/fetchLiturgia" ||
       req.path === "/api/auth/logout" ||
       req.path === "/api/auth/register" ||
@@ -434,6 +465,36 @@ async function startServer() {
     if (!process.env.RESEND_API_KEY) {
       console.warn("[Email] RESEND_API_KEY is not set — password reset emails will only be logged to console (dev mode).");
     }
+  });
+
+  const shutdown = async (signal: string) => {
+    console.log(`[Server] Received ${signal}. Starting graceful shutdown...`);
+    server.close(async () => {
+      console.log("[Server] HTTP server closed.");
+      try {
+        await closeDb();
+        console.log("[Database] Connection pool closed.");
+      } catch (err) {
+        console.error("[Database] Error closing DB connection during shutdown:", err);
+      }
+      process.exit(0);
+    });
+
+    setTimeout(() => {
+      console.error("[Server] Forcefully shutting down after timeout.");
+      process.exit(1);
+    }, 10_000).unref();
+  };
+
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+  process.on("SIGINT", () => shutdown("SIGINT"));
+
+  process.on("unhandledRejection", (reason) => {
+    console.error("[UnhandledRejection]", reason);
+  });
+
+  process.on("uncaughtException", (error) => {
+    console.error("[UncaughtException]", error);
   });
 }
 

@@ -31,6 +31,7 @@ import {
 import { ENV } from './_core/env';
 
 let _db: PostgresJsDatabase | null = null;
+let _sqlClient: ReturnType<typeof postgres> | null = null;
 let _bootstrapPromise: Promise<void> | null = null;
 
 function shouldRunLazyBootstrap() {
@@ -546,6 +547,7 @@ export async function getDb() {
           });
         }
 
+        _sqlClient = client;
         _db = drizzle(client);
         
         if (shouldRunLazyBootstrap()) {
@@ -563,10 +565,25 @@ export async function getDb() {
       } catch (error) {
         console.warn("[Database] Failed to connect:", error);
         _db = null;
+        _sqlClient = null;
       }
     }
   }
   return _db;
+}
+
+export async function closeDb(): Promise<void> {
+  if (_sqlClient) {
+    try {
+      await _sqlClient.end({ timeout: 5 });
+    } catch (e) {
+      console.warn("[Database] Error closing client:", e);
+    } finally {
+      _sqlClient = null;
+      _db = null;
+      _bootstrapPromise = null;
+    }
+  }
 }
 
 

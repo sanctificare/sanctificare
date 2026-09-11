@@ -32,11 +32,17 @@ export const adminProcedure = t.procedure.use(
   t.middleware(async opts => {
     const { ctx, next } = opts;
 
-    const isOwner = !ENV.isProduction || (
-      Boolean(ENV.ownerOpenId) && ctx.user?.openId === ENV.ownerOpenId
+    if (!ctx.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: UNAUTHED_ERR_MSG });
+    }
+
+    const hasAdminRole = ctx.user.role === 'admin';
+    const isOwner = Boolean(ENV.ownerOpenId) && (
+      ctx.user.openId === ENV.ownerOpenId ||
+      (Boolean(ctx.user.email) && ctx.user.email === ENV.ownerOpenId)
     );
 
-    if (!ctx.user || ctx.user.role !== 'admin' || !isOwner) {
+    if (!hasAdminRole && !isOwner) {
       throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
     }
 

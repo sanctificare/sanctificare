@@ -9,7 +9,6 @@ import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_
 import { z } from "zod/v4";
 import { TRPCError } from "@trpc/server";
 import { sdk } from "./_core/sdk";
-import { hashPassword, comparePassword } from "./_core/authUtils";
 import { sendPasswordResetEmail } from "./_core/email";
 import { nanoid } from "nanoid";
 import {

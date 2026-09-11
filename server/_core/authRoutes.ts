@@ -129,7 +129,7 @@ router.post("/register", async (req, res) => {
       return res.status(409).json({ error: "Este e-mail já está cadastrado." });
     }
 
-    const passwordHash = hashPassword(password);
+    const passwordHash = await hashPassword(password);
     const newUser = await createUser({
       openId: email,
       email,
@@ -190,7 +190,7 @@ router.post("/login", async (req, res) => {
     }
 
     const user = await getUserByEmail(email);
-    if (!user || !user.passwordHash || !comparePassword(password, user.passwordHash)) {
+    if (!user || !user.passwordHash || !(await comparePassword(password, user.passwordHash))) {
       return res.status(401).json({ error: "E-mail ou senha incorretos." });
     }
 
@@ -316,7 +316,7 @@ router.post("/reset-password", async (req, res) => {
       return res.status(400).json({ error: "Token e senha com pelo menos 8 caracteres são obrigatórios" });
     }
 
-    const newHash = hashPassword(password);
+    const newHash = await hashPassword(password);
     const ok = await consumePasswordResetToken(token, newHash);
 
     if (!ok) {
