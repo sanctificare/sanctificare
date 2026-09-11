@@ -120,3 +120,16 @@ temp/
 
 # Scratch files
 scratch/
+
+# Ad-hoc cloud / utility scripts with credentials
+list-r2.ps1
+list-objects.ts
+
+# Temporary debug artifacts, patches and test screenshots
+landing-quaresma-sanctificare.patch
+ux-quaresma-sao-miguel.patch
+ui.xml
+*.docx
+forgot*.png
+screen*.png
+test_*.png

@@ -9,9 +9,6 @@ import { ZipArchive } from "archiver";
 // Carrega as variáveis de ambiente do arquivo .env no diretório atual
 dotenv.config();
 
-// Ignora erros de verificação de TLS/SSL caso o ambiente do desenvolvedor use certificados corporativos ou interceptadores
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

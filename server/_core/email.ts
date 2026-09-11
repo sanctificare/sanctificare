@@ -1,9 +1,5 @@
 import { Resend } from "resend";
 
-if (process.env.NODE_ENV !== "production") {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-}
-
 const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_for_testing");
 
 const FROM = "Sanctificare <noreply@sanctificare.app>";
