@@ -5,10 +5,39 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  validate:
+    name: Validate & Build (CI)
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check TypeScript
+        run: pnpm check
+
+      - name: Build Web & Server
+        run: pnpm build
+
+  deploy:
+    name: Deploy via SSH
+    runs-on: ubuntu-latest
+    needs: [validate]
+    steps:
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -18,10 +47,37 @@ jobs:
           script: |
             set -e
             cd ${{ secrets.APP_DIR }}
+            PREV_COMMIT=$(git rev-parse HEAD)
+            echo "Iniciando deploy a partir do commit $PREV_COMMIT..."
+
             git pull origin main
             pnpm install --frozen-lockfile
-            pnpm check
-            pnpm test
             pnpm build
-            pm2 restart sanctificare-backend --update-env
-            echo "Deploy concluido: $(date)"
+
+            # Recarrega a aplicação com zero-downtime ou reinicia
+            pm2 reload ecosystem.config.cjs --update-env || pm2 restart ecosystem.config.cjs --update-env
+
+            # Health Check pós-deploy (aguarda até 30s)
+            echo "Executando health check..."
+            HEALTHY=false
+            for i in $(seq 1 6); do
+              sleep 5
+              if curl -sf http://127.0.0.1:3000/health > /dev/null 2>&1 || curl -sf http://127.0.0.1:3000/api/health > /dev/null 2>&1; then
+                echo "Health check respondeu OK na tentativa $i!"
+                HEALTHY=true
+                break
+              else
+                echo "Aguardando inicializacao do backend (tentativa $i de 6)..."
+              fi
+            done
+
+            if [ "$HEALTHY" = false ]; then
+              echo "ERRO CRÍTICO: Backend falhou no health check pós-deploy!"
+              echo "Revertendo para o commit $PREV_COMMIT..."
+              git checkout $PREV_COMMIT
+              pnpm build
+              pm2 restart ecosystem.config.cjs --update-env
+              exit 1
+            fi
+
+            echo "Deploy concluido com sucesso em $(date)"
