@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRoute, useLocation, Link } from "wouter";
 import { allPrayers } from "@/data/prayersCatalog";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,6 +24,7 @@ import {
 export default function PrayerDetail() {
   const [, params] = useRoute("/oracao/:id");
   const [, setLocation] = useLocation();
+  const { isAuthenticated } = useAuth();
 
   // Encontrar a oração selecionada no catálogo
   const prayerId = params?.id;
@@ -31,13 +33,21 @@ export default function PrayerDetail() {
   // Estado do modal de convite
   const [isInviteOpen, setIsInviteOpen] = useState(false);
 
+  const handlePrimaryAction = () => {
+    if (isAuthenticated && prayer?.url) {
+      setLocation(prayer.url);
+      return;
+    }
+    setIsInviteOpen(true);
+  };
+
   // Se a oração não for encontrada, redirecionar para a LP ou 404
   if (!prayer) {
     return (
       <div className="min-h-screen bg-[oklch(0.12_0.03_260)] text-white flex flex-col justify-center items-center">
         <p className="font-serif text-lg text-neutral-400">Oração não encontrada.</p>
-        <Link href="/" className="mt-4 text-xs text-[oklch(0.75_0.12_75)] hover:underline">
-          Voltar ao início
+        <Link href={isAuthenticated ? "/dashboard" : "/"} className="mt-4 text-xs text-[oklch(0.75_0.12_75)] hover:underline">
+          {isAuthenticated ? "Voltar ao painel" : "Voltar ao início"}
         </Link>
       </div>
     );
@@ -51,11 +61,11 @@ export default function PrayerDetail() {
       {/* Header com botão de voltar */}
       <header className="relative z-20 container py-6 flex items-center">
         <Link
-          href="/"
+          href={isAuthenticated ? "/dashboard" : "/"}
           className="inline-flex items-center gap-2 text-sm text-[oklch(0.80_0.02_260)] hover:text-white transition-colors duration-200"
         >
           <ChevronLeft size={18} />
-          Voltar ao início
+          {isAuthenticated ? "Voltar ao painel" : "Voltar ao início"}
         </Link>
       </header>
 
@@ -88,10 +98,10 @@ export default function PrayerDetail() {
 
 
 
-            {/* Play Button - Escutar de Graça */}
+            {/* Play Button - Iniciar Oração */}
             <div className="pt-4">
               <Button
-                onClick={() => setIsInviteOpen(true)}
+                onClick={handlePrimaryAction}
                 className="bg-white hover:bg-neutral-200 text-black font-display font-bold text-base px-8 py-7 rounded-full shadow-lg flex items-center gap-3 hover:scale-[1.03] active:scale-[0.98] transition-all w-full sm:w-auto"
               >
                 <Play size={18} fill="currentColor" className="text-black" />

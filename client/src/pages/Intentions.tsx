@@ -258,6 +258,7 @@ export default function Intentions() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (createIntention.isPending) return;
     const trimmedDesc = description.trim();
 
     if (trimmedDesc.length < 10) {
@@ -389,7 +390,8 @@ export default function Intentions() {
           <div className="space-y-4">
             {filteredIntentions.map((intention: any) => {
               const hasPrayed = prayedSet.has(intention.id);
-              const isMyIntention = user && intention.userId === (user as any).id;
+              const isMyIntention = Boolean(user && intention.userId === (user as any).id);
+              const isAdmin = (user as any)?.role === "admin";
               const categoryInfo = getCategoryInfo(intention.category);
               const daysLeft = getDaysLeft(intention.expiresAt);
               const isGrace = !!intention.graceObtained;
@@ -438,14 +440,10 @@ export default function Intentions() {
                             {categoryInfo.emoji} {categoryInfo.label}
                           </span>
                         )}
-                        {/* Countdown novena */}
-                        {daysLeft !== null && !isGrace && (
-                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
-                            daysLeft <= 2
-                              ? "text-[oklch(0.55_0.18_15)] border-[oklch(0.55_0.18_15/0.3)] bg-[oklch(0.55_0.18_15/0.05)]"
-                              : "text-[oklch(0.45_0.10_260)] border-[oklch(0.45_0.10_260/0.2)] bg-[oklch(0.45_0.10_260/0.05)]"
-                          }`}>
-                            {daysLeft === 0 ? "Último dia" : `${daysLeft}d de novena`}
+                        {/* Prazo restante da novena */}
+                        {daysLeft !== null && daysLeft > 0 && !isGrace && (
+                          <span className="text-[10px] font-medium text-muted-foreground bg-[oklch(0.22_0.07_260/0.06)] px-2 py-0.5 rounded-full">
+                            {daysLeft} {daysLeft === 1 ? "dia restante" : "dias restantes"}
                           </span>
                         )}
                       </div>
@@ -454,31 +452,35 @@ export default function Intentions() {
                         {intention.description}
                       </p>
 
-                      {/* Botões de ação do autor */}
-                      {isMyIntention && !isGrace && (
+                      {/* Botões de ação do autor ou moderação admin */}
+                      {!isGrace && (isMyIntention || isAdmin) && (
                         <div className="mt-3 flex items-center gap-2">
-                          <button
-                            onClick={() => graceMarkMutation.mutate({ intentionId: intention.id })}
-                            disabled={graceMarkMutation.isPending}
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.50_0.18_85)] hover:text-[oklch(0.40_0.20_85)] transition-colors border border-[oklch(0.65_0.18_85/0.4)] hover:border-[oklch(0.65_0.18_85)] rounded-full px-3 py-1 bg-[oklch(0.70_0.18_85/0.06)] hover:bg-[oklch(0.70_0.18_85/0.12)]"
-                          >
-                            <Heart size={11} />
-                            Graça Alcançada
-                          </button>
-                          <button
-                            onClick={() => openEdit(intention)}
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.45_0.10_260)] hover:text-[oklch(0.22_0.07_260)] transition-colors border border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)] rounded-full px-3 py-1 bg-[oklch(0.22_0.07_260/0.04)] hover:bg-[oklch(0.22_0.07_260/0.10)]"
-                          >
-                            <Pencil size={11} />
-                            Editar
-                          </button>
+                          {isMyIntention && (
+                            <>
+                              <button
+                                onClick={() => graceMarkMutation.mutate({ intentionId: intention.id })}
+                                disabled={graceMarkMutation.isPending}
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.50_0.18_85)] hover:text-[oklch(0.40_0.20_85)] transition-colors border border-[oklch(0.65_0.18_85/0.4)] hover:border-[oklch(0.65_0.18_85)] rounded-full px-3 py-1 bg-[oklch(0.70_0.18_85/0.06)] hover:bg-[oklch(0.70_0.18_85/0.12)]"
+                              >
+                                <Heart size={11} />
+                                Graça Alcançada
+                              </button>
+                              <button
+                                onClick={() => openEdit(intention)}
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.45_0.10_260)] hover:text-[oklch(0.22_0.07_260)] transition-colors border border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)] rounded-full px-3 py-1 bg-[oklch(0.22_0.07_260/0.04)] hover:bg-[oklch(0.22_0.07_260/0.10)]"
+                              >
+                                <Pencil size={11} />
+                                Editar
+                              </button>
+                            </>
+                          )}
                           <button
                             onClick={() => handleDelete(intention.id)}
                             disabled={deleteMutation.isPending}
                             className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.55_0.18_15)] hover:text-[oklch(0.45_0.20_15)] transition-colors border border-[oklch(0.55_0.18_15/0.2)] hover:border-[oklch(0.55_0.18_15/0.5)] rounded-full px-3 py-1 bg-[oklch(0.55_0.18_15/0.04)] hover:bg-[oklch(0.55_0.18_15/0.10)]"
                           >
                             <Trash2 size={11} />
-                            Excluir
+                            {isAdmin && !isMyIntention ? "Moderar / Excluir" : "Excluir"}
                           </button>
                         </div>
                       )}
@@ -488,12 +490,16 @@ export default function Intentions() {
                     <div className="flex flex-col items-center gap-1 flex-shrink-0">
                       <button
                         id={`btn-pray-${intention.id}`}
-                        onClick={() => prayMutation.mutate({ intentionId: intention.id })}
-                        disabled={prayMutation.isPending}
+                        onClick={() => {
+                          if (hasPrayed || prayMutation.isPending) return;
+                          prayMutation.mutate({ intentionId: intention.id });
+                        }}
+                        disabled={hasPrayed || prayMutation.isPending}
+                        title={hasPrayed ? "Você já rezou por esta intenção" : "Rezar por esta intenção"}
                         className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all ${
                           hasPrayed
-                            ? "bg-[oklch(0.55_0.14_15/0.1)] text-[oklch(0.55_0.14_15)]"
-                            : "bg-[oklch(0.22_0.07_260/0.06)] text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.22_0.07_260/0.12)]"
+                            ? "bg-[oklch(0.55_0.14_15/0.1)] text-[oklch(0.55_0.14_15)] opacity-80 cursor-default"
+                            : "bg-[oklch(0.22_0.07_260/0.06)] text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.22_0.07_260/0.12)] cursor-pointer"
                         }`}
                       >
                         <HandHeart size={18} className={hasPrayed ? "fill-[oklch(0.55_0.14_15/0.3)]" : ""} />
@@ -639,6 +645,7 @@ export default function Intentions() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              if (updateMutation.isPending) return;
               const trimmed = editDesc.trim();
               if (trimmed.length < 10) {
                 toast.error("A descrição deve conter pelo menos 10 caracteres.");

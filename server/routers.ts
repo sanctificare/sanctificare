@@ -613,7 +613,8 @@ export const appRouter = router({
     delete: protectedProcedure
       .input(z.object({ intentionId: z.number() }))
       .mutation(async ({ ctx, input }) => {
-        await deleteIntention(input.intentionId, ctx.user.id);
+        const isAdmin = ctx.user.role === "admin";
+        await deleteIntention(input.intentionId, ctx.user.id, isAdmin);
         return { success: true };
       }),
 

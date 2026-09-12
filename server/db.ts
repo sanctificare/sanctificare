@@ -951,7 +951,7 @@ export async function recordIntentionPrayer(intentionId: number, userId: number)
   return { alreadyPrayed: false };
 }
 
-export async function deleteIntention(intentionId: number, userId: number) {
+export async function deleteIntention(intentionId: number, userId: number, isAdmin = false) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   const intention = await db
@@ -959,9 +959,15 @@ export async function deleteIntention(intentionId: number, userId: number) {
     .from(prayerIntentions)
     .where(eq(prayerIntentions.id, intentionId))
     .limit(1);
-  if (!intention.length || intention[0].userId !== userId) {
+  if (!intention.length) {
+    throw new Error("Intenção não encontrada");
+  }
+  if (!isAdmin && intention[0].userId !== userId) {
     throw new Error("Não autorizado");
   }
+  // Exclui em cascata para garantir integridade referencial
+  await db.delete(intentionPrayers).where(eq(intentionPrayers.intentionId, intentionId));
+  await db.delete(intentionMessages).where(eq(intentionMessages.intentionId, intentionId));
   await db.delete(prayerIntentions).where(eq(prayerIntentions.id, intentionId));
 }
 
@@ -1826,7 +1832,8 @@ export function computeDailyPlanStatusFromData(params: {
   let streak = 0;
   if (hasActivityToday || hasActivityYesterday) {
     let checkDate = hasActivityToday ? new Date(now) : new Date(yesterdayDate);
-    while (true) {
+    const maxSafeIterations = Math.min(400, activeDates.length + 2);
+    while (streak < maxSafeIterations) {
       const checkStr = formatSaoPauloDate(checkDate);
       if (!activeDates.includes(checkStr)) break;
       streak++;
