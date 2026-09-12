@@ -936,6 +936,15 @@ export async function getPrayedIntentionsByUser(userId: number) {
 export async function recordIntentionPrayer(intentionId: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
+  const exists = await db
+    .select({ id: prayerIntentions.id })
+    .from(prayerIntentions)
+    .where(eq(prayerIntentions.id, intentionId))
+    .limit(1);
+  if (!exists.length) {
+    throw new Error("Intenção não encontrada");
+  }
+
   const inserted = await db
     .insert(intentionPrayers)
     .values({ intentionId, userId })
@@ -1014,6 +1023,14 @@ export async function addIntentionMessage(
 ) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
+  const exists = await db
+    .select({ id: prayerIntentions.id })
+    .from(prayerIntentions)
+    .where(eq(prayerIntentions.id, intentionId))
+    .limit(1);
+  if (!exists.length) {
+    throw new Error("Intenção não encontrada");
+  }
   await db.insert(intentionMessages).values({ intentionId, userId, authorName, message, isAnonymous });
 }
 
@@ -1037,7 +1054,10 @@ export async function markGraceObtained(intentionId: number, userId: number) {
     .from(prayerIntentions)
     .where(eq(prayerIntentions.id, intentionId))
     .limit(1);
-  if (!intention.length || intention[0].userId !== userId) {
+  if (!intention.length) {
+    throw new Error("Intenção não encontrada");
+  }
+  if (intention[0].userId !== userId) {
     throw new Error("Não autorizado");
   }
   await db

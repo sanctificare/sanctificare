@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { DEFAULT_PIX_KEY } from "@/const";
+import { copyText } from "@/lib/share";
 
 // Função para calcular CRC16 do PIX (garante que o código Copia e Cola seja válido no banco)
 function calculateCRC16(str: string): string {
@@ -123,18 +124,26 @@ export default function ApoieMissao() {
     return generatePixCode(amount, DEFAULT_PIX_KEY);
   }, [amount]);
 
-  const handleCopyKey = () => {
-    void navigator.clipboard.writeText(DEFAULT_PIX_KEY);
-    setCopiedKey(true);
-    toast.success("Chave PIX copiada com sucesso!");
-    setTimeout(() => setCopiedKey(false), 2000);
+  const handleCopyKey = async () => {
+    const ok = await copyText(DEFAULT_PIX_KEY);
+    if (ok) {
+      setCopiedKey(true);
+      toast.success("Chave PIX copiada com sucesso!");
+      setTimeout(() => setCopiedKey(false), 2000);
+    } else {
+      toast.error("Não foi possível copiar automaticamente. Selecione a chave para copiar.");
+    }
   };
 
-  const handleCopyCode = () => {
-    void navigator.clipboard.writeText(pixCode);
-    setCopiedCode(true);
-    toast.success("Código PIX Copia e Cola copiado!");
-    setTimeout(() => setCopiedCode(false), 2000);
+  const handleCopyCode = async () => {
+    const ok = await copyText(pixCode);
+    if (ok) {
+      setCopiedCode(true);
+      toast.success("Código PIX Copia e Cola copiado!");
+      setTimeout(() => setCopiedCode(false), 2000);
+    } else {
+      toast.error("Não foi possível copiar automaticamente. Selecione o código para copiar.");
+    }
   };
 
   return (

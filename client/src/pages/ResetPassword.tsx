@@ -84,6 +84,7 @@ export default function ResetPassword() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (resetMutation.isPending) return;
     if (!validate()) return;
     resetMutation.mutate({ token, password });
   };

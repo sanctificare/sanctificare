@@ -494,7 +494,9 @@ export default function VelaVirtual() {
 
                       <Button
                         type="button"
+                        disabled={logPrayer.isPending}
                         onClick={async () => {
+                          if (logPrayer.isPending) return;
                           if (!isAuthenticated) {
                             window.location.assign(getLoginUrl());
                             return;

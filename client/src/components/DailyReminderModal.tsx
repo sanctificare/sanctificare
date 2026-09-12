@@ -35,6 +35,17 @@ export default function DailyReminderModal({
     );
   });
 
+  useEffect(() => {
+    if (isOpen && typeof window !== "undefined") {
+      setReminderTime(
+        localStorage.getItem("sanctificare_retiro_reminder_time") || "07:00"
+      );
+      setIsEnabled(
+        localStorage.getItem("sanctificare_retiro_reminder_enabled") === "true"
+      );
+    }
+  }, [isOpen]);
+
   const handleSave = async () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("sanctificare_retiro_reminder_time", reminderTime);

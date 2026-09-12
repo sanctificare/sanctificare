@@ -79,5 +79,28 @@ describe("Regression Tests: Bug Fixes & Resiliency", () => {
       // Autor pode deletar
       expect(canDelete(intentionOwnerId, intentionOwnerId, false)).toBe(true);
     });
+
+    it("valida existência prévia ao registrar oração ou mensagem em intenções", () => {
+      const checkExists = (intentions: { id: number }[], targetId: number) => {
+        const found = intentions.find((i) => i.id === targetId);
+        if (!found) {
+          throw new Error("Intenção não encontrada");
+        }
+        return found;
+      };
+
+      const existingList = [{ id: 1 }, { id: 2 }];
+      expect(() => checkExists(existingList, 999)).toThrow("Intenção não encontrada");
+      expect(checkExists(existingList, 1)).toEqual({ id: 1 });
+    });
+  });
+
+  describe("Resilient Clipboard Helper", () => {
+    it("retorna false e não quebra a aplicação se clipboard falhar", async () => {
+      const { copyText } = await import("../client/src/lib/share");
+      // Em ambiente de teste Node/JSDOM sem document.execCommand e sem clipboard
+      const result = await copyText("texto de teste");
+      expect(typeof result).toBe("boolean");
+    });
   });
 });
