@@ -45,7 +45,7 @@ import {
   type JourneyDay,
   type SaintMichaelAudioSegment,
 } from "@/data/saint-michael-lent";
-import { isSaintMichaelContentUnlocked, isSaintMichaelAudioLocked, calculateSaintMichaelEndDateIso } from "@/lib/saintMichaelConfig";
+import { isSaintMichaelContentUnlocked, isSaintMichaelAudioLocked, calculateSaintMichaelEndDateIso, mergeSaintMichaelServerJournal } from "@/lib/saintMichaelConfig";
 
 type JourneyState = {
   startDate: string;
@@ -226,12 +226,15 @@ export default function SaintMichaelLent() {
     { journeyId: JOURNEY_ID },
     { enabled: isAuthenticated }
   );
-
   const saveProgressMutation = trpc.journeys.saveProgress.useMutation();
   const saveJournalMutation = trpc.journeys.saveJournal.useMutation();
   const deleteJournalMutation = trpc.journeys.deleteJournal.useMutation();
 
   const [state, setState] = useState<JourneyState>(loadLocalState);
+  const { data: serverJournal } = trpc.journeys.getJournal.useQuery(
+    { journeyId: JOURNEY_ID, dayNumber: state.selectedDay },
+    { enabled: isAuthenticated }
+  );
   const [activeTab, setActiveTab] = useState<"audio" | "text">("audio");
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [fontSize, setFontSize] = useState<"text-sm" | "text-base" | "text-lg">("text-base");
@@ -394,6 +397,18 @@ export default function SaintMichaelLent() {
     }
   }, [serverProgress]);
 
+  useEffect(() => {
+    if (!serverJournal) return;
+    setState((prev) => {
+      const journals = mergeSaintMichaelServerJournal(prev.journals, serverJournal);
+      if (journals === prev.journals) return prev;
+      return {
+        ...prev,
+        journals,
+      };
+    });
+  }, [serverJournal]);
+
   // Persist local state
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -500,9 +515,13 @@ export default function SaintMichaelLent() {
         journeyId: JOURNEY_ID,
         dayNumber: selectedDayNum,
         content: text,
+      }, {
+        onSuccess: () => toast.success("Sua anotação privada foi salva e sincronizada."),
+        onError: () => toast.error("A anotação ficou salva neste dispositivo, mas não foi sincronizada."),
       });
+    } else {
+      toast.success("Sua anotação privada foi salva neste dispositivo.");
     }
-    toast.success("Sua anotação privada do diário foi salva.");
   };
 
   const handleJournalDelete = () => {
@@ -513,9 +532,13 @@ export default function SaintMichaelLent() {
       deleteJournalMutation.mutate({
         journeyId: JOURNEY_ID,
         dayNumber: selectedDayNum,
+      }, {
+        onSuccess: () => toast.success("Anotação excluída e sincronizada."),
+        onError: () => toast.error("A anotação foi removida deste dispositivo, mas a exclusão não foi sincronizada."),
       });
+    } else {
+      toast.success("Anotação excluída deste dispositivo.");
     }
-    toast.success("Anotação excluída.");
   };
 
   const currentJournalText = state.journals[selectedDayNum] ?? "";
@@ -716,7 +739,7 @@ export default function SaintMichaelLent() {
                       {/* Hidden HTML5 Audio Element */}
                       <audio
                         ref={audioRef}
-                        src={resolvedAudioUrl}
+                        src={resolvedAudioUrl || undefined}
                         preload="metadata"
                         muted={isMuted}
                       />

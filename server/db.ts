@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { eq, desc, and, or, sql, gt, gte, isNull, ne, inArray } from "drizzle-orm";
+import { eq, desc, and, or, sql, gt, gte, isNull, ne, inArray, ilike } from "drizzle-orm";
 import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import {
@@ -704,7 +704,7 @@ export async function getUserByEmail(email: string) {
   if (!db) return undefined;
 
   try {
-    const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const result = await db.select().from(users).where(ilike(users.email, email.trim())).limit(1);
     return result.length > 0 ? result[0] : undefined;
   } catch (error) {
     // Catch schema drift: missing columns OR missing enum types (e.g. templatePreference enum)
@@ -737,7 +737,7 @@ export async function getUserByEmail(email: string) {
           lastSignedIn: users.lastSignedIn,
         })
         .from(users)
-        .where(eq(users.email, email))
+        .where(ilike(users.email, email.trim()))
         .limit(1);
 
       if (result.length === 0) return undefined;
@@ -770,7 +770,7 @@ export async function getUserByEmail(email: string) {
           lastSignedIn: users.lastSignedIn,
         })
         .from(users)
-        .where(eq(users.email, email))
+        .where(ilike(users.email, email.trim()))
         .limit(1);
 
       if (result.length === 0) return undefined;
@@ -936,28 +936,28 @@ export async function getPrayedIntentionsByUser(userId: number) {
 export async function recordIntentionPrayer(intentionId: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
-  const exists = await db
-    .select({ id: prayerIntentions.id })
-    .from(prayerIntentions)
-    .where(eq(prayerIntentions.id, intentionId))
-    .limit(1);
-  if (!exists.length) {
-    throw new Error("Intenção não encontrada");
-  }
+  return db.transaction(async (tx) => {
+    const exists = await tx
+      .select({ id: prayerIntentions.id })
+      .from(prayerIntentions)
+      .where(eq(prayerIntentions.id, intentionId))
+      .limit(1);
+    if (!exists.length) throw new Error("Intenção não encontrada");
 
-  const inserted = await db
-    .insert(intentionPrayers)
-    .values({ intentionId, userId })
-    .onConflictDoNothing({ target: [intentionPrayers.intentionId, intentionPrayers.userId] })
-    .returning({ id: intentionPrayers.id });
+    const inserted = await tx
+      .insert(intentionPrayers)
+      .values({ intentionId, userId })
+      .onConflictDoNothing({ target: [intentionPrayers.intentionId, intentionPrayers.userId] })
+      .returning({ id: intentionPrayers.id });
 
-  if (inserted.length === 0) return { alreadyPrayed: true };
+    if (inserted.length === 0) return { alreadyPrayed: true };
 
-  await db
-    .update(prayerIntentions)
-    .set({ prayerCount: sql`${prayerIntentions.prayerCount} + 1` })
-    .where(eq(prayerIntentions.id, intentionId));
-  return { alreadyPrayed: false };
+    await tx
+      .update(prayerIntentions)
+      .set({ prayerCount: sql`${prayerIntentions.prayerCount} + 1` })
+      .where(eq(prayerIntentions.id, intentionId));
+    return { alreadyPrayed: false };
+  });
 }
 
 export async function deleteIntention(intentionId: number, userId: number, isAdmin = false) {
@@ -974,9 +974,7 @@ export async function deleteIntention(intentionId: number, userId: number, isAdm
   if (!isAdmin && intention[0].userId !== userId) {
     throw new Error("Não autorizado");
   }
-  // Exclui em cascata para garantir integridade referencial
-  await db.delete(intentionPrayers).where(eq(intentionPrayers.intentionId, intentionId));
-  await db.delete(intentionMessages).where(eq(intentionMessages.intentionId, intentionId));
+  // Child rows use ON DELETE CASCADE, so this remains one atomic statement.
   await db.delete(prayerIntentions).where(eq(prayerIntentions.id, intentionId));
 }
 
@@ -1414,21 +1412,22 @@ export async function getActiveVirtualCandles() {
 export async function recordCandlePrayer(candleId: number, userId: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
+  return db.transaction(async (tx) => {
+    const inserted = await tx
+      .insert(candlePrayers)
+      .values({ candleId, userId })
+      .onConflictDoNothing({ target: [candlePrayers.candleId, candlePrayers.userId] })
+      .returning({ id: candlePrayers.id });
 
-  const inserted = await db
-    .insert(candlePrayers)
-    .values({ candleId, userId })
-    .onConflictDoNothing({ target: [candlePrayers.candleId, candlePrayers.userId] })
-    .returning({ id: candlePrayers.id });
+    if (inserted.length === 0) return { alreadyPrayed: true };
 
-  if (inserted.length === 0) return { alreadyPrayed: true };
+    await tx
+      .update(virtualCandles)
+      .set({ prayerCount: sql`${virtualCandles.prayerCount} + 1` })
+      .where(eq(virtualCandles.id, candleId));
 
-  await db
-    .update(virtualCandles)
-    .set({ prayerCount: sql`${virtualCandles.prayerCount} + 1` })
-    .where(eq(virtualCandles.id, candleId));
-
-  return { alreadyPrayed: false };
+    return { alreadyPrayed: false };
+  });
 }
 
 // ─── Password Reset Tokens ────────────────────────────────────────────────────

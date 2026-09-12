@@ -10,8 +10,6 @@ allowBuilds:
   "@tailwindcss/oxide": true
   esbuild: true
 
-dangerouslyAllowAllBuilds: true
-
 supportedArchitectures:
   os:
     - current

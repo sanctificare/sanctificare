@@ -4,6 +4,7 @@ import {
   isSaintMichaelContentUnlocked,
   isSaintMichaelAudioLocked,
   calculateSaintMichaelEndDateIso,
+  mergeSaintMichaelServerJournal,
   SAINT_MICHAEL_ACTIVATION_DATE,
 } from "../client/src/lib/saintMichaelConfig";
 import { getSaintMichaelAudioSegments } from "../client/src/data/saint-michael-lent";
@@ -56,5 +57,10 @@ describe("Saint Michael Lent Feature Flags & Date Calculations", () => {
       expect(segments[4].url).toBe("/r2-storage/quaresma-sao-miguel/todos-dias-final.mp3");
     }
   });
-});
 
+  it("restaura no dispositivo a anotação do dia carregada da conta", () => {
+    expect(
+      mergeSaintMichaelServerJournal({ 1: "local" }, { dayNumber: 2, content: "salvo no servidor" })
+    ).toEqual({ 1: "local", 2: "salvo no servidor" });
+  });
+});

@@ -45,6 +45,32 @@ function isNativeClientRequest(req: any): boolean {
   return client === "native" || origin === "capacitor://localhost";
 }
 
+function normalizeEmail(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim().toLowerCase();
+  if (normalized.length === 0 || normalized.length > 320) return null;
+  return /^\S+@\S+\.\S+$/.test(normalized) ? normalized : null;
+}
+
+function isAcceptablePassword(value: unknown): value is string {
+  return typeof value === "string" && value.length >= 8 && value.length <= 256;
+}
+
+function toPublicUser(user: any) {
+  return {
+    id: user.id,
+    openId: user.openId,
+    name: user.name ?? null,
+    email: user.email ?? null,
+    loginMethod: user.loginMethod ?? null,
+    role: user.role,
+    templatePreference: user.templatePreference,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    lastSignedIn: user.lastSignedIn,
+  };
+}
+
 // Middleware to inject user
 export async function injectUserMiddleware(req: any, res: any, next: any) {
   let user = null;
@@ -82,7 +108,7 @@ router.get("/me", injectUserMiddleware, async (req: any, res) => {
   if (req.user) {
     const activeSub = await getActiveSubscription(req.user.id);
     res.json({
-      ...req.user,
+      ...toPublicUser(req.user),
       activeSubscription: activeSub || null,
     });
   } else {
@@ -113,15 +139,17 @@ router.post("/register", async (req, res) => {
       return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
     }
 
-    const { name, email, password } = req.body;
-    if (!name || name.length < 2) {
+    const name = typeof req.body?.name === "string" ? req.body.name.trim() : "";
+    const email = normalizeEmail(req.body?.email);
+    const password = req.body?.password;
+    if (name.length < 2 || name.length > 128) {
       return res.status(400).json({ error: "O nome deve ter pelo menos 2 caracteres" });
     }
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    if (!email) {
       return res.status(400).json({ error: "E-mail inválido" });
     }
-    if (!password || password.length < 8) {
-      return res.status(400).json({ error: "A senha deve ter pelo menos 8 caracteres" });
+    if (!isAcceptablePassword(password)) {
+      return res.status(400).json({ error: "A senha deve ter entre 8 e 256 caracteres" });
     }
 
     const existingUser = await getUserByEmail(email);
@@ -177,6 +205,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
+const DUMMY_PBKDF2_HASH =
+  "00000000000000000000000000000000:00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
 router.post("/login", async (req, res) => {
   try {
     const rateKey = getRequestRateKey(req);
@@ -184,13 +215,25 @@ router.post("/login", async (req, res) => {
       return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
     }
 
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const email = normalizeEmail(req.body?.email);
+    const password = req.body?.password;
+    if (!email || typeof password !== "string" || password.length === 0 || password.length > 256) {
       return res.status(400).json({ error: "E-mail e senha são obrigatórios" });
     }
 
+    if (!authRateLimiter.allow(`login-email:${email}`, 10)) {
+      return res.status(429).json({ error: "Muitas tentativas para esta conta. Tente novamente em alguns minutos." });
+    }
+
     const user = await getUserByEmail(email);
-    if (!user || !user.passwordHash || !(await comparePassword(password, user.passwordHash))) {
+    let passwordMatches = false;
+    if (user && user.passwordHash) {
+      passwordMatches = await comparePassword(password, user.passwordHash);
+    } else {
+      await comparePassword(password, DUMMY_PBKDF2_HASH);
+    }
+
+    if (!user || !passwordMatches) {
       return res.status(401).json({ error: "E-mail ou senha incorretos." });
     }
 
@@ -250,9 +293,9 @@ router.post("/forgot-password", async (req, res) => {
       return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
     }
 
-    const { email } = req.body;
+    const email = normalizeEmail(req.body?.email);
     if (!email) {
-      return res.status(400).json({ error: "E-mail é obrigatório" });
+      return res.status(400).json({ error: "E-mail inválido" });
     }
 
     const user = await getUserByEmail(email);
@@ -270,12 +313,12 @@ router.post("/forgot-password", async (req, res) => {
           user.name ?? "Fiel",
           resetLink
         );
-        console.log(`[ForgotPassword] Email dispatched to ${email}`);
+        console.log(`[ForgotPassword] Email dispatched for userId=${user.id}`);
       } catch (err) {
         console.error("[ForgotPassword] Failed to create token or send email:", err);
       }
     } else {
-      console.log(`[ForgotPassword] No registered user found for email=${email}`);
+      console.log("[ForgotPassword] Request completed for an unregistered address");
     }
 
     return res.json({ success: true });
@@ -292,8 +335,8 @@ router.get("/validate-reset-token", async (req, res) => {
       return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
     }
 
-    const token = req.query.token as string;
-    if (!token) {
+    const token = typeof req.query.token === "string" ? req.query.token : "";
+    if (!token || token.length > 128) {
       return res.status(400).json({ error: "Token é obrigatório" });
     }
     const userId = await validatePasswordResetToken(token);
@@ -311,9 +354,10 @@ router.post("/reset-password", async (req, res) => {
       return res.status(429).json({ error: "Muitas tentativas. Tente novamente em alguns minutos." });
     }
 
-    const { token, password } = req.body;
-    if (!token || !password || password.length < 8) {
-      return res.status(400).json({ error: "Token e senha com pelo menos 8 caracteres são obrigatórios" });
+    const token = typeof req.body?.token === "string" ? req.body.token : "";
+    const password = req.body?.password;
+    if (!token || token.length > 128 || !isAcceptablePassword(password)) {
+      return res.status(400).json({ error: "Token válido e senha entre 8 e 256 caracteres são obrigatórios" });
     }
 
     const newHash = await hashPassword(password);

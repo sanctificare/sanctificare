@@ -72,6 +72,7 @@ import { createMemoryRateLimiter } from "./_core/rateLimit";
 
 const PUBLIC_RATE_WINDOW_MS = 60 * 1000;
 const ADMIN_QUERY_TIMEOUT_MS = 15_000;
+const isoDateSchema = z.iso.date();
 const publicRateLimiter = createMemoryRateLimiter({
   windowMs: PUBLIC_RATE_WINDOW_MS,
   cleanupIntervalMs: 5 * 60 * 1000,
@@ -344,8 +345,8 @@ export const appRouter = router({
       .input(
         z.object({
           journeyId: z.string().min(1).max(80),
-          startedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-          expectedEndAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          startedAt: isoDateSchema,
+          expectedEndAt: isoDateSchema,
           lastAccessedDay: z.number().int().min(1).max(400).optional(),
           completedDays: z.array(z.number().int().min(1).max(400)).max(400).optional(),
           currentStreak: z.number().int().min(0).max(400).optional(),
@@ -551,8 +552,8 @@ export const appRouter = router({
 
     create: protectedProcedure
       .input(z.object({
-        title: z.string().min(5).max(200),
-        description: z.string().min(10).max(5000),
+        title: z.string().trim().min(5).max(200),
+        description: z.string().trim().min(10).max(5000),
         category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
         isAnonymous: z.boolean().optional(),
       }))
@@ -583,7 +584,7 @@ export const appRouter = router({
     addMessage: protectedProcedure
       .input(z.object({
         intentionId: z.number(),
-        message: z.string().min(3).max(300),
+        message: z.string().trim().min(3).max(300),
         isAnonymous: z.boolean().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
@@ -621,7 +622,7 @@ export const appRouter = router({
     update: protectedProcedure
       .input(z.object({
         intentionId: z.number(),
-        description: z.string().min(10).max(5000),
+        description: z.string().trim().min(10).max(5000),
         category: z.enum(["cura", "familia", "conversao", "trabalho", "defuntos", "paz"]).nullable().optional(),
         isAnonymous: z.boolean().optional(),
       }))
@@ -699,7 +700,7 @@ export const appRouter = router({
     // Liturgia do dia (ou de uma data "YYYY-MM-DD"). Lê do banco/cache; se ainda
     // não foi gravada pelo cron, busca da API como fallback e persiste.
     getByDate: publicProcedure
-      .input(z.object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }).optional())
+      .input(z.object({ date: isoDateSchema.optional() }).optional())
       .query(async ({ input }) => {
         const date = input?.date ?? todayIsoSaoPaulo();
         const cached = getCachedValue(liturgyByDateCache, date);
@@ -810,7 +811,7 @@ export const appRouter = router({
   lectioJournal: router({
     getEntry: protectedProcedure
       .input(z.object({
-        journalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        journalDate: isoDateSchema,
         passageId: z.string().min(1).max(80),
       }))
       .query(async ({ ctx, input }) => {
@@ -819,7 +820,7 @@ export const appRouter = router({
 
     saveEntry: protectedProcedure
       .input(z.object({
-        journalDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        journalDate: isoDateSchema,
         passageId: z.string().min(1).max(80),
         passageReference: z.string().max(120).nullable().optional(),
         anchoredPhrase: z.string().max(20_000).nullable().optional(),

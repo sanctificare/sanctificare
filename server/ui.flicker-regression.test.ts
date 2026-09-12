@@ -106,4 +106,10 @@ describe("flicker regression guards", () => {
     expect(config).toContain("autoUpdate: 'off'");
     expect(config).toContain("resetWhenUpdate: true");
   });
+
+  it("does not render an empty audio src while a remote URL is resolving", () => {
+    const source = readSource("client/src/pages/SaintMichaelLent.tsx");
+    expect(source).toContain("src={resolvedAudioUrl || undefined}");
+    expect(source).not.toContain("src={resolvedAudioUrl}\n");
+  });
 });

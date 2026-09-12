@@ -347,7 +347,7 @@ async function startServer() {
         event = stripe.webhooks.constructEvent(rawBody, sig ?? "", webhookSecret);
       } catch (err: any) {
         console.error("[Stripe Webhook] Assinatura inválida:", err.message);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
+        return res.status(400).send("Webhook signature verification failed");
       }
 
       try {

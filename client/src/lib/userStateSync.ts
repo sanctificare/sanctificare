@@ -115,6 +115,20 @@ export function applyRemoteState(params: {
   }
 }
 
+/** Keeps remote keys as the sync baseline while leaving local-only keys dirty. */
+export function createPostMergeBaseline(
+  entries: RemoteStateEntry[],
+  mergedLocalSnapshot: LocalSnapshot
+): LocalSnapshot {
+  const baseline: LocalSnapshot = {};
+  for (const entry of entries) {
+    if (entry.deletedAt || entry.value === null) continue;
+    const mergedValue = mergedLocalSnapshot[entry.key];
+    if (mergedValue !== undefined) baseline[entry.key] = mergedValue;
+  }
+  return baseline;
+}
+
 export function splitIntoChunks<T>(items: T[], size: number): T[][] {
   if (size <= 0) return [items];
   const chunks: T[][] = [];

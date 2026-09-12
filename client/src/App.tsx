@@ -17,6 +17,7 @@ import { setAnalyticsUserId, trackPageView } from "./lib/analytics";
 import {
   applyRemoteState,
   collectSyncableLocalSnapshot,
+  createPostMergeBaseline,
   diffSnapshots,
   splitIntoChunks,
 } from "./lib/userStateSync";
@@ -290,12 +291,14 @@ function StateSyncManager() {
   useEffect(() => {
     if (!isAuthenticated) return;
     if (!stateSyncQuery.data) return;
+    const remoteEntries = stateSyncQuery.data;
 
     applyRemoteState({
-      entries: stateSyncQuery.data,
+      entries: remoteEntries,
       localVersionByKey: localVersionByKeyRef.current,
     });
-    lastLocalSnapshotRef.current = collectSyncableLocalSnapshot();
+    const mergedSnapshot = collectSyncableLocalSnapshot();
+    lastLocalSnapshotRef.current = createPostMergeBaseline(remoteEntries, mergedSnapshot);
   }, [isAuthenticated, stateSyncQuery.data]);
 
   useEffect(() => {
@@ -369,7 +372,7 @@ function StateSyncManager() {
       window.removeEventListener("sanctificare:state-changed", triggerDebouncedSync);
       window.clearInterval(interval);
     };
-  }, [isAuthenticated, utils]);
+  }, [isAuthenticated, stateSyncQuery.data, utils]);
 
   return null;
 }

@@ -232,7 +232,7 @@ export function registerOAuthRoutes(app: Express) {
       const errorDetails = error?.response?.data || error?.message || String(error);
       console.error("[OAuth] Callback failed:", errorDetails, error?.stack);
 
-      const errorMessage =
+      const internalErrorMessage =
         error?.response?.data?.error_description ||
         error?.response?.data?.error ||
         error?.message ||
@@ -245,7 +245,12 @@ export function registerOAuthRoutes(app: Express) {
             const redirectUrl = new URL(
               decodedState.appPath.replace("sanctificare://callback", "http://localhost")
             );
-            redirectUrl.searchParams.set("error", "Falha no login com Google: " + errorMessage);
+            redirectUrl.searchParams.set(
+              "error",
+              process.env.NODE_ENV === "development"
+                ? "Falha no login com Google: " + internalErrorMessage
+                : "Falha no login com Google. Tente novamente."
+            );
             const finalRedirect = redirectUrl
               .toString()
               .replace("http://localhost", "sanctificare://callback");
@@ -259,8 +264,10 @@ export function registerOAuthRoutes(app: Express) {
 
       res.status(500).json({
         error: "OAuth callback failed",
-        message: errorMessage,
-        details: error?.response?.data ?? undefined,
+        message: process.env.NODE_ENV === "development"
+          ? internalErrorMessage
+          : "Não foi possível concluir a autenticação.",
+        details: process.env.NODE_ENV === "development" ? error?.response?.data : undefined,
       });
     }
   });

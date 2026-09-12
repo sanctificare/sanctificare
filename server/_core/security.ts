@@ -41,12 +41,15 @@ export function isDevAuthBypassEnabled(req: Request): boolean {
 }
 
 export function getAllowedOrigins(): Set<string> {
-  const defaults = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "capacitor://localhost",
-  ];
+  const isProduction = process.env.NODE_ENV === "production";
+  const defaults = isProduction
+    ? ["capacitor://localhost"]
+    : [
+        "http://localhost",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "capacitor://localhost",
+      ];
 
   const configured = (process.env.ALLOWED_ORIGINS ?? "")
     .split(",")

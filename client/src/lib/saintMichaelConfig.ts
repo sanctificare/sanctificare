@@ -71,3 +71,13 @@ export function calculateSaintMichaelEndDateIso(startDateIso: string, durationDa
     return "";
   }
 }
+
+export function mergeSaintMichaelServerJournal(
+  journals: Record<number, string>,
+  serverJournal: { dayNumber: number; content: string } | null | undefined
+): Record<number, string> {
+  if (!serverJournal || journals[serverJournal.dayNumber] === serverJournal.content) {
+    return journals;
+  }
+  return { ...journals, [serverJournal.dayNumber]: serverJournal.content };
+}

@@ -4,6 +4,15 @@ const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_for_testing");
 
 const FROM = "Sanctificare <noreply@sanctificare.app>";
 
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 /**
  * Envia e-mail de recuperação de senha com o link de redefinição.
  * Em desenvolvimento (sem RESEND_API_KEY), apenas loga o link no console.
@@ -13,6 +22,8 @@ export async function sendPasswordResetEmail(
   toName: string,
   resetLink: string
 ): Promise<void> {
+  const safeName = escapeHtml(toName);
+
   if (!process.env.RESEND_API_KEY) {
     let maskedLink = "[redacted]";
     try {
@@ -58,7 +69,7 @@ export async function sendPasswordResetEmail(
           <tr>
             <td style="padding:32px 40px;">
               <p style="margin:0 0 16px;color:#c8cde0;font-size:15px;line-height:1.7;">
-                Olá, <strong style="color:#fff;">${toName}</strong>,
+                Olá, <strong style="color:#fff;">${safeName}</strong>,
               </p>
               <p style="margin:0 0 24px;color:#c8cde0;font-size:15px;line-height:1.7;">
                 Recebemos uma solicitação para redefinir a senha da sua conta no Sanctificare.
