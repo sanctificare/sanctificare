@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { Component, ReactNode } from "react";
+import { isMobileApp } from "@/const";
 
 interface Props {
   children: ReactNode;
@@ -28,22 +29,17 @@ class ErrorBoundary extends Component<Props, State> {
     const isChunkError = 
       errorStr.includes("failed to fetch dynamically imported module") || 
       errorStr.includes("chunkloaderror") ||
-      errorStr.includes("loading chunk") ||
-      errorStr.includes("failed to fetch");
+      errorStr.includes("loading chunk");
 
-    if (isChunkError) {
+    // Native assets are bundled locally: reloading cannot repair them and
+    // discards the current screen/scroll. Web deployments may need one reload.
+    if (isChunkError && !isMobileApp()) {
       const hasReloaded = sessionStorage.getItem(CHUNK_RELOAD_GUARD);
       if (!hasReloaded) {
         sessionStorage.setItem(CHUNK_RELOAD_GUARD, "1");
         window.location.reload();
       }
     }
-  }
-
-  componentDidMount() {
-    window.setTimeout(() => {
-      sessionStorage.removeItem(CHUNK_RELOAD_GUARD);
-    }, 15_000);
   }
 
   render() {

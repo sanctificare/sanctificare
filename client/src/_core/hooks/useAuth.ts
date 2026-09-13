@@ -126,7 +126,9 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, queryClient, setLocation]);
 
   const state = useMemo(() => {
-    const user = meQuery.isError ? null : (meQuery.data ?? null);
+    // A failed background refresh retains the last confirmed session. Only
+    // fetchMe's explicit 401 (null) or logout should remove an existing user.
+    const user = meQuery.data ?? null;
     return {
       user,
       loading: meQuery.isLoading || logoutMutation.isPending,
@@ -145,7 +147,7 @@ export function useAuth(options?: UseAuthOptions) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    if (meQuery.isError || meQuery.data === null) {
+    if (meQuery.data === null) {
       try {
         localStorage.removeItem("app-runtime-user-info");
       } catch {
