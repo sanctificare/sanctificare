@@ -11,10 +11,12 @@ import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
 import { initAnalytics } from "./lib/analytics";
 import { applyCachedUserTemplate } from "./hooks/useUserTemplate";
+import { checkForStoreUpdate } from "./lib/storeUpdate";
 
 // Cache buster for deployment: 2026-07-15 17:45
-// Executable updates are intentionally locked to the Play Store bundle.
-const isOtaEnabled = false;
+// Web updates (OTA) are downloaded in the background and only activated on the
+// next cold start, while the static splash is still on screen.
+const isOtaEnabled = true;
 
 const parseVersionCore = (version: string | null | undefined) => {
   if (!version) return [0, 0, 0];
@@ -417,10 +419,11 @@ async function checkForOtaUpdate() {
 
     console.log(`[OTA] Bundle version: '${currentBundleVersion}' (id: '${currentBundleId}') | Local record: '${installedOtaVersion}' | Server: '${updateData.version}' | Native: '${nativeVersion}'`);
 
-    // Don't downgrade below native APK/AAB baseline
-    if (compareVersionCore(updateData.version, nativeVersion) < 0) {
-      console.warn(
-        `[OTA] Skipping downgrade. Server bundle ${updateData.version} is older than native ${nativeVersion}.`
+    // A bundle only targets the native version it was built for: older bundles
+    // would downgrade, newer ones may need plugins this APK/AAB doesn't ship.
+    if (compareVersionCore(updateData.version, nativeVersion) !== 0) {
+      console.log(
+        `[OTA] Skipping bundle ${updateData.version}: built for a different native version than ${nativeVersion}.`
       );
       return;
     }
@@ -478,20 +481,45 @@ try {
   document.documentElement.style.colorScheme = "light";
 }
 
-createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
+let hasRendered = false;
+function renderApp() {
+  if (hasRendered) return;
+  hasRendered = true;
+  createRoot(document.getElementById("root")!).render(
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
+  );
+}
+
+const OTA_CHECK_DELAY_MS = 3000;
+const OTA_RESUME_CHECK_INTERVAL_MS = 30 * 60 * 1000;
+let lastOtaCheckAt = 0;
+function scheduleOtaCheck() {
+  lastOtaCheckAt = Date.now();
+  window.setTimeout(() => void checkForOtaUpdate(), OTA_CHECK_DELAY_MS);
+}
 
 if (isMobileApp()) {
-  localStorage.removeItem("sanctificare_ota_pending_version");
-  localStorage.removeItem("sanctificare_ota_installed_version");
-  void CapacitorUpdater.notifyAppReady().catch((error) => {
-    console.warn("[Updater] notifyAppReady warning:", error);
+  void activatePendingOtaBeforeRender().then((activationRequested) => {
+    if (activationRequested) {
+      // set() reloads the WebView into the new bundle; render anyway if it doesn't.
+      window.setTimeout(renderApp, 5000);
+      return;
+    }
+    renderApp();
+    scheduleOtaCheck();
+    void checkForStoreUpdate();
   });
+
+  CapApp.addListener("resume", () => {
+    if (Date.now() - lastOtaCheckAt >= OTA_RESUME_CHECK_INTERVAL_MS) scheduleOtaCheck();
+    void checkForStoreUpdate();
+  });
+} else {
+  renderApp();
 }
 
 // Deep linking handler for Google OAuth in Capacitor mobile app

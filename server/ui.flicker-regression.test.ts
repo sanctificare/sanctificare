@@ -5,12 +5,14 @@ const readSource = (relativePath: string) =>
   readFileSync(new URL(`../${relativePath}`, import.meta.url), "utf8");
 
 describe("flicker regression guards", () => {
-  it("does not invoke automatic OTA activation or download", () => {
+  it("activates OTA bundles only on cold start, never on resume or background", () => {
     const source = readSource("client/src/main.tsx");
-    expect(source).not.toContain("void activatePendingOtaBeforeRender(");
-    expect(source).not.toContain("void checkForOtaUpdate(");
-    expect(source).toContain("const isOtaEnabled = false");
-    expect(source).toContain('localStorage.removeItem("sanctificare_ota_pending_version")');
+    expect(source).toContain("const isOtaEnabled = true");
+    expect(source).toContain("void activatePendingOtaBeforeRender().then(");
+    // next() makes Capgo swap bundles on background, which flashes on resume.
+    expect(source).not.toContain("CapacitorUpdater.next(");
+    // Only matching native versions receive a bundle.
+    expect(source).toContain("compareVersionCore(updateData.version, nativeVersion) !== 0");
   });
 
   it("does not preload every route and stall low-memory WebViews", () => {
