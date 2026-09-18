@@ -18,6 +18,7 @@ import { Cross } from "@/components/CrossIcon";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
 import { GOOGLE_PLAY_URL } from "@/components/GooglePlayBanner";
 import GooglePlayBadge from "@/components/GooglePlayBadge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const mainLinks = [
   { href: "/explore", label: "Explore", icon: Compass },
@@ -129,6 +130,7 @@ export default function AppNav() {
 
           {/* Ações direita */}
           <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             {isAuthenticated ? (
               <>
                 <Button
