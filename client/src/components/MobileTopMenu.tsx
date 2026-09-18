@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Search, Calendar, Menu, X, HeartHandshake, Moon, Sun } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
+import { isBibleRoute } from "@/components/ThemeToggle";
 
 export default function MobileTopMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [location] = useLocation();
 
   const handleSearch = () => {
     window.dispatchEvent(new CustomEvent("open-global-search"));
@@ -54,17 +56,19 @@ export default function MobileTopMenu() {
             </span>
           </Link>
 
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors border-t border-[oklch(0.75_0.12_75/0.25)]"
-            aria-label={`Ativar tema ${theme === "dark" ? "claro" : "escuro"}`}
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            <span className="text-sm font-medium">
-              Tema {theme === "dark" ? "claro" : "escuro"}
-            </span>
-          </button>
+          {!isBibleRoute(location) && (
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-full px-4 py-3 flex items-center gap-3 text-[oklch(0.78_0.03_260)] hover:text-white hover:bg-[oklch(0.18_0.04_260/0.5)] transition-colors border-t border-[oklch(0.75_0.12_75/0.25)]"
+              aria-label={`Ativar tema ${theme === "dark" ? "claro" : "escuro"}`}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              <span className="text-sm font-medium">
+                Tema {theme === "dark" ? "claro" : "escuro"}
+              </span>
+            </button>
+          )}
 
           <Link
             href="/apoie-a-missao"

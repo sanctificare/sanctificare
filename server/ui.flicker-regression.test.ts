@@ -120,9 +120,13 @@ describe("flicker regression guards", () => {
     expect(readSource("client/index.html")).toContain('<meta name="color-scheme" content="only light" />');
   });
 
-  it("scopes the Bible reading theme so light/sepia stay light inside a dark app", () => {
+  it("keeps the Bible on its own reading themes, independent of the app toggle", () => {
     const bible = readSource("client/src/pages/Bible.tsx");
-    expect(bible).toContain("useTheme()");
+    expect(bible).not.toContain("useTheme()");
+    expect(bible).toContain("useSystemDarkMode()");
+    expect(bible).toContain("<BibleThemeSelector");
+    expect(readSource("client/src/components/ThemeToggle.tsx")).toContain("isBibleRoute(location)");
+    expect(readSource("client/src/components/MobileTopMenu.tsx")).toContain("!isBibleRoute(location)");
     expect(bible).not.toContain('document.documentElement.classList.contains("dark")');
     expect(bible).toContain('activeTheme === "dark" ? "dark" : "light"');
 

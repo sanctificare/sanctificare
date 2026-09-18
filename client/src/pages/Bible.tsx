@@ -17,7 +17,8 @@ import {
   Bookmark,
 } from "lucide-react";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
-import { useTheme } from "@/contexts/ThemeContext";
+import { BibleThemeSelector, type BibleReadingTheme } from "@/components/BibleThemeSelector";
+import { useSystemDarkMode } from "@/hooks/useSystemDarkMode";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
@@ -67,13 +68,17 @@ export default function Bible() {
   const [fontFamily, setFontFamily] = useState<"serif" | "sans">(
     (localStorage.getItem("sanctificare_bible_font_family") as any) || "serif"
   );
-  const [readingTheme, setReadingTheme] = useState<"light" | "sepia" | "dark" | "system">(
+  const [readingTheme, setReadingTheme] = useState<BibleReadingTheme>(
     (localStorage.getItem("sanctificare_bible_theme") as any) || "system"
   );
+  const changeReadingTheme = (theme: BibleReadingTheme) => {
+    setReadingTheme(theme);
+    localStorage.setItem("sanctificare_bible_theme", theme);
+  };
 
-  // "Auto" follows the app theme; reading from the context keeps it reactive.
-  const { theme: appTheme } = useTheme();
-  const activeTheme = readingTheme === "system" ? appTheme : readingTheme;
+  // The Bible ignores the app-wide theme toggle: "Auto" follows the device.
+  const isSystemDark = useSystemDarkMode();
+  const activeTheme = readingTheme === "system" ? (isSystemDark ? "dark" : "light") : readingTheme;
 
   const [verses, setVerses] = useState<string[]>([]);
 
@@ -428,6 +433,7 @@ export default function Bible() {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]} ${activeTheme === "dark" ? "dark" : "light"}`}>
       <main className="container py-8 relative max-w-7xl mx-auto">
+        <BibleThemeSelector value={readingTheme} onChange={changeReadingTheme} className="mb-5 justify-end" />
         
         {/* =========================================================================
             1. LAYOUT DESKTOP (3 COLUNAS)
@@ -853,57 +859,6 @@ export default function Bible() {
                     </Button>
                   </div>
                 </div>
-
-                {/* Tema */}
-                <div className="space-y-1.5">
-                  <span className="font-semibold text-[10px] uppercase tracking-wider text-muted-foreground block">Tema:</span>
-                  <div className="grid grid-cols-4 gap-0.5">
-                    <Button
-                      variant={readingTheme === "light" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("light");
-                        localStorage.setItem("sanctificare_bible_theme", "light");
-                      }}
-                    >
-                      Claro
-                    </Button>
-                    <Button
-                      variant={readingTheme === "sepia" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("sepia");
-                        localStorage.setItem("sanctificare_bible_theme", "sepia");
-                      }}
-                    >
-                      Sépia
-                    </Button>
-                    <Button
-                      variant={readingTheme === "dark" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("dark");
-                        localStorage.setItem("sanctificare_bible_theme", "dark");
-                      }}
-                    >
-                      Escuro
-                    </Button>
-                    <Button
-                      variant={readingTheme === "system" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-7 text-[9px] px-0.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("system");
-                        localStorage.setItem("sanctificare_bible_theme", "system");
-                      }}
-                    >
-                      Auto
-                    </Button>
-                  </div>
-                </div>
               </div>
             )}
 
@@ -1091,54 +1046,6 @@ export default function Bible() {
                       }}
                     >
                       A+
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Tema:</span>
-                    <Button
-                      variant={readingTheme === "light" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("light");
-                        localStorage.setItem("sanctificare_bible_theme", "light");
-                      }}
-                    >
-                      Claro
-                    </Button>
-                    <Button
-                      variant={readingTheme === "sepia" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("sepia");
-                        localStorage.setItem("sanctificare_bible_theme", "sepia");
-                      }}
-                    >
-                      Sépia
-                    </Button>
-                    <Button
-                      variant={readingTheme === "dark" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-8 text-xs ${activeTheme === "dark" ? "bg-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.70_0.13_73)] text-slate-950 font-semibold" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("dark");
-                        localStorage.setItem("sanctificare_bible_theme", "dark");
-                      }}
-                    >
-                      Escuro
-                    </Button>
-                    <Button
-                      variant={readingTheme === "system" ? "default" : "outline"}
-                      size="sm"
-                      className={`h-8 text-xs ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : ""}`}
-                      onClick={() => {
-                        setReadingTheme("system");
-                        localStorage.setItem("sanctificare_bible_theme", "system");
-                      }}
-                    >
-                      Auto
                     </Button>
                   </div>
                 </div>

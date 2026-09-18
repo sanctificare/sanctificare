@@ -1,8 +1,14 @@
 import { Moon, Sun } from "lucide-react";
+import { useLocation } from "wouter";
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
+
+// The Bible has its own reading themes (Claro, Sépia, Escuro, Auto), so the
+// app-wide toggle is hidden there.
+export const isBibleRoute = (location: string) =>
+  location === "/biblia" || location.startsWith("/biblia/");
 
 interface ThemeToggleProps {
   className?: string;
@@ -10,8 +16,9 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, toggleTheme, switchable } = useTheme();
+  const [location] = useLocation();
 
-  if (!switchable || !toggleTheme) return null;
+  if (!switchable || !toggleTheme || isBibleRoute(location)) return null;
 
   const isDark = theme === "dark";
   const nextTheme = isDark ? "claro" : "escuro";

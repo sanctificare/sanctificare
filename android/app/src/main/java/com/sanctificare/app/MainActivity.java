@@ -2,9 +2,11 @@ package com.sanctificare.app;
 
 import android.graphics.Color;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import androidx.core.splashscreen.SplashScreen;
@@ -22,6 +24,18 @@ public class MainActivity extends BridgeActivity {
         getBridge().getWebView().setBackgroundColor(Color.parseColor("#faf7f2"));
         getBridge().getWebView().setOverScrollMode(View.OVER_SCROLL_NEVER);
         disableSystemDarkening(getBridge().getWebView());
+        // O app fica sempre claro, então o WebView não enxerga o modo escuro do
+        // sistema; o tema "Auto" da Bíblia lê essa preferência por aqui.
+        getBridge().getWebView().addJavascriptInterface(new SystemThemeBridge(), "SanctificareSystem");
+    }
+
+    private class SystemThemeBridge {
+        @JavascriptInterface
+        public boolean isSystemDark() {
+            int nightMode = android.content.res.Resources.getSystem().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+            return nightMode == Configuration.UI_MODE_NIGHT_YES;
+        }
     }
 
     // O tema claro/escuro é controlado pelo app; impede que o Android (modo
