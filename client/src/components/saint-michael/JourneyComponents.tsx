@@ -134,7 +134,7 @@ export function JourneyCalendar({
                   ? "bg-[#7A0C0C] text-[#FDFBF7] border-[#D4AF37] shadow-md ring-2 ring-[#D4AF37]/50 scale-105"
                   : isDone
                   ? "bg-[#E8F5E9] text-[#1B5E20] border-[#A5D6A7] dark:bg-[#1B5E20]/30 dark:text-[#81C784] dark:border-[#2E7D32]"
-                  : "bg-[#F3EDDC] text-[#5C503D] border-[#E2D8C3] dark:bg-[#242019] dark:text-[#A0927C] dark:border-[#383126] hover:bg-[#EAE0C8]"
+                  : "bg-[#F3EDDC] text-[#5C503D] border-[#E2D8C3] dark:bg-[#242019] dark:text-[#A0927C] dark:border-[#383126] hover:bg-[#EAE0C8] dark:hover:bg-card"
               }`}
             >
               {isDone ? <Check className="h-4 w-4 stroke-[3]" /> : <span>{day}</span>}
@@ -185,7 +185,7 @@ export function PrayerReader({
           variant="outline"
           size="sm"
           onClick={onOpenDistractionFree}
-          className="h-8 gap-1.5 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC]/60 hover:bg-[#EAE0C8]"
+          className="h-8 gap-1.5 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC]/60 dark:bg-card hover:bg-[#EAE0C8] dark:hover:bg-card"
         >
           <Maximize2 className="h-3.5 w-3.5" /> Leitura Sem Distrações
         </Button>
@@ -342,7 +342,7 @@ export function PrayerAudioPlayer({ title = "Áudio da Oração Tradicional de S
             variant="outline"
             size="sm"
             onClick={toggleSpeed}
-            className="h-8 px-2.5 font-mono text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#E8DFC8]/50"
+            className="h-8 px-2.5 font-mono text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#E8DFC8]/50 dark:bg-card"
           >
             {speed}
           </Button>
@@ -409,7 +409,7 @@ export function MeditationCard({ day }: { day: JourneyDay }) {
           variant="outline"
           size="sm"
           onClick={() => setPlaying(!playing)}
-          className="gap-2 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC]"
+          className="gap-2 font-serif text-xs border-[#D4AF37]/40 text-[#7A0C0C] dark:text-[#E5C158] bg-[#F3EDDC] dark:bg-card"
         >
           {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
           <Headphones className="h-3.5 w-3.5" />
@@ -597,13 +597,13 @@ export function SilenceTimer() {
           </div>
         ) : (
           <div className="flex items-center gap-2 font-serif">
-            <Button variant="outline" size="sm" onClick={() => startTimer(1)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
+            <Button variant="outline" size="sm" onClick={() => startTimer(1)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-card">
               1 min
             </Button>
-            <Button variant="outline" size="sm" onClick={() => startTimer(3)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
+            <Button variant="outline" size="sm" onClick={() => startTimer(3)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-card">
               3 min
             </Button>
-            <Button variant="outline" size="sm" onClick={() => startTimer(5)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE]">
+            <Button variant="outline" size="sm" onClick={() => startTimer(5)} className="text-xs border-[#D4AF37]/40 bg-[#FAF7EE] dark:bg-card">
               5 min
             </Button>
           </div>
@@ -643,9 +643,9 @@ export function PremiumDepthSection({
           size="icon"
           onClick={() => setFavorite(!favorite)}
           aria-label="Favoritar conteúdo"
-          className="text-[#5C503D] hover:text-red-600"
+          className="text-[#5C503D] dark:text-muted-foreground hover:text-red-600 dark:hover:text-red-300"
         >
-          <Heart className={favorite ? "fill-red-600 text-red-600" : ""} size={22} />
+          <Heart className={favorite ? "fill-red-600 text-red-600 dark:text-red-300" : ""} size={22} />
         </Button>
       </div>
 
@@ -697,7 +697,7 @@ export function CompletionScreen({
 }) {
   return (
     <section className="rounded-2xl border-2 border-[#A5D6A7] bg-[#E8F5E9] dark:border-[#2E7D32] dark:bg-[#142916] p-7 text-center shadow-md space-y-3">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#1B5E20] text-[#FDFBF7] border-2 border-[#A5D6A7] shadow-sm">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#1B5E20] text-[#FDFBF7] border-2 border-[#A5D6A7] dark:border-border shadow-sm">
         <Check className="h-7 w-7 stroke-[3]" />
       </div>
       <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1B5E20] dark:text-[#A5D6A7]">
@@ -717,7 +717,7 @@ export function CompletionScreen({
         <Button
           variant="outline"
           onClick={onDepth}
-          className="font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] hover:bg-[#F3EDDC] font-bold px-6"
+          className="font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] dark:bg-card hover:bg-[#F3EDDC] dark:hover:bg-card font-bold px-6"
         >
           <Crown className="mr-2 h-4 w-4 text-[#D4AF37]" />
           Aprofundar a Oração de Hoje
@@ -762,7 +762,7 @@ export function SubscriptionOffer() {
         <Button
           variant="outline"
           onClick={() => setOpen(true)}
-          className="mt-2 font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] hover:bg-[#F3EDDC] font-bold"
+          className="mt-2 font-serif border-[#D4AF37] text-[#7A0C0C] dark:text-[#E5C158] bg-[#FAF7EE] dark:bg-card hover:bg-[#F3EDDC] dark:hover:bg-card font-bold"
         >
           <Lock className="mr-2 h-4 w-4 text-[#D4AF37]" />
           Conhecer o Aprofundamento Espiritual

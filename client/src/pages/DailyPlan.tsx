@@ -295,7 +295,7 @@ export default function DailyPlan() {
       : "Escolha as práticas que deseja cultivar hoje.";
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card">
       <main className="container py-6 md:py-8">
         <div className="max-w-6xl mx-auto space-y-6">
           <section className="relative overflow-hidden rounded-2xl border border-[oklch(0.75_0.12_75/0.2)] p-6 md:p-8 animate-fade-in flex flex-col justify-between min-h-[220px]">
@@ -370,8 +370,8 @@ export default function DailyPlan() {
               <div className="prayer-card p-6 md:p-7">
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <div className="flex items-center gap-2">
-                    <Calendar size={17} className="text-[oklch(0.65_0.14_70)]" />
-                    <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)]">
+                    <Calendar size={17} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
+                    <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                       Metas de Hoje
                     </h2>
                   </div>
@@ -402,8 +402,8 @@ export default function DailyPlan() {
                 <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
                   <div>
                     <div className="flex items-center gap-2 mb-2">
-                      <Heart size={17} className="text-[oklch(0.62_0.14_35)]" />
-                      <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)]">
+                      <Heart size={17} className="text-[oklch(0.62_0.14_35)] dark:text-[oklch(0.82_0.10_35)]" />
+                      <h2 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                         {allDone ? "Plano de hoje concluído" : "Seu próximo passo"}
                       </h2>
                     </div>
@@ -431,7 +431,7 @@ export default function DailyPlan() {
                       </Button>
                     )
                   ) : allDone ? (
-                    <div className="rounded-full bg-emerald-600/10 px-4 py-2 text-sm font-semibold text-emerald-700">
+                    <div className="rounded-full bg-emerald-600/10 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
                       Amém
                     </div>
                   ) : (
@@ -446,7 +446,7 @@ export default function DailyPlan() {
 
                 {allDone && (
                   <div className="mt-5 rounded-lg border border-emerald-600/20 bg-emerald-600/5 p-4">
-                    <p className="font-serif text-base leading-relaxed text-[oklch(0.24_0.05_150)]">
+                    <p className="font-serif text-base leading-relaxed text-[oklch(0.24_0.05_150)] dark:text-foreground">
                       Senhor, recebei este dia vivido diante de Vós. Guardai no coração aquilo que foi rezado e ajudai-me a recomeçar amanhã com humildade.
                     </p>
                   </div>
@@ -458,8 +458,8 @@ export default function DailyPlan() {
               <details className="prayer-card p-6 group">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
                   <span className="flex items-center gap-2">
-                    <Settings size={16} className="text-[oklch(0.65_0.14_70)]" />
-                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                    <Settings size={16} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
+                    <span className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground uppercase tracking-[0.15em]">
                       Ajustar rotina
                     </span>
                   </span>
@@ -474,7 +474,7 @@ export default function DailyPlan() {
                   {dailyMetas.map(meta => (
                     <div key={meta.key} className="flex items-center justify-between gap-4">
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)] flex items-center justify-center flex-shrink-0">
                           {meta.icon}
                         </div>
                         <div className="min-w-0">
@@ -495,21 +495,21 @@ export default function DailyPlan() {
                 <div className="prayer-card p-6 cursor-pointer hover:border-[oklch(0.75_0.12_75/0.4)] transition-all duration-300">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <Heart size={16} className="text-[oklch(0.62_0.14_35)] group-hover:scale-110 transition-transform duration-300" />
-                      <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                      <Heart size={16} className="text-[oklch(0.62_0.14_35)] dark:text-[oklch(0.82_0.10_35)] group-hover:scale-110 transition-transform duration-300" />
+                      <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground uppercase tracking-[0.15em]">
                         Intenção do dia
                       </h3>
                     </div>
                     <ChevronRight size={15} className="text-muted-foreground group-hover:translate-x-1 transition-transform duration-300" />
                   </div>
                   <div className="divider-gold mb-4" />
-                  <p className="font-serif text-lg leading-relaxed text-[oklch(0.20_0.04_260)]">
+                  <p className="font-serif text-lg leading-relaxed text-[oklch(0.20_0.04_260)] dark:text-foreground">
                     Rezar pela perseverança nas pequenas fidelidades.
                   </p>
                   <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                     A santidade costuma amadurecer nos gestos simples que escolhemos repetir com amor.
                   </p>
-                  <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.55_0.14_35)] group-hover:text-[oklch(0.55_0.14_35/0.8)] transition-colors">
+                  <div className="mt-4 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.55_0.14_35)] dark:text-[oklch(0.82_0.10_35)] group-hover:text-[oklch(0.55_0.14_35/0.8)] dark:group-hover:text-[oklch(0.82_0.10_35)] transition-colors">
                     Ver mural de intenções
                     <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                   </div>
@@ -518,8 +518,8 @@ export default function DailyPlan() {
 
               <div className="prayer-card p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <BarChart2 size={16} className="text-[oklch(0.65_0.14_70)]" />
-                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] uppercase tracking-[0.15em]">
+                  <BarChart2 size={16} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
+                  <h3 className="font-display text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground uppercase tracking-[0.15em]">
                     Semana
                   </h3>
                 </div>
@@ -543,24 +543,24 @@ function DailyMetaRow({ meta }: { meta: DailyMeta }) {
     <div className={`flex items-center justify-between gap-4 rounded-lg border p-4 transition-all duration-300 shadow-sm hover:shadow-md ${
       meta.completed
         ? "border-emerald-600/20 bg-emerald-600/5"
-        : "border-[oklch(0.75_0.12_75/0.2)] bg-gradient-to-br from-white/95 to-[oklch(0.99_0.005_85)]/95 hover:border-[oklch(0.75_0.12_75/0.4)]"
+        : "border-[oklch(0.75_0.12_75/0.2)] bg-gradient-to-br from-white/95 dark:from-card to-[oklch(0.99_0.005_85)]/95 dark:to-background hover:border-[oklch(0.75_0.12_75/0.4)]"
     }`}>
       <div className="flex min-w-0 items-start gap-3">
         <div className={`mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border ${
           meta.completed
-            ? "bg-emerald-600/10 text-emerald-700 border-emerald-600/20"
-            : "bg-[oklch(0.75_0.12_75/0.12)] text-[oklch(0.55_0.12_70)] border-[oklch(0.75_0.12_75/0.2)]"
+            ? "bg-emerald-600/10 text-emerald-700 dark:text-emerald-300 border-emerald-600/20"
+            : "bg-[oklch(0.75_0.12_75/0.12)] text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.82_0.10_70)] border-[oklch(0.75_0.12_75/0.2)]"
         }`}>
           {meta.icon}
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             {meta.completed ? (
-              <CheckCircle2 className="text-emerald-600 fill-emerald-500/10 flex-shrink-0" size={18} />
+              <CheckCircle2 className="text-emerald-600 dark:text-emerald-300 fill-emerald-500/10 flex-shrink-0" size={18} />
             ) : (
               <Circle className="text-muted-foreground flex-shrink-0" size={18} />
             )}
-            <p className={`text-sm font-semibold ${meta.completed ? "text-emerald-800" : "text-foreground"}`}>
+            <p className={`text-sm font-semibold ${meta.completed ? "text-emerald-800 dark:text-emerald-300" : "text-foreground"}`}>
               {meta.title}
             </p>
           </div>

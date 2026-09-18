@@ -9,7 +9,7 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[oklch(0.98_0.005_85)] text-[oklch(0.12_0.02_260)] font-serif antialiased pb-16">
+    <div className="min-h-screen bg-[oklch(0.98_0.005_85)] dark:bg-card text-[oklch(0.12_0.02_260)] dark:text-foreground font-serif antialiased pb-16">
       {/* Top Header Navigation */}
       <header className="sticky top-0 z-50 bg-[oklch(0.22_0.07_260)] text-[oklch(0.96_0.015_85)] shadow-md border-b border-[oklch(0.75_0.12_75)/0.2]">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -59,20 +59,20 @@ export default function Privacy() {
         </div>
 
         {/* Content Details */}
-        <div className="bg-white/90 backdrop-blur-sm border border-[oklch(0.88_0.01_260)] rounded-2xl p-6 md:p-10 shadow-md space-y-8 leading-relaxed text-slate-800">
-          <p className="text-lg text-slate-700 italic border-l-4 border-[oklch(0.75_0.12_75)] pl-4">
+        <div className="bg-white/90 dark:bg-card backdrop-blur-sm border border-[oklch(0.88_0.01_260)] dark:border-border rounded-2xl p-6 md:p-10 shadow-md space-y-8 leading-relaxed text-slate-800 dark:text-foreground">
+          <p className="text-lg text-slate-700 dark:text-foreground italic border-l-4 border-[oklch(0.75_0.12_75)] pl-4">
             O Sanctificare respeita sua privacidade e está comprometido em proteger seus dados pessoais. Esta Política de Privacidade explica como coletamos, utilizamos, armazenamos e protegemos suas informações quando você utiliza nosso aplicativo, nosso website e demais serviços relacionados.
           </p>
 
-          <p className="text-slate-700">
+          <p className="text-slate-700 dark:text-foreground">
             Ao utilizar o Sanctificare, você concorda com as práticas descritas nesta Política.
           </p>
 
-          <hr className="border-t border-slate-200" />
+          <hr className="border-t border-slate-200 dark:border-border" />
 
           {/* Section 1 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">1.</span> Quem somos
             </h2>
             <p>
@@ -83,14 +83,14 @@ export default function Privacy() {
                 href="https://sanctificare.app" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="inline-flex items-center gap-2 text-[oklch(0.22_0.07_260)] hover:text-[oklch(0.75_0.12_75)] transition-colors"
+                className="inline-flex items-center gap-2 text-[oklch(0.22_0.07_260)] dark:text-foreground hover:text-[oklch(0.75_0.12_75)] transition-colors"
               >
                 <Globe className="w-4 h-4" />
                 <span>https://sanctificare.app</span>
               </a>
               <a 
                 href="mailto:contato@sanctificare.app" 
-                className="inline-flex items-center gap-2 text-[oklch(0.22_0.07_260)] hover:text-[oklch(0.75_0.12_75)] transition-colors"
+                className="inline-flex items-center gap-2 text-[oklch(0.22_0.07_260)] dark:text-foreground hover:text-[oklch(0.75_0.12_75)] transition-colors"
               >
                 <Mail className="w-4 h-4" />
                 <span>contato@sanctificare.app</span>
@@ -100,16 +100,16 @@ export default function Privacy() {
 
           {/* Section 2 */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">2.</span> Quais informações coletamos
             </h2>
             <p>
               Dependendo da forma como você utiliza o aplicativo, poderemos coletar:
             </p>
             
-            <div className="space-y-3 pl-4 border-l-2 border-slate-100">
-              <h3 className="text-lg font-bold text-slate-800">Informações fornecidas por você</h3>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700">
+            <div className="space-y-3 pl-4 border-l-2 border-slate-100 dark:border-border">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-foreground">Informações fornecidas por você</h3>
+              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700 dark:text-foreground">
                 <li>Nome;</li>
                 <li>Endereço de e-mail;</li>
                 <li>Foto de perfil (quando disponível);</li>
@@ -119,26 +119,26 @@ export default function Privacy() {
               </ul>
             </div>
 
-            <div className="space-y-3 pl-4 border-l-2 border-slate-100">
-              <h3 className="text-lg font-bold text-slate-800">Conteúdo criado pelo usuário</h3>
-              <p className="text-slate-700">
+            <div className="space-y-3 pl-4 border-l-2 border-slate-100 dark:border-border">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-foreground">Conteúdo criado pelo usuário</h3>
+              <p className="text-slate-700 dark:text-foreground">
                 Quando você utiliza recursos como:
               </p>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700">
+              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700 dark:text-foreground">
                 <li>Pedidos de oração;</li>
                 <li>Diário espiritual;</li>
                 <li>Metas espirituais;</li>
                 <li>Perguntas feitas ao assistente de IA;</li>
                 <li>Anotações pessoais.</li>
               </ul>
-              <p className="text-sm text-slate-500 italic">
+              <p className="text-sm text-slate-500 dark:text-foreground italic">
                 Esses conteúdos poderão ser armazenados para possibilitar o funcionamento do serviço.
               </p>
             </div>
 
-            <div className="space-y-3 pl-4 border-l-2 border-slate-100">
-              <h3 className="text-lg font-bold text-slate-800">Informações coletadas automaticamente</h3>
-              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700">
+            <div className="space-y-3 pl-4 border-l-2 border-slate-100 dark:border-border">
+              <h3 className="text-lg font-bold text-slate-800 dark:text-foreground">Informações coletadas automaticamente</h3>
+              <ul className="list-disc list-inside space-y-1 pl-2 text-slate-700 dark:text-foreground">
                 <li>Modelo do dispositivo;</li>
                 <li>Sistema operacional;</li>
                 <li>Identificadores do dispositivo;</li>
@@ -153,13 +153,13 @@ export default function Privacy() {
 
           {/* Section 3 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">3.</span> Como utilizamos seus dados
             </h2>
             <p>
               Utilizamos suas informações para:
             </p>
-            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700">
+            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700 dark:text-foreground">
               <li>Criar e manter sua conta;</li>
               <li>Fornecer conteúdos personalizados;</li>
               <li>Gerar recomendações espirituais;</li>
@@ -170,14 +170,14 @@ export default function Privacy() {
               <li>Prestar suporte técnico;</li>
               <li>Cumprir obrigações legais.</li>
             </ul>
-            <p className="font-semibold text-[oklch(0.22_0.07_260)] bg-[oklch(0.75_0.12_75)/0.1] p-3 rounded-lg border border-[oklch(0.75_0.12_75)/0.2] mt-4">
+            <p className="font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground bg-[oklch(0.75_0.12_75)/0.1] p-3 rounded-lg border border-[oklch(0.75_0.12_75)/0.2] mt-4">
               Jamais utilizamos seus dados para vender informações pessoais a terceiros.
             </p>
           </section>
 
           {/* Section 4 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">4.</span> Inteligência Artificial
             </h2>
             <p>
@@ -186,20 +186,20 @@ export default function Privacy() {
             <p>
               As informações enviadas para esses recursos poderão ser processadas por provedores de IA contratados pelo Sanctificare exclusivamente para fornecer essas funcionalidades.
             </p>
-            <p className="text-amber-700 font-sans text-sm bg-amber-50 p-3 rounded-lg border border-amber-200">
+            <p className="text-amber-700 font-sans text-sm bg-amber-50 dark:bg-amber-950/40 p-3 rounded-lg border border-amber-200 dark:text-amber-300">
               <strong>Atenção:</strong> Recomendamos que você não compartilhe informações extremamente sensíveis ou dados pessoais confidenciais durante essas interações com a Inteligência Artificial.
             </p>
           </section>
 
           {/* Section 5 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">5.</span> Compartilhamento de dados
             </h2>
             <p>
               Podemos compartilhar informações apenas quando necessário com:
             </p>
-            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700">
+            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700 dark:text-foreground">
               <li>Provedores de hospedagem na nuvem;</li>
               <li>Serviços de autenticação;</li>
               <li>Provedores de processamento de pagamento;</li>
@@ -207,14 +207,14 @@ export default function Privacy() {
               <li>Provedores de serviços de inteligência artificial;</li>
               <li>Autoridades públicas quando exigido por leis vigentes.</li>
             </ul>
-            <p className="text-slate-700">
+            <p className="text-slate-700 dark:text-foreground">
               Nenhuma informação é compartilhada para fins de marketing ou comerciais externos. Não comercializamos seus dados pessoais.
             </p>
           </section>
 
           {/* Section 6 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">6.</span> Compras e assinaturas
             </h2>
             <p>
@@ -227,7 +227,7 @@ export default function Privacy() {
 
           {/* Section 7 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">7.</span> Cookies e tecnologias semelhantes
             </h2>
             <p>
@@ -240,7 +240,7 @@ export default function Privacy() {
 
           {/* Section 8 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">8.</span> Segurança
             </h2>
             <p>
@@ -253,26 +253,26 @@ export default function Privacy() {
 
           {/* Section 9 */}
           <section id="exclusao-dados" className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">9.</span> Retenção dos dados
             </h2>
             <p>
               Seus dados pessoais e registros espirituais serão mantidos ativos em nosso sistema enquanto sua conta de usuário permanecer ativa, ou pelo tempo estritamente necessário para prestar nossos serviços, cumprir obrigações regulatórias, fiscais e legais, resolver eventuais disputas ou fazer cumprir nossos contratos de adesão.
             </p>
-            <p className="font-sans text-sm text-[oklch(0.22_0.07_260)] bg-slate-50 p-3 rounded-lg border border-slate-200">
+            <p className="font-sans text-sm text-[oklch(0.22_0.07_260)] dark:text-foreground bg-slate-50 dark:bg-muted p-3 rounded-lg border border-slate-200 dark:border-border">
               Você poderá solicitar a <strong>exclusão completa da sua conta e de todos os seus dados pessoais associados</strong> a qualquer momento, diretamente por meio das configurações de Perfil no aplicativo ou entrando em contato por e-mail.
             </p>
           </section>
 
           {/* Section 10 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">10.</span> Seus direitos
             </h2>
             <p>
               Dependendo da legislação aplicável do seu país ou estado (como a LGPD no Brasil), você poderá solicitar os seguintes direitos em relação aos seus dados pessoais:
             </p>
-            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700">
+            <ul className="list-disc list-inside space-y-1 pl-4 text-slate-700 dark:text-foreground">
               <li>Acesso aos seus dados sob nosso tratamento;</li>
               <li>Correção de informações desatualizadas ou incompletas;</li>
               <li>Exclusão completa ou bloqueio de dados;</li>
@@ -286,7 +286,7 @@ export default function Privacy() {
 
           {/* Section 11 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">11.</span> Privacidade de crianças
             </h2>
             <p>
@@ -299,7 +299,7 @@ export default function Privacy() {
 
           {/* Section 12 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">12.</span> Links para terceiros
             </h2>
             <p>
@@ -312,7 +312,7 @@ export default function Privacy() {
 
           {/* Section 13 */}
           <section className="space-y-3">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">13.</span> Alterações desta Política
             </h2>
             <p>
@@ -321,35 +321,35 @@ export default function Privacy() {
             <p>
               Quando houver alterações relevantes, notificaremos os usuários por meio do próprio aplicativo ou publicando um aviso em destaque no nosso site principal. A versão mais recente e válida estará sempre disponível publicamente em:
             </p>
-            <p className="font-sans text-sm text-[oklch(0.22_0.07_260)] font-semibold">
+            <p className="font-sans text-sm text-[oklch(0.22_0.07_260)] dark:text-foreground font-semibold">
               https://sanctificare.app/privacidade
             </p>
           </section>
 
           {/* Section 14 */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] flex items-center gap-2">
+            <h2 className="text-2xl font-display font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2">
               <span className="text-[oklch(0.75_0.12_75)]">14.</span> Contato
             </h2>
             <p>
               Em caso de dúvidas, esclarecimentos ou requisições sobre esta Política de Privacidade ou sobre o tratamento de seus dados pessoais pelo Sanctificare, entre em contato através de:
             </p>
-            <div className="bg-[oklch(0.98_0.005_85)] p-4 rounded-xl border border-slate-200 space-y-2 text-sm font-sans">
-              <p className="font-serif text-base font-bold text-[oklch(0.22_0.07_260)]">Sanctificare App</p>
-              <p className="flex items-center gap-2 text-slate-700">
+            <div className="bg-[oklch(0.98_0.005_85)] dark:bg-card p-4 rounded-xl border border-slate-200 dark:border-border space-y-2 text-sm font-sans">
+              <p className="font-serif text-base font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">Sanctificare App</p>
+              <p className="flex items-center gap-2 text-slate-700 dark:text-foreground">
                 <Globe className="w-4 h-4 text-[oklch(0.75_0.12_75)]" />
-                <span>Website: <a href="https://sanctificare.app" target="_blank" rel="noopener noreferrer" className="underline hover:text-[oklch(0.22_0.07_260)]">https://sanctificare.app</a></span>
+                <span>Website: <a href="https://sanctificare.app" target="_blank" rel="noopener noreferrer" className="underline hover:text-[oklch(0.22_0.07_260)] dark:hover:text-foreground">https://sanctificare.app</a></span>
               </p>
-              <p className="flex items-center gap-2 text-slate-700">
+              <p className="flex items-center gap-2 text-slate-700 dark:text-foreground">
                 <Mail className="w-4 h-4 text-[oklch(0.75_0.12_75)]" />
-                <span>E-mail: <a href="mailto:contato@sanctificare.app" className="underline hover:text-[oklch(0.22_0.07_260)]">contato@sanctificare.app</a></span>
+                <span>E-mail: <a href="mailto:contato@sanctificare.app" className="underline hover:text-[oklch(0.22_0.07_260)] dark:hover:text-foreground">contato@sanctificare.app</a></span>
               </p>
             </div>
           </section>
 
-          <hr className="border-t border-slate-200" />
+          <hr className="border-t border-slate-200 dark:border-border" />
 
-          <p className="text-center text-sm text-slate-500 font-sans italic pt-4">
+          <p className="text-center text-sm text-slate-500 dark:text-foreground font-sans italic pt-4">
             Ao utilizar o Sanctificare, você declara que leu e compreendeu integralmente esta Política de Privacidade.
           </p>
         </div>

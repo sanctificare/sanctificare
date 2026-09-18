@@ -81,7 +81,7 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
 
         <DialogHeader className="text-center relative z-10 flex flex-col items-center">
           <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-3">
-            <Crown size={22} className="text-amber-500" />
+            <Crown size={22} className="text-amber-500 dark:text-amber-300" />
           </div>
           <DialogTitle className="font-display text-2xl font-black text-white">
             Acesso Premium
@@ -123,7 +123,7 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
               <span className="text-sm font-black text-white">,90</span>
               <span className="text-slate-400 text-xs">/mês</span>
             </div>
-            <p className="text-[9px] text-slate-500 mt-1">14 dias grátis</p>
+            <p className="text-[9px] text-slate-500 dark:text-foreground mt-1">14 dias grátis</p>
           </button>
 
           {/* Anual */}
@@ -161,7 +161,7 @@ export function UpgradeDialog({ open, onOpenChange, description }: UpgradeDialog
               <span className="text-sm font-black text-white">,00</span>
               <span className="text-slate-400 text-xs">/ano</span>
             </div>
-            <p className="text-[9px] text-slate-500 mt-1">Equivale a R$ 10,75/mês</p>
+            <p className="text-[9px] text-slate-500 dark:text-foreground mt-1">Equivale a R$ 10,75/mês</p>
           </button>
         </div>
 

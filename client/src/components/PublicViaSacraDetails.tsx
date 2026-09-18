@@ -12,10 +12,10 @@ export default function PublicViaSacraDetails({ stations, path }: PublicViaSacra
   const firstStation = stations[0];
 
   return (
-    <main className="min-h-screen bg-white px-4 py-8 sm:px-6 lg:px-10">
+    <main className="min-h-screen bg-white dark:bg-card px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)] lg:items-start">
         <section className="lg:sticky lg:top-24">
-          <h1 className="font-display text-3xl font-bold text-black sm:text-4xl">Via-Sacra</h1>
+          <h1 className="font-display text-3xl font-bold text-black dark:text-foreground sm:text-4xl">Via-Sacra</h1>
           <p className="mt-2 text-sm text-muted-foreground">Caminho da Paixão do Senhor</p>
 
           <img
@@ -41,7 +41,7 @@ export default function PublicViaSacraDetails({ stations, path }: PublicViaSacra
 
         <section aria-label="Sessões da Via-Sacra">
           <div className="border-b border-black/10 pb-4">
-            <p className="text-sm font-bold text-black">{stations.length} sessões</p>
+            <p className="text-sm font-bold text-black dark:text-foreground">{stations.length} sessões</p>
           </div>
 
           <ol className="divide-y divide-black/10">
@@ -50,7 +50,7 @@ export default function PublicViaSacraDetails({ stations, path }: PublicViaSacra
               const summary = station.meditation.trim();
 
               return (
-                <li key={station.id} className={`flex gap-3 py-4 ${isPreview ? "text-black" : "text-black/35"}`}>
+                <li key={station.id} className={`flex gap-3 py-4 ${isPreview ? "text-black dark:text-foreground" : "text-black/35"}`}>
                   <span className="mt-0.5 w-5 text-right text-sm font-bold">{station.order}</span>
                   <div className="min-w-0 flex-1">
                     <h2 className="truncate text-base font-bold">{station.title}</h2>
@@ -76,7 +76,7 @@ export default function PublicViaSacraDetails({ stations, path }: PublicViaSacra
           </ol>
 
           <div className="mt-6 flex items-center gap-2 rounded-lg bg-black/[0.03] p-4 text-sm text-muted-foreground">
-            <Check className="h-4 w-4 shrink-0 text-emerald-700" />
+            <Check className="h-4 w-4 shrink-0 text-emerald-700 dark:text-emerald-300" />
             As sessões completas e o progresso ficam disponíveis após entrar no app.
             <ChevronRight className="ml-auto h-4 w-4 shrink-0" />
           </div>

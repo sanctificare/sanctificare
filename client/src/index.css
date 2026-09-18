@@ -12,8 +12,8 @@
   --mobile-bottom-nav-height: 5rem;
 
   /* Paleta Católica: Azul Marinho + Dourado + Creme */
-  --background: oklch(0.98 0.005 85);
-  --foreground: oklch(0.12 0.02 260);
+  --background: var(--template-background, oklch(0.98 0.005 85));
+  --foreground: var(--template-foreground, oklch(0.12 0.02 260));
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.15 0.02 260);
@@ -22,18 +22,18 @@
   --popover-foreground: oklch(0.15 0.02 260);
 
   /* Azul Marinho Profundo - cor primária */
-  --primary: oklch(0.28 0.08 260);
+  --primary: var(--template-primary, oklch(0.28 0.08 260));
   --primary-foreground: oklch(0.96 0.015 85);
 
   /* Dourado - cor secundária */
-  --secondary: oklch(0.75 0.12 75);
+  --secondary: var(--template-secondary, oklch(0.75 0.12 75));
   --secondary-foreground: oklch(0.15 0.02 260);
 
   --muted: oklch(0.94 0.008 85);
   --muted-foreground: oklch(0.34 0.02 260);
 
   /* Dourado suave para accent */
-  --accent: oklch(0.88 0.08 80);
+  --accent: var(--template-accent, oklch(0.88 0.08 80));
   --accent-foreground: oklch(0.2 0.04 260);
 
   --destructive: oklch(0.55 0.22 25);
@@ -81,7 +81,7 @@
   --secondary-foreground: oklch(0.95 0.01 80);
 
   --muted: oklch(0.22 0.04 260);
-  --muted-foreground: oklch(0.65 0.02 260);
+  --muted-foreground: oklch(0.78 0.02 260);
 
   --accent: oklch(0.28 0.08 260);
   --accent-foreground: oklch(0.95 0.01 80);
@@ -99,10 +99,10 @@
   --navy: oklch(0.22 0.07 260);
   --navy-light: oklch(0.35 0.08 255);
   --navy-dark: oklch(0.15 0.05 265);
-  --cream: oklch(0.95 0.01 85);
-  --cream-dark: oklch(0.88 0.015 80);
+  --cream: oklch(0.14 0.03 260);
+  --cream-dark: oklch(0.19 0.03 260);
   --burgundy: oklch(0.45 0.14 15);
-  --parchment: oklch(0.92 0.02 80);
+  --parchment: oklch(0.19 0.03 260);
 }
 
 @theme inline {
@@ -1690,4 +1690,59 @@
       transition: none;
     }
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Tema escuro: legibilidade de textos e superfícies
+   Sobrescreve cores fixas (claras) definidas nos utilitários acima.
+   ────────────────────────────────────────────────────────────── */
+.dark .text-navy,
+.dark .section-title,
+.dark .section-title-sm {
+  color: var(--foreground);
+}
+
+.dark .prose-prayer,
+.dark .meditation-text {
+  color: oklch(0.92 0.01 85);
+}
+
+.dark .meditation-title {
+  color: oklch(0.95 0.01 80);
+}
+
+.dark .prayer-card {
+  background: var(--card);
+  box-shadow: 0 10px 30px oklch(0 0 0 / 0.45);
+  border-top-color: var(--gold);
+}
+
+.dark .prayer-card:hover {
+  box-shadow:
+    0 15px 40px oklch(0 0 0 / 0.55),
+    0 0 15px oklch(0.75 0.12 75 / 0.15);
+}
+
+.dark .card-soft {
+  box-shadow: 0 8px 22px oklch(0 0 0 / 0.4);
+}
+
+.dark .card-interactive {
+  box-shadow: 0 10px 28px oklch(0 0 0 / 0.45);
+}
+
+.dark .card-interactive:hover {
+  box-shadow: 0 16px 36px oklch(0 0 0 / 0.55);
+}
+
+.dark .cover-card {
+  box-shadow: 0 12px 30px oklch(0 0 0 / 0.5);
+}
+
+.dark .text-gold {
+  color: oklch(0.82 0.1 78);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: oklch(0.2 0.03 260);
 }

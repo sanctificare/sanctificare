@@ -147,7 +147,7 @@ export default function NovenaAudioDock({
               <Button
                 type="button"
                 onClick={togglePlay}
-                className="h-10 w-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-[#151f32] p-0"
+                className="h-10 w-10 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-[#151f32] dark:text-foreground p-0"
               >
                 {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
               </Button>

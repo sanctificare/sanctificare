@@ -440,16 +440,16 @@ export default function RosaryGuided() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-5 xs:p-6 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] flex flex-col justify-between">
+      <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] dark:bg-card backdrop-blur p-5 xs:p-6 shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] flex flex-col justify-between">
         <div>
           <div className="mb-4">
-            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1">Hoje</p>
-            <h2 className="font-display text-xl xs:text-2xl font-bold text-[oklch(0.22_0.07_260)]">{mysteries.name}</h2>
+            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-1">Hoje</p>
+            <h2 className="font-display text-xl xs:text-2xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">{mysteries.name}</h2>
             <p className="text-xs xs:text-sm text-muted-foreground">{mysteries.days}</p>
           </div>
 
           <div className="mb-4">
-            <label className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] block mb-1.5">
+            <label className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] block mb-1.5">
               Minha intenção
             </label>
             <textarea
@@ -457,12 +457,12 @@ export default function RosaryGuided() {
               onChange={(event) => setIntention(event.target.value)}
               rows={3}
               placeholder="Ofereço este terço por..."
-              className="w-full rounded-xl border border-[oklch(0.22_0.07_260/0.14)] bg-white/85 p-3 text-sm font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.38)]"
+              className="w-full rounded-xl border border-[oklch(0.22_0.07_260/0.14)] bg-white/85 dark:bg-card p-3 text-sm font-serif text-foreground focus:outline-none focus:ring-2 focus:ring-[oklch(0.75_0.12_75/0.38)]"
             />
           </div>
 
           <div className="mb-5">
-            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1.5">Mistérios</p>
+            <p className="text-[10px] xs:text-xs font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-1.5">Mistérios</p>
             <div className="flex flex-wrap gap-1.5">
               {(Object.keys(ROSARY_MYSTERIES) as Array<keyof typeof ROSARY_MYSTERIES>).map((key) => (
                 <button
@@ -471,7 +471,7 @@ export default function RosaryGuided() {
                   className={`px-2.5 py-1.5 rounded-full text-[10px] xs:text-xs font-medium transition-all ${
                     selectedKey === key
                       ? "bg-[oklch(0.22_0.07_260)] text-white shadow-md shadow-[oklch(0.22_0.07_260/0.18)]"
-                      : "bg-white text-[oklch(0.22_0.07_260)] border border-[oklch(0.22_0.07_260/0.12)] hover:bg-[oklch(0.75_0.12_75/0.12)]"
+                      : "bg-white dark:bg-card text-[oklch(0.22_0.07_260)] border border-[oklch(0.22_0.07_260/0.12)] hover:bg-[oklch(0.75_0.12_75/0.12)] dark:text-foreground"
                   }`}
                 >
                   {ROSARY_MYSTERIES[key].name.replace("Mistérios ", "")}
@@ -523,11 +523,11 @@ export default function RosaryGuided() {
   );
 
   const renderCompletion = () => (
-    <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur p-8 text-center shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-scale-in">
+    <section className="rounded-2xl border border-[oklch(0.75_0.12_75/0.3)] bg-[oklch(0.99_0.006_85/0.94)] dark:bg-card backdrop-blur p-8 text-center shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-scale-in">
       <div className="w-20 h-20 rounded-full bg-[oklch(0.40_0.12_150/0.1)] border-2 border-[oklch(0.40_0.12_150/0.4)] flex items-center justify-center mx-auto mb-6">
-        <CheckCircle size={36} className="text-[oklch(0.40_0.12_150)]" />
+        <CheckCircle size={36} className="text-[oklch(0.40_0.12_150)] dark:text-[oklch(0.82_0.10_150)]" />
       </div>
-      <h2 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-3">Rosário concluído</h2>
+      <h2 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-3">Rosário concluído</h2>
       <p className="font-serif text-lg text-muted-foreground mb-2">Permaneça um instante em silêncio.</p>
       <p className="font-serif text-sm text-muted-foreground italic mb-8">Que Nossa Senhora acompanhe, guarde e conduza o seu dia.</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -568,7 +568,7 @@ export default function RosaryGuided() {
 
   const renderAudioControls = () =>
     showAudio ? (
-      <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in overflow-hidden">
+      <div className="rounded-xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] dark:bg-card shadow-lg shadow-[oklch(0.22_0.07_260/0.06)] animate-fade-in overflow-hidden">
         {autoRosaryActive && currentAudioTrack + 1 < rosaryAudioTracks.length && (
           <audio
             key={`preload-aside-${currentAudioTrack + 1}`}
@@ -602,13 +602,13 @@ export default function RosaryGuided() {
 
     return (
       <section
-        className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] backdrop-blur shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in md:overflow-visible overflow-hidden"
+        className="flex flex-col flex-1 min-h-0 md:flex-initial md:block md:h-auto rounded-2xl border border-[oklch(0.75_0.12_75/0.28)] bg-[oklch(0.99_0.006_85/0.94)] dark:bg-card backdrop-blur shadow-xl shadow-[oklch(0.22_0.07_260/0.08)] animate-fade-in md:overflow-visible overflow-hidden"
         style={prayerPanelStyle}
       >
         {/* Cabeçalho da oração – compacto no mobile */}
         <div className="text-center px-4 pt-3 pb-1 md:pt-4 md:pb-2 lg:pt-5 lg:pb-2 xl:pt-6 xl:pb-3 shrink-0">
-          <p className="text-[10px] xs:text-xs md:text-xs lg:text-sm xl:text-sm text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1 lg:mb-1.5 xl:mb-2">{display.subtitle}</p>
-          <h2 className="font-display text-base xs:text-xl md:text-2xl lg:text-3xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">{display.title}</h2>
+          <p className="text-[10px] xs:text-xs md:text-xs lg:text-sm xl:text-sm text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-semibold uppercase tracking-[0.2em] mb-0.5 md:mb-1 lg:mb-1.5 xl:mb-2">{display.subtitle}</p>
+          <h2 className="font-display text-base xs:text-xl md:text-2xl lg:text-3xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground leading-tight">{display.title}</h2>
           {intention.trim() && (
             <p className="mt-1 md:mt-1.5 lg:mt-2 font-serif text-[10px] xs:text-xs md:text-xs lg:text-sm italic text-muted-foreground line-clamp-1">Intenção: {intention}</p>
           )}
@@ -627,7 +627,7 @@ export default function RosaryGuided() {
           <div className="flex gap-2">
             <Button
               variant="outline"
-              className="flex-1 font-semibold text-xs xs:text-sm md:text-sm lg:text-sm xl:text-base h-11 xs:h-12 md:h-9 lg:h-10 xl:h-10 bg-white"
+              className="flex-1 font-semibold text-xs xs:text-sm md:text-sm lg:text-sm xl:text-base h-11 xs:h-12 md:h-9 lg:h-10 xl:h-10 bg-white dark:bg-card"
               onClick={() => setStep((currentStep) => getPrevStep(currentStep))}
             >
               <ChevronLeft size={14} className="mr-1" /> Anterior
@@ -647,10 +647,10 @@ export default function RosaryGuided() {
         </div>
 
         {display.meditation && (
-          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] p-3 md:p-6 lg:p-6 xl:p-6 mt-3">
-            <h3 className="font-display text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-1 md:mb-3 lg:mb-4 xl:mb-6">{display.text}</h3>
-            <p className="text-[10px] md:text-xs lg:text-sm xl:text-base font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-1 md:mb-2 lg:mb-3 xl:mb-4">Meditação</p>
-            <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed text-[oklch(0.25_0.03_260)] italic">{display.meditation}</p>
+          <div className="shrink-0 mx-3 mb-3 md:mx-0 md:mb-0 lg:mx-6 lg:mb-8 xl:mx-8 xl:mb-12 rounded-xl border border-[oklch(0.22_0.07_260/0.08)] bg-[oklch(0.97_0.01_85/0.84)] dark:bg-card p-3 md:p-6 lg:p-6 xl:p-6 mt-3">
+            <h3 className="font-display text-base xs:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-1 md:mb-3 lg:mb-4 xl:mb-6">{display.text}</h3>
+            <p className="text-[10px] md:text-xs lg:text-sm xl:text-base font-display font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-1 md:mb-2 lg:mb-3 xl:mb-4">Meditação</p>
+            <p className="font-serif text-xs xs:text-sm md:text-base lg:text-lg xl:text-xl leading-relaxed text-[oklch(0.25_0.03_260)] dark:text-foreground italic">{display.meditation}</p>
           </div>
         )}
 
@@ -706,17 +706,17 @@ export default function RosaryGuided() {
           <Button
             variant="outline"
             size="sm"
-            className="w-9 h-9 p-0 flex items-center justify-center bg-white/80 border-white/20 text-foreground hover:bg-white/90 rounded-lg shadow-sm shrink-0"
+            className="w-9 h-9 p-0 flex items-center justify-center bg-white/80 dark:bg-card border-white/20 text-foreground hover:bg-white/90 dark:hover:bg-card rounded-lg shadow-sm shrink-0"
           >
             <ChevronLeft size={18} />
           </Button>
         </Link>
-        <div className="flex-1 min-w-0 rounded-full bg-white/72 backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-3 py-1.5 xs:px-4 xs:py-2">
-          <div className="flex justify-between text-[10px] text-[oklch(0.22_0.07_260)] mb-0.5">
+        <div className="flex-1 min-w-0 rounded-full bg-white/72 dark:bg-card backdrop-blur border border-[oklch(0.75_0.12_75/0.26)] px-3 py-1.5 xs:px-4 xs:py-2">
+          <div className="flex justify-between text-[10px] text-[oklch(0.22_0.07_260)] dark:text-foreground mb-0.5">
             <span className="font-semibold truncate">{mysteries.name}</span>
             <span className="shrink-0 ml-2">{progress}%</span>
           </div>
-          <div className="h-1.5 bg-[oklch(0.88_0.01_260)] rounded-full overflow-hidden">
+          <div className="h-1.5 bg-[oklch(0.88_0.01_260)] dark:bg-card rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-[oklch(0.22_0.07_260)] to-[oklch(0.75_0.12_75)] rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}

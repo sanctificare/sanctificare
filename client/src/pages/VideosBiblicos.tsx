@@ -21,7 +21,7 @@ const GUEST_PLAYABLE_VIDEO_ID = BIBLE_VIDEOS[0]?.id ?? "";
 
 function VerticalVideoSkeleton() {
   return (
-    <div className="aspect-[9/16] rounded-2xl border border-[oklch(0.88_0.01_260)] bg-black/40 p-4 flex flex-col justify-end space-y-3 relative overflow-hidden animate-pulse">
+    <div className="aspect-[9/16] rounded-2xl border border-[oklch(0.88_0.01_260)] dark:border-border bg-black/40 p-4 flex flex-col justify-end space-y-3 relative overflow-hidden animate-pulse">
       <div className="absolute inset-0 bg-white/5 animate-pulse" />
       <div className="space-y-2 z-10 w-full">
         <Skeleton className="h-3 w-1/3 bg-white/20" />
@@ -35,8 +35,8 @@ function VerticalVideoSkeleton() {
 
 function HorizontalVideoSkeleton() {
   return (
-    <div className="flex flex-col bg-white rounded-2xl border border-border overflow-hidden shadow-sm animate-pulse">
-      <div className="aspect-video w-full bg-slate-200" />
+    <div className="flex flex-col bg-white dark:bg-card rounded-2xl border border-border overflow-hidden shadow-sm animate-pulse">
+      <div className="aspect-video w-full bg-slate-200 dark:bg-muted" />
       <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
         <div className="space-y-2">
           <Skeleton className="h-3 w-1/4 bg-slate-300" />
@@ -71,7 +71,7 @@ function VerticalVideoCard({
     <div
       onClick={onPlay}
       id={`video-card-${video.id}`}
-      className="group relative aspect-[9/16] rounded-2xl overflow-hidden border border-[oklch(0.88_0.01_260)] shadow-sm hover:shadow-lg hover:scale-[1.03] hover:ring-2 hover:ring-[oklch(0.75_0.12_75)] hover:border-transparent cursor-pointer transition-all duration-500 bg-black flex flex-col justify-end"
+      className="group relative aspect-[9/16] rounded-2xl overflow-hidden border border-[oklch(0.88_0.01_260)] dark:border-border shadow-sm hover:shadow-lg hover:scale-[1.03] hover:ring-2 hover:ring-[oklch(0.75_0.12_75)] hover:border-transparent cursor-pointer transition-all duration-500 bg-black flex flex-col justify-end"
     >
       {/* Thumbnail */}
       <img
@@ -84,7 +84,7 @@ function VerticalVideoCard({
 
       {/* Badges on top */}
       <div className="absolute top-3 left-3 right-3 flex justify-between items-center z-10">
-        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-white/95 text-[oklch(0.22_0.07_260)] shadow-sm">
+        <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-white/95 dark:bg-card text-[oklch(0.22_0.07_260)] dark:text-foreground shadow-sm">
           Curto
         </span>
         {video.premium ? (
@@ -128,11 +128,11 @@ function VerticalVideoCard({
 
       {/* Play/Lock Hover Overlay */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/35 backdrop-blur-[2px] z-10">
-        <div className="w-11 h-11 rounded-full bg-white/95 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+        <div className="w-11 h-11 rounded-full bg-white/95 dark:bg-card flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
           {isVideoLocked ? (
-            <Lock className="w-4 h-4 text-[oklch(0.65_0.12_70)]" />
+            <Lock className="w-4 h-4 text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" />
           ) : (
-            <Play className="w-4 h-4 text-[oklch(0.22_0.07_260)] fill-[oklch(0.22_0.07_260)] ml-0.5" />
+            <Play className="w-4 h-4 text-[oklch(0.22_0.07_260)] dark:text-foreground fill-[oklch(0.22_0.07_260)] ml-0.5" />
           )}
         </div>
       </div>
@@ -191,7 +191,7 @@ function HorizontalVideoCard({
   return (
     <div
       id={`video-card-${video.id}`}
-      className="group flex flex-col bg-white rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-lg hover:scale-[1.03] hover:ring-2 hover:ring-[oklch(0.75_0.12_75)] hover:border-transparent transition-all duration-500"
+      className="group flex flex-col bg-white dark:bg-card rounded-2xl border border-border overflow-hidden shadow-sm hover:shadow-lg hover:scale-[1.03] hover:ring-2 hover:ring-[oklch(0.75_0.12_75)] hover:border-transparent transition-all duration-500"
     >
       {/* Thumbnail Container */}
       <div className="relative aspect-video bg-black overflow-hidden cursor-pointer" onClick={onPlay}>
@@ -209,7 +209,7 @@ function HorizontalVideoCard({
         </div>
 
         <div className="absolute top-3 left-3 flex gap-2">
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/95 text-[oklch(0.22_0.07_260)] shadow-sm">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/95 dark:bg-card text-[oklch(0.22_0.07_260)] dark:text-foreground shadow-sm">
             Longo
           </span>
           {video.premium ? (
@@ -218,7 +218,7 @@ function HorizontalVideoCard({
               Premium
             </span>
           ) : (
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 shadow-sm">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 shadow-sm">
               Grátis
             </span>
           )}
@@ -253,11 +253,11 @@ function HorizontalVideoCard({
 
         {/* Play / Lock overlay */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/35 backdrop-blur-[2px]">
-          <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-full bg-white/90 dark:bg-card flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
             {isVideoLocked ? (
-              <Lock className="w-5 h-5 text-[oklch(0.65_0.12_70)]" />
+              <Lock className="w-5 h-5 text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" />
             ) : (
-              <Play className="w-5 h-5 text-[oklch(0.22_0.07_260)] fill-[oklch(0.22_0.07_260)] ml-0.5" />
+              <Play className="w-5 h-5 text-[oklch(0.22_0.07_260)] dark:text-foreground fill-[oklch(0.22_0.07_260)] ml-0.5" />
             )}
           </div>
         </div>
@@ -276,11 +276,11 @@ function HorizontalVideoCard({
       {/* Info Content */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <div className="text-[10px] font-semibold text-[oklch(0.65_0.12_70)] uppercase tracking-wider mb-1">
+          <div className="text-[10px] font-semibold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase tracking-wider mb-1">
             {video.category} • {video.narrator}
           </div>
           <h3
-            className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] mb-2 group-hover:text-[oklch(0.65_0.12_70)] transition-colors cursor-pointer"
+            className="font-display text-base font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2 group-hover:text-[oklch(0.65_0.12_70)] dark:group-hover:text-[oklch(0.82_0.10_70)] transition-colors cursor-pointer"
             onClick={onPlay}
           >
             {video.title}
@@ -296,7 +296,7 @@ function HorizontalVideoCard({
           id={`btn-action-${video.id}`}
           className={`w-full font-semibold ${
             isVideoLocked
-              ? "border-[oklch(0.75_0.12_75/0.5)] text-[oklch(0.65_0.12_70)] hover:bg-[oklch(0.75_0.12_75/0.1)]"
+              ? "border-[oklch(0.75_0.12_75/0.5)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] hover:bg-[oklch(0.75_0.12_75/0.1)]"
               : "bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white"
           }`}
           onClick={onPlay}
@@ -616,15 +616,15 @@ export default function VideosBiblicos() {
   };
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card">
       <main className="container py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center gap-2 mb-2">
-            <Film size={20} className="text-[oklch(0.55_0.14_15)]" />
+            <Film size={20} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
             <span className="text-sm text-muted-foreground font-medium">Vídeos</span>
           </div>
-          <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-2">
+          <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2">
             Vídeos com IA
           </h1>
           <p className="font-serif text-muted-foreground max-w-2xl">
@@ -641,7 +641,7 @@ export default function VideosBiblicos() {
               size="sm"
               id="btn-filter-all"
               onClick={() => setFilter("all")}
-              className={`cursor-pointer ${filter === "all" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)]"}`}
+              className={`cursor-pointer ${filter === "all" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)] dark:text-foreground"}`}
             >
               Todos os Vídeos
             </Button>
@@ -650,7 +650,7 @@ export default function VideosBiblicos() {
               size="sm"
               id="btn-filter-short"
               onClick={() => setFilter("short")}
-              className={`cursor-pointer ${filter === "short" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)]"}`}
+              className={`cursor-pointer ${filter === "short" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)] dark:text-foreground"}`}
             >
               Curtos (Reflexões)
             </Button>
@@ -659,7 +659,7 @@ export default function VideosBiblicos() {
               size="sm"
               id="btn-filter-long"
               onClick={() => setFilter("long")}
-              className={`cursor-pointer ${filter === "long" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)]"}`}
+              className={`cursor-pointer ${filter === "long" ? "bg-[oklch(0.22_0.07_260)] text-white" : "text-[oklch(0.22_0.07_260)] dark:text-foreground"}`}
             >
               Longos (Histórias)
             </Button>
@@ -674,7 +674,7 @@ export default function VideosBiblicos() {
               placeholder="Buscar vídeos, narradores..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/70 border border-border/80 focus:border-[oklch(0.22_0.07_260)]/40 focus:bg-white text-sm pl-9 pr-8 py-2 rounded-xl focus:outline-none transition-all"
+              className="w-full bg-white/70 dark:bg-card border border-border/80 focus:border-[oklch(0.22_0.07_260)]/40 focus:bg-white dark:focus:bg-card text-sm pl-9 pr-8 py-2 rounded-xl focus:outline-none transition-all"
             />
             {searchQuery && (
               <button
@@ -701,7 +701,7 @@ export default function VideosBiblicos() {
                 className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
                   isSelected
                     ? "bg-[oklch(0.55_0.14_15)] border-[oklch(0.55_0.14_15)] text-white shadow-sm"
-                    : "bg-white/40 border-border/60 text-muted-foreground hover:bg-white/80 hover:text-[oklch(0.22_0.07_260)]"
+                    : "bg-white/40 border-border/60 text-muted-foreground hover:bg-white/80 dark:hover:bg-card hover:text-[oklch(0.22_0.07_260)] dark:hover:text-foreground dark:bg-card dark:hover:bg-muted dark:text-foreground"
                 }`}
               >
                 {cat}
@@ -716,8 +716,8 @@ export default function VideosBiblicos() {
               <>
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
-                    <Video size={18} className="text-[oklch(0.55_0.14_15)]" />
-                    <Skeleton className="h-6 w-48 bg-slate-200" />
+                    <Video size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
+                    <Skeleton className="h-6 w-48 bg-slate-200 dark:bg-muted" />
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -727,8 +727,8 @@ export default function VideosBiblicos() {
                 </div>
                 <div className="space-y-4 pt-4">
                   <div className="flex items-center gap-2">
-                    <Film size={18} className="text-[oklch(0.55_0.14_15)]" />
-                    <Skeleton className="h-6 w-48 bg-slate-200" />
+                    <Film size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
+                    <Skeleton className="h-6 w-48 bg-slate-200 dark:bg-muted" />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[1, 2, 3].map((i) => (
@@ -739,7 +739,7 @@ export default function VideosBiblicos() {
               </>
             ) : filter === "short" ? (
               <div className="space-y-4">
-                <Skeleton className="h-6 w-48 bg-slate-200" />
+                <Skeleton className="h-6 w-48 bg-slate-200 dark:bg-muted" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <VerticalVideoSkeleton key={i} />
@@ -748,7 +748,7 @@ export default function VideosBiblicos() {
               </div>
             ) : (
               <div className="space-y-4">
-                <Skeleton className="h-6 w-48 bg-slate-200" />
+                <Skeleton className="h-6 w-48 bg-slate-200 dark:bg-muted" />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {[1, 2, 3].map((i) => (
                     <HorizontalVideoSkeleton key={i} />
@@ -760,10 +760,10 @@ export default function VideosBiblicos() {
         ) : filteredVideos.length === 0 ? (
           selectedCategory === "Favoritos" && favorites.length === 0 ? (
             <div className="py-16 text-center max-w-md mx-auto space-y-4 animate-fade-in" id="empty-favorites-state">
-              <div className="w-14 h-14 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto shadow-inner">
+              <div className="w-14 h-14 rounded-full bg-red-50 dark:bg-red-950/40 text-red-500 dark:text-red-300 flex items-center justify-center mx-auto shadow-inner">
                 <Heart size={24} className="fill-red-500" />
               </div>
-              <h3 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">Nenhum favorito ainda</h3>
+              <h3 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">Nenhum favorito ainda</h3>
               <p className="font-serif text-sm text-muted-foreground leading-relaxed">
                 Você ainda não favoritou nenhum vídeo. Clique no ícone de coração nos cards de vídeo para salvá-los aqui e assisti-los depois.
               </p>
@@ -782,7 +782,7 @@ export default function VideosBiblicos() {
               <div className="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center mx-auto text-muted-foreground">
                 <AlertCircle size={20} />
               </div>
-              <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)]">Nenhum vídeo encontrado</h3>
+              <h3 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">Nenhum vídeo encontrado</h3>
               <p className="font-serif text-sm text-muted-foreground">
                 Não encontramos vídeos correspondentes aos termos buscados ou aos filtros selecionados. Tente limpar os filtros ou buscar por outra palavra.
               </p>
@@ -808,12 +808,12 @@ export default function VideosBiblicos() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Video size={18} className="text-[oklch(0.55_0.14_15)]" />
-                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">
+                    <Video size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
+                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                       Reflexões Curtas (Formato Vertical)
                     </h2>
                   </div>
-                  <Button variant="link" onClick={() => setFilter("short")} className="text-[oklch(0.65_0.12_70)] font-semibold p-0 cursor-pointer">
+                  <Button variant="link" onClick={() => setFilter("short")} className="text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-semibold p-0 cursor-pointer">
                     Ver Todos
                   </Button>
                 </div>
@@ -839,12 +839,12 @@ export default function VideosBiblicos() {
               <div className="space-y-4 pt-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Film size={18} className="text-[oklch(0.55_0.14_15)]" />
-                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)]">
+                    <Film size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
+                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                       Histórias Completas (Formato Horizontal)
                     </h2>
                   </div>
-                  <Button variant="link" onClick={() => setFilter("long")} className="text-[oklch(0.65_0.12_70)] font-semibold p-0 cursor-pointer">
+                  <Button variant="link" onClick={() => setFilter("long")} className="text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-semibold p-0 cursor-pointer">
                     Ver Todos
                   </Button>
                 </div>
@@ -868,8 +868,8 @@ export default function VideosBiblicos() {
           </div>
         ) : filter === "short" ? (
           <div className="space-y-4 animate-fade-in">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] flex items-center gap-2 mb-4">
-              <Video size={18} className="text-[oklch(0.55_0.14_15)]" />
+            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2 mb-4">
+              <Video size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
               Reflexões Curtas (Formato Vertical)
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -889,8 +889,8 @@ export default function VideosBiblicos() {
           </div>
         ) : (
           <div className="space-y-4 animate-fade-in">
-            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] flex items-center gap-2 mb-4">
-              <Film size={18} className="text-[oklch(0.55_0.14_15)]" />
+            <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground flex items-center gap-2 mb-4">
+              <Film size={18} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
               Histórias Completas (Formato Horizontal)
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

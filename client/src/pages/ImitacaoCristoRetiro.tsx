@@ -224,7 +224,7 @@ export default function ImitacaoCristoRetiro() {
   };
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] pb-24 lg:pb-12 relative overflow-hidden">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card pb-24 lg:pb-12 relative overflow-hidden">
       {/* Hidden Ambient Audio Track */}
       <audio
         ref={ambientAudioRef}
@@ -240,14 +240,14 @@ export default function ImitacaoCristoRetiro() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-5 gap-4">
           <div>
             <Link href="/degraus-de-perfeicao">
-              <button className="mb-3 text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)]">
+              <button className="mb-3 text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
                 ← Voltar aos Degraus de Perfeição
               </button>
             </Link>
-            <p className="text-xs font-semibold uppercase tracking-wide text-[oklch(0.65_0.12_70)]">
+            <p className="text-xs font-semibold uppercase tracking-wide text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
               Vida interior
             </p>
-            <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)]">
+            <h1 className="font-display text-3xl font-bold sm:text-4xl text-[oklch(0.22_0.07_260)] dark:text-foreground">
               A Imitação de Cristo
             </h1>
             <p className="font-serif text-sm text-muted-foreground">
@@ -260,9 +260,9 @@ export default function ImitacaoCristoRetiro() {
               onClick={() => setIsReminderOpen(true)}
               variant="outline"
               size="sm"
-              className="border-[oklch(0.75_0.12_75/0.3)] bg-white text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.98_0.03_85)] font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
+              className="border-[oklch(0.75_0.12_75/0.3)] bg-white dark:bg-card text-[oklch(0.22_0.07_260)] dark:text-foreground hover:bg-[oklch(0.98_0.03_85)] dark:hover:bg-card font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
             >
-              <Bell size={14} className="text-amber-500" />
+              <Bell size={14} className="text-amber-500 dark:text-amber-300" />
               Lembrete Diário
             </Button>
 
@@ -270,9 +270,9 @@ export default function ImitacaoCristoRetiro() {
               onClick={() => setIsQuoteCardOpen(true)}
               variant="outline"
               size="sm"
-              className="border-[oklch(0.75_0.12_75/0.3)] bg-white text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.98_0.03_85)] font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
+              className="border-[oklch(0.75_0.12_75/0.3)] bg-white dark:bg-card text-[oklch(0.22_0.07_260)] dark:text-foreground hover:bg-[oklch(0.98_0.03_85)] dark:hover:bg-card font-bold text-xs gap-1.5 shadow-sm rounded-xl h-9"
             >
-              <Sparkles size={14} className="text-amber-500" />
+              <Sparkles size={14} className="text-amber-500 dark:text-amber-300" />
               Card de Citação
             </Button>
 
@@ -297,11 +297,11 @@ export default function ImitacaoCristoRetiro() {
 
               <div className="relative z-10 max-w-md w-full space-y-6">
                 <div className="w-16 h-16 rounded-full bg-amber-500/15 border border-amber-500/35 flex items-center justify-center mx-auto mb-2 animate-pulse">
-                  <Lock size={28} className="text-amber-500" />
+                  <Lock size={28} className="text-amber-500 dark:text-amber-300" />
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500 dark:text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
                     Conteúdo Premium
                   </span>
                   <h2 className="font-display text-2xl sm:text-3xl font-black text-white leading-tight">
@@ -398,7 +398,7 @@ export default function ImitacaoCristoRetiro() {
             <section className={`rounded-2xl border transition-all duration-500 p-4 sm:p-6 ${
               activeTab === "audio"
                 ? "bg-[#0b1329] border-amber-500/10 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
-                : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+                : "bg-[#fcfbf7] dark:bg-card border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] dark:text-foreground shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
             }`}>
               <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "audio" | "text")}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-border/20 pb-4 mb-4 gap-4">
@@ -427,7 +427,7 @@ export default function ImitacaoCristoRetiro() {
 
                   {activeTab === "text" && (
                     <div className="flex items-center gap-1.5 bg-[oklch(0.22_0.07_260/0.04)] p-1 rounded-lg border border-border/30">
-                      <span className="text-[10px] font-bold text-[#6e5e52] px-2 flex items-center gap-1">
+                      <span className="text-[10px] font-bold text-[#6e5e52] dark:text-muted-foreground px-2 flex items-center gap-1">
                         <Type size={12} /> Fonte
                       </span>
                       {(["sm", "md", "lg", "xl"] as const).map((size) => (
@@ -437,7 +437,7 @@ export default function ImitacaoCristoRetiro() {
                           className={`w-7 h-7 rounded text-xs font-bold transition-all cursor-pointer ${
                             fontSize === size
                               ? "bg-[oklch(0.22_0.07_260)] text-white"
-                              : "text-[#6e5e52] hover:bg-black/5"
+                              : "text-[#6e5e52] dark:text-muted-foreground hover:bg-black/5"
                           }`}
                         >
                           {size.toUpperCase()}
@@ -451,7 +451,7 @@ export default function ImitacaoCristoRetiro() {
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md relative overflow-hidden flex flex-col items-center text-center shadow-2xl">
                     <div className="absolute w-48 h-48 rounded-full bg-amber-500/5 blur-3xl -top-10 pointer-events-none" />
 
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-amber-500/80 dark:text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                       {selected.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}
                     </span>
                     <h2 className="mt-3 font-display text-2xl font-bold text-slate-100 leading-tight max-w-md">
@@ -591,7 +591,7 @@ export default function ImitacaoCristoRetiro() {
                   </div>
 
                   <blockquote className="rounded-lg border-l-4 border-amber-500 bg-white/5 px-4 py-3 font-serif italic text-slate-300 text-sm">
-                    <Quote size={14} className="mb-1 text-amber-500/80" />
+                    <Quote size={14} className="mb-1 text-amber-500/80 dark:text-amber-300" />
                     {selected.quote}
                   </blockquote>
 
@@ -604,41 +604,41 @@ export default function ImitacaoCristoRetiro() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="text" className="space-y-6 animate-fade-in text-[#2d251e] outline-none">
+                <TabsContent value="text" className="space-y-6 animate-fade-in text-[#2d251e] dark:text-foreground outline-none">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
                       {selected.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}
                     </span>
-                    <h2 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">
+                    <h2 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground leading-tight">
                       {selected.title}
                     </h2>
                     <p className="text-xs text-muted-foreground mt-1">{selected.description}</p>
                   </div>
 
-                  <blockquote className="rounded-lg border-l-4 border-[oklch(0.75_0.12_75)] bg-[oklch(0.97_0.02_85)] px-4 py-3 font-serif italic text-[oklch(0.30_0.06_260)] text-sm">
-                    <Quote size={14} className="mb-1 text-[oklch(0.65_0.12_70)]" />
+                  <blockquote className="rounded-lg border-l-4 border-[oklch(0.75_0.12_75)] bg-[oklch(0.97_0.02_85)] dark:bg-card px-4 py-3 font-serif italic text-[oklch(0.30_0.06_260)] dark:text-foreground text-sm">
+                    <Quote size={14} className="mb-1 text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" />
                     {selected.quote}
                   </blockquote>
 
-                  <div className="rounded-lg border border-[oklch(0.55_0.11_145/0.2)] bg-[oklch(0.96_0.04_145)] p-3">
-                    <div className="mb-1 flex items-center gap-2 text-[oklch(0.35_0.10_145)]">
+                  <div className="rounded-lg border border-[oklch(0.55_0.11_145/0.2)] bg-[oklch(0.96_0.04_145)] dark:bg-card p-3">
+                    <div className="mb-1 flex items-center gap-2 text-[oklch(0.35_0.10_145)] dark:text-[oklch(0.82_0.10_145)]">
                       <Check size={14} />
                       <p className="text-xs font-bold uppercase tracking-wide">Resolução prática</p>
                     </div>
-                    <p className="text-sm leading-relaxed text-[oklch(0.28_0.05_145)]">{selected.resolution}</p>
+                    <p className="text-sm leading-relaxed text-[oklch(0.28_0.05_145)] dark:text-foreground">{selected.resolution}</p>
                   </div>
 
-                  <div className="rounded-lg border border-[oklch(0.55_0.11_70/0.2)] bg-[oklch(0.98_0.03_85)] p-3">
-                    <div className="mb-1 flex items-center gap-2 text-[oklch(0.55_0.11_70)]">
+                  <div className="rounded-lg border border-[oklch(0.55_0.11_70/0.2)] bg-[oklch(0.98_0.03_85)] dark:bg-card p-3">
+                    <div className="mb-1 flex items-center gap-2 text-[oklch(0.55_0.11_70)] dark:text-[oklch(0.82_0.10_70)]">
                       <CircleHelp size={14} />
                       <p className="text-xs font-bold uppercase tracking-wide">Exame de consciência</p>
                     </div>
-                    <p className="text-sm leading-relaxed text-[oklch(0.36_0.06_70)]">{selected.exam}</p>
+                    <p className="text-sm leading-relaxed text-[oklch(0.36_0.06_70)] dark:text-foreground">{selected.exam}</p>
                   </div>
 
-                  <div className="rounded-lg border border-[oklch(0.22_0.07_260/0.12)] bg-[#fdfdfb] p-5 shadow-sm">
-                    <p className="mb-3 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] border-b border-[oklch(0.22_0.07_260/0.05)] pb-1.5">Texto Completo</p>
-                    <p className={`whitespace-pre-line font-serif text-[#2d251e]/90 first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:font-display first-letter:mr-2.5 first-letter:mt-1 first-letter:leading-[0.85] first-letter:text-[oklch(0.75_0.12_75)] ${fontSizeClasses[fontSize]}`}>
+                  <div className="rounded-lg border border-[oklch(0.22_0.07_260/0.12)] bg-[#fdfdfb] dark:bg-card p-5 shadow-sm">
+                    <p className="mb-3 text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] border-b border-[oklch(0.22_0.07_260/0.05)] pb-1.5">Texto Completo</p>
+                    <p className={`whitespace-pre-line font-serif text-[#2d251e]/90 dark:text-foreground first-letter:float-left first-letter:text-5xl first-letter:font-bold first-letter:font-display first-letter:mr-2.5 first-letter:mt-1 first-letter:leading-[0.85] first-letter:text-[oklch(0.75_0.12_75)] ${fontSizeClasses[fontSize]}`}>
                       {selected.scriptText}
                     </p>
                   </div>
@@ -647,8 +647,8 @@ export default function ImitacaoCristoRetiro() {
             </section>
           )}
 
-          <aside className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white p-3 h-fit text-[#2d251e]">
-            <h3 className="mb-3 px-2 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)]">
+          <aside className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white dark:bg-card p-3 h-fit text-[#2d251e] dark:text-foreground">
+            <h3 className="mb-3 px-2 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
               Meditações ({IMITACAO_PILULAS.length} Dias)
             </h3>
             <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
@@ -662,20 +662,20 @@ export default function ImitacaoCristoRetiro() {
                     onClick={() => handleSelectPill(pill.id, isPillPremium)}
                     className={`w-full rounded-xl border px-3 py-2.5 text-left transition-all cursor-pointer ${
                       active
-                        ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] shadow-sm"
-                        : "border-[oklch(0.22_0.07_260/0.08)] bg-white hover:border-[oklch(0.65_0.12_70/0.4)]"
+                        ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] dark:bg-card shadow-sm"
+                        : "border-[oklch(0.22_0.07_260/0.08)] bg-white dark:bg-card hover:border-[oklch(0.65_0.12_70/0.4)]"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 mb-1">
                       <span className={`text-[9px] font-bold uppercase tracking-wider ${
-                        active ? "text-[oklch(0.65_0.12_70)]" : "text-muted-foreground"
+                        active ? "text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" : "text-muted-foreground"
                       }`}>{pill.id.toUpperCase().replace("PILL", "MEDITAÇÃO ")}</span>
                       <div className="flex items-center gap-1.5">
-                        {isLocked && <Lock size={10} className="text-amber-500 shrink-0" />}
+                        {isLocked && <Lock size={10} className="text-amber-500 dark:text-amber-300 shrink-0" />}
                         <span className="text-[9px] text-muted-foreground">{pill.durationLabel}</span>
                       </div>
                     </div>
-                    <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">{pill.title}</p>
+                    <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">{pill.title}</p>
                   </button>
                 );
               })}

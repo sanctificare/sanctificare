@@ -1321,7 +1321,7 @@ export function getSaintLiturgicalStyle(color?: LiturgicalColor | string | null)
     border: "border-amber-300/30 dark:border-amber-500/20",
     text: "text-amber-700 dark:text-amber-300",
     badge: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-400/30",
-    dot: "bg-amber-200",
+    dot: "bg-amber-200 dark:bg-amber-300",
     label: "Branco (Santos / Virgens / Doutores)"
   };
 }

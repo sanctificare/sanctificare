@@ -33,111 +33,111 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
   pai_nosso: {
     icon: Cross,
     accent: "oklch(0.52 0.11 255)",
-    surface: "bg-[oklch(0.98_0.01_250)]",
+    surface: "bg-[oklch(0.98_0.01_250)] dark:bg-card",
     ring: "border-[oklch(0.80_0.07_250/0.45)] hover:border-[oklch(0.70_0.10_250/0.7)]",
     iconBg: "bg-[oklch(0.52_0.11_255/0.16)]",
-    iconColor: "text-[oklch(0.40_0.10_255)]",
+    iconColor: "text-[oklch(0.40_0.10_255)] dark:text-[oklch(0.82_0.10_255)]",
     badgeBg: "bg-[oklch(0.52_0.11_255/0.15)]",
-    badgeText: "text-[oklch(0.34_0.09_255)]",
+    badgeText: "text-[oklch(0.34_0.09_255)] dark:text-foreground",
     badgeLabel: "Oração do Senhor",
   },
   ave_maria: {
     icon: Heart,
     accent: "oklch(0.58 0.16 24)",
-    surface: "bg-[oklch(0.99_0.01_30)]",
-    ring: "border-[oklch(0.84_0.09_24/0.45)] hover:border-[oklch(0.70_0.14_24/0.75)]",
+    surface: "bg-[oklch(0.99_0.01_30)] dark:bg-card",
+    ring: "border-[oklch(0.84_0.09_24/0.45)] dark:border-border hover:border-[oklch(0.70_0.14_24/0.75)]",
     iconBg: "bg-[oklch(0.58_0.16_24/0.16)]",
-    iconColor: "text-[oklch(0.47_0.13_24)]",
+    iconColor: "text-[oklch(0.47_0.13_24)] dark:text-[oklch(0.82_0.10_24)]",
     badgeBg: "bg-[oklch(0.58_0.16_24/0.14)]",
-    badgeText: "text-[oklch(0.42_0.13_24)]",
+    badgeText: "text-[oklch(0.42_0.13_24)] dark:text-[oklch(0.82_0.10_24)]",
     badgeLabel: "Mariana",
   },
   gloria: {
     icon: Crown,
     accent: "oklch(0.66 0.15 92)",
-    surface: "bg-[oklch(0.99_0.01_95)]",
-    ring: "border-[oklch(0.86_0.10_92/0.45)] hover:border-[oklch(0.74_0.14_92/0.75)]",
+    surface: "bg-[oklch(0.99_0.01_95)] dark:bg-card",
+    ring: "border-[oklch(0.86_0.10_92/0.45)] dark:border-border hover:border-[oklch(0.74_0.14_92/0.75)]",
     iconBg: "bg-[oklch(0.66_0.15_92/0.16)]",
-    iconColor: "text-[oklch(0.50_0.12_92)]",
+    iconColor: "text-[oklch(0.50_0.12_92)] dark:text-[oklch(0.82_0.10_92)]",
     badgeBg: "bg-[oklch(0.66_0.15_92/0.14)]",
-    badgeText: "text-[oklch(0.44_0.11_92)]",
+    badgeText: "text-[oklch(0.44_0.11_92)] dark:text-[oklch(0.82_0.10_92)]",
     badgeLabel: "Doxologia",
   },
   credo: {
     icon: Shield,
     accent: "oklch(0.45 0.09 260)",
-    surface: "bg-[oklch(0.98_0.01_260)]",
+    surface: "bg-[oklch(0.98_0.01_260)] dark:bg-card",
     ring: "border-[oklch(0.78_0.08_260/0.45)] hover:border-[oklch(0.62_0.11_260/0.75)]",
     iconBg: "bg-[oklch(0.45_0.09_260/0.16)]",
-    iconColor: "text-[oklch(0.34_0.08_260)]",
+    iconColor: "text-[oklch(0.34_0.08_260)] dark:text-foreground",
     badgeBg: "bg-[oklch(0.45_0.09_260/0.14)]",
-    badgeText: "text-[oklch(0.32_0.07_260)]",
+    badgeText: "text-[oklch(0.32_0.07_260)] dark:text-foreground",
     badgeLabel: "Profissão de Fé",
   },
   salve_rainha: {
     icon: Crown,
     accent: "oklch(0.60 0.14 335)",
-    surface: "bg-[oklch(0.99_0.01_340)]",
-    ring: "border-[oklch(0.84_0.09_335/0.45)] hover:border-[oklch(0.72_0.13_335/0.75)]",
+    surface: "bg-[oklch(0.99_0.01_340)] dark:bg-card",
+    ring: "border-[oklch(0.84_0.09_335/0.45)] dark:border-border hover:border-[oklch(0.72_0.13_335/0.75)]",
     iconBg: "bg-[oklch(0.60_0.14_335/0.16)]",
-    iconColor: "text-[oklch(0.45_0.12_335)]",
+    iconColor: "text-[oklch(0.45_0.12_335)] dark:text-[oklch(0.82_0.10_335)]",
     badgeBg: "bg-[oklch(0.60_0.14_335/0.14)]",
-    badgeText: "text-[oklch(0.39_0.10_335)]",
+    badgeText: "text-[oklch(0.39_0.10_335)] dark:text-[oklch(0.82_0.10_335)]",
     badgeLabel: "Mariana",
   },
   angelus: {
     icon: Bell,
     accent: "oklch(0.50 0.10 212)",
-    surface: "bg-[oklch(0.98_0.01_215)]",
+    surface: "bg-[oklch(0.98_0.01_215)] dark:bg-card",
     ring: "border-[oklch(0.80_0.07_212/0.45)] hover:border-[oklch(0.66_0.11_212/0.75)]",
     iconBg: "bg-[oklch(0.50_0.10_212/0.16)]",
-    iconColor: "text-[oklch(0.38_0.09_212)]",
+    iconColor: "text-[oklch(0.38_0.09_212)] dark:text-foreground",
     badgeBg: "bg-[oklch(0.50_0.10_212/0.14)]",
-    badgeText: "text-[oklch(0.35_0.08_212)]",
+    badgeText: "text-[oklch(0.35_0.08_212)] dark:text-foreground",
     badgeLabel: "Liturgia Horária",
   },
   fatima: {
     icon: Flame,
     accent: "oklch(0.58 0.13 120)",
-    surface: "bg-[oklch(0.98_0.01_120)]",
-    ring: "border-[oklch(0.82_0.08_120/0.45)] hover:border-[oklch(0.70_0.12_120/0.75)]",
+    surface: "bg-[oklch(0.98_0.01_120)] dark:bg-card",
+    ring: "border-[oklch(0.82_0.08_120/0.45)] dark:border-border hover:border-[oklch(0.70_0.12_120/0.75)]",
     iconBg: "bg-[oklch(0.58_0.13_120/0.16)]",
-    iconColor: "text-[oklch(0.44_0.11_120)]",
+    iconColor: "text-[oklch(0.44_0.11_120)] dark:text-[oklch(0.82_0.10_120)]",
     badgeBg: "bg-[oklch(0.58_0.13_120/0.14)]",
-    badgeText: "text-[oklch(0.38_0.10_120)]",
+    badgeText: "text-[oklch(0.38_0.10_120)] dark:text-[oklch(0.82_0.10_120)]",
     badgeLabel: "Jaculatória",
   },
   anjo_da_guarda: {
     icon: Shield,
     accent: "oklch(0.57 0.10 42)",
-    surface: "bg-[oklch(0.99_0.01_45)]",
-    ring: "border-[oklch(0.84_0.07_42/0.45)] hover:border-[oklch(0.72_0.11_42/0.75)]",
+    surface: "bg-[oklch(0.99_0.01_45)] dark:bg-card",
+    ring: "border-[oklch(0.84_0.07_42/0.45)] dark:border-border hover:border-[oklch(0.72_0.11_42/0.75)]",
     iconBg: "bg-[oklch(0.57_0.10_42/0.16)]",
-    iconColor: "text-[oklch(0.42_0.09_42)]",
+    iconColor: "text-[oklch(0.42_0.09_42)] dark:text-muted-foreground",
     badgeBg: "bg-[oklch(0.57_0.10_42/0.14)]",
-    badgeText: "text-[oklch(0.38_0.08_42)]",
+    badgeText: "text-[oklch(0.38_0.08_42)] dark:text-foreground",
     badgeLabel: "Proteção",
   },
   novena: {
     icon: Crown,
     accent: "oklch(0.51 0.11 260)",
-    surface: "bg-[oklch(0.97_0.01_260)]",
+    surface: "bg-[oklch(0.97_0.01_260)] dark:bg-card",
     ring: "border-[oklch(0.77_0.08_260/0.5)] hover:border-[oklch(0.64_0.11_260/0.78)]",
     iconBg: "bg-[oklch(0.51_0.11_260/0.18)]",
-    iconColor: "text-[oklch(0.39_0.09_260)]",
+    iconColor: "text-[oklch(0.39_0.09_260)] dark:text-foreground",
     badgeBg: "bg-[oklch(0.51_0.11_260/0.16)]",
-    badgeText: "text-[oklch(0.35_0.08_260)]",
+    badgeText: "text-[oklch(0.35_0.08_260)] dark:text-foreground",
     badgeLabel: "Novena",
   },
   meditacao: {
     icon: Heart,
     accent: "oklch(0.58 0.14 18)",
-    surface: "bg-[oklch(0.98_0.01_22)]",
-    ring: "border-[oklch(0.82_0.09_18/0.5)] hover:border-[oklch(0.69_0.13_18/0.78)]",
+    surface: "bg-[oklch(0.98_0.01_22)] dark:bg-card",
+    ring: "border-[oklch(0.82_0.09_18/0.5)] dark:border-border hover:border-[oklch(0.69_0.13_18/0.78)]",
     iconBg: "bg-[oklch(0.58_0.14_18/0.18)]",
-    iconColor: "text-[oklch(0.44_0.12_18)]",
+    iconColor: "text-[oklch(0.44_0.12_18)] dark:text-[oklch(0.82_0.10_18)]",
     badgeBg: "bg-[oklch(0.58_0.14_18/0.16)]",
-    badgeText: "text-[oklch(0.38_0.10_18)]",
+    badgeText: "text-[oklch(0.38_0.10_18)] dark:text-[oklch(0.82_0.10_18)]",
     badgeLabel: "Meditação",
   },
 };
@@ -145,12 +145,12 @@ const PRAYER_CARD_THEMES: Record<string, PrayerCardTheme> = {
 const DEFAULT_PRAYER_CARD_THEME: PrayerCardTheme = {
   icon: PrayingHandsIcon as unknown as typeof Crown,
   accent: "oklch(0.48 0.09 260)",
-  surface: "bg-[oklch(0.98_0.01_260)]",
+  surface: "bg-[oklch(0.98_0.01_260)] dark:bg-card",
   ring: "border-[oklch(0.78_0.08_260/0.45)] hover:border-[oklch(0.65_0.10_260/0.75)]",
   iconBg: "bg-[oklch(0.48_0.09_260/0.16)]",
-  iconColor: "text-[oklch(0.36_0.08_260)]",
+  iconColor: "text-[oklch(0.36_0.08_260)] dark:text-foreground",
   badgeBg: "bg-[oklch(0.48_0.09_260/0.14)]",
-  badgeText: "text-[oklch(0.33_0.07_260)]",
+  badgeText: "text-[oklch(0.33_0.07_260)] dark:text-foreground",
   badgeLabel: "Oração",
 };
 
@@ -252,10 +252,10 @@ export default function Prayers() {
         {/* Header */}
         <div className="section-block animate-fade-in">
           <div className="flex items-center gap-2 mb-2">
-            <PrayingHandsIcon size={20} className="text-[oklch(0.55_0.14_15)]" />
+            <PrayingHandsIcon size={20} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
             <span className="text-sm text-muted-foreground font-medium">Orações</span>
           </div>
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-navy mb-2">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-navy dark:text-foreground mb-2">
             Orações Diárias
           </h1>
           <p className="font-serif text-muted-foreground lead-copy">
@@ -336,12 +336,12 @@ export default function Prayers() {
                         </span>
                         <div className="flex gap-1 flex-wrap justify-end">
                           {prayer.audioUrl && (
-                            <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
+                            <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] px-1.5 py-0.5 flex items-center gap-0.5">
                               <Volume2 size={9} className="sm:w-[10px] sm:h-[10px]" />
                               <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
                             </span>
                           )}
-                          <span className="rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)]">
+                          <span className="rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 flex items-center gap-1 text-[oklch(0.25_0.05_260)] dark:text-foreground">
                             <Clock size={10} className="sm:w-[11px] sm:h-[11px]" />
                             <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
                           </span>
@@ -349,7 +349,7 @@ export default function Prayers() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="font-display text-base font-bold text-navy mb-1 line-clamp-2">{prayer.name}</h3>
+                      <h3 className="font-display text-base font-bold text-navy dark:text-foreground mb-1 line-clamp-2">{prayer.name}</h3>
                       <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3">{prayer.description}</p>
                     </div>
                   </button>
@@ -397,7 +397,7 @@ export default function Prayers() {
                         </span>
                       )}
                       {prayer.audioUrl && (
-                        <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] px-1.5 py-0.5 flex items-center gap-0.5">
+                        <span className="rounded-full bg-[oklch(0.75_0.12_75/0.2)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] px-1.5 py-0.5 flex items-center gap-0.5">
                           <Volume2 size={9} className="sm:w-[10px] sm:h-[10px]" />
                           <span className="text-[9px] font-semibold tracking-[0.03em]">Áudio</span>
                         </span>
@@ -406,9 +406,9 @@ export default function Prayers() {
                   </div>
                 </div>
                 <div className="relative z-10">
-                  <h3 className="font-display text-base font-bold text-navy mb-1 line-clamp-2">{prayer.name}</h3>
+                  <h3 className="font-display text-base font-bold text-navy dark:text-foreground mb-1 line-clamp-2">{prayer.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 sm:line-clamp-3 mb-3">{prayer.description}</p>
-                  <div className="inline-flex rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 items-center gap-1 text-[oklch(0.25_0.05_260)]">
+                  <div className="inline-flex rounded-full bg-black/10 px-1.5 sm:px-2 py-0.5 sm:py-1 items-center gap-1 text-[oklch(0.25_0.05_260)] dark:text-foreground">
                     <Clock size={10} className="sm:w-[11px] sm:h-[11px]" />
                     <span className="text-[10px] font-semibold tracking-[0.03em]">{prayer.duration}</span>
                   </div>
@@ -430,7 +430,7 @@ export default function Prayers() {
               <DialogHeader>
                 <div className="flex items-center gap-3 mb-2">
                   <div>
-                    <DialogTitle className="font-display text-xl text-navy">
+                    <DialogTitle className="font-display text-xl text-navy dark:text-foreground">
                       {selectedPrayer.name}
                     </DialogTitle>
                     <p className="text-xs text-muted-foreground">{selectedPrayer.description}</p>

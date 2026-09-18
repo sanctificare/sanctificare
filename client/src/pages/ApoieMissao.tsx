@@ -302,7 +302,7 @@ export default function ApoieMissao() {
           </div>
 
           {showQrCode && (
-            <div className="bg-white p-3 rounded-2xl w-44 h-44 mx-auto mb-4 flex items-center justify-center shadow-lg border border-amber-500/20 transition-all duration-300">
+            <div className="bg-white dark:bg-card p-3 rounded-2xl w-44 h-44 mx-auto mb-4 flex items-center justify-center shadow-lg border border-amber-500/20 transition-all duration-300">
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&color=0b0d10&data=${encodeURIComponent(pixCode)}`}
                 alt="QR Code PIX"

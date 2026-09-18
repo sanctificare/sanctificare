@@ -158,7 +158,7 @@ export default function ResetPassword() {
         <CardTitle className="font-display text-xl font-medium tracking-wide">
           Nova Senha
         </CardTitle>
-        <CardDescription className="text-[oklch(0.65_0.02_260)] font-serif text-sm mt-1">
+        <CardDescription className="text-[oklch(0.65_0.02_260)] dark:text-muted-foreground font-serif text-sm mt-1">
           Escolha uma nova senha segura para a sua conta.
         </CardDescription>
       </CardHeader>
@@ -171,7 +171,7 @@ export default function ResetPassword() {
               Nova Senha
             </Label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+              <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                 <Lock size={16} />
               </span>
               <Input
@@ -181,12 +181,12 @@ export default function ResetPassword() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={resetMutation.isPending}
-                className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] hover:text-white transition-colors"
+                className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground hover:text-white transition-colors"
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -200,7 +200,7 @@ export default function ResetPassword() {
               Confirmar Senha
             </Label>
             <div className="relative">
-              <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+              <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                 <Lock size={16} />
               </span>
               <Input
@@ -210,12 +210,12 @@ export default function ResetPassword() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 disabled={resetMutation.isPending}
-                className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] hover:text-white transition-colors"
+                className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground hover:text-white transition-colors"
               >
                 {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>

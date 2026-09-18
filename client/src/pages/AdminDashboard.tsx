@@ -181,11 +181,11 @@ export default function AdminDashboard() {
       <aside className="hidden md:flex flex-col w-64 bg-[#0F121C] border-r border-amber-500/10">
         <div className="p-6 border-b border-amber-500/10 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full border-2 border-amber-500/40 flex items-center justify-center bg-amber-500/10 shadow-lg shadow-amber-500/20">
-            <span className="text-amber-500 font-serif font-bold text-lg">✝</span>
+            <span className="text-amber-500 dark:text-amber-300 font-serif font-bold text-lg">✝</span>
           </div>
           <div>
-            <h1 className="text-base font-serif font-bold tracking-wide text-amber-500">Sanctificare</h1>
-            <p className="text-[10px] text-amber-500/60 uppercase tracking-widest font-sans font-semibold">Painel Administrativo</p>
+            <h1 className="text-base font-serif font-bold tracking-wide text-amber-500 dark:text-amber-300">Sanctificare</h1>
+            <p className="text-[10px] text-amber-500/60 dark:text-amber-300 uppercase tracking-widest font-sans font-semibold">Painel Administrativo</p>
           </div>
         </div>
 
@@ -243,7 +243,7 @@ export default function AdminDashboard() {
           </button>
         </nav>
 
-        <div className="p-4 border-t border-amber-500/10 text-center text-xs text-slate-500">
+        <div className="p-4 border-t border-amber-500/10 text-center text-xs text-slate-500 dark:text-foreground">
           Versão 1.0.0
         </div>
       </aside>
@@ -253,15 +253,15 @@ export default function AdminDashboard() {
         {/* Header mobile/tablet */}
         <header className="md:hidden flex items-center justify-between px-6 py-4 bg-[#0F121C] border-b border-amber-500/10">
           <div className="flex items-center gap-2">
-            <span className="text-amber-500 font-serif font-bold text-xl">✝</span>
-            <span className="font-serif font-semibold text-amber-500">Sanctificare Admin</span>
+            <span className="text-amber-500 dark:text-amber-300 font-serif font-bold text-xl">✝</span>
+            <span className="font-serif font-semibold text-amber-500 dark:text-amber-300">Sanctificare Admin</span>
           </div>
           <div className="flex gap-2 overflow-x-auto">
             <Button
               size="sm"
               variant={activeTab === "overview" ? "default" : "outline"}
               onClick={() => setActiveTab("overview")}
-              className={activeTab === "overview" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+              className={activeTab === "overview" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
             >
               Geral
             </Button>
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
               size="sm"
               variant={activeTab === "users" ? "default" : "outline"}
               onClick={() => setActiveTab("users")}
-              className={activeTab === "users" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+              className={activeTab === "users" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
             >
               Usuários
             </Button>
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
               size="sm"
               variant={activeTab === "notifications" ? "default" : "outline"}
               onClick={() => setActiveTab("notifications")}
-              className={activeTab === "notifications" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+              className={activeTab === "notifications" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
             >
               <Bell className="w-4 h-4" />
             </Button>
@@ -285,7 +285,7 @@ export default function AdminDashboard() {
               size="sm"
               variant={activeTab === "audit" ? "default" : "outline"}
               onClick={() => setActiveTab("audit")}
-              className={activeTab === "audit" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500"}
+              className={activeTab === "audit" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
             >
               <ClipboardList className="w-4 h-4" />
             </Button>
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
             {/* ── Welcome Heading ── */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <h2 className="text-2xl md:text-3xl font-serif font-bold text-amber-500">Salve Maria, Administrador</h2>
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-amber-500 dark:text-amber-300">Salve Maria, Administrador</h2>
                 <p className="text-sm text-slate-400 mt-1">Acompanhe aqui o crescimento das almas e o uso das ferramentas de oração.</p>
               </div>
               <div className="text-xs bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-2 rounded-full self-start md:self-auto flex items-center gap-2">
@@ -324,7 +324,7 @@ export default function AdminDashboard() {
                   <Card className="border-amber-500/20 bg-[#121622] shadow-xl">
                     <CardContent className="flex min-h-40 flex-col items-center justify-center gap-3 p-8 text-center">
                       <div className="text-amber-400 text-3xl">⌛</div>
-                      <h3 className="text-lg font-serif font-bold text-amber-500">O painel demorou mais que o normal</h3>
+                      <h3 className="text-lg font-serif font-bold text-amber-500 dark:text-amber-300">O painel demorou mais que o normal</h3>
                       <p className="max-w-md text-xs text-slate-400">
                         As estatísticas ainda não responderam. Você pode tentar novamente sem perder acesso ao restante do painel.
                       </p>
@@ -341,8 +341,8 @@ export default function AdminDashboard() {
                 {hasOverviewError && (
                   <Card className="border-red-500/20 bg-[#121622] shadow-xl">
                     <CardContent className="flex min-h-40 flex-col items-center justify-center gap-3 p-8 text-center">
-                      <div className="text-red-500 text-3xl">⚠️</div>
-                      <h3 className="text-lg font-serif font-bold text-amber-500">Erro ao Carregar o Painel</h3>
+                      <div className="text-red-500 dark:text-red-300 text-3xl">⚠️</div>
+                      <h3 className="text-lg font-serif font-bold text-amber-500 dark:text-amber-300">Erro ao Carregar o Painel</h3>
                       <p className="max-w-md text-xs text-slate-400">
                         {statsQuery.error?.message || growthQuery.error?.message || "Não foi possível conectar ao banco de dados ou autenticar."}
                       </p>
@@ -361,44 +361,44 @@ export default function AdminDashboard() {
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                       <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total de Fiéis</CardTitle>
-                      <Users className="w-4 h-4 text-amber-500/80" />
+                      <Users className="w-4 h-4 text-amber-500/80 dark:text-amber-300" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-slate-100">{statsQuery.data?.totalUsers ?? "--"}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Usuários cadastrados</p>
+                      <p className="text-[10px] text-slate-500 dark:text-foreground mt-1">Usuários cadastrados</p>
                     </CardContent>
                   </Card>
 
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                       <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Novos Hoje</CardTitle>
-                      <Sparkles className="w-4 h-4 text-emerald-500/80" />
+                      <Sparkles className="w-4 h-4 text-emerald-500/80 dark:text-emerald-300" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-emerald-400">{statsQuery.data?.newUsersToday != null ? `+${statsQuery.data.newUsersToday}` : "--"}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Registrados nas últimas 24h</p>
+                      <p className="text-[10px] text-slate-500 dark:text-foreground mt-1">Registrados nas últimas 24h</p>
                     </CardContent>
                   </Card>
 
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                       <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ativos Hoje</CardTitle>
-                      <Flame className="w-4 h-4 text-orange-500/80" />
+                      <Flame className="w-4 h-4 text-orange-500/80 dark:text-orange-300" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-orange-400">{statsQuery.data?.activeUsersToday ?? "--"}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Acessaram o app hoje</p>
+                      <p className="text-[10px] text-slate-500 dark:text-foreground mt-1">Acessaram o app hoje</p>
                     </CardContent>
                   </Card>
 
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg hover:border-amber-500/20 transition-all duration-300">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                       <CardTitle className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Usuários Premium</CardTitle>
-                      <Award className="w-4 h-4 text-amber-500" />
+                      <Award className="w-4 h-4 text-amber-500 dark:text-amber-300" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-amber-400">{statsQuery.data?.activeSubscriptions ?? "--"}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Stripe e concessões administrativas</p>
+                      <p className="text-[10px] text-slate-500 dark:text-foreground mt-1">Stripe e concessões administrativas</p>
                     </CardContent>
                   </Card>
 
@@ -409,7 +409,7 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold font-serif text-sky-400">{statsQuery.data?.totalPrayers ?? "--"}</div>
-                      <p className="text-[10px] text-slate-500 mt-1">Terços, novenas e orações</p>
+                      <p className="text-[10px] text-slate-500 dark:text-foreground mt-1">Terços, novenas e orações</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -418,7 +418,7 @@ export default function AdminDashboard() {
                 <Card className="bg-[#121622] border-amber-500/10 shadow-xl p-6">
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h3 className="text-lg font-serif font-bold text-amber-500">Crescimento de Cadastros</h3>
+                      <h3 className="text-lg font-serif font-bold text-amber-500 dark:text-amber-300">Crescimento de Cadastros</h3>
                       <p className="text-xs text-slate-400 mt-0.5">Estatísticas diárias de novos usuários nos últimos 30 dias</p>
                     </div>
                   </div>
@@ -466,7 +466,7 @@ export default function AdminDashboard() {
                         </AreaChart>
                       </ResponsiveContainer>
                     ) : (
-                      <div className="flex h-full items-center justify-center text-center text-sm text-slate-500">
+                      <div className="flex h-full items-center justify-center text-center text-sm text-slate-500 dark:text-foreground">
                         {growthQuery.isPending && !overviewTimedOut
                           ? "Carregando gráfico de cadastros..."
                           : growthQuery.isError
@@ -482,7 +482,7 @@ export default function AdminDashboard() {
                   {/* Recent Signups */}
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg">
                     <CardHeader className="border-b border-slate-800 pb-4">
-                      <CardTitle className="text-base font-serif font-bold text-amber-500">Novos Cadastros Recentes</CardTitle>
+                      <CardTitle className="text-base font-serif font-bold text-amber-500 dark:text-amber-300">Novos Cadastros Recentes</CardTitle>
                       <CardDescription className="text-xs text-slate-400">Últimos 10 fiéis que se juntaram ao Sanctificare</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
@@ -491,16 +491,16 @@ export default function AdminDashboard() {
                           <div key={user.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-800/20 transition-colors">
                             <div>
                               <p className="text-sm font-semibold text-slate-200">{user.name || "Sem Nome"}</p>
-                              <p className="text-xs text-slate-500 font-mono mt-0.5">{user.email || "Sem e-mail"}</p>
+                              <p className="text-xs text-slate-500 dark:text-foreground font-mono mt-0.5">{user.email || "Sem e-mail"}</p>
                             </div>
                             <div className="text-xs text-slate-400 flex items-center gap-1.5">
-                              <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                              <Calendar className="w-3.5 h-3.5 text-slate-500 dark:text-foreground" />
                               {new Date(user.createdAt).toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}
                             </div>
                           </div>
                         ))}
                         {!statsQuery.data?.recentUsers?.length && (
-                          <div className="px-6 py-8 text-center text-xs text-slate-500">
+                          <div className="px-6 py-8 text-center text-xs text-slate-500 dark:text-foreground">
                             {statsQuery.isPending && !overviewTimedOut
                               ? "Carregando cadastros recentes..."
                               : "Nenhum cadastro recente disponível."}
@@ -513,7 +513,7 @@ export default function AdminDashboard() {
                   {/* Recent Community Activity */}
                   <Card className="bg-[#121622] border-amber-500/10 shadow-lg">
                     <CardHeader className="border-b border-slate-800 pb-4">
-                      <CardTitle className="text-base font-serif font-bold text-amber-500">Atividades de Oração Recentes</CardTitle>
+                      <CardTitle className="text-base font-serif font-bold text-amber-500 dark:text-amber-300">Atividades de Oração Recentes</CardTitle>
                       <CardDescription className="text-xs text-slate-400">Últimos terços, liturgias e novenas concluídas</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0">
@@ -522,7 +522,7 @@ export default function AdminDashboard() {
                           <div key={log.id} className="flex items-center justify-between px-6 py-3.5 hover:bg-slate-800/20 transition-colors">
                             <div className="flex-1 min-w-0 pr-4">
                               <p className="text-sm font-semibold text-slate-200 truncate">{log.prayerName}</p>
-                              <p className="text-xs text-slate-500 truncate mt-0.5">
+                              <p className="text-xs text-slate-500 dark:text-foreground truncate mt-0.5">
                                 por <span className="text-slate-400 font-medium">{log.userName || "Fiel Anônimo"}</span> ({log.userEmail || "Sem e-mail"})
                               </p>
                             </div>
@@ -530,7 +530,7 @@ export default function AdminDashboard() {
                               <Badge variant="outline" className="border-amber-500/20 text-amber-400 bg-amber-500/5 text-[10px] scale-90">
                                 {log.prayerType}
                               </Badge>
-                              <div className="text-[10px] text-slate-500 flex items-center gap-1">
+                              <div className="text-[10px] text-slate-500 dark:text-foreground flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {new Date(log.completedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                               </div>
@@ -538,7 +538,7 @@ export default function AdminDashboard() {
                           </div>
                         ))}
                         {!statsQuery.data?.recentActivities?.length && (
-                          <div className="px-6 py-8 text-center text-xs text-slate-500">
+                          <div className="px-6 py-8 text-center text-xs text-slate-500 dark:text-foreground">
                             {statsQuery.isPending && !overviewTimedOut
                               ? "Carregando atividades recentes..."
                               : "Nenhuma atividade recente disponível."}
@@ -555,12 +555,12 @@ export default function AdminDashboard() {
               <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
                 <CardHeader className="border-b border-slate-800 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <CardTitle className="text-xl font-serif font-bold text-amber-500">Lista Geral de Fiéis</CardTitle>
+                    <CardTitle className="text-xl font-serif font-bold text-amber-500 dark:text-amber-300">Lista Geral de Fiéis</CardTitle>
                     <CardDescription className="text-xs text-slate-400">Pesquise, visualize perfis detalhados e controle privilégios Premium.</CardDescription>
                   </div>
                   {/* Search Bar */}
                   <div className="relative w-full sm:w-80">
-                    <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+                    <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500 dark:text-foreground" />
                     <Input
                       placeholder="Pesquisar por nome ou e-mail..."
                       value={search}
@@ -593,7 +593,7 @@ export default function AdminDashboard() {
                       )}
                       {usersQuery.data?.users.map((user) => (
                         <TableRow key={user.id} className="border-b border-slate-800/60 hover:bg-slate-800/10">
-                          <TableCell className="font-mono text-slate-500 text-xs">{user.id}</TableCell>
+                          <TableCell className="font-mono text-slate-500 dark:text-foreground text-xs">{user.id}</TableCell>
                           <TableCell className="font-semibold text-slate-200">{user.name || "Sem Nome"}</TableCell>
                           <TableCell className="text-slate-300 font-mono text-xs">{user.email || "Sem e-mail"}</TableCell>
                           <TableCell className="text-slate-400 capitalize text-xs">{user.loginMethod || "Não definido"}</TableCell>
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
                               variant="outline" 
                               size="sm" 
                               onClick={() => setSelectedUserId(user.id)}
-                              className="border-amber-500/20 text-amber-500 hover:bg-amber-500/10 text-xs px-3"
+                              className="border-amber-500/20 text-amber-500 dark:text-amber-300 hover:bg-amber-500/10 text-xs px-3"
                             >
                               Ver Detalhes
                             </Button>
@@ -624,7 +624,7 @@ export default function AdminDashboard() {
                       ))}
                       {!usersQuery.isError && usersQuery.data?.users.length === 0 && (
                         <TableRow>
-                          <TableCell colSpan={7} className="h-32 text-center text-slate-500">
+                          <TableCell colSpan={7} className="h-32 text-center text-slate-500 dark:text-foreground">
                             Nenhum fiel encontrado com o termo informado.
                           </TableCell>
                         </TableRow>
@@ -635,7 +635,7 @@ export default function AdminDashboard() {
 
                 {/* Pagination Controls */}
                 <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800">
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-slate-500 dark:text-foreground">
                     Total de <b>{usersQuery.data?.total || 0}</b> fiéis
                   </span>
                   <div className="flex items-center gap-2">
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
             {activeTab === "notifications" && (
               <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
                 <CardHeader className="border-b border-slate-800">
-                  <CardTitle className="text-xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                  <CardTitle className="text-xl font-serif font-bold text-amber-500 dark:text-amber-300 flex items-center gap-2">
                     <Bell className="w-5 h-5" /> Notificações
                   </CardTitle>
                   <CardDescription className="text-xs text-slate-400">
@@ -739,7 +739,7 @@ export default function AdminDashboard() {
             {activeTab === "audit" && (
               <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
                 <CardHeader className="border-b border-slate-800">
-                  <CardTitle className="text-xl font-serif font-bold text-amber-500 flex items-center gap-2">
+                  <CardTitle className="text-xl font-serif font-bold text-amber-500 dark:text-amber-300 flex items-center gap-2">
                     <ClipboardList className="w-5 h-5" /> Auditoria Administrativa
                   </CardTitle>
                   <CardDescription className="text-xs text-slate-400">
@@ -757,7 +757,7 @@ export default function AdminDashboard() {
                         <div key={entry.id} className="px-6 py-4 text-sm">
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="font-medium text-slate-200">{entry.action}</span>
-                            <span className="text-xs text-slate-500">{new Date(entry.createdAt).toLocaleString("pt-BR")}</span>
+                            <span className="text-xs text-slate-500 dark:text-foreground">{new Date(entry.createdAt).toLocaleString("pt-BR")}</span>
                           </div>
                           <p className="mt-1 text-xs text-slate-400">
                             Administrador #{entry.actorUserId ?? "removido"}
@@ -768,7 +768,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-10 text-center text-sm text-slate-500">Nenhuma ação administrativa registrada.</div>
+                    <div className="p-10 text-center text-sm text-slate-500 dark:text-foreground">Nenhuma ação administrativa registrada.</div>
                   )}
                 </CardContent>
               </Card>
@@ -787,7 +787,7 @@ export default function AdminDashboard() {
           ) : (
             <>
               <DialogHeader>
-                <DialogTitle className="font-serif text-xl text-amber-500 flex items-center gap-2">
+                <DialogTitle className="font-serif text-xl text-amber-500 dark:text-amber-300 flex items-center gap-2">
                   <span>✝ Ficha de Acompanhamento</span>
                   <Badge variant="outline" className="border-amber-500/20 text-amber-400 ml-2">
                     ID {userDetailQuery.data?.user.id}
@@ -802,7 +802,7 @@ export default function AdminDashboard() {
                 {/* General Info */}
                 <div className="space-y-3.5 bg-slate-900/40 p-4 rounded-xl border border-slate-800">
                   <h4 className="text-sm font-semibold text-slate-300 border-b border-slate-800 pb-1.5 flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-amber-500/80" /> Dados Pessoais
+                    <Shield className="w-4 h-4 text-amber-500/80 dark:text-amber-300" /> Dados Pessoais
                   </h4>
                   <div className="space-y-2.5 text-xs text-slate-400">
                     <div className="flex justify-between">
@@ -834,7 +834,7 @@ export default function AdminDashboard() {
                 <div className="space-y-3.5 bg-slate-900/40 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
                   <div className="space-y-3.5">
                     <h4 className="text-sm font-semibold text-slate-300 border-b border-slate-800 pb-1.5 flex items-center gap-2">
-                      <Award className="w-4 h-4 text-amber-500" /> Assinatura / Plano
+                      <Award className="w-4 h-4 text-amber-500 dark:text-amber-300" /> Assinatura / Plano
                     </h4>
                     <div className="text-xs text-slate-400 space-y-2">
                       <div className="flex justify-between items-center">
@@ -842,7 +842,7 @@ export default function AdminDashboard() {
                         {userDetailQuery.data?.subscription || userDetailQuery.data?.adminPremiumGrant ? (
                           <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30">ATIVO (Premium)</Badge>
                         ) : (
-                          <Badge className="bg-slate-800 text-slate-500">Padrão (Gratuito)</Badge>
+                          <Badge className="bg-slate-800 text-slate-500 dark:text-foreground">Padrão (Gratuito)</Badge>
                         )}
                       </div>
                       {userDetailQuery.data?.subscription && (
@@ -887,7 +887,7 @@ export default function AdminDashboard() {
                     disabled={togglePremiumMutation.isPending}
                     className={`mt-4 w-full text-xs font-semibold ${
                       userDetailQuery.data?.adminPremiumGrant
-                        ? "bg-red-500/10 text-red-500 border border-red-500/30 hover:bg-red-500/20 hover:text-red-400"
+                        ? "bg-red-500/10 text-red-500 dark:text-red-300 border border-red-500/30 hover:bg-red-500/20 hover:text-red-400"
                         : "bg-amber-500 text-slate-900 hover:bg-amber-600 font-bold"
                     }`}
                   >
@@ -898,7 +898,7 @@ export default function AdminDashboard() {
                     )}
                   </Button>}
                   {userDetailQuery.data?.subscription && !userDetailQuery.data?.adminPremiumGrant && (
-                    <p className="mt-4 text-center text-xs text-slate-500">
+                    <p className="mt-4 text-center text-xs text-slate-500 dark:text-foreground">
                       Assinatura Stripe ativa. O gerenciamento deve ser feito no portal de cobrança.
                     </p>
                   )}
@@ -915,16 +915,16 @@ export default function AdminDashboard() {
                     <div key={log.id} className="flex justify-between items-center p-3 text-xs">
                       <div>
                         <span className="font-semibold text-slate-200">{log.prayerName}</span>
-                        <span className="text-[10px] text-slate-500 block capitalize mt-0.5">{log.prayerType}</span>
+                        <span className="text-[10px] text-slate-500 dark:text-foreground block capitalize mt-0.5">{log.prayerType}</span>
                       </div>
-                      <span className="text-slate-500 font-mono text-[10px]">
+                      <span className="text-slate-500 dark:text-foreground font-mono text-[10px]">
                         {new Date(log.completedAt).toLocaleDateString("pt-BR")} às{" "}
                         {new Date(log.completedAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                       </span>
                     </div>
                   ))}
                   {userDetailQuery.data?.recentLogs.length === 0 && (
-                    <div className="p-4 text-center text-xs text-slate-500">
+                    <div className="p-4 text-center text-xs text-slate-500 dark:text-foreground">
                       Nenhuma oração concluída registrada para este fiel.
                     </div>
                   )}

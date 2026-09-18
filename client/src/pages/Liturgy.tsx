@@ -89,12 +89,12 @@ export function getLiturgicalTheme(color?: string | null): LiturgicalTheme {
   }
   return {
     name: "Comum",
-    primary: "text-[oklch(0.65_0.14_70)]",
+    primary: "text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]",
     bgLight: "bg-[oklch(0.75_0.12_75/0.05)] border-[oklch(0.75_0.12_75/0.1)]",
     border: "border-[oklch(0.75_0.12_75/0.2)]",
     glow: "shadow-[0_0_20px_rgba(191,155,48,0.05)]",
-    badge: "bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] border-[oklch(0.75_0.12_75/0.2)]",
-    accentText: "text-[oklch(0.65_0.14_70)]",
+    badge: "bg-[oklch(0.75_0.12_75/0.1)] text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)] border-[oklch(0.75_0.12_75/0.2)]",
+    accentText: "text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]",
   };
 }
 
@@ -780,7 +780,7 @@ export default function Liturgy() {
 
         {/* Error state */}
         {error && !liturgy && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+          <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 rounded-lg text-sm text-red-800 dark:text-red-300">
             <p className="font-semibold">Erro ao carregar a liturgia</p>
             <p className="text-xs mt-1">{error.message}</p>
           </div>
@@ -810,7 +810,7 @@ export default function Liturgy() {
             <div className={`rounded-2xl border transition-all duration-500 p-6 ${
               activeTab === "audio" && playlist.length > 0
                 ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
-                : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+                : "bg-[#fcfbf7] dark:bg-card border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] dark:text-foreground shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
             }`}>
               {/* Seleção de Abas do Conceito B (se houver playlist) */}
               {playlist.length > 0 && (
@@ -835,7 +835,7 @@ export default function Liturgy() {
                         ? "border-amber-500 text-amber-600 dark:text-amber-400 font-extrabold"
                         : activeTab === "audio"
                         ? "border-transparent text-slate-100 hover:text-white font-bold text-sm"
-                        : "border-transparent text-foreground hover:text-amber-600 font-bold"
+                        : "border-transparent text-foreground hover:text-amber-600 dark:hover:text-amber-300 font-bold"
                     }`}
                   >
                     <span>Texto</span>
@@ -849,7 +849,7 @@ export default function Liturgy() {
                    ========================================== */
                 <div className="space-y-6 animate-fade-in text-center">
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80">
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80 dark:text-amber-300">
                       {liturgy.color ? `Cor Litúrgica: ${liturgy.color}` : "LITURGIA DIÁRIA"}
                     </span>
                     <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight max-w-md mx-auto">
@@ -878,9 +878,9 @@ export default function Liturgy() {
                     </div>
 
                     {/* Frase Devocional de Destaque */}
-                    <p className="text-center text-amber-500/90 text-sm font-serif italic max-w-xs px-4 mt-2">
+                    <p className="text-center text-amber-500/90 dark:text-amber-300 text-sm font-serif italic max-w-xs px-4 mt-2">
                       "{dailyContent.verse.text}"
-                      <span className="block text-[10px] not-italic uppercase tracking-wider text-amber-500/60 mt-1 font-sans">
+                      <span className="block text-[10px] not-italic uppercase tracking-wider text-amber-500/60 dark:text-amber-300 mt-1 font-sans">
                         — {dailyContent.verse.reference}
                       </span>
                     </p>
@@ -935,7 +935,7 @@ export default function Liturgy() {
 
                         <button
                           onClick={togglePlay}
-                          className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                          className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105 dark:text-foreground"
                           title={isPlaying ? "Pausar" : "Reproduzir"}
                         >
                           {isPlaying ? (
@@ -959,9 +959,9 @@ export default function Liturgy() {
                     /* Botão Escutar de Graça no local do Player (Modo Público) */
                     <a
                       href="/login?tab=cadastrar&path=/liturgia"
-                      className="w-full max-w-sm mx-auto py-3.5 px-8 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-sm shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2.5 group cursor-pointer border border-white/20"
+                      className="w-full max-w-sm mx-auto py-3.5 px-8 rounded-full bg-white dark:bg-card hover:bg-slate-100 dark:hover:bg-muted text-slate-950 dark:text-foreground font-bold text-sm shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2.5 group cursor-pointer border border-white/20"
                     >
-                      <Play className="w-4 h-4 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                      <Play className="w-4 h-4 fill-slate-950 dark:fill-foreground text-slate-950 dark:text-foreground group-hover:scale-110 transition-transform" />
                       <span>Escutar de Graça</span>
                     </a>
                   )}
@@ -970,9 +970,9 @@ export default function Liturgy() {
                 /* ==========================================
                    ABA TEXTO: Visual Book / Cream Paper
                    ========================================== */
-                <div className="space-y-6 animate-fade-in text-[#2d251e]">
+                <div className="space-y-6 animate-fade-in text-[#2d251e] dark:text-foreground">
                   {playlist.length === 0 && audioUnavailable && !isZenMode && (
-                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900">
+                    <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-300">
                       <p className="font-semibold">Áudio indisponível para esta data</p>
                       <p className="mt-1 text-xs opacity-80">
                         As leituras em texto seguem disponíveis abaixo para sua oração e acompanhamento da liturgia.
@@ -1126,9 +1126,9 @@ export default function Liturgy() {
                       /* Botão Escutar de Graça Salmo (Modo Público no local do Player) */
                       <a
                         href="/login?tab=cadastrar&path=/liturgia"
-                        className="w-full py-2.5 px-5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs shadow-md transition-all transform hover:scale-105 flex items-center justify-center gap-2 mt-1 group cursor-pointer border border-amber-300/40"
+                        className="w-full py-2.5 px-5 rounded-full bg-white dark:bg-card hover:bg-slate-100 dark:hover:bg-muted text-slate-950 dark:text-foreground font-bold text-xs shadow-md transition-all transform hover:scale-105 flex items-center justify-center gap-2 mt-1 group cursor-pointer border border-amber-300/40"
                       >
-                        <Play className="w-3.5 h-3.5 fill-slate-950 text-slate-950 group-hover:scale-110 transition-transform" />
+                        <Play className="w-3.5 h-3.5 fill-slate-950 dark:fill-foreground text-slate-950 dark:text-foreground group-hover:scale-110 transition-transform" />
                         <span>Escutar de Graça</span>
                       </a>
                     )}

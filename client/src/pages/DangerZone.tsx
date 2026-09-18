@@ -72,7 +72,7 @@ export default function DangerZone() {
 
           {/* Danger Zone Main Box */}
           <div className="prayer-card p-6 border-red-500/30 bg-red-50/10 rounded-3xl shadow-xl flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-red-600 mb-4 animate-bounce">
+            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-red-600 dark:text-red-300 mb-4 animate-bounce">
               <AlertTriangle size={24} />
             </div>
 

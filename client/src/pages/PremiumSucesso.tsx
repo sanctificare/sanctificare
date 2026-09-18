@@ -49,7 +49,7 @@ export default function PremiumSucesso() {
         {/* Heading */}
         <h1 className="font-display text-3xl font-black text-white mb-3">
           Seja bem-vindo ao{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-200">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-200 dark:to-amber-950/40">
             Premium!
           </span>
         </h1>

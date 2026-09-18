@@ -96,7 +96,7 @@ export default function Premium() {
   if (loading || subLoading) {
     return (
       <div className="min-h-screen bg-[oklch(0.08_0.04_260)] flex items-center justify-center">
-        <Loader2 className="text-amber-500 animate-spin" size={36} />
+        <Loader2 className="text-amber-500 dark:text-amber-300 animate-spin" size={36} />
       </div>
     );
   }
@@ -299,7 +299,7 @@ export default function Premium() {
                   ? "Iniciar Teste Grátis de 14 Dias"
                   : "Entrar para Iniciar Teste Grátis"}
               </Button>
-              <p className="text-center text-xs text-slate-500 mt-3">
+              <p className="text-center text-xs text-slate-500 dark:text-foreground mt-3">
                 14 dias grátis, depois {selectedPlan === "annual" ? "R$ 129,00/ano" : "R$ 14,90/mês"}. Pagamento seguro via{" "}
                 <span className="text-slate-400 font-semibold">Stripe</span>.
                 Cancele a qualquer momento sem cobranças.

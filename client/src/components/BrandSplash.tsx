@@ -57,7 +57,7 @@ export default function BrandSplash() {
           />
         </div>
 
-        <h1 className="font-serif text-3xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 font-bold uppercase select-none mt-2 drop-shadow-md" style={{ fontFamily: "'Cinzel', serif" }}>
+        <h1 className="font-serif text-3xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-b from-amber-200 dark:from-amber-950/40 via-amber-300 to-amber-500 font-bold uppercase select-none mt-2 drop-shadow-md" style={{ fontFamily: "'Cinzel', serif" }}>
           Sanctificare
         </h1>
 

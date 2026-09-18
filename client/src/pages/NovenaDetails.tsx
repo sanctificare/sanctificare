@@ -440,10 +440,10 @@ export default function NovenaDetails() {
 
   if (!selectedNovena) {
     return (
-      <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
+      <div className="min-h-screen bg-[oklch(0.965_0.012_82)] dark:bg-card relative overflow-hidden">
         <main className="container py-10 relative z-10">
-          <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.3)] bg-white p-8 text-center">
-            <h1 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] mb-2">Novena não encontrada</h1>
+          <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.3)] bg-white dark:bg-card p-8 text-center">
+            <h1 className="font-display text-2xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2">Novena não encontrada</h1>
             <p className="text-muted-foreground mb-5">Esta rota de novena não existe ou foi removida.</p>
             <Link href="/novenas">
               <Button>Voltar ao catálogo</Button>
@@ -455,8 +455,8 @@ export default function NovenaDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
+    <div className="min-h-screen bg-[oklch(0.965_0.012_82)] dark:bg-card relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)] dark:bg-none" />
       <div className="pointer-events-none absolute inset-0 bg-pattern-cross opacity-25" />
 
       <main className="container px-4 sm:px-6 py-6 sm:py-8 relative z-10">
@@ -464,14 +464,14 @@ export default function NovenaDetails() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-4">
           <div>
             <Link href="/novenas">
-              <button className="mb-2 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] flex items-center gap-1">
+              <button className="mb-2 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] flex items-center gap-1">
                 ← Voltar ao catálogo de novenas
               </button>
             </Link>
-            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">
+            <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
               {selectedNovena.category === "premium" ? "Novena Premium" : "Devocional"}
             </p>
-            <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-[oklch(0.22_0.07_260)] leading-tight break-words">
+            <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground leading-tight break-words">
               {selectedNovena.name}
             </h1>
             <p className="font-serif text-xs sm:text-sm text-muted-foreground mt-0.5">
@@ -483,7 +483,7 @@ export default function NovenaDetails() {
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
         <div className="block lg:hidden mb-4">
           <div className="flex items-center justify-between mb-1.5 px-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
               Meditações ({selectedNovena.days.length} Dias)
             </span>
             <span className="text-[10px] font-medium text-muted-foreground">
@@ -510,13 +510,13 @@ export default function NovenaDetails() {
                     active
                       ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
                       : isDayLocked
-                      ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-                      : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
+                      ? "bg-slate-100 dark:bg-muted text-slate-400 border-slate-200 dark:border-border cursor-not-allowed"
+                      : "bg-white dark:bg-card text-slate-700 dark:text-foreground border-slate-200 dark:border-border hover:border-slate-300 dark:hover:border-border"
                   }`}
                 >
                   <span>Dia {dayNum}</span>
-                  {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
-                  {isDayLocked && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
+                  {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600 dark:text-emerald-300"} />}
+                  {isDayLocked && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500 dark:text-amber-300"} />}
                 </button>
               );
             })}
@@ -530,16 +530,16 @@ export default function NovenaDetails() {
           <div className={`rounded-2xl border transition-all duration-500 p-4 sm:p-6 ${
             activeTab === "audio"
               ? "bg-[#0b1329] border-amber-500/20 text-slate-100 shadow-[0_12px_40px_rgba(11,19,41,0.2)]"
-              : "bg-[#fcfbf7] border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
+              : "bg-[#fcfbf7] dark:bg-card border-[oklch(0.72_0.10_75/0.25)] text-[#2d251e] dark:text-foreground shadow-[0_12px_40px_rgba(232,223,199,0.15)]"
           }`}>
             {currentDayContent ? (
               <>
                 {isLocked ? (
                   <div className="py-12 text-center">
                     <div className="w-14 h-14 rounded-full bg-[oklch(0.75_0.12_75/0.14)] border border-[oklch(0.75_0.12_75/0.35)] flex items-center justify-center mx-auto mb-4">
-                      <Lock size={22} className="text-[oklch(0.65_0.12_70)]" />
+                      <Lock size={22} className="text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" />
                     </div>
-                    <h3 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] mb-2">Esta é uma Novena Premium</h3>
+                    <h3 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2">Esta é uma Novena Premium</h3>
                     <p className="text-sm text-muted-foreground max-w-sm mx-auto mb-6">Assine o Sanctificare Premium para ter acesso irrestrito a todas as novenas, meditações e reflexões diárias.</p>
                     <Link href="/premium">
                       <Button className="bg-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.28_0.08_260)] text-white font-semibold">
@@ -573,7 +573,7 @@ export default function NovenaDetails() {
                               ? "border-amber-500 text-amber-600 dark:text-amber-400 font-extrabold"
                               : activeTab === "audio"
                               ? "border-transparent text-slate-100 hover:text-white font-bold text-sm"
-                              : "border-transparent text-foreground hover:text-amber-600 font-bold"
+                              : "border-transparent text-foreground hover:text-amber-600 dark:hover:text-amber-300 font-bold"
                           }`}
                         >
                           <span>Texto</span>
@@ -586,7 +586,7 @@ export default function NovenaDetails() {
                       <div className="space-y-6 animate-fade-in">
                         {/* Cabeçalho do Dia */}
                         <div className="text-center">
-                          <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80">Dia {safeDay}</span>
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/80 dark:text-amber-300">Dia {safeDay}</span>
                           <h2 className="font-serif text-xl md:text-2xl font-bold text-white mt-1 leading-tight">
                             {currentDayContent.title}
                           </h2>
@@ -672,7 +672,7 @@ export default function NovenaDetails() {
 
                             <button
                               onClick={togglePlay}
-                              className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105"
+                              className="w-11 h-11 rounded-full bg-[#bf9926] hover:bg-[#a37e1a] text-slate-950 flex items-center justify-center shadow-md transition-transform hover:scale-105 dark:text-foreground"
                               title={isPlaying ? "Pausar" : "Reproduzir"}
                             >
                               {isPlaying ? (
@@ -698,8 +698,8 @@ export default function NovenaDetails() {
                       <div className="space-y-8 animate-fade-in">
                         {/* Cabeçalho do Dia */}
                         <div className="border-b border-[#e8dfc7]/40 pb-4">
-                          <span className="text-[10px] uppercase font-bold tracking-widest text-[#bf9926]">Dia {safeDay}</span>
-                          <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#2d251e] mt-1 leading-tight">
+                          <span className="text-[10px] uppercase font-bold tracking-widest text-[#bf9926] dark:text-muted-foreground">Dia {safeDay}</span>
+                          <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#2d251e] dark:text-foreground mt-1 leading-tight">
                             {currentDayContent.title}
                           </h2>
                         </div>
@@ -709,7 +709,7 @@ export default function NovenaDetails() {
                           {sagradoCoracaoPrayerSections ? (
                             <div className="space-y-6">
                               <div className="p-5 sm:p-6 rounded-2xl border border-[#bf9926]/40 bg-[#bf9926]/5 shadow-sm">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-3">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] dark:text-muted-foreground mb-3">
                                   1. Oração Inicial para Todos os Dias
                                 </h4>
                                 <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
@@ -718,7 +718,7 @@ export default function NovenaDetails() {
                               </div>
 
                               <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] dark:text-muted-foreground mb-3">
                                   2. Meditação & Intenção do Dia {safeDay}
                                 </h4>
                                 <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
@@ -727,7 +727,7 @@ export default function NovenaDetails() {
                               </div>
 
                               <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
-                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
+                                <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] dark:text-muted-foreground mb-3">
                                   3. Oração Final para Todos os Dias
                                 </h4>
                                 <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
@@ -739,7 +739,7 @@ export default function NovenaDetails() {
                             <div className="space-y-6">
                               {currentDayContent.reflection && (
                                 <div className="p-5 sm:p-6 rounded-2xl border border-[#bf9926]/40 bg-[#bf9926]/5 shadow-sm">
-                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] mb-3">
+                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#bf9926] dark:text-muted-foreground mb-3">
                                     Meditação & Reflexão — Dia {safeDay}
                                   </h4>
                                   <p className={`whitespace-pre-line font-serif text-[#3e342f] dark:text-stone-300 text-justify ${fontSizeClasses[fontSize]}`}>
@@ -750,7 +750,7 @@ export default function NovenaDetails() {
 
                               {currentDayContent.prayer && (
                                 <div className="p-5 sm:p-6 rounded-2xl border border-[#e8dfc7]/40 bg-[#fdfbf7]/60 dark:bg-stone-900 shadow-sm">
-                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] mb-3">
+                                  <h4 className="font-display text-xs font-bold uppercase tracking-wider text-[#7a6a5e] dark:text-muted-foreground mb-3">
                                     Oração Tradicional da Novena
                                   </h4>
                                   <p className={`whitespace-pre-line font-serif text-[#5a4d43] dark:text-stone-400 text-justify ${fontSizeClasses[fontSize]}`}>
@@ -768,7 +768,7 @@ export default function NovenaDetails() {
                     <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-border/50">
                       {!isDayUnlocked(safeDay) ? (
                         <div className="w-full flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
-                          <Lock size={14} className="text-amber-600 flex-shrink-0" />
+                          <Lock size={14} className="text-amber-600 dark:text-amber-300 flex-shrink-0" />
                           <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold">
                             {daysUntilUnlock(safeDay) === 1
                               ? "Este dia estará disponível amanhã."
@@ -803,8 +803,8 @@ export default function NovenaDetails() {
           {/* Coluna Lateral (Sidebar Aside - Estilo Degraus de Perfeição) */}
           <aside className="space-y-4">
             {/* Menu Lateral de Meditações (Dias da Novena) */}
-            <div className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white p-3.5 sm:p-4 text-[#2d251e] shadow-sm">
-              <h3 className="mb-3 px-1 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)]">
+            <div className="rounded-2xl border border-[oklch(0.22_0.07_260/0.08)] bg-white dark:bg-card p-3.5 sm:p-4 text-[#2d251e] dark:text-foreground shadow-sm">
+              <h3 className="mb-3 px-1 text-xs font-bold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
                 Meditações ({selectedNovena.days.length} Dias)
               </h3>
               <div className="max-h-[60vh] sm:max-h-[70vh] space-y-2 overflow-y-auto pr-1">
@@ -822,25 +822,25 @@ export default function NovenaDetails() {
                       disabled={isDayLocked}
                       className={`w-full rounded-xl border px-3 py-2.5 text-left transition-all cursor-pointer min-h-[52px] ${
                         active
-                          ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] shadow-sm"
+                          ? "border-[oklch(0.65_0.12_70)] bg-[oklch(0.98_0.03_85)] dark:bg-card shadow-sm"
                           : isDayLocked
-                          ? "border-slate-100 bg-slate-50 opacity-60 cursor-not-allowed"
-                          : "border-[oklch(0.22_0.07_260/0.08)] bg-white hover:border-[oklch(0.65_0.12_70/0.4)]"
+                          ? "border-slate-100 dark:border-border bg-slate-50 dark:bg-muted opacity-60 cursor-not-allowed"
+                          : "border-[oklch(0.22_0.07_260/0.08)] bg-white dark:bg-card hover:border-[oklch(0.65_0.12_70/0.4)]"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <span className={`text-[9px] font-bold uppercase tracking-wider ${
-                          active ? "text-[oklch(0.65_0.12_70)]" : "text-muted-foreground"
+                          active ? "text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" : "text-muted-foreground"
                         }`}>
                           MEDITAÇÃO {dayNum}
                         </span>
                         <div className="flex items-center gap-1.5">
-                          {isDone && <CheckCircle2 size={12} className="text-emerald-600 shrink-0" />}
-                          {isDayLocked && <Lock size={10} className="text-amber-500 shrink-0" />}
+                          {isDone && <CheckCircle2 size={12} className="text-emerald-600 dark:text-emerald-300 shrink-0" />}
+                          {isDayLocked && <Lock size={10} className="text-amber-500 dark:text-amber-300 shrink-0" />}
                           <span className="text-[9px] text-muted-foreground">{dayItem.duration || "05:00"}</span>
                         </div>
                       </div>
-                      <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)]">
+                      <p className="line-clamp-2 text-xs font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                         {dayItem.title}
                       </p>
                     </button>
@@ -850,7 +850,7 @@ export default function NovenaDetails() {
             </div>
 
             {/* Cartão de Informações da Novena */}
-            <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white dark:bg-card p-4 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
                 <img
                   src={getNovenaArt(selectedNovena.id).image}
@@ -860,7 +860,7 @@ export default function NovenaDetails() {
                   onError={(event) => applyImageFallback(event.currentTarget)}
                 />
                 <div>
-                  <h2 className="font-serif text-sm font-bold text-[oklch(0.22_0.07_260)] leading-tight">{selectedNovena.name}</h2>
+                  <h2 className="font-serif text-sm font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground leading-tight">{selectedNovena.name}</h2>
                   <p className="text-[11px] text-muted-foreground mt-0.5">{selectedNovena.subtitle}</p>
                 </div>
               </div>
@@ -869,21 +869,21 @@ export default function NovenaDetails() {
               </p>
               <div className="flex items-center justify-between border-t border-border pt-2.5">
                 <span className="text-xs font-semibold text-muted-foreground">Progresso</span>
-                <span className="text-xs font-bold text-[oklch(0.22_0.07_260)]">{currentCompleted.length}/{selectedNovena.days.length} dias concluídos</span>
+                <span className="text-xs font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">{currentCompleted.length}/{selectedNovena.days.length} dias concluídos</span>
               </div>
             </div>
 
             {/* Caixa de Intenção Particular */}
-            <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-[oklch(0.72_0.10_75/0.32)] bg-white dark:bg-card p-4 shadow-sm">
               <div className="flex items-center justify-between gap-2 mb-3">
                 <div className="flex items-center gap-1.5">
-                  <Heart size={14} className="text-rose-500 fill-rose-500/10" />
+                  <Heart size={14} className="text-rose-500 dark:text-rose-300 fill-rose-500/10" />
                   <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold">Minha Intenção</span>
                 </div>
                 {!isEditingIntention && (
                   <button
                     onClick={() => setIsEditingIntention(true)}
-                    className="text-xs text-[oklch(0.65_0.12_70)] hover:underline font-semibold"
+                    className="text-xs text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] hover:underline font-semibold"
                   >
                     {intention ? "Editar" : "Escrever"}
                   </button>
@@ -920,7 +920,7 @@ export default function NovenaDetails() {
                   </div>
                 </div>
               ) : (
-                <p className="text-xs font-serif italic text-[oklch(0.38_0.03_260)] leading-relaxed pl-2.5 border-l-2 border-[oklch(0.75_0.12_75)]">
+                <p className="text-xs font-serif italic text-[oklch(0.38_0.03_260)] dark:text-foreground leading-relaxed pl-2.5 border-l-2 border-[oklch(0.75_0.12_75)]">
                   {intention ? (
                     `"${intention}"`
                   ) : (
@@ -948,18 +948,18 @@ export default function NovenaDetails() {
           <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.55)" }}>
             <div className="w-full max-w-sm bg-white dark:bg-stone-900 rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
               {/* Header */}
-              <div className="relative bg-gradient-to-br from-[oklch(0.88_0.12_75)] to-[oklch(0.78_0.14_70)] px-6 pt-8 pb-6 text-center">
+              <div className="relative bg-gradient-to-br from-[oklch(0.88_0.12_75)] dark:from-background to-[oklch(0.78_0.14_70)] px-6 pt-8 pb-6 text-center">
                 <button
                   onClick={() => setShowCompletionModal(false)}
                   className="absolute right-4 top-4 w-8 h-8 rounded-full bg-black/10 flex items-center justify-center"
                 >
-                  <X size={14} className="text-[oklch(0.22_0.07_260)]" />
+                  <X size={14} className="text-[oklch(0.22_0.07_260)] dark:text-foreground" />
                 </button>
-                <div className="w-16 h-16 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3 shadow-inner">
-                  <PartyPopper size={28} className="text-[oklch(0.55_0.14_70)]" />
+                <div className="w-16 h-16 rounded-full bg-white/60 dark:bg-card flex items-center justify-center mx-auto mb-3 shadow-inner">
+                  <PartyPopper size={28} className="text-[oklch(0.55_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
                 </div>
-                <h2 className="font-display text-2xl font-black text-[oklch(0.18_0.07_260)] mb-1">Novena Concluída!</h2>
-                <p className="text-sm text-[oklch(0.30_0.05_260)] font-serif">
+                <h2 className="font-display text-2xl font-black text-[oklch(0.18_0.07_260)] dark:text-foreground mb-1">Novena Concluída!</h2>
+                <p className="text-sm text-[oklch(0.30_0.05_260)] dark:text-foreground font-serif">
                   Parabéns! Você completou 9 dias de oração com a <span className="font-bold">{selectedNovena.name}</span>.
                 </p>
               </div>

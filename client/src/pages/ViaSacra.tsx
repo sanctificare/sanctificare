@@ -163,15 +163,15 @@ export default function ViaSacra() {
   }
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card">
       <main className="container py-8">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8 animate-fade-in">
             <div className="flex items-center gap-2 mb-2">
-              <Cross size={20} className="text-[oklch(0.55_0.14_15)]" />
+              <Cross size={20} className="text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" />
               <span className="text-sm text-muted-foreground font-medium">Via-Sacra</span>
             </div>
-            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-2">
+            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2">
               Caminho da Paixão do Senhor
             </h1>
             <p className="font-serif text-muted-foreground">
@@ -183,7 +183,7 @@ export default function ViaSacra() {
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Progresso da Via-Sacra</p>
-                <p className="font-display text-xl text-[oklch(0.22_0.07_260)] font-semibold">
+                <p className="font-display text-xl text-[oklch(0.22_0.07_260)] dark:text-foreground font-semibold">
                   Estação {station.order} de {total}
                 </p>
               </div>
@@ -230,7 +230,7 @@ export default function ViaSacra() {
 
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
             <aside className="prayer-card p-4 h-fit lg:sticky lg:top-24">
-              <h2 className="font-display text-sm uppercase tracking-wider text-[oklch(0.22_0.07_260)] mb-3">
+              <h2 className="font-display text-sm uppercase tracking-wider text-[oklch(0.22_0.07_260)] dark:text-foreground mb-3">
                 Estações
               </h2>
               <div className="space-y-2 max-h-[540px] overflow-y-auto pr-1">
@@ -251,7 +251,7 @@ export default function ViaSacra() {
                       }
                     >
                       <p className="text-xs text-muted-foreground mb-1">{item.order}ª estação</p>
-                      <p className="text-sm font-semibold text-[oklch(0.22_0.07_260)] line-clamp-2">
+                      <p className="text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground line-clamp-2">
                         {item.title}
                       </p>
                     </button>
@@ -279,7 +279,7 @@ export default function ViaSacra() {
               </div>
 
               <div className="p-6 md:p-7 theme-contemplative-a">
-                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-2">
                   Invocação
                 </p>
                 <div className="font-serif text-sm text-muted-foreground mb-5 whitespace-pre-line">
@@ -293,14 +293,14 @@ export default function ViaSacra() {
                   ) : null}
                 </div>
 
-                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-2">
                   Meditação
                 </p>
                 <p className="meditation-text italic mb-6">
                   {station.meditation}
                 </p>
 
-                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] mb-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mb-2">
                   Oração
                 </p>
                 <div className="meditation-text mb-8 whitespace-pre-line">
@@ -357,7 +357,7 @@ export default function ViaSacra() {
 
                 {completed && (
                   <div className="mt-4 rounded-xl border border-[oklch(0.40_0.12_150/0.35)] bg-[oklch(0.40_0.12_150/0.08)] p-4">
-                    <p className="text-sm font-semibold text-[oklch(0.22_0.07_260)] mb-1">Via-Sacra concluída</p>
+                    <p className="text-sm font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-1">Via-Sacra concluída</p>
                     <p className="text-sm text-muted-foreground">
                       Sua oração foi registrada no histórico. Que o Senhor sustente o seu dia.
                     </p>

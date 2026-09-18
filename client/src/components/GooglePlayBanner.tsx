@@ -50,15 +50,15 @@ export default function GooglePlayBanner({
 
         <div className="flex flex-col sm:flex-row items-center gap-5 relative z-10">
           {/* QR Code Container */}
-          <div className="hidden sm:flex flex-col items-center gap-1.5 p-2 bg-white rounded-xl shadow-md shrink-0 border border-amber-500/20">
+          <div className="hidden sm:flex flex-col items-center gap-1.5 p-2 bg-white dark:bg-card rounded-xl shadow-md shrink-0 border border-amber-500/20">
             <img
               src={QR_CODE_URL}
               alt="QR Code Google Play Sanctificare"
               className="w-24 h-24 object-contain"
               loading="lazy"
             />
-            <span className="text-[10px] font-bold text-neutral-800 tracking-tight flex items-center gap-1">
-              <QrCode size={11} className="text-amber-600" /> Escaneie p/ Baixar
+            <span className="text-[10px] font-bold text-neutral-800 dark:text-foreground tracking-tight flex items-center gap-1">
+              <QrCode size={11} className="text-amber-600 dark:text-amber-300" /> Escaneie p/ Baixar
             </span>
           </div>
 
@@ -160,7 +160,7 @@ export default function GooglePlayBanner({
 
             {/* Direita: QR Code para Desktop */}
             <div className="md:col-span-5 flex flex-col items-center justify-center">
-              <div className="relative p-4 bg-white rounded-2xl shadow-2xl border-2 border-amber-500/40 text-center space-y-2 group hover:scale-[1.02] transition-transform">
+              <div className="relative p-4 bg-white dark:bg-card rounded-2xl shadow-2xl border-2 border-amber-500/40 text-center space-y-2 group hover:scale-[1.02] transition-transform">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-md">
                   Escanear pelo Celular
                 </div>
@@ -171,8 +171,8 @@ export default function GooglePlayBanner({
                   className="w-44 h-44 object-contain mx-auto pt-2"
                 />
 
-                <div className="text-[11px] font-semibold text-neutral-800 pt-1 flex items-center justify-center gap-1">
-                  <QrCode size={13} className="text-amber-600" />
+                <div className="text-[11px] font-semibold text-neutral-800 dark:text-foreground pt-1 flex items-center justify-center gap-1">
+                  <QrCode size={13} className="text-amber-600 dark:text-amber-300" />
                   Aponte a câmera do celular
                 </div>
               </div>

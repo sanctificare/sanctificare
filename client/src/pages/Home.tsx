@@ -26,42 +26,42 @@ const features = [
     icon: PrayingHandsIcon,
     title: "Orações Diárias",
     description: "Rosário guiado, Terço, Angelus, Pai-Nosso, Ave-Maria e dezenas de orações tradicionais para sustentar sua vida de oração.",
-    color: "text-[oklch(0.55_0.14_15)]",
+    color: "text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]",
     bg: "bg-[oklch(0.55_0.14_15/0.08)]",
   },
   {
     icon: LiturgyIcon,
     title: "Liturgia do Dia",
     description: "Leituras bíblicas, salmo e Evangelho do dia para rezar em sintonia com a Igreja.",
-    color: "text-[oklch(0.65_0.14_70)]",
+    color: "text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]",
     bg: "bg-[oklch(0.65_0.14_70/0.08)]",
   },
   {
     icon: BookOpen,
     title: "Bíblia Sagrada",
     description: "Acesse a Bíblia completa com navegação por livros, capítulos e versículos. Busca integrada.",
-    color: "text-[oklch(0.40_0.10_260)]",
+    color: "text-[oklch(0.40_0.10_260)] dark:text-[oklch(0.82_0.10_260)]",
     bg: "bg-[oklch(0.40_0.10_260/0.08)]",
   },
   {
     icon: Users,
     title: "Mural de Intenções",
     description: "Apresente suas intenções e una-se em oração pelas necessidades da comunidade católica.",
-    color: "text-[oklch(0.45_0.12_200)]",
+    color: "text-[oklch(0.45_0.12_200)] dark:text-[oklch(0.82_0.10_200)]",
     bg: "bg-[oklch(0.45_0.12_200/0.08)]",
   },
   {
     icon: Crown,
     title: "Conteúdo Premium",
     description: "Novenas exclusivas, meditações guiadas, áudios devocionais e novos roteiros de oração.",
-    color: "text-[oklch(0.65_0.14_70)]",
+    color: "text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]",
     bg: "bg-[oklch(0.65_0.14_70/0.08)]",
   },
   {
     icon: Shield,
     title: "Histórico Pessoal",
     description: "Acompanhe sua constância espiritual com o registro das orações e práticas realizadas.",
-    color: "text-[oklch(0.40_0.12_150)]",
+    color: "text-[oklch(0.40_0.12_150)] dark:text-[oklch(0.82_0.10_150)]",
     bg: "bg-[oklch(0.40_0.12_150/0.08)]",
   },
 ];
@@ -195,7 +195,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background selection:bg-[oklch(0.75_0.12_75/0.3)] selection:text-[oklch(0.15_0.02_260)]">
+    <div className="min-h-screen bg-background selection:bg-[oklch(0.75_0.12_75/0.3)] selection:text-[oklch(0.15_0.02_260)] dark:selection:text-foreground">
       
       {/* Sticky Blurred Navbar */}
       <nav 
@@ -526,10 +526,10 @@ export default function Home() {
                     <div className="text-left">
                       <h4 className="font-display text-sm sm:text-base font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors">{p.title}</h4>
                       <p className="text-xs text-neutral-400 font-serif mt-0.5">{p.desc} • {p.speaker}</p>
-                      <span className="text-[10px] text-neutral-500 font-sans block mt-1">{p.duration}</span>
+                      <span className="text-[10px] text-neutral-500 dark:text-foreground font-sans block mt-1">{p.duration}</span>
                     </div>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.155)] text-[oklch(0.75_0.12_75)] flex items-center justify-center flex-shrink-0 group-hover:bg-[oklch(0.75_0.12_75)] group-hover:text-[oklch(0.15_0.02_260)] transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[oklch(0.75_0.12_75/0.155)] text-[oklch(0.75_0.12_75)] flex items-center justify-center flex-shrink-0 group-hover:bg-[oklch(0.75_0.12_75)] group-hover:text-[oklch(0.15_0.02_260)] dark:group-hover:text-foreground transition-all">
                     ▶
                   </div>
                 </div>
@@ -560,7 +560,7 @@ export default function Home() {
                   <div className="text-left space-y-1">
                     <h4 className="font-display text-sm font-bold text-white group-hover:text-[oklch(0.82_0.10_80)] transition-colors truncate">{p.title}</h4>
                     <p className="text-xs text-neutral-400 font-serif truncate">{p.desc}</p>
-                    <p className="text-[10px] text-neutral-500 font-sans truncate">{p.speaker}</p>
+                    <p className="text-[10px] text-neutral-500 dark:text-foreground font-sans truncate">{p.speaker}</p>
                     <span className="text-[9px] bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.82_0.10_80)] font-sans px-2 py-0.5 rounded-full inline-block mt-1">{p.duration}</span>
                   </div>
                 </div>
@@ -662,7 +662,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[oklch(0.15_0.04_265)] border-t border-[oklch(0.75_0.12_75/0.15)] py-16 text-[oklch(0.55_0.02_260)]">
+      <footer className="bg-[oklch(0.15_0.04_265)] border-t border-[oklch(0.75_0.12_75/0.15)] py-16 text-[oklch(0.55_0.02_260)] dark:text-muted-foreground">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center border-b border-[oklch(0.75_0.12_75/0.1)] pb-12 mb-12">
             

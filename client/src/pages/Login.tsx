@@ -296,7 +296,7 @@ export default function Login() {
               <CardHeader className="pb-2">
                 <button
                   onClick={() => setView("main")}
-                  className="inline-flex items-center gap-1.5 text-xs text-[oklch(0.65_0.02_260)] hover:text-white transition-colors mb-3"
+                  className="inline-flex items-center gap-1.5 text-xs text-[oklch(0.65_0.02_260)] dark:text-muted-foreground hover:text-white transition-colors mb-3"
                 >
                   <ArrowLeft size={14} />
                   Voltar ao login
@@ -304,7 +304,7 @@ export default function Login() {
                 <CardTitle className="font-display text-xl font-medium tracking-wide">
                   Recuperar Senha
                 </CardTitle>
-                <CardDescription className="text-[oklch(0.65_0.02_260)] font-serif text-sm mt-1">
+                <CardDescription className="text-[oklch(0.65_0.02_260)] dark:text-muted-foreground font-serif text-sm mt-1">
                   Informe seu e-mail cadastrado e enviaremos as instruções para redefinir sua senha.
                 </CardDescription>
               </CardHeader>
@@ -315,7 +315,7 @@ export default function Login() {
                       E-mail cadastrado
                     </Label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                         <Mail size={16} />
                       </span>
                       <Input
@@ -325,7 +325,7 @@ export default function Login() {
                         value={forgotEmail}
                         onChange={(e) => setForgotEmail(e.target.value)}
                         disabled={forgotMutation.isPending}
-                        className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                        className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
                       />
                     </div>
                   </div>
@@ -356,7 +356,7 @@ export default function Login() {
                 <CardTitle className="font-display text-xl font-medium tracking-wide">
                   E-mail Enviado!
                 </CardTitle>
-                <CardDescription className="text-[oklch(0.65_0.02_260)] font-serif text-sm mt-1 leading-relaxed">
+                <CardDescription className="text-[oklch(0.65_0.02_260)] dark:text-muted-foreground font-serif text-sm mt-1 leading-relaxed">
                   Se o endereço <span className="text-white font-semibold">{forgotEmail}</span> estiver cadastrado, você receberá um e-mail com as instruções para redefinir sua senha em breve.
                 </CardDescription>
               </CardHeader>
@@ -378,7 +378,7 @@ export default function Login() {
                 <CardTitle className="font-display text-xl font-medium tracking-wide">
                   {activeTab === "entrar" ? "Iniciar Sessão" : "Criar Nova Conta"}
                 </CardTitle>
-                <CardDescription className="text-[oklch(0.65_0.02_260)] font-serif text-sm mt-1">
+                <CardDescription className="text-[oklch(0.65_0.02_260)] dark:text-muted-foreground font-serif text-sm mt-1">
                   {activeTab === "entrar"
                     ? "Entre para acessar suas orações diárias, novenas e histórico."
                     : "Cadastre-se para iniciar seu diário espiritual e receber lembretes."}
@@ -402,7 +402,7 @@ export default function Login() {
 
                 <div className="relative my-3 md:my-6 flex items-center justify-center">
                   <hr className="w-full border-[oklch(0.28_0.04_260)]" />
-                  <span className="absolute bg-[oklch(0.17_0.04_260)] px-3 text-xs text-[oklch(0.55_0.02_260)] font-serif uppercase tracking-wider">
+                  <span className="absolute bg-[oklch(0.17_0.04_260)] px-3 text-xs text-[oklch(0.55_0.02_260)] dark:text-muted-foreground font-serif uppercase tracking-wider">
                     ou continue com e-mail
                   </span>
                 </div>
@@ -433,7 +433,7 @@ export default function Login() {
                           Nome Completo
                         </Label>
                         <div className="relative">
-                          <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+                          <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                             <User size={16} />
                           </span>
                           <Input
@@ -443,7 +443,7 @@ export default function Login() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             disabled={isPending}
-                            className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                            className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
                           />
                         </div>
                         {errors.name && <p className="text-xs text-red-400 mt-1 font-serif">{errors.name}</p>}
@@ -455,7 +455,7 @@ export default function Login() {
                         E-mail
                       </Label>
                       <div className="relative">
-                        <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                           <Mail size={16} />
                         </span>
                         <Input
@@ -465,7 +465,7 @@ export default function Login() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           disabled={isPending}
-                          className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                          className="pl-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
                         />
                       </div>
                       {errors.email && <p className="text-xs text-red-400 mt-1 font-serif">{errors.email}</p>}
@@ -487,7 +487,7 @@ export default function Login() {
                         )}
                       </div>
                       <div className="relative">
-                        <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)]">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">
                           <Lock size={16} />
                         </span>
                         <Input
@@ -497,13 +497,13 @@ export default function Login() {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           disabled={isPending}
-                          className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] rounded-lg"
+                          className="pl-10 pr-10 bg-[oklch(0.22_0.04_260/0.4)] border-[oklch(0.28_0.04_260)] focus-visible:border-[oklch(0.75_0.12_75)] focus-visible:ring-[oklch(0.75_0.12_75/0.2)] text-white placeholder:text-[oklch(0.55_0.02_260)] dark:placeholder:text-muted-foreground rounded-lg"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           disabled={isPending}
-                          className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] hover:text-white transition-colors duration-200"
+                          className="absolute inset-y-0 right-3 flex items-center text-[oklch(0.65_0.02_260)] dark:text-muted-foreground hover:text-white transition-colors duration-200"
                         >
                           {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
@@ -533,11 +533,11 @@ export default function Login() {
         </Card>
 
         {/* Footer info / bible quote */}
-        <div className="hidden md:block text-center mt-8 text-[oklch(0.55_0.02_260)] font-serif text-xs px-6">
+        <div className="hidden md:block text-center mt-8 text-[oklch(0.55_0.02_260)] dark:text-muted-foreground font-serif text-xs px-6">
           <p className="italic">
             "Buscai em primeiro lugar o Reino de Deus e a sua justiça, e todas estas coisas vos serão dadas por acréscimo."
           </p>
-          <span className="block mt-1 font-semibold text-[oklch(0.65_0.02_260)]">São Mateus 6:33</span>
+          <span className="block mt-1 font-semibold text-[oklch(0.65_0.02_260)] dark:text-muted-foreground">São Mateus 6:33</span>
         </div>
       </div>
     </div>

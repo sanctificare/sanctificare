@@ -71,7 +71,7 @@ export default function DegrausPerfeicao() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] pb-12 relative overflow-hidden">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card pb-12 relative overflow-hidden">
       {/* Pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.015] pointer-events-none" />
 
@@ -81,7 +81,7 @@ export default function DegrausPerfeicao() {
             <BookMarked size={18} />
             <span className="text-sm font-semibold uppercase tracking-wider">Biblioteca espiritual</span>
           </div>
-          <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] sm:text-4xl">
+          <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground sm:text-4xl">
             Degraus de Perfeição
           </h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto md:mx-0">
@@ -89,8 +89,8 @@ export default function DegrausPerfeicao() {
           </p>
 
           {!isAuthenticated && (
-            <div className="mt-4 rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 px-4 py-3 shadow-sm max-w-2xl">
-              <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)]">
+            <div className="mt-4 rounded-xl border border-[oklch(0.75_0.12_75/0.25)] bg-white/85 dark:bg-card px-4 py-3 shadow-sm max-w-2xl">
+              <p className="text-xs sm:text-sm text-[oklch(0.28_0.04_260)] dark:text-foreground">
                 Modo visitante: você pode iniciar gratuitamente o Dia 1 dos retiros disponíveis.
                 Para progresso completo e histórico, entre no app.
               </p>
@@ -98,12 +98,12 @@ export default function DegrausPerfeicao() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => openRouteInApp("/degraus-de-perfeicao")}
-                    className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline"
+                    className="text-xs font-semibold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] hover:underline"
                   >
                     Abrir no app
                   </button>
                   <Link href={getLoginUrl("/degraus-de-perfeicao")}>
-                    <button className="text-xs font-semibold text-[oklch(0.65_0.12_70)] hover:underline">
+                    <button className="text-xs font-semibold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] hover:underline">
                       Entrar para liberar jornada completa
                     </button>
                   </Link>
@@ -119,7 +119,7 @@ export default function DegrausPerfeicao() {
             const card = (
               <article
                 key={item.title}
-                className="group flex flex-col h-full rounded-xl border border-[oklch(0.22_0.07_260/0.06)] bg-white shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                className="group flex flex-col h-full rounded-xl border border-[oklch(0.22_0.07_260/0.06)] bg-white dark:bg-card shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
               >
                 {/* Book Essence Image Container */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted border-b border-[oklch(0.22_0.07_260/0.04)]">
@@ -135,13 +135,13 @@ export default function DegrausPerfeicao() {
                 {/* Details Content */}
                 <div className="flex flex-col flex-grow p-4 justify-between">
                   <div>
-                    <span className="inline-flex rounded-md border border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.98_0.03_85)] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)]">
+                    <span className="inline-flex rounded-md border border-[oklch(0.75_0.12_75/0.25)] bg-[oklch(0.98_0.03_85)] dark:bg-card px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
                       {item.category}
                     </span>
-                    <h2 className="mt-2 font-display text-base font-bold leading-snug text-[oklch(0.22_0.07_260)] group-hover:text-[oklch(0.65_0.12_70)] transition-colors line-clamp-1">
+                    <h2 className="mt-2 font-display text-base font-bold leading-snug text-[oklch(0.22_0.07_260)] dark:text-foreground group-hover:text-[oklch(0.65_0.12_70)] dark:group-hover:text-[oklch(0.82_0.10_70)] transition-colors line-clamp-1">
                       {item.title}
                     </h2>
-                    <p className="mt-0.5 text-[10px] font-semibold text-[oklch(0.50_0.05_260)]">Por {item.author}</p>
+                    <p className="mt-0.5 text-[10px] font-semibold text-[oklch(0.50_0.05_260)] dark:text-muted-foreground">Por {item.author}</p>
                     <p className="mt-2 text-xs leading-relaxed text-muted-foreground line-clamp-3">{item.description}</p>
                   </div>
 

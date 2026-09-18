@@ -178,7 +178,7 @@ export default function AppNav() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link href="/premium" className="flex items-center gap-2">
-                        <Crown size={14} className="text-amber-500" />
+                        <Crown size={14} className="text-amber-500 dark:text-amber-300" />
                         <span className={isPremium ? "text-amber-400 font-semibold" : ""}>
                           {isPremium ? "Plano Premium ✓" : "Assinar Premium"}
                         </span>
@@ -193,7 +193,7 @@ export default function AppNav() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link href="/apoie-a-missao" className="flex items-center gap-2">
-                        <HeartHandshake size={14} className="text-amber-500" />
+                        <HeartHandshake size={14} className="text-amber-500 dark:text-amber-300" />
                         <span>Apoie a Missão</span>
                       </Link>
                     </DropdownMenuItem>
@@ -208,7 +208,7 @@ export default function AppNav() {
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                          <Link href="/admin" className="flex items-center gap-2 text-amber-500 hover:text-amber-400">
+                          <Link href="/admin" className="flex items-center gap-2 text-amber-500 dark:text-amber-300 hover:text-amber-400">
                             <Shield size={14} />
                             <span>Painel Admin</span>
                           </Link>

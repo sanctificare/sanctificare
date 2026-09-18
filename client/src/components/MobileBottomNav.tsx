@@ -36,7 +36,7 @@ export default function MobileBottomNav() {
                   aria-current={isActive ? "page" : undefined}
                   className={`flex h-[3.75rem] w-full flex-col items-center justify-center gap-1 rounded-xl transition-all duration-100 ease-out active:scale-95 active:bg-white/10 ${
                     isActive
-                      ? "bg-white text-[oklch(0.18_0.04_260)] shadow-sm"
+                      ? "bg-white dark:bg-card text-[oklch(0.18_0.04_260)] dark:text-foreground shadow-sm"
                       : "text-[oklch(0.78_0.03_260)] hover:text-white"
                   }`}
                 >

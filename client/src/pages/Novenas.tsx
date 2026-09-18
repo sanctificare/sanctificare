@@ -113,15 +113,15 @@ export default function Novenas() {
   };
 
   return (
-    <div className="min-h-screen bg-[oklch(0.965_0.012_82)] relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)]" />
+    <div className="min-h-screen bg-[oklch(0.965_0.012_82)] dark:bg-card relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)] dark:bg-none" />
       <div className="pointer-events-none absolute inset-0 bg-pattern-cross opacity-25" />
       <main className="container py-10 relative z-10">
 
         {/* Cabecalho */}
         <div className="mb-8 animate-fade-in text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-[oklch(0.22_0.07_260)] mb-3">Novenas</h1>
-          <p className="font-serif text-[oklch(0.38_0.03_260)] text-lg max-w-2xl mx-auto">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-3">Novenas</h1>
+          <p className="font-serif text-[oklch(0.38_0.03_260)] dark:text-foreground text-lg max-w-2xl mx-auto">
             Escolha uma novena e percorra seus 9 dias com espírito de constância, recolhimento e confiança em Deus.
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function Novenas() {
         {/* Jornada de oracao */}
         {isAuthenticated && stats.totalDays > 0 && (
           <div className="mb-8 animate-fade-in rounded-2xl border border-[oklch(0.72_0.10_75/0.30)] bg-gradient-to-r from-[oklch(0.97_0.02_82)] to-white dark:from-stone-900 dark:to-stone-950 p-5 shadow-sm">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-[oklch(0.55_0.06_260)] mb-4">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-[oklch(0.55_0.06_260)] dark:text-muted-foreground mb-4">
               📿 Sua jornada de oração
             </h2>
             <div className="grid grid-cols-3 gap-4 text-center">
@@ -138,16 +138,16 @@ export default function Novenas() {
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold mt-0.5">Dias rezados</p>
               </div>
               <div className="border-x border-border">
-                <p className="text-2xl font-black text-[oklch(0.22_0.07_260)]">{stats.started}</p>
+                <p className="text-2xl font-black text-[oklch(0.22_0.07_260)] dark:text-foreground">{stats.started}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold mt-0.5">Em andamento</p>
               </div>
               <div>
-                <p className="text-2xl font-black text-emerald-600">{stats.completed}</p>
+                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-300">{stats.completed}</p>
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold mt-0.5">Concluídas</p>
               </div>
             </div>
             {stats.completed > 0 && (
-              <p className="text-xs text-center text-[oklch(0.45_0.05_260)] mt-4 font-serif italic">
+              <p className="text-xs text-center text-[oklch(0.45_0.05_260)] dark:text-muted-foreground mt-4 font-serif italic">
                 "Perseverai na oração, vigilantes e agradecidos." — Cl 4,2
               </p>
             )}
@@ -157,7 +157,7 @@ export default function Novenas() {
         {/* Novenas em Andamento */}
         {isAuthenticated && activeNovenas.length > 0 && (
           <div className="mb-10 animate-fade-in">
-            <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-4 flex items-center gap-2">
+            <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
               Continuar Rezando
             </h2>
@@ -175,7 +175,7 @@ export default function Novenas() {
                     />
                     <div className="flex-1 min-w-0 flex flex-col justify-between">
                       <div>
-                        <h3 className="font-serif text-lg font-bold text-[oklch(0.22_0.07_260)] truncate">{novena.name}</h3>
+                        <h3 className="font-serif text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground truncate">{novena.name}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">Devocional • Dia {nextDay} pendente</p>
                       </div>
                       <div className="mt-3">
@@ -204,7 +204,7 @@ export default function Novenas() {
 
         {faithNovenas.length > 0 && (
           <div className="mb-10 animate-fade-in">
-            <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] mb-4">Novenas</h2>
+            <h2 className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-4">Novenas</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {faithNovenas.map(renderNovenaCard)}
             </div>

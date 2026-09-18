@@ -227,7 +227,7 @@ export default function Profile() {
                 <span className="font-display text-xl font-bold text-[oklch(0.88_0.08_80)]">{initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <h1 className="font-display text-xl sm:text-2xl font-bold text-navy break-words">
+                <h1 className="font-display text-xl sm:text-2xl font-bold text-navy dark:text-foreground break-words">
                   {user?.name || "Fiel Católico"}
                 </h1>
                 <p className="text-sm text-muted-foreground truncate">{user?.email || ""}</p>
@@ -238,13 +238,13 @@ export default function Profile() {
           {/* Estatísticas */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
             {[
-              { label: "Orações registradas", value: totalPrayers, icon: Heart, color: "text-[oklch(0.55_0.14_15)]" },
-              { label: "Práticas diferentes", value: uniqueTypes, icon: User, color: "text-[oklch(0.40_0.10_260)]" },
-              { label: "Dias de oração", value: new Set(logs?.map((l: any) => new Date(l.completedAt).toDateString()) || []).size, icon: Calendar, color: "text-[oklch(0.40_0.12_150)]" },
+              { label: "Orações registradas", value: totalPrayers, icon: Heart, color: "text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)]" },
+              { label: "Práticas diferentes", value: uniqueTypes, icon: User, color: "text-[oklch(0.40_0.10_260)] dark:text-[oklch(0.82_0.10_260)]" },
+              { label: "Dias de oração", value: new Set(logs?.map((l: any) => new Date(l.completedAt).toDateString()) || []).size, icon: Calendar, color: "text-[oklch(0.40_0.12_150)] dark:text-[oklch(0.82_0.10_150)]" },
             ].map((stat) => (
               <div key={stat.label} className="prayer-card p-2 sm:p-4 text-center flex flex-col justify-center items-center">
                 <stat.icon size={16} className={`sm:w-5 sm:h-5 ${stat.color} mb-1 sm:mb-2`} />
-                <p className="font-display text-lg sm:text-2xl font-bold text-navy leading-none">{stat.value}</p>
+                <p className="font-display text-lg sm:text-2xl font-bold text-navy dark:text-foreground leading-none">{stat.value}</p>
                 <p className="text-[9px] sm:text-xs text-muted-foreground mt-1 leading-tight">{stat.label}</p>
               </div>
             ))}
@@ -270,7 +270,7 @@ export default function Profile() {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-foreground truncate">{name}</span>
-                        <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] ml-2">{count}x</span>
+                        <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] ml-2">{count}x</span>
                       </div>
                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <div
@@ -289,7 +289,7 @@ export default function Profile() {
           {/* Histórico completo */}
           <div className="prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Clock size={16} className="text-[oklch(0.40_0.10_260)]" />
+              <Clock size={16} className="text-[oklch(0.40_0.10_260)] dark:text-[oklch(0.82_0.10_260)]" />
               <h2 className="section-title-sm">
                 Histórico de oração
               </h2>
@@ -336,7 +336,7 @@ export default function Profile() {
           {/* Assinatura Premium */}
           <div className="section-block prayer-card p-4 sm:p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <Crown size={16} className="text-amber-500" />
+              <Crown size={16} className="text-amber-500 dark:text-amber-300" />
               <h2 className="section-title-sm">
                 Assinatura Sanctificare Premium
               </h2>
@@ -393,7 +393,7 @@ export default function Profile() {
           {/* Apoie a Missão (Doações) */}
           <div className="section-block prayer-card p-4 sm:p-6 mb-6 animate-fade-in">
             <div className="flex items-center gap-2 mb-4">
-              <HeartHandshake size={16} className="text-amber-500" />
+              <HeartHandshake size={16} className="text-amber-500 dark:text-amber-300" />
               <h2 className="section-title-sm">
                 Apoie a Missão Sanctificare
               </h2>
@@ -423,7 +423,7 @@ export default function Profile() {
           {/* Lembretes Diários */}
           <div className="section-block prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Bell size={16} className="text-[oklch(0.65_0.14_70)]" />
+              <Bell size={16} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
               <h2 className="section-title-sm">
                 Lembretes Diários
               </h2>
@@ -498,7 +498,7 @@ export default function Profile() {
           {/* Segurança e Privacidade */}
           <div className="section-block prayer-card p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Lock size={16} className="text-navy" />
+              <Lock size={16} className="text-navy dark:text-foreground" />
               <h2 className="section-title-sm">
                 Segurança e Privacidade
               </h2>
@@ -521,7 +521,7 @@ export default function Profile() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full text-xs flex items-center justify-center gap-1.5 text-red-600 hover:bg-red-500/5 hover:text-red-600 border-red-500/35"
+                  className="w-full text-xs flex items-center justify-center gap-1.5 text-red-600 dark:text-red-300 hover:bg-red-500/5 hover:text-red-600 dark:hover:text-red-300 border-red-500/35"
                 >
                   <AlertTriangle size={14} />
                   Opções Avançadas (Zona de Perigo)

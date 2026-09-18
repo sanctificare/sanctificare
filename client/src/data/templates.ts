@@ -131,17 +131,10 @@ export function applyTemplateTheme(templateId: TemplateType) {
   const root = document.documentElement;
 
   Object.entries(theme.colors).forEach(([key, value]) => {
-    root.style.setProperty(`--${key}`, value);
+    root.style.setProperty(`--template-${key}`, value);
   });
 
   // Atualizar CSS variables para o tema
-  root.style.setProperty("--primary", theme.colors.primary);
-  root.style.setProperty("--primary-foreground", theme.colors.accent);
-  root.style.setProperty("--secondary", theme.colors.secondary);
-  root.style.setProperty("--secondary-foreground", theme.colors.primary);
-  root.style.setProperty("--accent", theme.colors.accent);
-  root.style.setProperty("--accent-foreground", theme.colors.primary);
-  root.style.setProperty("--background", theme.colors.background);
-  root.style.setProperty("--foreground", theme.colors.foreground);
-  root.style.setProperty("--muted", theme.colors.muted);
+  // Template colors are fallbacks for light mode. Keep semantic tokens in CSS
+  // so the dark palette always wins, including after loading profile settings.
 }

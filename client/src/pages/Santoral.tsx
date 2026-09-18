@@ -385,7 +385,7 @@ export default function Santoral() {
                           {dayNum}
                         </span>
                         {saintForDay?.isHolyDayOfObligation && (
-                          <Crown className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                          <Crown className="w-3.5 h-3.5 text-amber-500 dark:text-amber-300 shrink-0" />
                         )}
                       </div>
 
@@ -572,13 +572,13 @@ export default function Santoral() {
                             {saint.rank}
                           </span>
                           {saint.isHolyDayOfObligation && (
-                            <span className="text-[10px] text-amber-500 font-bold flex items-center gap-0.5">
+                            <span className="text-[10px] text-amber-500 dark:text-amber-300 font-bold flex items-center gap-0.5">
                               <Crown className="w-3 h-3" /> Guarda
                             </span>
                           )}
                         </div>
 
-                        <h3 className="font-display text-base font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
+                        <h3 className="font-display text-base font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate dark:group-hover:text-amber-300">
                           {saint.name}
                         </h3>
 
@@ -648,7 +648,7 @@ export default function Santoral() {
                         </span>
                       </div>
 
-                      <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                      <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors dark:group-hover:text-amber-300">
                         {feast.name}
                       </h3>
 
@@ -714,15 +714,15 @@ export default function Santoral() {
 
                             <button
                               onClick={() => toggleFavoriteSaint(saint.slug)}
-                              className="p-1 text-rose-600 hover:text-rose-700 transition-colors"
+                              className="p-1 text-rose-600 dark:text-rose-300 hover:text-rose-700 dark:hover:text-rose-300 transition-colors"
                               title="Remover dos Meus Santos Protetores"
                             >
-                              <Heart className="w-4 h-4 fill-rose-500 text-rose-500" />
+                              <Heart className="w-4 h-4 fill-rose-500 text-rose-500 dark:text-rose-300" />
                             </button>
                           </div>
 
                           <Link href={`/santoral/${saint.slug}`}>
-                            <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors cursor-pointer truncate">
+                            <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors cursor-pointer truncate dark:group-hover:text-amber-300">
                               {saint.name}
                             </h3>
                           </Link>
@@ -760,7 +760,7 @@ export default function Santoral() {
               </div>
             ) : (
               <div className="text-center py-16 px-4 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.5)] border border-border/60 shadow-xs space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center mx-auto shadow-xs">
+                <div className="w-14 h-14 rounded-2xl bg-rose-500/15 text-rose-600 dark:text-rose-300 flex items-center justify-center mx-auto shadow-xs">
                   <Heart className="w-7 h-7" />
                 </div>
                 <div className="max-w-md mx-auto space-y-2">

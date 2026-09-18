@@ -71,7 +71,7 @@ function EncouragementThread({
     <div className="mt-3 pt-3 border-t border-[oklch(0.22_0.07_260/0.08)]">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1.5 text-xs text-[oklch(0.45_0.10_260)] hover:text-[oklch(0.22_0.07_260)] transition-colors font-medium"
+        className="flex items-center gap-1.5 text-xs text-[oklch(0.45_0.10_260)] dark:text-[oklch(0.82_0.10_260)] hover:text-[oklch(0.22_0.07_260)] dark:hover:text-foreground transition-colors font-medium"
         aria-label="Abrir mensagens de encorajamento"
       >
         <MessageCircle size={13} />
@@ -89,15 +89,15 @@ function EncouragementThread({
               {messages.map((msg: any) => (
                 <div
                   key={msg.id}
-                  className="flex items-start gap-2 bg-[oklch(0.96_0.02_85)] rounded-lg px-3 py-2"
+                  className="flex items-start gap-2 bg-[oklch(0.96_0.02_85)] dark:bg-card rounded-lg px-3 py-2"
                 >
                   <div className="w-6 h-6 rounded-full bg-[oklch(0.22_0.07_260/0.12)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-[10px] font-bold text-[oklch(0.22_0.07_260)]">
+                    <span className="text-[10px] font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                       {msg.isAnonymous ? "?" : msg.authorName?.charAt(0)?.toUpperCase() || "F"}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[11px] font-semibold text-[oklch(0.40_0.08_260)]">
+                    <span className="text-[11px] font-semibold text-[oklch(0.40_0.08_260)] dark:text-muted-foreground">
                       {msg.isAnonymous ? "Fiel Anônimo" : msg.authorName}
                     </span>
                     <p className="text-xs text-muted-foreground font-serif leading-relaxed mt-0.5">
@@ -304,17 +304,17 @@ export default function Intentions() {
       : intentions?.filter((i: any) => i.category === filterCategory);
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card">
       <main className="container py-8">
         {/* Header */}
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Users size={20} className="text-[oklch(0.45_0.12_200)]" />
+                <Users size={20} className="text-[oklch(0.45_0.12_200)] dark:text-[oklch(0.82_0.10_200)]" />
                 <span className="text-sm text-muted-foreground font-medium">Comunidade</span>
               </div>
-              <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-1">
+              <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-1">
                 Mural de Intenções
               </h1>
               <p className="font-serif text-muted-foreground">
@@ -339,7 +339,7 @@ export default function Intentions() {
             <p className="font-serif text-base italic text-[oklch(0.88_0.06_82)]">
               "Onde dois ou três estiverem reunidos em meu nome, ali estou no meio deles."
             </p>
-            <p className="text-sm text-[oklch(0.65_0.12_70)] mt-1 font-semibold">Mateus 18:20</p>
+            <p className="text-sm text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mt-1 font-semibold">Mateus 18:20</p>
           </div>
         </div>
 
@@ -354,7 +354,7 @@ export default function Intentions() {
             className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
               filterCategory === "all"
                 ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)]"
-                : "bg-white text-[oklch(0.40_0.08_260)] border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)]"
+                : "bg-white dark:bg-card text-[oklch(0.40_0.08_260)] dark:text-muted-foreground border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)]"
             }`}
           >
             Todas
@@ -366,7 +366,7 @@ export default function Intentions() {
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
                 filterCategory === cat.value
                   ? "text-white border-transparent"
-                  : "bg-white text-[oklch(0.35_0.08_260)] border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)]"
+                  : "bg-white dark:bg-card text-[oklch(0.35_0.08_260)] dark:text-foreground border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)]"
               }`}
               style={filterCategory === cat.value ? { backgroundColor: cat.color, borderColor: cat.color } : {}}
             >
@@ -401,15 +401,15 @@ export default function Intentions() {
                   key={intention.id}
                   className={`prayer-card p-5 animate-fade-in transition-all ${
                     isGrace
-                      ? "border-2 border-[oklch(0.70_0.18_85)] bg-gradient-to-br from-[oklch(0.97_0.06_85)] to-[oklch(0.94_0.08_80)]"
+                      ? "border-2 border-[oklch(0.70_0.18_85)] bg-gradient-to-br from-[oklch(0.97_0.06_85)] dark:from-background to-[oklch(0.94_0.08_80)] dark:to-background"
                       : ""
                   }`}
                 >
                   {/* Graça Alcançada — banner festivo */}
                   {isGrace && (
                     <div className="flex items-center gap-2 mb-3 bg-[oklch(0.70_0.18_85/0.15)] rounded-lg px-3 py-1.5">
-                      <Heart size={14} className="text-[oklch(0.55_0.20_85)]" />
-                      <span className="text-xs font-bold text-[oklch(0.45_0.18_85)]">
+                      <Heart size={14} className="text-[oklch(0.55_0.20_85)] dark:text-[oklch(0.82_0.10_85)]" />
+                      <span className="text-xs font-bold text-[oklch(0.45_0.18_85)] dark:text-[oklch(0.82_0.10_85)]">
                         Graça Alcançada — Deus ouviu esta oração! ✨
                       </span>
                     </div>
@@ -420,11 +420,11 @@ export default function Intentions() {
                       {/* Autor + metadados */}
                       <div className="flex flex-wrap items-center gap-2 mb-2">
                         <div className="w-7 h-7 rounded-full bg-[oklch(0.22_0.07_260/0.1)] flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-bold text-[oklch(0.22_0.07_260)]">
+                          <span className="text-xs font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                             {intention.isAnonymous ? "?" : intention.authorName?.charAt(0)?.toUpperCase() || "F"}
                           </span>
                         </div>
-                        <span className="text-xs font-semibold text-[oklch(0.40_0.08_260)]">
+                        <span className="text-xs font-semibold text-[oklch(0.40_0.08_260)] dark:text-muted-foreground">
                           {intention.isAnonymous ? "Fiel Anônimo" : intention.authorName}
                         </span>
                         <span className="text-xs text-muted-foreground flex items-center gap-1">
@@ -460,14 +460,14 @@ export default function Intentions() {
                               <button
                                 onClick={() => graceMarkMutation.mutate({ intentionId: intention.id })}
                                 disabled={graceMarkMutation.isPending}
-                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.50_0.18_85)] hover:text-[oklch(0.40_0.20_85)] transition-colors border border-[oklch(0.65_0.18_85/0.4)] hover:border-[oklch(0.65_0.18_85)] rounded-full px-3 py-1 bg-[oklch(0.70_0.18_85/0.06)] hover:bg-[oklch(0.70_0.18_85/0.12)]"
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.50_0.18_85)] dark:text-[oklch(0.82_0.10_85)] hover:text-[oklch(0.40_0.20_85)] dark:hover:text-[oklch(0.82_0.10_85)] transition-colors border border-[oklch(0.65_0.18_85/0.4)] hover:border-[oklch(0.65_0.18_85)] rounded-full px-3 py-1 bg-[oklch(0.70_0.18_85/0.06)] hover:bg-[oklch(0.70_0.18_85/0.12)]"
                               >
                                 <Heart size={11} />
                                 Graça Alcançada
                               </button>
                               <button
                                 onClick={() => openEdit(intention)}
-                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.45_0.10_260)] hover:text-[oklch(0.22_0.07_260)] transition-colors border border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)] rounded-full px-3 py-1 bg-[oklch(0.22_0.07_260/0.04)] hover:bg-[oklch(0.22_0.07_260/0.10)]"
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.45_0.10_260)] dark:text-[oklch(0.82_0.10_260)] hover:text-[oklch(0.22_0.07_260)] dark:hover:text-foreground transition-colors border border-[oklch(0.22_0.07_260/0.2)] hover:border-[oklch(0.22_0.07_260/0.5)] rounded-full px-3 py-1 bg-[oklch(0.22_0.07_260/0.04)] hover:bg-[oklch(0.22_0.07_260/0.10)]"
                               >
                                 <Pencil size={11} />
                                 Editar
@@ -477,7 +477,7 @@ export default function Intentions() {
                           <button
                             onClick={() => handleDelete(intention.id)}
                             disabled={deleteMutation.isPending}
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.55_0.18_15)] hover:text-[oklch(0.45_0.20_15)] transition-colors border border-[oklch(0.55_0.18_15/0.2)] hover:border-[oklch(0.55_0.18_15/0.5)] rounded-full px-3 py-1 bg-[oklch(0.55_0.18_15/0.04)] hover:bg-[oklch(0.55_0.18_15/0.10)]"
+                            className="flex items-center gap-1.5 text-xs font-semibold text-[oklch(0.55_0.18_15)] dark:text-[oklch(0.82_0.10_15)] hover:text-[oklch(0.45_0.20_15)] dark:hover:text-[oklch(0.82_0.10_15)] transition-colors border border-[oklch(0.55_0.18_15/0.2)] hover:border-[oklch(0.55_0.18_15/0.5)] rounded-full px-3 py-1 bg-[oklch(0.55_0.18_15/0.04)] hover:bg-[oklch(0.55_0.18_15/0.10)]"
                           >
                             <Trash2 size={11} />
                             {isAdmin && !isMyIntention ? "Moderar / Excluir" : "Excluir"}
@@ -498,8 +498,8 @@ export default function Intentions() {
                         title={hasPrayed ? "Você já rezou por esta intenção" : "Rezar por esta intenção"}
                         className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all ${
                           hasPrayed
-                            ? "bg-[oklch(0.55_0.14_15/0.1)] text-[oklch(0.55_0.14_15)] opacity-80 cursor-default"
-                            : "bg-[oklch(0.22_0.07_260/0.06)] text-[oklch(0.22_0.07_260)] hover:bg-[oklch(0.22_0.07_260/0.12)] cursor-pointer"
+                            ? "bg-[oklch(0.55_0.14_15/0.1)] text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)] opacity-80 cursor-default"
+                            : "bg-[oklch(0.22_0.07_260/0.06)] text-[oklch(0.22_0.07_260)] dark:text-foreground hover:bg-[oklch(0.22_0.07_260/0.12)] cursor-pointer"
                         }`}
                       >
                         <HandHeart size={18} className={hasPrayed ? "fill-[oklch(0.55_0.14_15/0.3)]" : ""} />
@@ -522,7 +522,7 @@ export default function Intentions() {
         ) : (
           <div className="text-center py-16">
             <Users size={40} className="text-muted-foreground mx-auto mb-4 opacity-30" />
-            <h3 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)] mb-2">
+            <h3 className="font-display text-lg font-semibold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-2">
               {filterCategory !== "all" ? "Nenhuma intenção nesta categoria" : "Nenhuma intenção ainda"}
             </h3>
             <p className="text-muted-foreground mb-6">
@@ -545,7 +545,7 @@ export default function Intentions() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-md" aria-describedby={undefined}>
           <DialogHeader>
-            <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)]">
+            <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)] dark:text-foreground">
               Nova Intenção de Oração
             </DialogTitle>
           </DialogHeader>
@@ -565,7 +565,7 @@ export default function Intentions() {
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition-all text-left ${
                       category === cat.value
                         ? "text-white border-transparent"
-                        : "bg-[oklch(0.97_0.01_85)] text-[oklch(0.35_0.08_260)] border-[oklch(0.22_0.07_260/0.15)] hover:border-[oklch(0.22_0.07_260/0.4)]"
+                        : "bg-[oklch(0.97_0.01_85)] dark:bg-card text-[oklch(0.35_0.08_260)] dark:text-foreground border-[oklch(0.22_0.07_260/0.15)] hover:border-[oklch(0.22_0.07_260/0.4)]"
                     }`}
                     style={category === cat.value ? { backgroundColor: cat.color } : {}}
                   >
@@ -593,7 +593,7 @@ export default function Intentions() {
             </div>
 
             {/* Publicar anonimamente */}
-            <label className="flex items-center gap-2.5 cursor-pointer select-none p-3 rounded-xl bg-[oklch(0.97_0.01_85)] border border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.3)] transition-colors">
+            <label className="flex items-center gap-2.5 cursor-pointer select-none p-3 rounded-xl bg-[oklch(0.97_0.01_85)] dark:bg-card border border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.3)] transition-colors">
               <input
                 type="checkbox"
                 id="toggle-anonimo"
@@ -601,7 +601,7 @@ export default function Intentions() {
                 onChange={(e) => setIsAnonymous(e.target.checked)}
                 className="w-4 h-4 accent-[oklch(0.22_0.07_260)]"
               />
-              <EyeOff size={15} className="text-[oklch(0.45_0.10_260)]" />
+              <EyeOff size={15} className="text-[oklch(0.45_0.10_260)] dark:text-[oklch(0.82_0.10_260)]" />
               <div>
                 <p className="text-sm font-medium text-foreground">Ocultar meu nome</p>
                 <p className="text-xs text-muted-foreground">
@@ -637,7 +637,7 @@ export default function Intentions() {
       <Dialog open={!!editingIntention} onOpenChange={(open) => !open && setEditingIntention(null)}>
         <DialogContent className="max-w-md" aria-describedby={undefined}>
           <DialogHeader>
-            <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)]">
+            <DialogTitle className="font-display text-xl text-[oklch(0.22_0.07_260)] dark:text-foreground">
               Editar Intenção de Oração
             </DialogTitle>
           </DialogHeader>
@@ -674,7 +674,7 @@ export default function Intentions() {
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition-all text-left ${
                       editCategory === cat.value
                         ? "text-white border-transparent"
-                        : "bg-[oklch(0.97_0.01_85)] text-[oklch(0.35_0.08_260)] border-[oklch(0.22_0.07_260/0.15)] hover:border-[oklch(0.22_0.07_260/0.4)]"
+                        : "bg-[oklch(0.97_0.01_85)] dark:bg-card text-[oklch(0.35_0.08_260)] dark:text-foreground border-[oklch(0.22_0.07_260/0.15)] hover:border-[oklch(0.22_0.07_260/0.4)]"
                     }`}
                     style={editCategory === cat.value ? { backgroundColor: cat.color } : {}}
                   >
@@ -699,14 +699,14 @@ export default function Intentions() {
             </div>
 
             {/* Anônimo */}
-            <label className="flex items-center gap-2.5 cursor-pointer select-none p-3 rounded-xl bg-[oklch(0.97_0.01_85)] border border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.3)] transition-colors">
+            <label className="flex items-center gap-2.5 cursor-pointer select-none p-3 rounded-xl bg-[oklch(0.97_0.01_85)] dark:bg-card border border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.3)] transition-colors">
               <input
                 type="checkbox"
                 checked={editAnonymous}
                 onChange={(e) => setEditAnonymous(e.target.checked)}
                 className="w-4 h-4 accent-[oklch(0.22_0.07_260)]"
               />
-              <EyeOff size={15} className="text-[oklch(0.45_0.10_260)]" />
+              <EyeOff size={15} className="text-[oklch(0.45_0.10_260)] dark:text-[oklch(0.82_0.10_260)]" />
               <div>
                 <p className="text-sm font-medium text-foreground">Ocultar meu nome</p>
                 <p className="text-xs text-muted-foreground">Aparecerá como "Fiel Anônimo" no mural</p>

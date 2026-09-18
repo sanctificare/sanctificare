@@ -7,6 +7,7 @@ import MobileTopMenu from "@/components/MobileTopMenu";
 import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeToggle } from "./components/ThemeToggle";
 import { useUserTemplate } from "./hooks/useUserTemplate";
 import { isMobileApp } from "./const";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -246,6 +247,11 @@ function AppShell() {
   return (
     <>
       <Toaster />
+      {isLandingPage && (
+        <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[60] rounded-full border border-gold/40 bg-navy p-1 shadow-lg">
+          <ThemeToggle className="h-11 w-11 sm:h-11 sm:w-11" />
+        </div>
+      )}
       {!isLandingPage && (
         <div className="hidden lg:block">
           <AppNav />

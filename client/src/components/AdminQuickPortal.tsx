@@ -63,11 +63,11 @@ export default function AdminQuickPortal() {
     <div className="w-full py-6 space-y-4 border-t border-[oklch(0.75_0.12_75/0.2)] mt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <ShieldAlert className="w-5 h-5 text-amber-500" />
+          <ShieldAlert className="w-5 h-5 text-amber-500 dark:text-amber-300" />
           <h3 className="text-base font-display font-semibold text-[oklch(0.88_0.08_80)]">Painel do Dono</h3>
         </div>
         <Link href="/admin">
-          <Button variant="ghost" size="sm" className="text-xs text-amber-500 hover:text-amber-400 hover:bg-[oklch(0.75_0.12_75/0.1)] gap-1">
+          <Button variant="ghost" size="sm" className="text-xs text-amber-500 dark:text-amber-300 hover:text-amber-400 hover:bg-[oklch(0.75_0.12_75/0.1)] gap-1">
             Ver Completo <ExternalLink className="w-3 h-3" />
           </Button>
         </Link>
@@ -77,7 +77,7 @@ export default function AdminQuickPortal() {
         {/* Metric 1 */}
         <Card className="bg-[oklch(0.25_0.05_260)] border-[oklch(0.75_0.12_75/0.1)] shadow-md">
           <CardContent className="p-3 flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500">
+            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-300">
               <Users className="w-4 h-4" />
             </div>
             <div>
@@ -103,7 +103,7 @@ export default function AdminQuickPortal() {
         {/* Metric 3 */}
         <Card className="bg-[oklch(0.25_0.05_260)] border-[oklch(0.75_0.12_75/0.1)] shadow-md">
           <CardContent className="p-3 flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-500">
+            <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-500 dark:text-amber-300">
               <Award className="w-4 h-4" />
             </div>
             <div>

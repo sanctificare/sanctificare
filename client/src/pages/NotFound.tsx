@@ -11,23 +11,23 @@ export default function NotFound() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[oklch(0.98_0.005_85)] px-4 py-12">
-      <Card className="w-full max-w-lg shadow-lg border border-[oklch(0.75_0.12_75/0.18)] bg-white/90 backdrop-blur-sm">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[oklch(0.98_0.005_85)] dark:bg-card px-4 py-12">
+      <Card className="w-full max-w-lg shadow-lg border border-[oklch(0.75_0.12_75/0.18)] bg-white/90 dark:bg-card backdrop-blur-sm">
         <CardContent className="pt-8 pb-8 text-center">
           <div className="flex justify-center mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-[oklch(0.75_0.12_75/0.16)] rounded-full animate-pulse" />
-              <AlertCircle className="relative h-16 w-16 text-[oklch(0.55_0.12_70)]" />
+              <AlertCircle className="relative h-16 w-16 text-[oklch(0.55_0.12_70)] dark:text-[oklch(0.82_0.10_70)]" />
             </div>
           </div>
 
-          <h1 className="font-display text-4xl font-bold text-navy mb-2">404</h1>
+          <h1 className="font-display text-4xl font-bold text-navy dark:text-foreground mb-2">404</h1>
 
-          <h2 className="font-display text-xl font-semibold text-slate-800 mb-4">
+          <h2 className="font-display text-xl font-semibold text-slate-800 dark:text-foreground mb-4">
             Página não encontrada
           </h2>
 
-          <p className="text-slate-600 mb-8 leading-relaxed">
+          <p className="text-slate-600 dark:text-foreground mb-8 leading-relaxed">
             O caminho que você tentou acessar não existe ou foi movido.
             <br />
             Volte ao início do app para continuar sua jornada.

@@ -129,7 +129,7 @@ export default function SaintDetail() {
   if (!saint) {
     return (
       <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-[oklch(0.12_0.03_260)] py-12 px-4 flex flex-col items-center justify-center text-center">
-        <Crown className="w-12 h-12 text-amber-500/40 mb-3" />
+        <Crown className="w-12 h-12 text-amber-500/40 dark:text-amber-300 mb-3" />
         <h2 className="font-display text-2xl font-bold mb-2">Santo não encontrado</h2>
         <p className="text-sm text-muted-foreground mb-6">
           Não localizamos a hagiografia para este registro no catálogo.
@@ -189,7 +189,7 @@ export default function SaintDetail() {
         >
           <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-900 border-b border-neutral-800">
             <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold">
-              <Crown className="w-4 h-4 text-amber-500" />
+              <Crown className="w-4 h-4 text-amber-500 dark:text-amber-300" />
               <span>Arte Sacra & Tradição Católica • {saint.name}</span>
             </div>
             <button
@@ -225,7 +225,7 @@ export default function SaintDetail() {
           <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
             <button
               onClick={() => setIsZenMode(false)}
-              className="flex items-center gap-2 text-xs font-semibold text-amber-900 dark:text-amber-300 hover:text-amber-700 transition-colors"
+              className="flex items-center gap-2 text-xs font-semibold text-amber-900 dark:text-amber-300 hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
             >
               <EyeOff className="w-4 h-4" />
               <span>Sair do Modo Contemplativo</span>
@@ -329,7 +329,7 @@ export default function SaintDetail() {
                 }`}
                 title={isFavorite ? "Remover dos Meus Santos Protetores" : "Favoritar como Santo Protetor"}
               >
-                <Heart className={`w-4 h-4 ${isFavorite ? "fill-rose-500 text-rose-500" : ""}`} />
+                <Heart className={`w-4 h-4 ${isFavorite ? "fill-rose-500 text-rose-500 dark:text-rose-300" : ""}`} />
                 <span className="hidden sm:inline">
                   {isFavorite ? "Meu Protetor" : "Protetor"}
                 </span>
@@ -507,7 +507,7 @@ export default function SaintDetail() {
 
                 {saint.isHolyDayOfObligation && (
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-yellow-500/25 text-yellow-900 dark:text-yellow-200 border border-yellow-500/50 flex items-center gap-1">
-                    <Crown className="w-3.5 h-3.5 text-yellow-500" /> Festa de Guarda
+                    <Crown className="w-3.5 h-3.5 text-yellow-500 dark:text-yellow-300" /> Festa de Guarda
                   </span>
                 )}
               </div>
@@ -543,7 +543,7 @@ export default function SaintDetail() {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-neutral-800/80 hover:bg-muted border border-border/50 text-foreground text-xs font-semibold transition-colors shadow-xs"
                     title="Gerar Card Sacro para WhatsApp e Redes"
                   >
-                    <Share2 className="w-3.5 h-3.5 text-amber-600" />
+                    <Share2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-300" />
                     <span>Gerar Card Sacro</span>
                   </button>
                 </div>
@@ -667,7 +667,7 @@ export default function SaintDetail() {
         {/* 2. SEÇÃO: MARTÍRIO OU TRÂNSITO CELESTIAL */}
         <section className="mb-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[oklch(0.16_0.04_260/0.7)] border border-border/50 shadow-sm space-y-4">
           <div className="flex items-center gap-2.5 pb-3 border-b border-border/40">
-            <Award className="w-5 h-5 text-rose-500" />
+            <Award className="w-5 h-5 text-rose-500 dark:text-rose-300" />
             <h2 className="font-display text-xl font-bold text-foreground">
               O Triunfo do Martírio e Páscoa Eterna
             </h2>
@@ -755,7 +755,7 @@ export default function SaintDetail() {
             >
               {copiedPrayer ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-300" />
                   <span>Copiada!</span>
                 </>
               ) : (
@@ -805,7 +805,7 @@ export default function SaintDetail() {
                         <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 block">
                           {rel.day} de {MONTH_NAMES_PT[rel.month - 1]}
                         </span>
-                        <h3 className="font-display text-sm font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate">
+                        <h3 className="font-display text-sm font-bold text-foreground group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors truncate dark:group-hover:text-amber-300">
                           {rel.name}
                         </h3>
                         <p className="text-[11px] text-muted-foreground line-clamp-1">
@@ -844,7 +844,7 @@ export default function SaintDetail() {
                   <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                     ← Santo Anterior • {adjacentSaints.prev.day} de {MONTH_NAMES_PT[adjacentSaints.prev.month - 1]}
                   </span>
-                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors dark:group-hover:text-amber-300">
                     {adjacentSaints.prev.name}
                   </h3>
                 </div>
@@ -858,7 +858,7 @@ export default function SaintDetail() {
                   <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">
                     Próximo Santo • {adjacentSaints.next.day} de {MONTH_NAMES_PT[adjacentSaints.next.month - 1]} →
                   </span>
-                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors dark:group-hover:text-amber-300">
                     {adjacentSaints.next.name}
                   </h3>
                 </div>
@@ -884,7 +884,7 @@ export default function SaintDetail() {
             <Link href="/vela-virtual">
               <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-amber-500/30 hover:border-amber-500 hover:shadow-md transition-all flex items-center justify-between group text-left">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-300 flex items-center justify-center">
                     <Flame className="w-5 h-5" />
                   </div>
                   <div>
@@ -901,7 +901,7 @@ export default function SaintDetail() {
               <Link href={`/novenas/${saint.linkedNovenaSlug}`}>
                 <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-amber-500/30 hover:border-amber-500 hover:shadow-md transition-all flex items-center justify-between group text-left">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-300 flex items-center justify-center">
                       <Crown className="w-5 h-5" />
                     </div>
                     <div>
@@ -933,7 +933,7 @@ export default function SaintDetail() {
             <Link href="/liturgia">
               <button className="w-full p-4 rounded-2xl bg-white dark:bg-neutral-800/70 border border-border/50 hover:border-amber-500/40 hover:shadow-md transition-all flex items-center justify-between group text-left sm:col-span-2 lg:col-span-1">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 flex items-center justify-center">
                     <BookOpen className="w-5 h-5" />
                   </div>
                   <div>

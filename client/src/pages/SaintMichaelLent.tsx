@@ -546,18 +546,18 @@ export default function SaintMichaelLent() {
   return (
     <div className="min-h-screen bg-[oklch(0.965_0.012_82)] dark:bg-[#12100E] relative overflow-hidden text-foreground">
       {/* Background Sacred Gradients */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)] dark:opacity-20" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_oklch(0.90_0.04_85/0.40),_transparent_55%),linear-gradient(180deg,_oklch(1_0_0/0.30),_transparent)] dark:bg-none dark:opacity-20" />
       
       <main className="container px-4 sm:px-6 py-6 sm:py-8 relative z-10 max-w-6xl">
         {/* Header Estilo Novenas */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-4">
           <div>
             <Link href="/explore">
-              <button className="mb-2 -ml-2 px-2 min-h-11 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] flex items-center gap-1">
+              <button className="mb-2 -ml-2 px-2 min-h-11 text-xs sm:text-sm font-medium hover:underline cursor-pointer text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] flex items-center gap-1">
                 <ArrowLeft size={16} /> Voltar ao catálogo de devocionais
               </button>
             </Link>
-            <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+            <p className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-serif">
               Devocional • Jornada Espiritual de 40 Dias
             </p>
             <h1 className="font-display text-2xl xs:text-3xl sm:text-4xl font-bold text-[oklch(0.22_0.07_260)] dark:text-amber-100 leading-tight break-words">
@@ -585,7 +585,7 @@ export default function SaintMichaelLent() {
         {/* Mobile Quick Day Selector Bar (< lg screens) */}
         <div className="block lg:hidden mb-5">
           <div className="flex items-center justify-between mb-2 px-0.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] font-serif">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-serif">
               Meditações (40 Dias)
             </span>
             <span className="text-[11px] font-medium text-muted-foreground">
@@ -619,12 +619,12 @@ export default function SaintMichaelLent() {
                     className={`shrink-0 snap-start min-h-11 rounded-full px-3.5 py-2 text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
                       active
                         ? "bg-[oklch(0.22_0.07_260)] text-white border-[oklch(0.22_0.07_260)] shadow-sm"
-                        : "bg-card text-foreground border-border hover:border-slate-300"
+                        : "bg-card text-foreground border-border hover:border-slate-300 dark:hover:border-border"
                     }`}
                   >
                     <span>Dia {dayNum}</span>
-                    {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600"} />}
-                    {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500"} />}
+                    {isDone && <CheckCircle2 size={11} className={active ? "text-emerald-300" : "text-emerald-600 dark:text-emerald-300"} />}
+                    {isAudioLockedDay && <Lock size={10} className={active ? "text-amber-300" : "text-amber-500 dark:text-amber-300"} />}
                   </button>
                 );
               })}
@@ -677,7 +677,7 @@ export default function SaintMichaelLent() {
                       ? "border-amber-500 text-amber-600 dark:text-amber-400 font-extrabold"
                       : activeTab === "audio"
                       ? "border-transparent text-slate-100 hover:text-white font-bold text-sm"
-                      : "border-transparent text-foreground hover:text-amber-600 font-bold"
+                      : "border-transparent text-foreground hover:text-amber-600 dark:hover:text-amber-300 font-bold"
                   }`}
                 >
                   <BookOpen size={16} />
@@ -746,7 +746,7 @@ export default function SaintMichaelLent() {
 
                       {/* Cabeçalho do Dia */}
                       <div className="text-center space-y-1">
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/90 font-serif">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-amber-500/90 dark:text-amber-300 font-serif">
                           Dia {selectedDayNum} • Oração Guiada em Áudio
                         </span>
                         <h2 className="font-serif text-xl md:text-2xl font-bold text-amber-300 leading-tight">
@@ -758,7 +758,7 @@ export default function SaintMichaelLent() {
                       <div className="flex flex-col items-center justify-center my-5">
                         <div className="relative w-36 h-36 sm:w-40 sm:h-40">
                           <div
-                            className={`absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 blur-md transition-opacity duration-1000 ${
+                            className={`absolute -inset-2 rounded-3xl bg-gradient-to-tr from-amber-600 via-amber-400 to-amber-200 dark:to-amber-950/40 blur-md transition-opacity duration-1000 ${
                               isPlaying ? "opacity-90 animate-pulse" : "opacity-30"
                             }`}
                           />
@@ -948,7 +948,7 @@ export default function SaintMichaelLent() {
                   {/* Passos 1 a 7: Orações Tradicionais & Consagração Solene */}
                   <div id="sec-prayers" className="scroll-mt-16 space-y-4">
                     <h3 className="font-serif text-lg font-bold text-foreground flex items-center gap-1.5 border-b border-border pb-2">
-                      <ShieldCheck size={18} className="text-amber-600" /> Passos 1 a 7 • Orações Tradicionais e Consagração Solene
+                      <ShieldCheck size={18} className="text-amber-600 dark:text-amber-300" /> Passos 1 a 7 • Orações Tradicionais e Consagração Solene
                     </h3>
                     <div className="space-y-3">
                       {SAINT_MICHAEL_TRADITIONAL_PRAYERS.map((prayer) => (
@@ -1077,7 +1077,7 @@ export default function SaintMichaelLent() {
                       <div className="space-y-2">
                         {currentDayData.examination.map((q: string, idx: number) => (
                           <div key={idx} className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3.5 flex items-start gap-2.5">
-                            <span className="text-amber-600 font-serif font-bold text-sm shrink-0">{idx + 1}.</span>
+                            <span className="text-amber-600 dark:text-amber-300 font-serif font-bold text-sm shrink-0">{idx + 1}.</span>
                             <p className={`font-serif italic text-muted-foreground ${fontSize}`}>"{q}"</p>
                           </div>
                         ))}
@@ -1135,7 +1135,7 @@ export default function SaintMichaelLent() {
                       className="min-h-28 font-serif text-sm"
                     />
                     {currentJournalText && (
-                      <Button variant="ghost" size="sm" onClick={handleJournalDelete} className="text-xs text-red-600">
+                      <Button variant="ghost" size="sm" onClick={handleJournalDelete} className="text-xs text-red-600 dark:text-red-300">
                         Excluir Anotação
                       </Button>
                     )}
@@ -1236,7 +1236,7 @@ export default function SaintMichaelLent() {
 
                       <div className="flex flex-col items-end gap-1.5 shrink-0 pt-0.5">
                         <span className="text-[10px] font-mono font-medium text-amber-900/70 dark:text-amber-300/80 bg-amber-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
-                          <Headphones size={10} className={active ? "text-amber-600 dark:text-amber-400" : "text-amber-700/60"} />
+                          <Headphones size={10} className={active ? "text-amber-600 dark:text-amber-400" : "text-amber-700/60 dark:text-amber-300"} />
                           {getSaintMichaelDayDurationFormatted(dayNum)}
                         </span>
                         {isAudioLockedDay && (

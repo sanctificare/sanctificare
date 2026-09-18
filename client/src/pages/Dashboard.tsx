@@ -23,15 +23,15 @@ const SANCTIFICARE_SHARE_URL = "https://sanctificare.app";
 const SANCTIFICARE_SHARE_TEXT = `Conheça o Sanctificare: um app para rezar, acompanhar a liturgia e fortalecer sua vida espiritual. ${SANCTIFICARE_SHARE_URL}`;
 
 const secondaryLinks = [
-  { href: "/santoral", label: "Santoral & Festas", desc: "Santos e festas de guarda", icon: Crown, color: "text-amber-600 bg-amber-500/10 border-amber-500/30" },
-  { href: "/quaresma-sao-miguel", label: "Quaresma de São Miguel", desc: "40 dias de oração", icon: ShieldCheck, color: "text-amber-600 bg-amber-500/10 border-amber-500/30" },
-  { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
-  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
-  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.36_0.15_20)] bg-[oklch(0.36_0.15_20/0.06)] border-[oklch(0.36_0.15_20/0.15)]" },
-  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", icon: Flame, color: "text-[oklch(0.50_0.10_85)] bg-[oklch(0.50_0.10_85/0.06)] border-[oklch(0.50_0.10_85/0.15)]" },
-  { href: "/musica-sacra", label: "Música Sacra", desc: "Cantos para contemplação", icon: Volume2, color: "text-[oklch(0.34_0.10_300)] bg-[oklch(0.34_0.10_300/0.06)] border-[oklch(0.34_0.10_300/0.15)]" },
-  { href: "/videos", label: "Vídeos", desc: "Passagens ilustradas", icon: Play, color: "text-[oklch(0.40_0.12_15)] bg-[oklch(0.40_0.12_15/0.06)] border-[oklch(0.40_0.12_15/0.15)]" },
-  { href: "/intencoes", label: "Intenções", desc: "Mural da comunidade", icon: Users, color: "text-[oklch(0.30_0.10_190)] bg-[oklch(0.30_0.10_190/0.06)] border-[oklch(0.30_0.10_190/0.15)]" },
+  { href: "/santoral", label: "Santoral & Festas", desc: "Santos e festas de guarda", icon: Crown, color: "text-amber-600 dark:text-amber-300 bg-amber-500/10 border-amber-500/30" },
+  { href: "/quaresma-sao-miguel", label: "Quaresma de São Miguel", desc: "40 dias de oração", icon: ShieldCheck, color: "text-amber-600 dark:text-amber-300 bg-amber-500/10 border-amber-500/30" },
+  { href: "/oracoes", label: "Orações", desc: "Devocionário tradicional", icon: Heart, color: "text-[oklch(0.55_0.14_15)] dark:text-[oklch(0.82_0.10_15)] bg-[oklch(0.55_0.14_15/0.06)] border-[oklch(0.55_0.14_15/0.15)]" },
+  { href: "/lectio", label: "Lectio Divina", desc: "Leitura orante", icon: BookOpen, color: "text-[oklch(0.32_0.11_240)] dark:text-[oklch(0.82_0.10_240)] bg-[oklch(0.32_0.11_240/0.06)] border-[oklch(0.32_0.11_240/0.15)]" },
+  { href: "/via-sacra", label: "Via-Sacra", desc: "14 estações meditadas", icon: Cross, color: "text-[oklch(0.36_0.15_20)] dark:text-[oklch(0.82_0.10_20)] bg-[oklch(0.36_0.15_20/0.06)] border-[oklch(0.36_0.15_20/0.15)]" },
+  { href: "/vela-virtual", label: "Vela Virtual", desc: "Silêncio e oração", icon: Flame, color: "text-[oklch(0.50_0.10_85)] dark:text-[oklch(0.82_0.10_85)] bg-[oklch(0.50_0.10_85/0.06)] border-[oklch(0.50_0.10_85/0.15)]" },
+  { href: "/musica-sacra", label: "Música Sacra", desc: "Cantos para contemplação", icon: Volume2, color: "text-[oklch(0.34_0.10_300)] dark:text-[oklch(0.82_0.10_300)] bg-[oklch(0.34_0.10_300/0.06)] border-[oklch(0.34_0.10_300/0.15)]" },
+  { href: "/videos", label: "Vídeos", desc: "Passagens ilustradas", icon: Play, color: "text-[oklch(0.40_0.12_15)] dark:text-[oklch(0.82_0.10_15)] bg-[oklch(0.40_0.12_15/0.06)] border-[oklch(0.40_0.12_15/0.15)]" },
+  { href: "/intencoes", label: "Intenções", desc: "Mural da comunidade", icon: Users, color: "text-[oklch(0.30_0.10_190)] dark:text-[oklch(0.82_0.10_190)] bg-[oklch(0.30_0.10_190/0.06)] border-[oklch(0.30_0.10_190/0.15)]" },
 ];
 
 function getDayOfWeek() {
@@ -495,7 +495,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="shrink-0">
-                  <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-serif font-bold text-xs sm:text-sm px-5 py-2.5 shadow-lg group-hover:shadow-amber-500/20 transition-all">
+                  <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-serif font-bold text-xs sm:text-sm px-5 py-2.5 shadow-lg group-hover:shadow-amber-500/20 transition-all dark:text-amber-300">
                     <span>Garantir Presença / Acessar</span>
                     <ChevronRight size={16} className="ml-1 transition-transform group-hover:translate-x-1" />
                   </Button>
@@ -992,10 +992,10 @@ export default function Dashboard() {
 
         {/* Versículo do Dia - Banner Editorial */}
         <div className="section-block animate-fade-in">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] to-[oklch(0.97_0.01_85)] border border-[oklch(0.75_0.12_75/0.25)] p-5 sm:p-8 card-soft text-center">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[oklch(0.95_0.02_80)] dark:from-background to-[oklch(0.97_0.01_85)] dark:to-background border border-[oklch(0.75_0.12_75/0.25)] p-5 sm:p-8 card-soft text-center">
             <div className="absolute inset-0 bg-pattern-cross opacity-[0.01]" />
             <BookOpen size={24} className="text-[oklch(0.75_0.12_75)] mx-auto mb-4 stroke-[1.5]" />
-            <blockquote className="font-serif text-lg sm:text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
+            <blockquote className="font-serif text-lg sm:text-xl md:text-2xl italic text-[oklch(0.25_0.03_260)] dark:text-foreground leading-relaxed max-w-4xl mx-auto mb-4 tracking-tight">
               "{dynamicVerse.text}"
             </blockquote>
             {isLiturgyLoading && !liturgy ? (
@@ -1014,7 +1014,7 @@ export default function Dashboard() {
           <div className="lg:col-span-2 prayer-card p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Users size={16} className="text-[oklch(0.65_0.14_70)]" />
+                <Users size={16} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
                 <h3 className="section-title-sm">
                   Intenções da Comunidade
                 </h3>
@@ -1049,7 +1049,7 @@ export default function Dashboard() {
                           disabled={prayingId === intention.id}
                           onClick={() => handlePrayForIntention(intention.id)}
                           className={alreadyPrayed 
-                            ? "w-full sm:w-auto border border-emerald-600/30 text-emerald-600 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
+                            ? "w-full sm:w-auto border border-emerald-600/30 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-50/50 bg-emerald-500/5 rounded-md text-xs font-semibold px-3 h-8 flex items-center gap-1 shadow-sm transition-all"
                             : "w-full sm:w-auto bg-navy text-[oklch(0.97_0.01_85)] rounded-md border border-[oklch(0.75_0.12_75/0.3)] shadow-sm hover:shadow-md hover:border-[oklch(0.75_0.12_75/0.6)] text-xs font-semibold px-3 h-8 flex items-center gap-1 transition-all"
                           }
                         >
@@ -1071,7 +1071,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-border/30 text-right">
-              <Link href="/intencoes" className="text-xs font-semibold text-navy hover:underline flex items-center justify-end gap-1">
+              <Link href="/intencoes" className="text-xs font-semibold text-navy dark:text-foreground hover:underline flex items-center justify-end gap-1">
                 Ver todas as intenções <ChevronRight size={12} />
               </Link>
             </div>

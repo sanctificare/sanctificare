@@ -23,8 +23,12 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (switchable) {
-      const stored = localStorage.getItem("theme");
-      return stored === "light" || stored === "dark" ? stored : defaultTheme;
+      try {
+        const stored = localStorage.getItem("theme");
+        return stored === "light" || stored === "dark" ? stored : defaultTheme;
+      } catch {
+        return defaultTheme;
+      }
     }
     return defaultTheme;
   });
@@ -38,8 +42,16 @@ export function ThemeProvider({
       root.classList.remove("dark");
     }
 
+    // Barra de status (PWA/Android) acompanha o tema escolhido.
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    themeColorMeta?.setAttribute("content", theme === "dark" ? "#0b0f1a" : "#faf7f2");
+
     if (switchable) {
-      localStorage.setItem("theme", theme);
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {
+        // Switching still works when browser storage is unavailable.
+      }
     }
   }, [theme, switchable]);
 

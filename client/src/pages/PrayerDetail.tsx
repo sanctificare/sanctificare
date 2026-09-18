@@ -102,9 +102,9 @@ export default function PrayerDetail() {
             <div className="pt-4">
               <Button
                 onClick={handlePrimaryAction}
-                className="bg-white hover:bg-neutral-200 text-black font-display font-bold text-base px-8 py-7 rounded-full shadow-lg flex items-center gap-3 hover:scale-[1.03] active:scale-[0.98] transition-all w-full sm:w-auto"
+                className="bg-white dark:bg-card hover:bg-neutral-200 dark:hover:bg-muted text-black dark:text-foreground font-display font-bold text-base px-8 py-7 rounded-full shadow-lg flex items-center gap-3 hover:scale-[1.03] active:scale-[0.98] transition-all w-full sm:w-auto"
               >
-                <Play size={18} fill="currentColor" className="text-black" />
+                <Play size={18} fill="currentColor" className="text-black dark:text-foreground" />
                 {prayer.id === "vela-virtual" ? "Entrar em Oração" : "Começar a Rezar"}
               </Button>
             </div>

@@ -390,26 +390,26 @@ export default function Bible() {
 
   // Styling maps
   const themeClasses = {
-    light: "!bg-white text-slate-900 border-slate-100 shadow-sm",
-    sepia: "!bg-[#fcf8ed] !bg-none text-[#4a3525] border-[#ebdcb9] shadow-sm",
+    light: "!bg-white dark:bg-card text-slate-900 dark:text-foreground border-slate-100 dark:border-border shadow-sm",
+    sepia: "!bg-[#fcf8ed] dark:bg-card !bg-none text-[#4a3525] dark:text-foreground border-[#ebdcb9] dark:border-border shadow-sm",
     dark: "!bg-slate-950 !bg-none text-slate-100 border-slate-900 shadow-none",
   };
 
   const pageBgClasses = {
-    light: "bg-[oklch(0.97_0.01_85)]",
-    sepia: "bg-[#f4ecd8]",
+    light: "bg-[oklch(0.97_0.01_85)] dark:bg-card",
+    sepia: "bg-[#f4ecd8] dark:bg-card",
     dark: "bg-slate-900",
   };
 
   const headerTextClasses = {
-    light: "text-[oklch(0.22_0.07_260)]",
-    sepia: "text-[#362214]",
+    light: "text-[oklch(0.22_0.07_260)] dark:text-foreground",
+    sepia: "text-[#362214] dark:text-foreground",
     dark: "text-slate-100",
   };
 
   const descTextClasses = {
     light: "text-muted-foreground",
-    sepia: "text-[#695444]",
+    sepia: "text-[#695444] dark:text-muted-foreground",
     dark: "text-slate-400",
   };
 
@@ -554,7 +554,7 @@ export default function Bible() {
                       className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
                     >
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] uppercase">
+                        <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase">
                           {fav.bookName} {fav.chapter}:{fav.verse}
                         </span>
                         <button
@@ -624,7 +624,7 @@ export default function Bible() {
                           }}
                           className="bg-slate-50/50 dark:bg-slate-900/30 border border-border/20 rounded-lg p-2.5 hover:border-[oklch(0.75_0.12_75/0.4)] cursor-pointer transition-all"
                         >
-                          <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] uppercase">
+                          <span className="text-[9px] font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase">
                             {res.bookName} {res.chapter}:{res.verse}
                           </span>
                           <p className="text-[11px] font-sans leading-relaxed mt-0.5 line-clamp-3 opacity-95">
@@ -654,7 +654,7 @@ export default function Bible() {
                       <h2 className="font-display text-3xl font-bold">
                         {selectedBook.name}, {selectedChapter}
                       </h2>
-                      <span className="bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.65_0.12_70)] text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                      <span className="bg-[oklch(0.75_0.12_75/0.15)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                         {getBookCategory(selectedBook.id)}
                       </span>
                     </div>
@@ -664,7 +664,7 @@ export default function Bible() {
 
                 {/* Banner Litúrgico */}
                 {liturgyInfo && (
-                  <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 flex items-start gap-3 shadow-sm">
+                  <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] rounded-xl p-4 flex items-start gap-3 shadow-sm">
                     <LiturgyIcon size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                     <div>
                       <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
@@ -742,7 +742,7 @@ export default function Bible() {
                       setSelectedChapter(selectedChapter - 1);
                       setHighlightedVerse(null);
                     }}
-                    className={`gap-2 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
+                    className={`gap-2 ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white dark:bg-card"}`}
                   >
                     <ChevronLeft size={14} /> Anterior
                   </Button>
@@ -753,7 +753,7 @@ export default function Bible() {
                       setSelectedChapter(selectedChapter + 1);
                       setHighlightedVerse(null);
                     }}
-                    className={`gap-2 ml-auto ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white"}`}
+                    className={`gap-2 ml-auto ${readingTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800" : "bg-white dark:bg-card"}`}
                   >
                     Próximo <ChevronRight size={14} />
                   </Button>
@@ -780,7 +780,7 @@ export default function Bible() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowSettings(!showSettings)}
-                className={`h-8 gap-1.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : "bg-white"}`}
+                className={`h-8 gap-1.5 ${activeTheme === "dark" ? "text-slate-200 border-slate-800 bg-slate-900 hover:bg-slate-800 hover:text-white" : "bg-white dark:bg-card"}`}
               >
                 <Settings size={13} /> Opções
               </Button>
@@ -961,8 +961,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2]"
-                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2]"
+                        : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                   >
                     <ChevronLeft size={14} /> {selectedBook.name}
@@ -977,8 +977,8 @@ export default function Bible() {
                       activeTheme === "dark" 
                         ? "bg-slate-900 border-slate-800 text-slate-100" 
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                        : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                   >
                     {Array.from({ length: selectedBook.chapters }, (_, i) => i + 1).map((ch) => (
@@ -1001,8 +1001,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2]"
-                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2]"
+                        : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                     title="Busca na Bíblia"
                   >
@@ -1016,8 +1016,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? `bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
                         : activeTheme === "sepia"
-                        ? `bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:bg-[#ebdcb9/0.2] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
-                        : `bg-white border-border text-[oklch(0.22_0.07_260)] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                        ? `bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                        : `bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
                     }`}
                   >
                     <Settings size={14} /> Opções
@@ -1031,8 +1031,8 @@ export default function Bible() {
                   readingTheme === "dark"
                     ? "bg-slate-950 text-slate-200 border-slate-800"
                     : readingTheme === "sepia"
-                    ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
-                    : "bg-white text-[oklch(0.22_0.07_260)] border-border"
+                    ? "bg-[#fcf8ed] dark:bg-card text-[#4a3525] dark:text-foreground border-[#ebdcb9] dark:border-border"
+                    : "bg-white dark:bg-card text-[oklch(0.22_0.07_260)] dark:text-foreground border-border"
                 }`}>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Fonte:</span>
@@ -1149,7 +1149,7 @@ export default function Bible() {
 
               {/* Liturgy Banner */}
               {liturgyInfo && (
-                <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
+                <div className="bg-[oklch(0.75_0.12_75/0.12)] border border-[oklch(0.75_0.12_75/0.3)] text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm">
                   <LiturgyIcon size={20} className="mt-0.5 text-[oklch(0.75_0.12_75)] flex-shrink-0 animate-pulse" />
                   <div>
                     <h4 className="font-display font-bold text-sm">Liturgia Diária de Hoje</h4>
@@ -1167,7 +1167,7 @@ export default function Bible() {
                   <h2 className="font-display text-2xl font-bold">
                     {selectedBook.name}
                   </h2>
-                  <p className="text-[oklch(0.65_0.12_70)] font-semibold mt-1">Capítulo {selectedChapter}</p>
+                  <p className="text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-semibold mt-1">Capítulo {selectedChapter}</p>
                 </div>
                 <div className="divider-gold mb-6" />
 
@@ -1210,7 +1210,7 @@ export default function Bible() {
                           onClick={() => handleVerseClick(i)}
                           className={`flex gap-4 cursor-pointer hover:bg-slate-100/10 dark:hover:bg-slate-800/10 p-1.5 transition-all rounded select-none ${highlightClass}`}
                         >
-                          <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] mt-1.5 w-6 flex-shrink-0 font-display flex items-center gap-1">
+                          <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] mt-1.5 w-6 flex-shrink-0 font-display flex items-center gap-1">
                             {isFavorited && <Star size={8} fill="currentColor" className="text-[oklch(0.75_0.12_75)]" />}
                             {verseNum}
                           </span>
@@ -1239,8 +1239,8 @@ export default function Bible() {
                     activeTheme === "dark"
                       ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 disabled:opacity-30"
                       : activeTheme === "sepia"
-                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                      ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                      : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                   }`}
                 >
                   <ChevronLeft size={14} /> Anterior
@@ -1256,8 +1256,8 @@ export default function Bible() {
                     activeTheme === "dark"
                       ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 disabled:opacity-30"
                       : activeTheme === "sepia"
-                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                      ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                      : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                   }`}
                 >
                   Próximo <ChevronRight size={14} />
@@ -1277,8 +1277,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                        : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                        : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                   >
                     <ChevronLeft size={14} /> Livros
@@ -1299,8 +1299,8 @@ export default function Bible() {
                     activeTheme === "dark"
                       ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900"
                       : activeTheme === "sepia"
-                      ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                      : "bg-white border-border text-[oklch(0.22_0.07_260)]"
+                      ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                      : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                   }`}
                 >
                   <Search size={14} /> Busca na Bíblia
@@ -1309,8 +1309,8 @@ export default function Bible() {
 
               {/* Versículos famosos */}
               {FAMOUS_VERSES[selectedBook.id] && (
-                <div className="prayer-card p-5 mb-6 bg-white border border-border rounded-xl">
-                  <p className="text-xs font-display font-semibold text-[oklch(0.65_0.12_70)] uppercase tracking-widest mb-3">
+                <div className="prayer-card p-5 mb-6 bg-white dark:bg-card border border-border rounded-xl">
+                  <p className="text-xs font-display font-semibold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase tracking-widest mb-3">
                     Versículos para meditação
                   </p>
                   <div className="space-y-3">
@@ -1334,7 +1334,7 @@ export default function Bible() {
                       setSelectedChapter(ch);
                       setHighlightedVerse(null);
                     }}
-                    className="h-10 w-full rounded-lg bg-white border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all"
+                    className="h-10 w-full rounded-lg bg-white dark:bg-card border border-border hover:border-[oklch(0.75_0.12_75)] hover:bg-[oklch(0.75_0.12_75/0.08)] text-sm font-medium text-[oklch(0.22_0.07_260)] transition-all dark:text-foreground"
                   >
                     {ch}
                   </button>
@@ -1387,8 +1387,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "!bg-none !bg-slate-950 border-slate-900 text-slate-100"
                         : activeTheme === "sepia"
-                        ? "!bg-none !bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                        : "bg-white/60 border-[oklch(0.75_0.12_75/0.3)] backdrop-blur"
+                        ? "!bg-none !bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                        : "bg-white/60 dark:bg-card border-[oklch(0.75_0.12_75/0.3)] backdrop-blur"
                     }`}>
                       <div className="flex items-center gap-3">
                         <Bookmark className="text-[oklch(0.75_0.12_75)] flex-shrink-0" size={20} fill="currentColor" />
@@ -1398,8 +1398,8 @@ export default function Bible() {
                             activeTheme === "dark"
                               ? "text-slate-200"
                               : activeTheme === "sepia"
-                              ? "text-[#362214]"
-                              : "text-[oklch(0.22_0.07_260)]"
+                              ? "text-[#362214] dark:text-foreground"
+                              : "text-[oklch(0.22_0.07_260)] dark:text-foreground"
                           }`}>
                             {bookmark.bookName} - Capítulo {bookmark.chapter}
                           </h4>
@@ -1433,8 +1433,8 @@ export default function Bible() {
                         activeTheme === "dark" 
                           ? "bg-slate-950 text-slate-100 border-slate-800 focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]" 
                           : activeTheme === "sepia"
-                          ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
-                          : "bg-white text-slate-900"
+                          ? "bg-[#fcf8ed] dark:bg-card text-[#4a3525] dark:text-foreground border-[#ebdcb9] dark:border-border"
+                          : "bg-white dark:bg-card text-slate-900 dark:text-foreground"
                       }`}
                     />
                     {searchBookQuery && (
@@ -1454,8 +1454,8 @@ export default function Bible() {
                           : (activeTheme === "dark"
                               ? "bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700"
                               : activeTheme === "sepia"
-                              ? "bg-[#fcf8ed] border border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
-                              : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
+                              ? "bg-[#fcf8ed] dark:bg-card border border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:border-[#362214]"
+                              : "bg-white dark:bg-card border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
                       }`}
                     >
                       Antigo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "old").length})
@@ -1468,8 +1468,8 @@ export default function Bible() {
                           : (activeTheme === "dark"
                               ? "bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700"
                               : activeTheme === "sepia"
-                              ? "bg-[#fcf8ed] border border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
-                              : "bg-white border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
+                              ? "bg-[#fcf8ed] dark:bg-card border border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:border-[#362214]"
+                              : "bg-white dark:bg-card border border-border text-foreground hover:border-[oklch(0.22_0.07_260/0.3)]")
                       }`}
                     >
                       Novo Testamento ({BIBLE_BOOKS.filter(b => b.testament === "new").length})
@@ -1489,22 +1489,22 @@ export default function Bible() {
                           activeTheme === "dark"
                             ? "!bg-none !bg-slate-950 border-slate-900 text-slate-100 hover:border-[oklch(0.75_0.12_75)]"
                             : activeTheme === "sepia"
-                            ? "!bg-none !bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
-                            : "bg-white border-border hover:border-[oklch(0.75_0.12_75)]"
+                            ? "!bg-none !bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:border-[#362214]"
+                            : "bg-white dark:bg-card border-border hover:border-[oklch(0.75_0.12_75)]"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className="font-display text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wide">
+                          <span className="font-display text-xs font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase tracking-wide">
                             {book.abbrev}
                           </span>
-                          <ChevronRight size={13} className="text-muted-foreground group-hover:text-[oklch(0.65_0.14_70)] transition-colors" />
+                          <ChevronRight size={13} className="text-muted-foreground group-hover:text-[oklch(0.65_0.14_70)] dark:group-hover:text-[oklch(0.82_0.10_70)] transition-colors" />
                         </div>
                         <p className={`font-semibold text-sm leading-tight ${
                           activeTheme === "dark" 
                             ? "text-slate-100" 
                             : activeTheme === "sepia" 
-                            ? "text-[#362214]" 
-                            : "text-[oklch(0.22_0.07_260)]"
+                            ? "text-[#362214] dark:text-foreground" 
+                            : "text-[oklch(0.22_0.07_260)] dark:text-foreground"
                         }`}>{book.name}</p>
                         <p className="text-xs text-muted-foreground mt-1">{book.chapters} capítulos</p>
                       </button>
@@ -1528,8 +1528,8 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950/50 border-slate-800 text-slate-100"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525]"
-                        : "bg-white/50 border-border text-slate-900"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground"
+                        : "bg-white/50 dark:bg-card border-border text-slate-900 dark:text-foreground"
                     }`}>
                       <Star size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
                       <p className="text-sm font-medium">Nenhum versículo favoritado ainda.</p>
@@ -1544,8 +1544,8 @@ export default function Bible() {
                             activeTheme === "dark"
                               ? "bg-slate-950 border-slate-800 hover:border-[oklch(0.75_0.12_75)]"
                               : activeTheme === "sepia"
-                              ? "bg-[#fcf8ed] border-[#ebdcb9] hover:border-[#362214]"
-                              : "bg-white border-border hover:border-[oklch(0.75_0.12_75)]"
+                              ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border hover:border-[#362214]"
+                              : "bg-white dark:bg-card border-border hover:border-[oklch(0.75_0.12_75)]"
                           }`}
                         >
                           <div
@@ -1560,15 +1560,15 @@ export default function Bible() {
                               }
                             }}
                           >
-                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
+                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase tracking-wider font-display">
                               {fav.bookName} {fav.chapter}:{fav.verse}
                             </span>
                             <p className={`font-serif italic text-sm mt-1 ${
                               activeTheme === "dark"
                                 ? "text-slate-300"
                                 : activeTheme === "sepia"
-                                ? "text-[#5c4033]"
-                                : "text-slate-800"
+                                ? "text-[#5c4033] dark:text-foreground"
+                                : "text-slate-800 dark:text-foreground"
                             }`}>
                               "{fav.text}"
                             </p>
@@ -1606,8 +1606,8 @@ export default function Bible() {
                           activeTheme === "dark" 
                             ? "bg-slate-950 text-slate-100 border-slate-800 focus-visible:ring-1 focus-visible:ring-[oklch(0.75_0.12_75/0.5)]" 
                             : activeTheme === "sepia"
-                            ? "bg-[#fcf8ed] text-[#4a3525] border-[#ebdcb9]"
-                            : "bg-white text-slate-900"
+                            ? "bg-[#fcf8ed] dark:bg-card text-[#4a3525] dark:text-foreground border-[#ebdcb9] dark:border-border"
+                            : "bg-white dark:bg-card text-slate-900 dark:text-foreground"
                         }`}
                       />
                     </div>
@@ -1623,8 +1623,8 @@ export default function Bible() {
                           activeTheme === "dark"
                             ? "bg-slate-950 border-slate-800"
                             : activeTheme === "sepia"
-                            ? "bg-[#fcf8ed] border-[#ebdcb9]"
-                            : "bg-white border-border"
+                            ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border"
+                            : "bg-white dark:bg-card border-border"
                         }`} />
                       ))}
                     </div>
@@ -1635,7 +1635,7 @@ export default function Bible() {
                       </p>
 
                       {searchResults.length === 0 ? (
-                        <div className="text-center py-12 bg-white/50 border border-dashed rounded-2xl">
+                        <div className="text-center py-12 bg-white/50 dark:bg-card border border-dashed rounded-2xl">
                           <BookOpen size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
                           <p className="text-muted-foreground text-sm font-medium">Nenhum resultado encontrado.</p>
                         </div>
@@ -1656,19 +1656,19 @@ export default function Bible() {
                               activeTheme === "dark"
                                 ? "bg-slate-950 border-slate-800 text-slate-100 hover:border-[oklch(0.75_0.12_75)]"
                                 : activeTheme === "sepia"
-                                ? "bg-[#fcf8ed] border-[#ebdcb9] text-[#4a3525] hover:border-[#362214]"
-                                : "bg-white border-border text-slate-900 hover:border-[oklch(0.75_0.12_75)]"
+                                ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:border-[#362214]"
+                                : "bg-white dark:bg-card border-border text-slate-900 dark:text-foreground hover:border-[oklch(0.75_0.12_75)]"
                             }`}
                           >
-                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] uppercase tracking-wider font-display">
+                            <span className="text-xs font-bold text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] uppercase tracking-wider font-display">
                               {res.bookName} {res.chapter}:{res.verse}
                             </span>
                             <p className={`font-sans text-sm mt-1 ${
                               activeTheme === "dark"
                                 ? "text-slate-300"
                                 : activeTheme === "sepia"
-                                ? "text-[#5c4033]"
-                                : "text-slate-800"
+                                ? "text-[#5c4033] dark:text-foreground"
+                                : "text-slate-800 dark:text-foreground"
                             }`}>
                               {res.text}
                             </p>

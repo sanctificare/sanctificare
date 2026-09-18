@@ -65,7 +65,7 @@ export default function Explore() {
   const filteredCards = filterExploreCards(availableCards, search, selectedCategory);
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] relative overflow-hidden pb-12">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card relative overflow-hidden pb-12">
       {/* Pattern background */}
       <div className="absolute inset-0 bg-pattern-cross opacity-[0.02] pointer-events-none" />
       
@@ -74,7 +74,7 @@ export default function Explore() {
         <div className="mb-8 text-center sm:text-left">
           <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
             <Compass className="w-7 h-7 text-[oklch(0.75_0.12_75)]" />
-            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)]">
+            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
               Explore
             </h1>
           </div>
@@ -114,7 +114,7 @@ export default function Explore() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   (cat === "Todos" && !selectedCategory) || selectedCategory === cat
                     ? "bg-[oklch(0.22_0.07_260)] text-white"
-                    : "bg-white/80 dark:bg-[oklch(0.17_0.04_260/0.7)] text-muted-foreground hover:bg-white border border-border/50"
+                    : "bg-white/80 dark:bg-[oklch(0.17_0.04_260/0.7)] text-muted-foreground hover:bg-white dark:hover:bg-card border border-border/50"
                 }`}
               >
                 {cat}

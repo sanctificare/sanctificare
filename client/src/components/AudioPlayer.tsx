@@ -611,7 +611,7 @@ export default function AudioPlayer({
         <Dialog open={isSupportOpen} onOpenChange={setIsSupportOpen}>
           <DialogContent className="max-h-[82vh] overflow-hidden sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="font-display text-2xl text-[oklch(0.22_0.07_260)]">
+              <DialogTitle className="font-display text-2xl text-[oklch(0.22_0.07_260)] dark:text-foreground">
                 {supportTitle || title}
               </DialogTitle>
               {(supportDescription || description) && (

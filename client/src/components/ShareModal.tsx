@@ -110,7 +110,7 @@ export default function ShareModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-[340px] md:max-w-[380px] bg-[#111726]/95 border-amber-500/20 backdrop-blur-md rounded-3xl p-6 text-white text-center shadow-2xl">
         <DialogHeader className="p-0 mb-4">
-          <DialogTitle className="text-center text-lg font-semibold tracking-wide text-amber-500/90 uppercase font-sans">
+          <DialogTitle className="text-center text-lg font-semibold tracking-wide text-amber-500/90 dark:text-amber-300 uppercase font-sans">
             Compartilhar
           </DialogTitle>
         </DialogHeader>
@@ -132,7 +132,7 @@ export default function ShareModal({
             <h4 className="text-white font-semibold text-sm line-clamp-2 leading-snug drop-shadow-md">
               {title}
             </h4>
-            <span className="block text-amber-500/80 font-serif text-[10px] tracking-[0.25em] uppercase font-bold mt-1.5 drop-shadow-sm">
+            <span className="block text-amber-500/80 dark:text-amber-300 font-serif text-[10px] tracking-[0.25em] uppercase font-bold mt-1.5 drop-shadow-sm">
               Sanctificare
             </span>
           </div>
@@ -203,7 +203,7 @@ export default function ShareModal({
             onClick={handleCopyLink}
             className="flex flex-col items-center gap-1.5 focus:outline-none group"
           >
-            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500/10 text-amber-500 border border-amber-500/20 transition-transform duration-200 group-hover:scale-110 shadow-lg">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-amber-500/10 text-amber-500 dark:text-amber-300 border border-amber-500/20 transition-transform duration-200 group-hover:scale-110 shadow-lg">
               <Link2 className="w-5 h-5" />
             </div>
             <span className="text-[10px] text-slate-300 font-medium tracking-wide">

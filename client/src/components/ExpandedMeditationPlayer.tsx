@@ -172,7 +172,7 @@ export default function ExpandedMeditationPlayer({
 
       {/* Top Header Row */}
       <div className="w-full flex items-center justify-between z-10">
-        <span className="text-[10px] text-amber-500/80 font-bold uppercase tracking-widest font-sans">
+        <span className="text-[10px] text-amber-500/80 dark:text-amber-300 font-bold uppercase tracking-widest font-sans">
           Modo Meditação
         </span>
         <button
@@ -207,7 +207,7 @@ export default function ExpandedMeditationPlayer({
 
         {/* Text Titles */}
         <div className="text-center max-w-sm px-4">
-          <p className="text-[10px] text-amber-500 font-bold uppercase tracking-widest font-sans mb-1">
+          <p className="text-[10px] text-amber-500 dark:text-amber-300 font-bold uppercase tracking-widest font-sans mb-1">
             {title}
           </p>
           <h2 className="text-white text-base md:text-lg font-serif font-semibold leading-snug">
@@ -231,14 +231,14 @@ export default function ExpandedMeditationPlayer({
         >
           <div className="py-4 space-y-4">
             <div className="space-y-1">
-              <span className="text-[9px] uppercase tracking-wider font-bold text-amber-500/90 block font-sans">
+              <span className="text-[9px] uppercase tracking-wider font-bold text-amber-500/90 dark:text-amber-300 block font-sans">
                 Meditação do Dia
               </span>
               <p className="italic text-justify font-serif">{reflection}</p>
             </div>
             
             <div className="space-y-1 border-t border-white/10 pt-4">
-              <span className="text-[9px] uppercase tracking-wider font-bold text-amber-500/90 block font-sans">
+              <span className="text-[9px] uppercase tracking-wider font-bold text-amber-500/90 dark:text-amber-300 block font-sans">
                 Oração da Novena
               </span>
               <p className="whitespace-pre-line text-justify font-serif">{prayer}</p>

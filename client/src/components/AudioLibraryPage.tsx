@@ -123,18 +123,18 @@ export default function AudioLibraryPage({
   const trackReady = isAudioTrackReady(effectiveSelectedTrack);
 
   return (
-    <div className="min-h-screen bg-[oklch(0.97_0.01_85)]">
+    <div className="min-h-screen bg-[oklch(0.97_0.01_85)] dark:bg-card">
       <main className={"container py-8 " + (trackReady ? "pb-36" : "")}>
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="mb-8 animate-fade-in">
             <div className="flex items-center gap-2 mb-2">
-              <Icon size={20} className="text-[oklch(0.65_0.14_70)]" />
+              <Icon size={20} className="text-[oklch(0.65_0.14_70)] dark:text-[oklch(0.82_0.10_70)]" />
               <span className="text-sm text-muted-foreground font-medium">
                 {eyebrow}
               </span>
             </div>
-            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] mb-1">
+            <h1 className="font-display text-3xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground mb-1">
               {title}
             </h1>
             <p className="font-serif text-muted-foreground">{subtitle}</p>
@@ -147,13 +147,13 @@ export default function AudioLibraryPage({
 
           {/* Player em destaque (somente placeholder de gravação pendente) */}
           {effectiveSelectedTrack && !trackReady && (
-            <div className="mb-8 rounded-xl border border-[oklch(0.22_0.07_260/0.15)] bg-white p-6 animate-fade-in">
+            <div className="mb-8 rounded-xl border border-[oklch(0.22_0.07_260/0.15)] bg-white dark:bg-card p-6 animate-fade-in">
               <div className="flex items-center gap-2 mb-2">
                 <Headphones
                   size={18}
-                  className="text-[oklch(0.65_0.12_70)]"
+                  className="text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]"
                 />
-                <p className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)]">
+                <p className="font-display text-lg font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground">
                   {effectiveSelectedTrack.title}
                 </p>
               </div>
@@ -161,7 +161,7 @@ export default function AudioLibraryPage({
                 {effectiveSelectedTrack.description}
               </p>
               <div className="rounded-lg bg-[oklch(0.22_0.07_260/0.03)] border border-[oklch(0.22_0.07_260/0.1)] p-3">
-                <p className="text-xs text-[oklch(0.65_0.12_70)] font-semibold uppercase tracking-wide mb-1">
+                <p className="text-xs text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)] font-semibold uppercase tracking-wide mb-1">
                   Em gravação
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -185,7 +185,7 @@ export default function AudioLibraryPage({
                     onError={(event) => applyImageFallback(event.currentTarget)}
                   />
                   <div>
-                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] leading-tight">
+                    <h2 className="font-display text-xl font-bold text-[oklch(0.22_0.07_260)] dark:text-foreground leading-tight">
                       {collection.title}
                     </h2>
                     <p className="text-sm text-muted-foreground">
@@ -222,7 +222,7 @@ export default function AudioLibraryPage({
                           "w-full text-left rounded-xl border p-4 transition-all " +
                           (active
                             ? "bg-[oklch(0.22_0.07_260)] border-[oklch(0.22_0.07_260)] shadow"
-                            : "bg-white border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.35)]")
+                            : "bg-white dark:bg-card border-[oklch(0.22_0.07_260/0.12)] hover:border-[oklch(0.22_0.07_260/0.35)]")
                         }
                       >
                         <div className="flex items-start gap-3">
@@ -230,10 +230,10 @@ export default function AudioLibraryPage({
                             className={
                               "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center " +
                               (isLocked
-                                ? "bg-amber-500/10 text-amber-500 border border-amber-500/20"
+                                ? "bg-amber-500/10 text-amber-500 dark:text-amber-300 border border-amber-500/20"
                                 : active
                                 ? "bg-[oklch(0.75_0.12_75)] text-[oklch(0.15_0.02_260)]"
-                                : "bg-[oklch(0.22_0.07_260/0.08)] text-[oklch(0.22_0.07_260)]")
+                                : "bg-[oklch(0.22_0.07_260/0.08)] text-[oklch(0.22_0.07_260)] dark:text-foreground")
                             }
                           >
                             {isLocked ? <Lock size={15} /> : <Play size={16} fill="currentColor" />}
@@ -245,7 +245,7 @@ export default function AudioLibraryPage({
                                   "font-display font-semibold " +
                                   (active
                                     ? "text-white"
-                                    : "text-[oklch(0.22_0.07_260)]")
+                                    : "text-[oklch(0.22_0.07_260)] dark:text-foreground")
                                 }
                               >
                                 {track.title}
@@ -254,7 +254,7 @@ export default function AudioLibraryPage({
                                 <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
                                   active 
                                     ? "bg-white/20 text-white" 
-                                    : "badge-premium text-amber-600 bg-amber-500/10 border border-amber-500/20"
+                                    : "badge-premium text-amber-600 dark:text-amber-300 bg-amber-500/10 border border-amber-500/20"
                                 }`}>
                                   Premium
                                 </span>
@@ -266,7 +266,7 @@ export default function AudioLibraryPage({
                                   "text-xs mb-1 " +
                                   (active
                                     ? "text-[oklch(0.75_0.12_75)]"
-                                    : "text-[oklch(0.65_0.12_70)]")
+                                    : "text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]")
                                 }
                               >
                                 {track.reference}
@@ -284,7 +284,7 @@ export default function AudioLibraryPage({
                             </p>
                             <div className="mt-2 text-xs text-muted-foreground space-y-1">
                               {track.composer ? (
-                                <p className="flex items-center gap-1 text-[oklch(0.65_0.12_70)]">
+                                <p className="flex items-center gap-1 text-[oklch(0.65_0.12_70)] dark:text-[oklch(0.82_0.10_70)]">
                                   <span className="font-semibold">Compositor:</span>
                                   <span>{track.composer}</span>
                                 </p>

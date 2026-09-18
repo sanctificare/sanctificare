@@ -285,7 +285,7 @@ export function SaintMichaelGuidedReader({
             {/* Penitência sugerida para hoje */}
             <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5 space-y-2">
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-serif flex items-center gap-1.5">
-                <Heart size={12} className="text-amber-500" /> Passo 15 • Penitência Sugerida para Hoje
+                <Heart size={12} className="text-amber-500 dark:text-amber-300" /> Passo 15 • Penitência Sugerida para Hoje
               </span>
               <p className={`font-serif font-bold italic text-foreground ${fontSize}`}>
                 "{dayData.suggestedPenance}"
@@ -325,7 +325,7 @@ export function SaintMichaelGuidedReader({
 
             {/* Final Completion Box */}
             <div className="rounded-2xl border border-amber-500/30 bg-card p-5 text-center space-y-3 shadow-md">
-              <Sparkles size={24} className="mx-auto text-amber-500" />
+              <Sparkles size={24} className="mx-auto text-amber-500 dark:text-amber-300" />
               <h3 className="font-serif text-lg font-bold text-foreground">
                 Parabéns! Você concluiu a oração do Dia {dayNumber}.
               </h3>

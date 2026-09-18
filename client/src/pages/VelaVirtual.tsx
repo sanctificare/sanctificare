@@ -641,7 +641,7 @@ export default function VelaVirtual() {
                               disabled={isUnavailable}
                               className={`w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 ${
                                 selectedTrackId === track.id
-                                  ? "border-[oklch(0.82_0.10_80/0.8)] bg-[oklch(0.82_0.10_80/0.14)] text-white"
+                                  ? "border-[oklch(0.82_0.10_80/0.8)] dark:border-border bg-[oklch(0.82_0.10_80/0.14)] text-white"
                                   : "border-white/10 bg-white/5 text-white/85 hover:bg-white/10"
                               } ${isUnavailable ? "opacity-45 cursor-not-allowed" : ""}`}
                             >
