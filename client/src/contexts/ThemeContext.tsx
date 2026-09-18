@@ -35,7 +35,8 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = document.documentElement;
-    root.style.colorScheme = theme;
+    // "only light" also opts out of Android/Chrome automatic darkening.
+    root.style.colorScheme = theme === "dark" ? "dark" : "only light";
     if (theme === "dark") {
       root.classList.add("dark");
     } else {

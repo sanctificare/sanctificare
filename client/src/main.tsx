@@ -476,9 +476,9 @@ applyCachedUserTemplate();
 try {
   const theme = localStorage.getItem("theme") === "dark" ? "dark" : "light";
   document.documentElement.classList.toggle("dark", theme === "dark");
-  document.documentElement.style.colorScheme = theme;
+  document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "only light";
 } catch {
-  document.documentElement.style.colorScheme = "light";
+  document.documentElement.style.colorScheme = "only light";
 }
 
 let hasRendered = false;

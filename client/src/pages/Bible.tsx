@@ -17,6 +17,7 @@ import {
   Bookmark,
 } from "lucide-react";
 import { LiturgyIcon } from "@/components/LiturgyIcon";
+import { useTheme } from "@/contexts/ThemeContext";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
@@ -70,13 +71,9 @@ export default function Bible() {
     (localStorage.getItem("sanctificare_bible_theme") as any) || "system"
   );
 
-  const activeTheme = (() => {
-    if (readingTheme !== "system") return readingTheme;
-    if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
-      return "dark";
-    }
-    return "light";
-  })();
+  // "Auto" follows the app theme; reading from the context keeps it reactive.
+  const { theme: appTheme } = useTheme();
+  const activeTheme = readingTheme === "system" ? appTheme : readingTheme;
 
   const [verses, setVerses] = useState<string[]>([]);
 
@@ -429,7 +426,7 @@ export default function Bible() {
 
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]} ${activeTheme === "dark" ? "dark" : ""}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${pageBgClasses[activeTheme]} ${activeTheme === "dark" ? "dark" : "light"}`}>
       <main className="container py-8 relative max-w-7xl mx-auto">
         
         {/* =========================================================================
@@ -961,7 +958,7 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9]/20"
                         : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                   >
@@ -1001,7 +998,7 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? "bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white"
                         : activeTheme === "sepia"
-                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2]"
+                        ? "bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9]/20"
                         : "bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground"
                     }`}
                     title="Busca na Bíblia"
@@ -1016,7 +1013,7 @@ export default function Bible() {
                       activeTheme === "dark"
                         ? `bg-slate-950 border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-white ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
                         : activeTheme === "sepia"
-                        ? `bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9/0.2] ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
+                        ? `bg-[#fcf8ed] dark:bg-card border-[#ebdcb9] dark:border-border text-[#4a3525] dark:text-foreground hover:bg-[#ebdcb9]/20 ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
                         : `bg-white dark:bg-card border-border text-[oklch(0.22_0.07_260)] dark:text-foreground ${showSettings ? "border-[oklch(0.75_0.12_75)]" : ""}`
                     }`}
                   >
@@ -1050,7 +1047,7 @@ export default function Bible() {
                     <Button
                       variant={fontFamily === "sans" ? "default" : "outline"}
                       size="sm"
-                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-905 hover:bg-slate-900 hover:text-white" : ""}`}
+                      className={`h-8 ${readingTheme === "dark" && fontFamily !== "sans" ? "text-slate-200 border-slate-800 bg-slate-950 hover:bg-slate-900 hover:text-white" : ""}`}
                       onClick={() => {
                         setFontFamily("sans");
                         localStorage.setItem("sanctificare_bible_font_family", "sans");
@@ -1677,7 +1674,7 @@ export default function Bible() {
                       )}
                     </div>
                   ) : (
-                    <div className="text-center py-12 bg-white/30 border border-dashed rounded-2xl">
+                    <div className="text-center py-12 bg-white/30 dark:bg-card border border-dashed rounded-2xl">
                       <Search size={32} className="text-muted-foreground mx-auto mb-3 opacity-40" />
                       <p className="text-muted-foreground text-sm">Digite termos como "pastor", "amor", "luz" para pesquisar.</p>
                     </div>

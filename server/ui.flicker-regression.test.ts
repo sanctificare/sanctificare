@@ -109,6 +109,27 @@ describe("flicker regression guards", () => {
     expect(config).toContain("resetWhenUpdate: true");
   });
 
+  it("defaults to the light theme regardless of the Android system theme", () => {
+    const styles = readSource("android/app/src/main/res/values/styles.xml");
+    expect(styles).not.toContain("DayNight");
+    expect(styles).toContain('name="android:forceDarkAllowed"');
+
+    const activity = readSource("android/app/src/main/java/com/sanctificare/app/MainActivity.java");
+    expect(activity).toContain("setAlgorithmicDarkeningAllowed(false)");
+
+    expect(readSource("client/index.html")).toContain('<meta name="color-scheme" content="only light" />');
+  });
+
+  it("scopes the Bible reading theme so light/sepia stay light inside a dark app", () => {
+    const bible = readSource("client/src/pages/Bible.tsx");
+    expect(bible).toContain("useTheme()");
+    expect(bible).not.toContain('document.documentElement.classList.contains("dark")');
+    expect(bible).toContain('activeTheme === "dark" ? "dark" : "light"');
+
+    const css = readSource("client/src/index.css");
+    expect(css).toContain("@custom-variant dark (&:is(.dark *):not(:where(.light, .light *)));");
+  });
+
   it("does not render an empty audio src while a remote URL is resolving", () => {
     const source = readSource("client/src/pages/SaintMichaelLent.tsx");
     expect(source).toContain("src={resolvedAudioUrl || undefined}");

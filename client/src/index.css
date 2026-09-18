@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* A `.light` scope (e.g. the Bible's light/sepia reading mode) opts its subtree
+   out of the dark palette even when the app itself is dark. */
+@custom-variant dark (&:is(.dark *):not(:where(.light, .light *)));
 
 :root {
   --app-viewport-height: 100vh;
@@ -56,6 +58,32 @@
   --cream-dark: oklch(0.93 0.015 80);
   --burgundy: oklch(0.35 0.12 15);
   --parchment: oklch(0.95 0.02 80);
+}
+
+.light {
+  --background: var(--template-background, oklch(0.98 0.005 85));
+  --foreground: var(--template-foreground, oklch(0.12 0.02 260));
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 260);
+  --primary: var(--template-primary, oklch(0.28 0.08 260));
+  --primary-foreground: oklch(0.96 0.015 85);
+  --secondary: var(--template-secondary, oklch(0.75 0.12 75));
+  --secondary-foreground: oklch(0.15 0.02 260);
+  --muted: oklch(0.94 0.008 85);
+  --muted-foreground: oklch(0.34 0.02 260);
+  --accent: var(--template-accent, oklch(0.88 0.08 80));
+  --accent-foreground: oklch(0.2 0.04 260);
+  --border: oklch(0.88 0.01 260);
+  --input: oklch(0.88 0.01 260);
+  --gold-light: oklch(0.88 0.08 80);
+  --gold-dark: oklch(0.55 0.12 70);
+  --cream: oklch(0.97 0.01 85);
+  --cream-dark: oklch(0.93 0.015 80);
+  --burgundy: oklch(0.35 0.12 15);
+  --parchment: oklch(0.95 0.02 80);
+  color-scheme: only light;
 }
 
 @supports (height: 100svh) {
@@ -410,7 +438,7 @@
     overflow-y: auto;
   }
 
-  .dark .focus-gold-ring:focus-visible {
+  .dark .focus-gold-ring:not(:where(.light *)):focus-visible {
     box-shadow:
       0 0 0 2px var(--gold),
       0 0 0 4px oklch(0.14 0.03 260);
@@ -1696,50 +1724,50 @@
    Tema escuro: legibilidade de textos e superfícies
    Sobrescreve cores fixas (claras) definidas nos utilitários acima.
    ────────────────────────────────────────────────────────────── */
-.dark .text-navy,
-.dark .section-title,
-.dark .section-title-sm {
+.dark .text-navy:not(:where(.light *)),
+.dark .section-title:not(:where(.light *)),
+.dark .section-title-sm:not(:where(.light *)) {
   color: var(--foreground);
 }
 
-.dark .prose-prayer,
-.dark .meditation-text {
+.dark .prose-prayer:not(:where(.light *)),
+.dark .meditation-text:not(:where(.light *)) {
   color: oklch(0.92 0.01 85);
 }
 
-.dark .meditation-title {
+.dark .meditation-title:not(:where(.light *)) {
   color: oklch(0.95 0.01 80);
 }
 
-.dark .prayer-card {
+.dark .prayer-card:not(:where(.light *)) {
   background: var(--card);
   box-shadow: 0 10px 30px oklch(0 0 0 / 0.45);
   border-top-color: var(--gold);
 }
 
-.dark .prayer-card:hover {
+.dark .prayer-card:not(:where(.light *)):hover {
   box-shadow:
     0 15px 40px oklch(0 0 0 / 0.55),
     0 0 15px oklch(0.75 0.12 75 / 0.15);
 }
 
-.dark .card-soft {
+.dark .card-soft:not(:where(.light *)) {
   box-shadow: 0 8px 22px oklch(0 0 0 / 0.4);
 }
 
-.dark .card-interactive {
+.dark .card-interactive:not(:where(.light *)) {
   box-shadow: 0 10px 28px oklch(0 0 0 / 0.45);
 }
 
-.dark .card-interactive:hover {
+.dark .card-interactive:not(:where(.light *)):hover {
   box-shadow: 0 16px 36px oklch(0 0 0 / 0.55);
 }
 
-.dark .cover-card {
+.dark .cover-card:not(:where(.light *)) {
   box-shadow: 0 12px 30px oklch(0 0 0 / 0.5);
 }
 
-.dark .text-gold {
+.dark .text-gold:not(:where(.light *)) {
   color: oklch(0.82 0.1 78);
 }
 
