@@ -140,6 +140,23 @@ export default function VelaVirtual() {
   }, [cleanMode]);
 
   useEffect(() => {
+    if (!cleanMode) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setCleanMode(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [cleanMode]);
+
+  useEffect(() => {
     resolveR2Redirect(VIDEO_SRC).then((url) => {
       setResolvedVideoSrc(url);
     });
@@ -285,39 +302,169 @@ export default function VelaVirtual() {
     <div
       className={`min-h-screen text-white transition-colors duration-700 ${selectedAmbience.pageClass}`}
     >
-      <main className={`transition-all duration-500 ${cleanMode ? "w-full max-w-none p-0" : "container py-8"}`}>
-        {!cleanMode && (
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 animate-fade-in border-b border-white/10 pb-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2 text-[oklch(0.82_0.10_80)]">
-                <Flame size={20} />
-                <span className="text-sm font-medium tracking-wide uppercase">Espaço de Oração</span>
-              </div>
-              <h1 className="font-display text-3xl font-bold mb-2">Vela Virtual</h1>
-              <p className="font-serif text-[oklch(0.82_0.02_260)] max-w-2xl">
-                Uma chama acesa, silêncio interior e um espaço de recolhimento para permanecer diante de Deus.
-              </p>
-            </div>
-          </div>
-        )}
+      {cleanMode && (
+        <div
+          onClick={() => setShowControls((current) => !current)}
+          className="fixed inset-0 z-[70] overflow-hidden bg-black"
+        >
+          {BUNNY_LIBRARY_ID ? (
+            isPlaying ? (
+              <iframe
+                src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${BUNNY_VIDEO_ID}?autoplay=true&loop=true&muted=true&controls=false&preload=true`}
+                title="Vela acesa"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 border-none"
+                allow="autoplay; encrypted-media"
+              />
+            ) : (
+              <img
+                src={BUNNY_THUMBNAIL}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover opacity-80"
+              />
+            )
+          ) : !videoFailed ? (
+            <video
+              ref={videoRef}
+              className="absolute inset-0 h-full w-full object-cover"
+              src={resolvedVideoSrc}
+              autoPlay
+              loop
+              muted
+              playsInline
+              onError={() => setVideoFailed(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_oklch(0.75_0.12_75/0.16),_transparent_45%),linear-gradient(180deg,_oklch(0.16_0.05_40),_oklch(0.05_0.02_260))]" />
+          )}
+
           <div
-            className={`transition-all duration-500 ${
-              cleanMode ? "w-full" : "grid gap-6 items-stretch grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
+            className={`pointer-events-none absolute inset-0 transition-all duration-700 ${selectedAmbience.overlayClass}`}
+          />
+
+          <div
+            className={`absolute inset-0 flex flex-col justify-between transition-opacity duration-500 ${
+              showControls ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
           >
-            <Card className={`transition-all duration-500 ${cleanMode ? "border-none rounded-none bg-black shadow-none w-full" : "overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30"}`}>
-              <CardContent className="p-0">
-                <div 
-                  onClick={() => {
-                    if (cleanMode) setShowControls(!showControls);
-                  }}
-                  className={`relative bg-black transition-all duration-700 overflow-hidden w-full ${cleanMode ? "h-[100svh] sm:h-[92vh] cursor-pointer" : "min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]"}`}
+            {/* Barra superior */}
+            <div className="flex items-start justify-between gap-3 bg-gradient-to-b from-black/85 via-black/45 to-transparent px-4 pb-12 pt-[calc(0.85rem+var(--safe-area-top))] sm:px-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-[oklch(0.86_0.10_80)] backdrop-blur-md sm:text-[11px]">
+                <Flame size={12} />
+                Oração silenciosa
+              </span>
+
+              <div className="flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                <button
+                  type="button"
+                  onClick={() => (isPlaying ? pausePrayerSpace() : startPrayerSpace())}
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-white/20 bg-black/55 px-4 text-xs font-medium text-white backdrop-blur-md transition-colors hover:bg-black/75"
+                  aria-label={isPlaying ? "Pausar ambiente" : "Iniciar ambiente"}
                 >
+                  {isPlaying ? <Pause size={15} /> : <Play size={15} />}
+                  <span className="hidden sm:inline">{isPlaying ? "Pausar" : "Iniciar"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white backdrop-blur-md transition-colors hover:bg-black/75"
+                  aria-label={isMuted ? "Ativar som" : "Silenciar"}
+                >
+                  {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCleanMode(false)}
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-[oklch(0.82_0.10_80/0.55)] bg-black/55 px-4 text-xs font-semibold text-[oklch(0.88_0.10_80)] backdrop-blur-md transition-colors hover:bg-[oklch(0.82_0.10_80/0.18)]"
+                >
+                  Sair
+                </button>
+              </div>
+            </div>
+
+            {/* Rodapé: intenção e texto de recolhimento */}
+            <div className="flex flex-col items-center gap-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent px-4 pb-[calc(1.5rem+var(--safe-area-bottom))] pt-20 text-center sm:px-6">
+              {isCandleLit && privateCandleIntention.trim() ? (
+                <div className="max-w-2xl animate-fade-in">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[oklch(0.86_0.10_80)]">
+                    Minha intenção
+                  </span>
+                  <blockquote className="mt-2 font-serif text-base italic leading-relaxed text-white/95 sm:text-lg">
+                    "{privateCandleIntention}"
+                  </blockquote>
+                </div>
+              ) : null}
+
+              {showPhrase ? (
+                <div className="max-w-2xl" onClick={(event) => event.stopPropagation()}>
+                  <p className="font-serif text-base leading-relaxed text-white/90 sm:text-lg">
+                    {currentPhrase}
+                  </p>
+                  <div className="mt-4 flex items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      onClick={nextPhrase}
+                      className="h-9 rounded-full border border-white/20 px-4 text-xs text-white/85 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                      Próxima frase
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowPhrase(false)}
+                      className="h-9 rounded-full px-4 text-xs text-white/55 transition-colors hover:text-white"
+                    >
+                      Ocultar
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setShowPhrase(true);
+                  }}
+                  className="h-9 rounded-full border border-white/15 px-4 text-xs text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  Mostrar texto de recolhimento
+                </button>
+              )}
+            </div>
+          </div>
+
+          {!showControls && (
+            <span className="pointer-events-none absolute inset-x-0 bottom-[calc(1.5rem+var(--safe-area-bottom))] text-center text-[10px] uppercase tracking-[0.22em] text-white/30">
+              Toque para exibir os controles
+            </span>
+          )}
+        </div>
+      )}
+
+      {!cleanMode && (
+      <main className="container py-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 animate-fade-in border-b border-white/10 pb-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2 text-[oklch(0.82_0.10_80)]">
+              <Flame size={20} />
+              <span className="text-sm font-medium tracking-wide uppercase">Espaço de Oração</span>
+            </div>
+            <h1 className="font-display text-3xl font-bold mb-2">Vela Virtual</h1>
+            <p className="font-serif text-[oklch(0.82_0.02_260)] max-w-2xl">
+              Uma chama acesa, silêncio interior e um espaço de recolhimento para permanecer diante de Deus.
+            </p>
+          </div>
+        </div>
+          <div className="grid gap-6 items-stretch grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]">
+            <Card className="overflow-hidden border border-white/10 bg-[oklch(0.14_0.03_260)] shadow-2xl shadow-black/30">
+              <CardContent className="p-0">
+                <div className="relative bg-black overflow-hidden w-full min-h-[350px] sm:min-h-[480px] lg:min-h-[540px]">
                   {BUNNY_LIBRARY_ID ? (
                     isPlaying ? (
                       <iframe
                         src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${BUNNY_VIDEO_ID}?autoplay=true&loop=true&muted=true&controls=false&preload=true`}
                         loading="lazy"
+                        title="Vela acesa"
                         className="absolute inset-0 w-full h-full border-none pointer-events-none scale-105"
                         allow="autoplay; encrypted-media"
                       />
@@ -352,64 +499,26 @@ export default function VelaVirtual() {
                   )}
 
                   <div
-                    className={`absolute inset-0 transition-all duration-700 ${selectedAmbience.overlayClass}`}
+                    className={`pointer-events-none absolute inset-0 transition-all duration-700 ${selectedAmbience.overlayClass}`}
                   />
-                  <div 
-                    onClick={(e) => {
-                      if (cleanMode) e.stopPropagation();
-                    }}
-                    className={`absolute inset-0 flex flex-col justify-between p-4 sm:p-6 transition-all duration-500 ${cleanMode && !showControls ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.82_0.10_80)] w-fit">
+
+                  <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6">
+                    <div className="flex items-center justify-between gap-3 w-full">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[oklch(0.86_0.10_80)] backdrop-blur-md w-fit">
                         <Flame size={12} />
                         Oração silenciosa
                       </span>
-                      {cleanMode ? (
-                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
-                            onClick={() => {
-                              if (isPlaying) pausePrayerSpace();
-                              else startPrayerSpace();
-                            }}
-                          >
-                            {isPlaying ? <Pause size={14} className="mr-1.5 sm:mr-2" /> : <Play size={14} className="mr-1.5 sm:mr-2" />}
-                            {isPlaying ? "Pausar" : "Iniciar"}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
-                            onClick={toggleMute}
-                          >
-                            {isMuted ? <VolumeX size={14} className="mr-1.5 sm:mr-2" /> : <Volume2 size={14} className="mr-1.5 sm:mr-2" />}
-                            {isMuted ? "Mudo" : "Som"}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 bg-black/35 text-white hover:bg-black/60 text-xs px-2.5 sm:px-3 h-8 sm:h-9"
-                            onClick={() => setCleanMode(false)}
-                          >
-                            Sair
-                          </Button>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-white/70">
-                          {isPlaying ? "Em oração" : "Pronto para começar"}
-                        </span>
-                      )}
+                      <span className="rounded-full bg-black/45 px-3 py-1 text-xs text-white/80 backdrop-blur-md">
+                        {isPlaying ? "Em oração" : "Pronto para começar"}
+                      </span>
                     </div>
 
                     {isCandleLit ? (
                       privateCandleIntention.trim() ? (
-                        <div className="max-w-lg ml-auto text-right">
-                          <div className="space-y-2 sm:space-y-3 animate-fade-in inline-block text-left max-w-full">
-                            <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.82_0.10_80)] font-semibold block text-right">Minha Intenção</span>
-                            <blockquote className="font-serif text-sm sm:text-lg lg:text-xl italic text-white/95 leading-relaxed bg-black/30 p-4 sm:p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl text-left">
+                        <div className="max-w-lg ml-auto">
+                          <div className="space-y-2 sm:space-y-3 animate-fade-in">
+                            <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.86_0.10_80)] font-semibold block text-right">Minha Intenção</span>
+                            <blockquote className="font-serif text-sm sm:text-lg italic text-white/95 leading-relaxed bg-black/40 p-4 sm:p-5 rounded-2xl border border-white/10 backdrop-blur-sm shadow-xl">
                               "{privateCandleIntention}"
                             </blockquote>
                             <p className="text-[10px] sm:text-xs text-white/60 font-serif text-right">Aquietai o coração e repousai nos braços do Senhor...</p>
@@ -422,30 +531,6 @@ export default function VelaVirtual() {
                         <p className="font-serif text-white/80 text-xs sm:text-sm leading-relaxed">
                           Feche os olhos, respire com calma e ofereça ao Senhor a sua prece. Esta vela virtual foi pensada para favorecer o recolhimento, o silêncio e a oração perseverante.
                         </p>
-                      </div>
-                    )}
-
-                    {cleanMode && showPhrase && (
-                      <div className="rounded-xl border border-white/15 bg-black/45 p-4 max-w-2xl backdrop-blur-sm transition-all duration-500">
-                        <p className="font-serif text-xs sm:text-sm lg:text-base text-white/90 leading-relaxed">{currentPhrase}</p>
-                        <div className="mt-3 flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 bg-transparent text-white hover:bg-white/10 text-xs h-8"
-                            onClick={nextPhrase}
-                          >
-                            Próxima frase
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="border-white/20 bg-transparent text-white hover:bg-white/10 text-xs h-8"
-                            onClick={() => setShowPhrase(false)}
-                          >
-                            Ocultar frase
-                          </Button>
-                        </div>
                       </div>
                     )}
                   </div>
@@ -641,7 +726,7 @@ export default function VelaVirtual() {
                               disabled={isUnavailable}
                               className={`w-full rounded-xl border px-3 py-2 text-left transition-all duration-300 ${
                                 selectedTrackId === track.id
-                                  ? "border-[oklch(0.82_0.10_80/0.8)] dark:border-border bg-[oklch(0.82_0.10_80/0.14)] text-white"
+                                  ? "border-[oklch(0.82_0.10_80/0.8)] bg-[oklch(0.82_0.10_80/0.14)] text-white"
                                   : "border-white/10 bg-white/5 text-white/85 hover:bg-white/10"
                               } ${isUnavailable ? "opacity-45 cursor-not-allowed" : ""}`}
                             >
@@ -697,6 +782,7 @@ export default function VelaVirtual() {
             )}
           </div>
         </main>
+      )}
 
       <audio ref={audioRef} loop onError={handleAudioError} />
       {audioFailed && (
