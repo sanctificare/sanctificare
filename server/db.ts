@@ -27,6 +27,8 @@ import {
   spiritualJourneyDays,
   spiritualJourneyProgress,
   spiritualJourneyJournals,
+  userAttribution,
+  appEvents,
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
@@ -485,6 +487,43 @@ async function bootstrapDb(sql: any) {
     `;
     await sql`
       CREATE UNIQUE INDEX IF NOT EXISTS candle_prayers_candle_user_uq ON candle_prayers ("candleId", "userId");
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS user_attribution (
+        "userId" integer PRIMARY KEY NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        source varchar(40) NOT NULL,
+        platform varchar(16) NOT NULL,
+        "utmSource" varchar(100),
+        "utmMedium" varchar(100),
+        "utmCampaign" varchar(150),
+        "referrerHost" varchar(200),
+        "landingPath" varchar(200),
+        country varchar(8),
+        timezone varchar(64),
+        language varchar(16),
+        "firstSeenAt" timestamp with time zone,
+        "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+      );
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS user_attribution_source_idx ON user_attribution (source);
+    `;
+    await sql`
+      CREATE TABLE IF NOT EXISTS app_events (
+        id serial PRIMARY KEY NOT NULL,
+        "userId" integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        name varchar(40) NOT NULL,
+        feature varchar(40),
+        platform varchar(16) NOT NULL,
+        "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+      );
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS app_events_created_at_idx ON app_events ("createdAt");
+    `;
+    await sql`
+      CREATE INDEX IF NOT EXISTS app_events_feature_created_idx ON app_events (feature, "createdAt");
     `;
 
     console.log("[Database] Bootstrap completed: all tables and types verified.");
@@ -2278,4 +2317,238 @@ export async function deleteSpiritualJourneyJournal(userId: number, journeyId: s
       )
     );
   return true;
+}
+
+// ── Estatísticas detalhadas: origem dos cadastros e uso de recursos ──
+
+// Só aceitamos a origem enviada pelo app para contas recentes: para contas
+// antigas, o "primeiro contato" guardado no aparelho não reflete o cadastro.
+const ATTRIBUTION_MAX_ACCOUNT_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const APP_EVENT_MAX_DELAY_MS = 3 * 24 * 60 * 60 * 1000;
+
+export async function recordUserAttribution(input: {
+  userId: number;
+  userCreatedAt: Date;
+  source: string;
+  platform: string;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  referrerHost?: string | null;
+  landingPath?: string | null;
+  country?: string | null;
+  timezone?: string | null;
+  language?: string | null;
+  firstSeenAt?: Date | null;
+}): Promise<{ recorded: boolean }> {
+  if (Date.now() - input.userCreatedAt.getTime() > ATTRIBUTION_MAX_ACCOUNT_AGE_MS) {
+    return { recorded: false };
+  }
+
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const { userCreatedAt: _userCreatedAt, ...values } = input;
+  const inserted = await db
+    .insert(userAttribution)
+    .values(values)
+    .onConflictDoNothing({ target: userAttribution.userId })
+    .returning({ userId: userAttribution.userId });
+
+  return { recorded: inserted.length > 0 };
+}
+
+export async function recordAppEvents(
+  userId: number,
+  platform: string,
+  events: Array<{ name: string; feature: string | null; occurredAt?: Date }>
+) {
+  if (events.length === 0) return { recorded: 0 };
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const now = Date.now();
+  await db.insert(appEvents).values(
+    events.map((event) => {
+      // Eventos da fila podem chegar atrasados; recusamos datas futuras ou muito antigas.
+      const ts = event.occurredAt?.getTime();
+      const createdAt = ts && ts <= now && now - ts <= APP_EVENT_MAX_DELAY_MS ? new Date(ts) : new Date(now);
+      return { userId, platform, name: event.name, feature: event.feature, createdAt };
+    })
+  );
+  return { recorded: events.length };
+}
+
+type InsightCountRow = { key: string | null; count: number };
+
+export async function getAdminInsights(days: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+
+  const since = new Date();
+  since.setHours(0, 0, 0, 0);
+  since.setDate(since.getDate() - (days - 1));
+
+  const newUsersInPeriod = gte(users.createdAt, since);
+  const groupNewUsersBy = (column: ReturnType<typeof sql>, limit = 12): Promise<InsightCountRow[]> =>
+    db
+      .select({
+        key: sql<string | null>`${column}`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(users)
+      .leftJoin(userAttribution, eq(userAttribution.userId, users.id))
+      .where(newUsersInPeriod)
+      .groupBy(sql`1`)
+      .orderBy(sql`count(*) desc`)
+      .limit(limit);
+
+  const [
+    signupsRes,
+    trackedSignupsRes,
+    bySource,
+    byPlatform,
+    byCampaign,
+    byReferrer,
+    byCountry,
+    byTimezone,
+    byLoginMethod,
+    features,
+    events,
+    dailyActive,
+    activeUsersRes,
+    prayerTypes,
+    candlesRes,
+    intentionsRes,
+    lectioRes,
+  ] = await Promise.all([
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(newUsersInPeriod),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(userAttribution)
+      .innerJoin(users, eq(users.id, userAttribution.userId))
+      .where(newUsersInPeriod),
+    groupNewUsersBy(sql`coalesce(${userAttribution.source}, 'desconhecido')`),
+    groupNewUsersBy(sql`coalesce(${userAttribution.platform}, 'desconhecido')`),
+    groupNewUsersBy(sql`${userAttribution.utmCampaign}`),
+    groupNewUsersBy(sql`${userAttribution.referrerHost}`),
+    groupNewUsersBy(sql`${userAttribution.country}`),
+    groupNewUsersBy(sql`${userAttribution.timezone}`),
+    groupNewUsersBy(sql`coalesce(${users.loginMethod}, 'desconhecido')`),
+    db
+      .select({
+        feature: sql<string>`${appEvents.feature}`,
+        users: sql<number>`count(distinct ${appEvents.userId})::int`,
+        views: sql<number>`count(*)::int`,
+      })
+      .from(appEvents)
+      .where(and(gte(appEvents.createdAt, since), eq(appEvents.name, "screen_view"), sql`${appEvents.feature} is not null`))
+      .groupBy(appEvents.feature)
+      .orderBy(sql`count(distinct ${appEvents.userId}) desc`),
+    db
+      .select({
+        name: appEvents.name,
+        users: sql<number>`count(distinct ${appEvents.userId})::int`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(appEvents)
+      .where(and(gte(appEvents.createdAt, since), ne(appEvents.name, "screen_view")))
+      .groupBy(appEvents.name)
+      .orderBy(sql`count(*) desc`)
+      .limit(15),
+    db
+      .select({
+        date: sql<string>`(${appEvents.createdAt} at time zone 'America/Sao_Paulo')::date::text`,
+        users: sql<number>`count(distinct ${appEvents.userId})::int`,
+      })
+      .from(appEvents)
+      .where(gte(appEvents.createdAt, since))
+      .groupBy(sql`1`)
+      .orderBy(sql`1`),
+    db
+      .select({ count: sql<number>`count(distinct ${appEvents.userId})::int` })
+      .from(appEvents)
+      .where(gte(appEvents.createdAt, since)),
+    // Dados que já existiam no banco antes do rastreamento: úteis desde o primeiro dia.
+    db
+      .select({
+        key: prayerLogs.prayerType,
+        users: sql<number>`count(distinct ${prayerLogs.userId})::int`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(prayerLogs)
+      .where(gte(prayerLogs.completedAt, since))
+      .groupBy(prayerLogs.prayerType)
+      .orderBy(sql`count(*) desc`)
+      .limit(15),
+    db
+      .select({
+        users: sql<number>`count(distinct ${virtualCandles.userId})::int`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(virtualCandles)
+      .where(gte(virtualCandles.litAt, since)),
+    db
+      .select({
+        users: sql<number>`count(distinct ${prayerIntentions.userId})::int`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(prayerIntentions)
+      .where(gte(prayerIntentions.createdAt, since)),
+    db
+      .select({
+        users: sql<number>`count(distinct ${lectioJournal.userId})::int`,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(lectioJournal)
+      .where(gte(lectioJournal.createdAt, since)),
+  ]);
+
+  const withKey = (rows: InsightCountRow[]) => rows.filter((row): row is { key: string; count: number } => !!row.key);
+
+  return {
+    days,
+    since: since.toISOString(),
+    acquisition: {
+      signups: signupsRes[0]?.count ?? 0,
+      trackedSignups: trackedSignupsRes[0]?.count ?? 0,
+      bySource: withKey(bySource),
+      byPlatform: withKey(byPlatform),
+      byCampaign: withKey(byCampaign),
+      byReferrer: withKey(byReferrer),
+      byCountry: withKey(byCountry),
+      byTimezone: withKey(byTimezone),
+      byLoginMethod: withKey(byLoginMethod),
+    },
+    usage: {
+      activeUsers: activeUsersRes[0]?.count ?? 0,
+      features,
+      events,
+      dailyActive,
+      prayerTypes,
+      candles: candlesRes[0] ?? { users: 0, count: 0 },
+      intentions: intentionsRes[0] ?? { users: 0, count: 0 },
+      lectio: lectioRes[0] ?? { users: 0, count: 0 },
+    },
+  };
+}
+
+export async function getAdminUserInsights(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const [attribution, features] = await Promise.all([
+    db.select().from(userAttribution).where(eq(userAttribution.userId, userId)).limit(1),
+    db
+      .select({
+        feature: sql<string>`${appEvents.feature}`,
+        views: sql<number>`count(*)::int`,
+        lastUsedAt: sql<string>`max(${appEvents.createdAt})::text`,
+      })
+      .from(appEvents)
+      .where(and(eq(appEvents.userId, userId), eq(appEvents.name, "screen_view"), sql`${appEvents.feature} is not null`))
+      .groupBy(appEvents.feature)
+      .orderBy(sql`count(*) desc`)
+      .limit(10),
+  ]);
+  return { attribution: attribution[0] ?? null, features };
 }

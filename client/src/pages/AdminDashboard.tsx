@@ -17,7 +17,8 @@ import {
   LayoutDashboard,
   Bell,
   ClipboardList,
-  Send
+  Send,
+  BarChart3
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -39,12 +40,14 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import AdminInsights from "@/components/admin/AdminInsights";
+import { acquisitionSourceLabel, featureLabel, PLATFORM_LABELS } from "@shared/analytics";
 
 const ADMIN_QUERY_STALL_MS = 12000;
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState<"overview" | "users" | "notifications" | "audit">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "insights" | "users" | "notifications" | "audit">("overview");
   
   // User search & pagination states
   const [search, setSearch] = useState("");
@@ -75,6 +78,11 @@ export default function AdminDashboard() {
   );
 
   const userDetailQuery = trpc.admin.getUserDetail.useQuery(
+    { userId: selectedUserId ?? 0 },
+    { enabled: selectedUserId !== null }
+  );
+
+  const userInsightsQuery = trpc.admin.getUserInsights.useQuery(
     { userId: selectedUserId ?? 0 },
     { enabled: selectedUserId !== null }
   );
@@ -202,6 +210,17 @@ export default function AdminDashboard() {
             Visão Geral
           </button>
           <button
+            onClick={() => setActiveTab("insights")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+              activeTab === "insights"
+                ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 border border-transparent"
+            }`}
+          >
+            <BarChart3 className="w-4 h-4" />
+            Estatísticas
+          </button>
+          <button
             onClick={() => setActiveTab("users")}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
               activeTab === "users"
@@ -264,6 +283,15 @@ export default function AdminDashboard() {
               className={activeTab === "overview" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
             >
               Geral
+            </Button>
+            <Button
+              size="sm"
+              variant={activeTab === "insights" ? "default" : "outline"}
+              onClick={() => setActiveTab("insights")}
+              className={activeTab === "insights" ? "bg-amber-500 text-slate-900 hover:bg-amber-600" : "border-amber-500/30 text-amber-500 dark:text-amber-300"}
+              aria-label="Estatísticas"
+            >
+              <BarChart3 className="w-4 h-4" />
             </Button>
             <Button
               size="sm"
@@ -736,6 +764,8 @@ export default function AdminDashboard() {
               </Card>
             )}
 
+            {activeTab === "insights" && <AdminInsights />}
+
             {activeTab === "audit" && (
               <Card className="bg-[#121622] border-amber-500/10 shadow-xl">
                 <CardHeader className="border-b border-slate-800">
@@ -827,6 +857,26 @@ export default function AdminDashboard() {
                         {userDetailQuery.data?.user.createdAt && new Date(userDetailQuery.data.user.createdAt).toLocaleDateString("pt-BR")}
                       </strong>
                     </div>
+                    <div className="flex justify-between gap-3">
+                      <span>Origem:</span>
+                      <strong className="text-slate-200 text-right">
+                        {userInsightsQuery.data?.attribution
+                          ? [
+                              acquisitionSourceLabel(userInsightsQuery.data.attribution.source),
+                              PLATFORM_LABELS[userInsightsQuery.data.attribution.platform] ?? userInsightsQuery.data.attribution.platform,
+                              userInsightsQuery.data.attribution.utmCampaign,
+                            ].filter(Boolean).join(" · ")
+                          : "Sem dados"}
+                      </strong>
+                    </div>
+                    {userInsightsQuery.data?.features.length ? (
+                      <div className="flex justify-between gap-3">
+                        <span>Mais usa:</span>
+                        <strong className="text-slate-200 text-right">
+                          {userInsightsQuery.data.features.slice(0, 3).map((row) => featureLabel(row.feature)).join(", ")}
+                        </strong>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
 

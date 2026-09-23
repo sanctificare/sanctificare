@@ -78,6 +78,13 @@
       "when": 1788264000000,
       "tag": "0010_security_and_schema_consistency",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790150400000,
+      "tag": "0011_user_attribution_and_app_events",
+      "breakpoints": true
     }
   ]
 }

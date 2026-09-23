@@ -61,7 +61,12 @@ import {
   getSpiritualJourneyJournal,
   upsertSpiritualJourneyJournal,
   deleteSpiritualJourneyJournal,
+  recordUserAttribution,
+  recordAppEvents,
+  getAdminInsights,
+  getAdminUserInsights,
 } from "./db";
+import { classifyAcquisitionSource, featureFromPath } from "@shared/analytics";
 import { subscriptions } from "../drizzle/schema";
 import { eq, and, isNotNull } from "drizzle-orm";
 import { fetchLiturgyForDate, todayIsoSaoPaulo } from "./liturgia";
@@ -166,6 +171,21 @@ async function withAdminQueryTimeout<T>(work: Promise<T>, fallbackMessage: strin
       clearTimeout(timer);
     }
   }
+}
+
+const analyticsPlatformSchema = z.enum(["android", "ios", "web"]);
+
+const optionalAnalyticsText = (max: number) =>
+  z.string().trim().max(max).optional().transform((value) => value || undefined);
+
+// País do visitante quando o proxy/CDN o informa (Cloudflare, Vercel etc.).
+function getRequestCountry(req: { headers: Record<string, string | string[] | undefined> }): string | null {
+  for (const header of ["cf-ipcountry", "x-vercel-ip-country", "x-country-code"]) {
+    const raw = req.headers[header];
+    const value = (Array.isArray(raw) ? raw[0] : raw)?.trim().toUpperCase();
+    if (value && /^[A-Z]{2}$/.test(value) && value !== "XX") return value;
+  }
+  return null;
 }
 
 export const appRouter = router({
@@ -290,6 +310,40 @@ export const appRouter = router({
         }
       }),
 
+    getInsights: adminProcedure
+      .input(z.object({ days: z.union([z.literal(7), z.literal(30), z.literal(90), z.literal(365)]).default(30) }))
+      .query(async ({ input }) => {
+        try {
+          return await withAdminQueryTimeout(
+            getAdminInsights(input.days),
+            "As estatísticas detalhadas demoraram demais para responder. Tente novamente."
+          );
+        } catch (err: any) {
+          if (err instanceof TRPCError) throw err;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao carregar estatísticas detalhadas."),
+          });
+        }
+      }),
+
+    getUserInsights: adminProcedure
+      .input(z.object({ userId: z.number().int().positive() }))
+      .query(async ({ input }) => {
+        try {
+          return await withAdminQueryTimeout(
+            getAdminUserInsights(input.userId),
+            "Os dados de origem do usuário demoraram demais para responder. Tente novamente."
+          );
+        } catch (err: any) {
+          if (err instanceof TRPCError) throw err;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: getPublicTrpcErrorMessage(err, "Falha ao carregar origem do usuário."),
+          });
+        }
+      }),
+
     sendPush: adminProcedure
       .input(z.object({
         audience: z.enum(["all", "premium"]),
@@ -330,6 +384,69 @@ export const appRouter = router({
             code: "INTERNAL_SERVER_ERROR",
             message: getPublicTrpcErrorMessage(err, "Falha ao enviar notificações."),
           });
+        }
+      }),
+  }),
+
+  analytics: router({
+    recordAttribution: protectedProcedure
+      .input(z.object({
+        platform: analyticsPlatformSchema,
+        utmSource: optionalAnalyticsText(100),
+        utmMedium: optionalAnalyticsText(100),
+        utmCampaign: optionalAnalyticsText(150),
+        referrerHost: optionalAnalyticsText(200),
+        landingPath: optionalAnalyticsText(200),
+        timezone: optionalAnalyticsText(64),
+        language: optionalAnalyticsText(16),
+        firstSeenAt: z.number().int().positive().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          return await recordUserAttribution({
+            userId: ctx.user.id,
+            userCreatedAt: ctx.user.createdAt,
+            source: classifyAcquisitionSource(input),
+            platform: input.platform,
+            utmSource: input.utmSource ?? null,
+            utmMedium: input.utmMedium ?? null,
+            utmCampaign: input.utmCampaign ?? null,
+            referrerHost: input.referrerHost ?? null,
+            landingPath: input.landingPath ?? null,
+            country: getRequestCountry(ctx.req),
+            timezone: input.timezone ?? null,
+            language: input.language ?? null,
+            firstSeenAt: input.firstSeenAt ? new Date(input.firstSeenAt) : null,
+          });
+        } catch (err) {
+          console.error("[Analytics] Failed to record attribution:", err);
+          return { recorded: false };
+        }
+      }),
+
+    trackEvents: protectedProcedure
+      .input(z.object({
+        platform: analyticsPlatformSchema,
+        events: z.array(z.object({
+          name: z.string().regex(/^[a-z0-9_]{1,40}$/),
+          path: z.string().max(200).optional(),
+          occurredAt: z.number().int().positive().optional(),
+        })).min(1).max(50),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const events = input.events
+          .map((event) => ({
+            name: event.name,
+            feature: event.path ? featureFromPath(event.path) : null,
+            occurredAt: event.occurredAt ? new Date(event.occurredAt) : undefined,
+          }))
+          // Telas ignoradas (login, admin...) não contam como uso de recurso.
+          .filter((event) => event.name !== "screen_view" || event.feature !== null);
+        try {
+          return await recordAppEvents(ctx.user.id, input.platform, events);
+        } catch (err) {
+          console.error("[Analytics] Failed to record app events:", err);
+          return { recorded: 0 };
         }
       }),
   }),

@@ -98,6 +98,44 @@ export const adminAuditLogs = pgTable("admin_audit_logs", {
 
 export type AdminAuditLog = typeof adminAuditLogs.$inferSelect;
 
+// Origem do cadastro (primeiro contato), gravada uma única vez por usuário.
+export const userAttribution = pgTable("user_attribution", {
+  userId: integer("userId")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  source: varchar("source", { length: 40 }).notNull(),
+  platform: varchar("platform", { length: 16 }).notNull(),
+  utmSource: varchar("utmSource", { length: 100 }),
+  utmMedium: varchar("utmMedium", { length: 100 }),
+  utmCampaign: varchar("utmCampaign", { length: 150 }),
+  referrerHost: varchar("referrerHost", { length: 200 }),
+  landingPath: varchar("landingPath", { length: 200 }),
+  country: varchar("country", { length: 8 }),
+  timezone: varchar("timezone", { length: 64 }),
+  language: varchar("language", { length: 16 }),
+  firstSeenAt: timestamp("firstSeenAt", { withTimezone: true }),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  sourceIdx: index("user_attribution_source_idx").on(table.source),
+}));
+
+export type UserAttribution = typeof userAttribution.$inferSelect;
+
+// Uso de recursos do app (telas abertas e ações), só para usuários logados.
+export const appEvents = pgTable("app_events", {
+  id: serial("id").primaryKey(),
+  userId: integer("userId")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  name: varchar("name", { length: 40 }).notNull(),
+  feature: varchar("feature", { length: 40 }),
+  platform: varchar("platform", { length: 16 }).notNull(),
+  createdAt: timestamp("createdAt", { withTimezone: true }).defaultNow().notNull(),
+}, (table) => ({
+  createdAtIdx: index("app_events_created_at_idx").on(table.createdAt),
+  featureCreatedIdx: index("app_events_feature_created_idx").on(table.feature, table.createdAt),
+}));
+
 // Histórico de orações realizadas
 export const prayerLogs = pgTable(
   "prayer_logs",

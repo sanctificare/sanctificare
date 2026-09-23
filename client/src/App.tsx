@@ -14,7 +14,7 @@ import { useAuth } from "./_core/hooks/useAuth";
 import { isSaintMichaelLentActive } from "./lib/saintMichaelConfig";
 import { trpc } from "./lib/trpc";
 import { initNativePushNotifications } from "./lib/push";
-import { setAnalyticsUserId, trackPageView } from "./lib/analytics";
+import { setAnalyticsServerSink, setAnalyticsUserId, trackPageView } from "./lib/analytics";
 import {
   applyRemoteState,
   collectSyncableLocalSnapshot,
@@ -407,6 +407,19 @@ function App() {
     const userId = user?.id ? String(user.id) : null;
     void setAnalyticsUserId(userId);
   }, [user?.id]);
+
+  useEffect(() => {
+    const userId = isAuthenticated && user?.id ? user.id : null;
+    setAnalyticsServerSink(
+      userId === null
+        ? null
+        : {
+            sendEvents: (input) => utils.client.analytics.trackEvents.mutate(input),
+            sendAttribution: (input) => utils.client.analytics.recordAttribution.mutate(input),
+          },
+      userId
+    );
+  }, [isAuthenticated, user?.id, utils]);
 
   // Checador de Lembretes Diários
   useEffect(() => {
