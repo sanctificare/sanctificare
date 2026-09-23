@@ -110,6 +110,13 @@ describe("liturgy-audio", () => {
       "2026-09-07",
       "2026-09-08",
       "2026-09-15",
+      "2026-09-22",
+      "2026-09-23",
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-26",
+      "2026-09-27",
+      "2026-09-28",
       "2026-09-30",
     ];
 
@@ -134,9 +141,9 @@ describe("liturgy-audio", () => {
         expect(audios.secondReading).toBeUndefined();
       }
 
-      if (dateIso === "2026-09-01") {
+      if (dayNum === 1 || (dayNum >= 23 && dayNum <= 27)) {
         expect(audios.singedPsalm).toBe(
-          "/r2-storage/salmos-cantados/setembro26/salmos010926.mp3"
+          `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`
         );
       } else {
         expect(audios.singedPsalm).toBeUndefined();

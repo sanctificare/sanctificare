@@ -103,8 +103,8 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/setembro26/evangelho${formattedDate}.mp3`,
         };
 
-        // Salmo cantado disponível para 01 de setembro
-        if (dayNum === 1) {
+        // Salmos cantados disponíveis em 01/09 e de 23 a 27/09
+        if (dayNum === 1 || (dayNum >= 23 && dayNum <= 27)) {
           audio.singedPsalm = `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`;
         }
 
