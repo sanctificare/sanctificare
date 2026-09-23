@@ -164,7 +164,7 @@ export default function Login() {
   // Redirect if already authenticated
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      setLocation(getPostAuthPath());
+      setLocation(getPostAuthPath(), { replace: true });
     }
   }, [isAuthenticated, loading, setLocation]);
 

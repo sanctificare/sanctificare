@@ -97,6 +97,10 @@ export function useAuth(options?: UseAuthOptions) {
     queryKey: ["auth", "me"],
     queryFn: fetchMe,
     initialData: readCachedRuntimeUser,
+    // The cached user renders immediately, but is never trusted as fresh: the
+    // JWT may have expired while the app was closed. Treating it as fresh kept
+    // the UI "logged in" for 5 minutes while every API call returned 401.
+    initialDataUpdatedAt: 0,
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutos de cache válido para evitar flashes de carregamento

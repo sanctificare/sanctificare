@@ -1,17 +1,17 @@
 import { trpc } from "@/lib/trpc";
-import { UNAUTHED_ERR_MSG } from '@shared/const';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, TRPCClientError } from "@trpc/client";
+import { httpBatchLink } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
-import { getLoginUrl, getApiBaseUrl, isMobileApp, getStoredCsrfToken, getStoredSessionToken, setStoredCsrfToken, setStoredSessionToken } from "./const";
+import { getApiBaseUrl, isMobileApp, getStoredCsrfToken, getStoredSessionToken, setStoredCsrfToken, setStoredSessionToken } from "./const";
 import "./index.css";
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { App as CapApp } from '@capacitor/app';
 import { initAnalytics } from "./lib/analytics";
 import { applyCachedUserTemplate } from "./hooks/useUserTemplate";
 import { checkForStoreUpdate } from "./lib/storeUpdate";
+import { revalidateSessionAfterUnauthorized } from "./lib/sessionGuard";
 
 // Cache buster for deployment: 2026-07-15 17:45
 // Web updates (OTA) are downloaded in the background and only activated on the
@@ -163,7 +163,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-let authRedirectInFlight = false;
 
 const readCookie = (name: string) => {
   if (typeof document === "undefined") return null;
@@ -177,65 +176,10 @@ const readCookie = (name: string) => {
   return null;
 };
 
-const PROTECTED_PREFIXES = [
-  "/dashboard",
-  "/intencoes",
-  "/perfil",
-  "/profile",
-  "/perfil/zona-de-perigo",
-  "/plano-diario",
-  "/admin",
-];
-
-const isProtectedRoutePath = (pathname: string) => {
-  return PROTECTED_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
-  );
-};
-
-const redirectToLoginIfUnauthorized = (error: unknown) => {
-  if (!(error instanceof TRPCClientError)) return;
-  if (typeof window === "undefined") return;
-
-  const isUnauthorized =
-    error.message === UNAUTHED_ERR_MSG ||
-    error.data?.code === "UNAUTHORIZED" ||
-    error.data?.httpStatus === 401;
-
-  if (!isUnauthorized) return;
-
-  const pathname = window.location.pathname;
-  if (pathname === "/login" || pathname === "/redefinir-senha") {
-    authRedirectInFlight = false;
-    return;
-  }
-
-  // Rotas públicas (como santoral, biblia, oracoes, liturgia) não devem ser redirecionadas em caso de 401 em queries opcionais
-  if (!isProtectedRoutePath(pathname)) {
-    return;
-  }
-
-  if (authRedirectInFlight) return;
-
-  authRedirectInFlight = true;
-
-  const currentPath = `${window.location.pathname}${window.location.search || ""}`;
-  window.history.pushState({}, "", getLoginUrl(currentPath));
-  window.dispatchEvent(new PopStateEvent("popstate"));
-};
-
-if (typeof window !== "undefined") {
-  // Reseta a flag em qualquer navegação: indica que o redirect anterior já pousou
-  // e novos erros 401 devem poder disparar novos redirects.
-  window.addEventListener("popstate", () => {
-    authRedirectInFlight = false;
-  });
-}
-
 queryClient.getQueryCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.query.state.error;
-    redirectToLoginIfUnauthorized(error);
+    revalidateSessionAfterUnauthorized(queryClient, error);
     console.error("[API Query Error]", error);
   }
 });
@@ -243,7 +187,7 @@ queryClient.getQueryCache().subscribe(event => {
 queryClient.getMutationCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.mutation.state.error;
-    redirectToLoginIfUnauthorized(error);
+    revalidateSessionAfterUnauthorized(queryClient, error);
     console.error("[API Mutation Error]", error);
   }
 });

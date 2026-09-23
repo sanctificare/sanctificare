@@ -15,7 +15,7 @@ export default function ProtectedRoute({ component: Component, ...rest }: Protec
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       const currentPath = `${window.location.pathname}${window.location.search || ""}`;
-      setLocation(getLoginUrl(currentPath));
+      setLocation(getLoginUrl(currentPath), { replace: true });
     }
   }, [isAuthenticated, loading, setLocation]);
 
