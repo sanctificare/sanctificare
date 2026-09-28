@@ -33,9 +33,9 @@ jobs:
       - name: Sync iOS Platform (Capacitor)
         run: pnpm exec cap sync ios
 
-      - name: Build Xcode Workspace (Sem assinatura para validação de compilação)
+      - name: Build Xcode Project (Sem assinatura para validação de compilação)
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
+          xcodebuild -project ios/App/App.xcodeproj \
                      -scheme App \
                      -configuration Debug \
                      -sdk iphoneos \
