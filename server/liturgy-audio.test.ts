@@ -117,6 +117,7 @@ describe("liturgy-audio", () => {
       "2026-09-26",
       "2026-09-27",
       "2026-09-28",
+      "2026-09-29",
       "2026-09-30",
     ];
 
@@ -141,7 +142,7 @@ describe("liturgy-audio", () => {
         expect(audios.secondReading).toBeUndefined();
       }
 
-      if (dayNum === 1 || (dayNum >= 23 && dayNum <= 27)) {
+      if (dayNum === 1 || (dayNum >= 23 && dayNum <= 30)) {
         expect(audios.singedPsalm).toBe(
           `/r2-storage/salmos-cantados/setembro26/salmos${formattedDate}.mp3`
         );
