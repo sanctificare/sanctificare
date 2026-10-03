@@ -152,6 +152,33 @@ describe("liturgy-audio", () => {
     }
   });
 
+  it("deve retornar as leituras e o evangelho de 01/10/26 a 12/10/26", () => {
+    for (let dayNum = 1; dayNum <= 12; dayNum++) {
+      const day = String(dayNum).padStart(2, "0");
+      const formattedDate = `${day}1026`;
+      const audios = getLiturgyReadingsAudioByDate(`2026-10-${day}`);
+
+      expect(audios.firstReading).toBe(
+        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/outubro26/1leitura${formattedDate}.mp3`
+      );
+      expect(audios.gospel).toBe(
+        `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/outubro26/evangelho${formattedDate}.mp3`
+      );
+
+      if (dayNum === 4 || dayNum === 11 || dayNum === 12) {
+        expect(audios.secondReading).toBe(
+          `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/outubro26/2leitura${formattedDate}.mp3`
+        );
+      } else {
+        expect(audios.secondReading).toBeUndefined();
+      }
+
+      expect(audios.singedPsalm).toBeUndefined();
+    }
+
+    expect(getLiturgyReadingsAudioByDate("2026-10-13")).toEqual({});
+  });
+
   it("deve retornar audios dinamicamente na rota liturgy.getByDate da API", async () => {
     const caller = appRouter.createCaller({
       user: null,
