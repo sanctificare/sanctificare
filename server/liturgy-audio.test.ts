@@ -152,7 +152,7 @@ describe("liturgy-audio", () => {
     }
   });
 
-  it("deve retornar as leituras e o evangelho de 01/10/26 a 12/10/26", () => {
+  it("deve retornar as leituras, o evangelho e o salmo cantado de 01/10/26 a 12/10/26", () => {
     for (let dayNum = 1; dayNum <= 12; dayNum++) {
       const day = String(dayNum).padStart(2, "0");
       const formattedDate = `${day}1026`;
@@ -173,7 +173,9 @@ describe("liturgy-audio", () => {
         expect(audios.secondReading).toBeUndefined();
       }
 
-      expect(audios.singedPsalm).toBeUndefined();
+      expect(audios.singedPsalm).toBe(
+        `/r2-storage/salmos-cantados/outubro26/salmos${formattedDate}.mp3`
+      );
     }
 
     expect(getLiturgyReadingsAudioByDate("2026-10-13")).toEqual({});

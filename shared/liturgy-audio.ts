@@ -116,7 +116,7 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
         return audio;
       }
     } else if (monthStr === "10") {
-      // Outubro 2026: leituras e evangelho disponíveis de 01 a 12/10
+      // Outubro 2026: leituras, evangelho e salmo cantado disponíveis de 01 a 12/10
       if (dayNum >= 1 && dayNum <= 12) {
         const formattedDate = `${dayStr}${monthStr}26`; // ex: 011026
 
@@ -124,6 +124,9 @@ export function getLiturgyReadingsAudioByDate(dateIso: string | undefined): Litu
           firstReading: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/outubro26/1leitura${formattedDate}.mp3`,
           gospel: `https://pub-61abe93d1c484913afbbc5e65eab3b54.r2.dev/outubro26/evangelho${formattedDate}.mp3`,
         };
+
+        // Salmos cantados disponíveis de 01 a 12/10
+        audio.singedPsalm = `/r2-storage/salmos-cantados/outubro26/salmos${formattedDate}.mp3`;
 
         // Domingos (04/10 e 11/10) e Nossa Senhora Aparecida (12/10) têm segunda leitura no R2
         if (dayNum === 4 || dayNum === 11 || dayNum === 12) {
